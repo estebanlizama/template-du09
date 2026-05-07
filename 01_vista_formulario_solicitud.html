@@ -570,12 +570,12 @@
                                         <label class="small text-muted font-weight-bold">Tipo de Periodo</label>
                                         <div class="d-flex mt-1">
                                             <div class="custom-control custom-radio mr-3">
-                                                <input type="radio" id="tp_meses" name="tp_legacy" class="custom-control-input" checked>
-                                                <label class="custom-control-label small font-weight-bold" for="tp_meses">Meses</label>
+                                                <input type="radio" id="tp_meses_legacy" name="tp_legacy" class="custom-control-input" checked>
+                                                <label class="custom-control-label small font-weight-bold" for="tp_meses_legacy">Meses</label>
                                             </div>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="tp_horas" name="tp_legacy" class="custom-control-input">
-                                                <label class="custom-control-label small font-weight-bold" for="tp_horas">Horas</label>
+                                                <input type="radio" id="tp_horas_legacy" name="tp_legacy" class="custom-control-input">
+                                                <label class="custom-control-label small font-weight-bold" for="tp_horas_legacy">Horas</label>
                                             </div>
                                         </div>
                                     </div>
@@ -673,11 +673,69 @@
                                         </select>
                                     </div>
 
-                                    <!-- MODALIDAD DE EJECUCIÓN (Basado en Diagrama v2) -->
+                                    <!-- MODALIDAD DE EJECUCIÓN D9 -->
                                     <div class="col-12 mb-3">
                                         <div class="bg-light p-3 rounded border">
-                                            <h6 class="small font-weight-bold text-ufro-dark mb-3"><i class="fas fa-clock mr-1"></i> Modalidad de Ejecución y Jornada Laboral (D9)</h6>
+                                            <h6 class="small font-weight-bold text-ufro-dark mb-3"><i class="fas fa-calendar-check mr-1"></i> Modalidad de Ejecución y Montos (D9)</h6>
                                             
+                                            <div class="row align-items-end">
+                                                <!-- Tipo de Periodo -->
+                                                <div class="col-md-3 form-group">
+                                                    <label class="small text-muted font-weight-bold">Tipo de Periodo</label>
+                                                    <div class="d-flex mt-1">
+                                                        <div class="custom-control custom-radio mr-3">
+                                                            <input type="radio" id="tp_meses_d9" name="tp_d9" class="custom-control-input" checked>
+                                                            <label class="custom-control-label small font-weight-bold" for="tp_meses_d9">Meses</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="tp_horas_d9" name="tp_d9" class="custom-control-input">
+                                                            <label class="custom-control-label small font-weight-bold" for="tp_horas_d9">Horas</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Meses de ejecución -->
+                                                <div class="col-md-4 form-group">
+                                                    <label class="small text-muted font-weight-bold">Meses de ejecución</label>
+                                                    <div class="d-flex border rounded p-2 bg-white justify-content-between shadow-xs" style="font-size: 0.65rem;">
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">E</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">F</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">M</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">A</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">M</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">J</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">J</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">A</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">S</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">O</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">N</div><input type="checkbox"></div>
+                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">D</div><input type="checkbox"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Horas/Mes -->
+                                                <div class="col-md-1 form-group">
+                                                    <label class="small text-muted font-weight-bold">Horas/Mes</label>
+                                                    <input type="number" class="form-control form-control-sm text-center px-1" value="0">
+                                                </div>
+
+                                                <!-- Monto Bruto Mes -->
+                                                <div class="col-md-2 form-group">
+                                                    <label class="small text-muted font-weight-bold">Monto Bruto Mes</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                                                        <input type="number" class="form-control" placeholder="0">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Total PDS -->
+                                                <div class="col-md-2 form-group">
+                                                    <label class="small text-muted font-weight-bold">Total PDS</label>
+                                                    <div class="form-control form-control-sm bg-white border-primary font-weight-bold text-primary text-center px-1" style="border-width: 2px;">0</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
                                                     <label class="small font-weight-bold text-muted d-block">¿Fuera o dentro de la jornada?</label>
@@ -729,50 +787,6 @@
                                         </div>
                                     </div>
 
-                                    <div id="d9_temporalidad" class="col-12">
-                                        <div class="row">
-                                            <div class="col-md-4 form-group">
-                                                <label class="small text-muted font-weight-bold">Meses de ejecución</label>
-                                                <div class="d-flex justify-content-between border p-2 rounded bg-white shadow-sm">
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">E</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">F</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">M</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">A</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">M</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">J</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">J</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">A</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">S</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">O</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">N</small><input type="checkbox"></div>
-                                                    <div class="text-center mx-1"><small class="d-block font-weight-bold" style="font-size: 0.6rem;">D</small><input type="checkbox"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 form-group">
-                                                <label class="small text-muted font-weight-bold">Horas/Mes</label>
-                                                <input type="number" class="form-control form-control-sm" value="0">
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <label class="small text-muted font-weight-bold">Monto Bruto Mes</label>
-                                                <div class="input-group input-group-sm">
-                                                    <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                                    <input type="number" class="form-control monto-pago" oninput="actualizarCalculoTopes()">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <label class="small text-muted font-weight-bold">Total PDS</label>
-                                                <input type="text" id="total_monto_display" class="form-control form-control-sm bg-light font-weight-bold text-success" readonly value="0">
-                                            </div>
-                                        </div>
-
-                                        <div id="d9_limits_checklist" class="hidden"></div>
-                                        <div id="d9_matrix" class="hidden"></div>
-                                    </div>
-
-                                    <!-- COMPENSACIÓN Y EVIDENCIAS D9 -->
-                                    <div id="d9_comp_container" class="col-12 hidden">
-                                        <h6 class="small font-weight-bold text-muted mb-1">Compensación Horaria</h6>
-                                        <textarea class="form-control form-control-sm mb-2" rows="1" placeholder="Indique días y horarios de compensación..."></textarea>
                                     </div>
                                     <div id="d9_evidence_container" class="col-12 mt-3">
                                         <h6 class="small font-weight-bold text-muted mb-2 text-uppercase" style="letter-spacing: 0.5px;">Evidencias Verificables y Plazos (D9)</h6>
@@ -820,16 +834,14 @@
                                             </table>
                                         </div>
                                     </div>
-                                   <div class="text-right mt-3 mb-4">
-                                <button type="button" class="btn btn-outline-primary btn-sm px-4 font-weight-bold" style="border-radius: 20px;">
-                                    <i class="fas fa-plus-circle mr-1"></i> Agregar Funcionario
-                                </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- PASO 4: TABLA DE RESUMEN PREMIUM (D9) -->
-                    <div class="bg-light p-4 rounded-lg shadow-sm mb-4" style="background-color: #f8fafd !important; border: 1px solid #e1e7f1;">
+                    <div id="d9_summary_container" class="bg-light p-4 rounded-lg shadow-sm mb-4 hidden" style="background-color: #f8fafd !important; border: 1px solid #e1e7f1;">
                         <div class="table-responsive">
                             <table class="table table-premium mb-0">
                                 <thead>
@@ -1037,6 +1049,7 @@
         // Secciones de Funcionario
         const legacyStaffContainer = document.getElementById('legacy_staff_container');
         const d9StaffContainer = document.getElementById('d9_staff_container');
+        const d9SummaryContainer = document.getElementById('d9_summary_container');
         
         // Indicadores y Alertas D9 (Removidos/Ocultos en HTML)
         const eligibilityInfo = document.getElementById('d9_eligibility_info');
@@ -1053,6 +1066,7 @@
             
             if(legacyStaffContainer) legacyStaffContainer.classList.add('hidden');
             if(d9StaffContainer) d9StaffContainer.classList.remove('hidden');
+            if(d9SummaryContainer) d9SummaryContainer.classList.remove('hidden');
 
             if(d9ValidationStatus) d9ValidationStatus.classList.remove('hidden');
             if(eligibilityInfo) eligibilityInfo.style.display = 'block';
@@ -1070,6 +1084,7 @@
             
             if(legacyStaffContainer) legacyStaffContainer.classList.remove('hidden');
             if(d9StaffContainer) d9StaffContainer.classList.add('hidden');
+            if(d9SummaryContainer) d9SummaryContainer.classList.add('hidden');
 
             if(d9ValidationStatus) d9ValidationStatus.classList.add('hidden');
             if(eligibilityInfo) eligibilityInfo.style.display = 'none';
