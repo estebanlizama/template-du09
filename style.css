@@ -1,0 +1,111 @@
+:root {
+    --ufro-blue: #004b8d;
+    --ufro-orange: #f47920;
+    --ufro-green: #28a745;
+    --ufro-dark: #1e2d3e;
+    --bg-light: #f8fafd;
+    --text-muted: #718096;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: #4a5568;
+}
+
+/* Sidebar Estándar */
+#wrapper { overflow-x: hidden; display: flex; }
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 260px;
+    background-color: var(--ufro-dark);
+    transition: margin .25s ease-out;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+#sidebar-wrapper .list-group-item { 
+    background: transparent; 
+    color: #a0aec0; 
+    border: none; 
+    padding: 1rem 1.5rem; 
+    font-size: 0.9rem; 
+    transition: all 0.3s;
+}
+#sidebar-wrapper .list-group-item:hover { color: white; background: rgba(255,255,255,0.05); }
+#sidebar-wrapper .list-group-item.active { 
+    color: white; 
+    background: rgba(255,255,255,0.1); 
+    border-left: 4px solid var(--ufro-orange); 
+}
+
+#page-content-wrapper { width: 100%; }
+
+/* Topbar Estándar */
+#dna-topbar { 
+    background: white; 
+    padding: 0.75rem 2rem; 
+    border-bottom: 1px solid #e2e8f0; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+/* Componentes de Formulario y Cards */
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+.label { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; display: block; }
+.value { font-size: 0.9rem; font-weight: 600; color: var(--ufro-dark); }
+
+/* Badges */
+.status-badge {
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.status-in-process { background: #fffaf0; color: #dd6b20; border: 1px solid #fbd38d; }
+
+/* Transiciones suaves */
+.fade-in { animation: fadeIn 0.5s ease-in; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Tablas Premium PDS */
+.table-premium { border-collapse: separate; border-spacing: 0 12px; background-color: transparent; width: 100%; }
+.table-premium thead th { border: none; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem 0.5rem; color: var(--text-muted); }
+.table-premium tbody tr { background-color: #fff; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.03); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+.table-premium tbody tr:hover { transform: translateY(-3px) scale(1.005); box-shadow: 0 10px 25px rgba(0,0,0,0.08); z-index: 2; }
+.table-premium td { border: none; padding: 1.25rem 1rem; vertical-align: middle; }
+.table-premium td:first-child { border-top-left-radius: 12px; border-bottom-left-radius: 12px; padding-left: 1.5rem; border-left: 5px solid transparent; }
+.table-premium td:last-child { border-top-right-radius: 12px; border-bottom-right-radius: 12px; padding-right: 1.5rem; }
+
+.row-accent-sea { border-left-color: var(--ufro-green) !important; }
+.row-accent-warning { border-left-color: var(--ufro-orange) !important; }
+
+/* Botones de Acción Mini */
+.btn-action { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; border: 1px solid #edf2f9; background: #fff; color: #4d5969; cursor: pointer; }
+.btn-action:hover { background: var(--ufro-blue); color: #fff; transform: translateY(-2px); text-decoration: none; }
+.btn-delete:hover { background: #e63757 !important; color: white !important; }
+
+/* Selector de Flujo (Radio Cards) */
+.custom-radio-card { cursor: pointer; border: 2px solid transparent; transition: all 0.3s ease; padding: 1.25rem; border-radius: 12px; background: #fff; }
+.custom-radio-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
+.custom-radio-card.active { border-color: var(--ufro-blue); background-color: rgba(0, 75, 141, 0.05); box-shadow: 0 4px 12px rgba(0, 75, 141, 0.15) !important; }
+.custom-radio-card.active-d9 { border-color: var(--ufro-orange); background-color: #fff9f2; box-shadow: 0 4px 12px rgba(244, 121, 32, 0.15) !important; }
+
+/* Animaciones y Efectos */
+.badge-pulse { animation: pulse 2s infinite; }
+@keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 121, 32, 0.4); } 70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(244, 121, 32, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 121, 32, 0); } }
+
+.scanning-indicator { position: relative; overflow: hidden; }
+.scanning-indicator::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: scan 1.5s infinite; }
+@keyframes scan { 0% { left: -100%; } 100% { left: 150%; } }
+
+/* Widgets de Control D9 */
+.tope-widget { border-radius: 10px; padding: 10px; background: #fff; border-left: 4px solid var(--ufro-orange); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.progress-sm { height: 6px; border-radius: 10px; background-color: #edf2f7; }

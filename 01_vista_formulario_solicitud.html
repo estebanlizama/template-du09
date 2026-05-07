@@ -7,136 +7,17 @@
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --ufro-blue: #11306e;
-            --ufro-light-blue: #e8ebf1;
-            --ufro-orange: #f98f15;
-            --ufro-green: #008a13;
-        }
-
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
-            margin: 0;
-        }
-
-        /* Layout Structure */
-        #wrapper {
-            display: flex;
-            width: 100%;
-            align-items: stretch;
-            min-height: 100vh;
-        }
-
-        #sidebar-wrapper {
-            min-width: 250px;
-            max-width: 250px;
-            background: #fff;
-            color: #333;
-            transition: all 0.3s;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-
-        #sidebar-wrapper .logo-cont {
-            height: 80px;
-            background-color: var(--ufro-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 6px solid var(--ufro-orange);
-        }
-
-        #sidebar-wrapper .logo-cont img {
-            max-width: 160px;
-            filter: brightness(0) invert(1);
-        }
-
-        #sidebar-wrapper .sidebar-heading {
-            padding: 1.5rem 1rem;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: var(--ufro-blue);
-            border-bottom: 1px solid #eee;
-            text-transform: uppercase;
-        }
-
-        #sidebar-wrapper .list-group-item {
-            border: none;
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            color: #555;
-            transition: 0.2s;
-            background: transparent;
-        }
-
-        #sidebar-wrapper .list-group-item:hover {
-            background-color: var(--ufro-light-blue);
-            color: var(--ufro-blue);
-            border-left: 4px solid var(--ufro-blue);
-            padding-left: 16px;
-        }
-
-        #sidebar-wrapper .list-group-item.active {
-            background-color: var(--ufro-light-blue);
-            color: var(--ufro-blue);
-            border-left: 4px solid var(--ufro-blue);
-            padding-left: 16px;
-            font-weight: bold;
-        }
-
-        #page-content-wrapper {
-            width: 100%;
-            background-color: #f4f7fa;
-        }
-
-        /* Topbar */
-        #dna-topbar {
-            height: 70px;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            text-align: right;
-        }
-
-        .user-details {
-            margin-right: 15px;
-        }
-
-        .user-name {
-            font-size: 0.85rem;
-            font-weight: bold;
-            display: block;
-            color: #333;
-        }
-
-        .user-role {
-            font-size: 0.75rem;
-            color: #777;
-        }
-
-        .user-avatar {
-            width: 35px;
-            height: 35px;
-            background: var(--ufro-blue);
-            color: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
+        /* Estilos específicos de funcionalidad */
+        .step-container { margin-bottom: 2rem; border-left: 3px solid transparent; transition: all 0.3s; }
+        .step-active { border-left-color: var(--ufro-orange); background: white; }
+        .card-pds { border: 1px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; }
+        .card-pds:hover { border-color: var(--ufro-blue); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn-action { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; border: 1px solid #edf2f9; background: #fff; color: #4d5969; }
+        .btn-action:hover { background: var(--ufro-blue); color: #fff; transform: translateY(-2px); }
+        .btn-delete:hover { background: #e63757 !important; }
 
         /* Form Styling */
         .card {
@@ -1061,7 +942,7 @@
                             <small class="text-muted">Lista para envío</small>
                         </div>
                         <button type="button" class="btn btn-light btn-sm px-4 mr-2 font-weight-bold text-muted border">Guardar Borrador</button>
-                        <button id="btnEnviar" type="submit" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm">
+                        <button id="btnEnviar" type="button" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm" onclick="enviarSolicitud()">
                             Enviar Solicitud <i class="fas fa-paper-plane ml-2"></i>
                         </button>
                     </div>
@@ -1400,6 +1281,11 @@
             document.getElementById('nombre_funcionario').value = name;
             simulateStaffSearch(); // Solo para D9: Actualizar jerarquía y validaciones
         }
+    }
+
+    function enviarSolicitud() {
+        alert("Solicitud enviada exitosamente. Redirigiendo a vista de visación...");
+        window.location.href = "02_vista_visacion_aprobador.html";
     }
 
     $("#menu-toggle").click(function(e) {
