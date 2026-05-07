@@ -196,7 +196,6 @@
                             <th style="min-width: 220px;">Modalidad D9</th>
                             <th style="min-width: 150px;">Temporalidad</th>
                             <th class="text-right" style="min-width: 150px;">Finanzas</th>
-                            <th class="text-center">Validación</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -213,9 +212,24 @@
                             <td>
                                 <div class="d-flex align-items-center mb-1">
                                     <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
-                                    <strong class="small text-dark">DENTRO JORNADA</strong>
+                                    <strong class="small text-dark">DENTRO JORNADA (SEA)</strong>
                                 </div>
-                                <div class="small text-muted" style="line-height: 1.2;">Perteneciente a SEA<br><span class="text-success font-weight-bold" style="font-size: 0.6rem;">CUMPLE NORMATIVA D9</span></div>
+                                <!-- CONTROL FORENSE INDIVIDUAL -->
+                                <div class="mt-2 p-2 bg-light rounded" style="border: 1px solid #eef1f5;">
+                                    <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.6rem;">
+                                        <span class="text-muted font-weight-bold">Tope 50% mensual</span>
+                                        <span class="text-success font-weight-bold">42% (Ok)</span>
+                                    </div>
+                                    <div class="progress" style="height: 4px; border-radius: 2px;">
+                                        <div class="progress-bar bg-success" style="width: 42%"></div>
+                                    </div>
+                                    <div class="row no-gutters mt-2" style="font-size: 0.55rem;">
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Formación</div>
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Inhabil.</div>
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Deudas</div>
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> SEA Válido</div>
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <div class="d-flex flex-wrap gap-1 mb-1">
@@ -228,9 +242,6 @@
                             <td class="text-right">
                                 <div class="font-weight-bold text-dark" style="font-size: 1rem;">$450.000</div>
                                 <div class="small font-weight-bold text-success mt-1">TOTAL: $1.350.000</div>
-                            </td>
-                            <td class="text-center">
-                                <i class="fas fa-check-shield text-success fa-lg" title="Validado por DGDP"></i>
                             </td>
                         </tr>
 
@@ -249,13 +260,25 @@
                                     <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
                                     <strong class="small text-dark">DENTRO JORNADA</strong>
                                 </div>
-                                <div class="small text-muted mb-2" style="line-height: 1.2;">Requiere Recuperación Horaria:</div>
-                                <!-- TABLA DE COMPENSACIÓN INDIVIDUAL -->
+                                <!-- CONTROL FORENSE INDIVIDUAL -->
+                                <div class="mt-2 p-2 bg-light rounded" style="border: 1px solid #eef1f5;">
+                                    <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.6rem;">
+                                        <span class="text-muted font-weight-bold">Tope 50% mensual</span>
+                                        <span class="text-warning font-weight-bold">48% (Cerca)</span>
+                                    </div>
+                                    <div class="progress" style="height: 4px; border-radius: 2px;">
+                                        <div class="progress-bar bg-warning" style="width: 48%"></div>
+                                    </div>
+                                    <div class="row no-gutters mt-2" style="font-size: 0.55rem;">
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Formación</div>
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Inhabil.</div>
+                                        <div class="col-6 text-success"><i class="fas fa-check mr-1"></i> Deudas</div>
+                                        <div class="col-6 text-muted italic">-- No aplica SEA --</div>
+                                    </div>
+                                </div>
+                                <div class="small text-muted mt-2 mb-1" style="line-height: 1.2;">Recuperación Horaria:</div>
                                 <div class="bg-white border rounded p-1">
-                                    <table class="table table-sm table-borderless mb-0" style="font-size: 0.65rem; line-height: 1;">
-                                        <thead>
-                                            <tr class="text-muted border-bottom"><th>Día</th><th class="text-right">Horario</th></tr>
-                                        </thead>
+                                    <table class="table table-sm table-borderless mb-0" style="font-size: 0.55rem; line-height: 1;">
                                         <tbody>
                                             <tr><td>Lunes</td><td class="text-right text-dark">18:30 - 20:30</td></tr>
                                             <tr><td>Miércoles</td><td class="text-right text-dark">18:30 - 20:30</td></tr>
@@ -273,9 +296,6 @@
                             <td class="text-right">
                                 <div class="font-weight-bold text-dark" style="font-size: 1rem;">$280.000</div>
                                 <div class="small font-weight-bold text-success mt-1">TOTAL: $560.000</div>
-                            </td>
-                            <td class="text-center">
-                                <i class="fas fa-check-shield text-success fa-lg" title="Validado por DGDP"></i>
                             </td>
                         </tr>
                     </tbody>
@@ -316,60 +336,34 @@
                     </div>
                 </div>
             </div>
-            <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; border-left: 5px solid var(--ufro-orange) !important;">
-                <div class="card-body p-4">
-                    <div class="row">
-                        <!-- LÍMITES FINANCIEROS -->
-                        <div class="col-md-7 border-right pr-4">
-                            <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Resumen de Topes Financieros (REGLA 50%)</h6>
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="small font-weight-bold text-dark">Gasto Total Acumulado vs Tope Referencial</span>
-                                <span class="badge badge-success px-2 py-1">CUMPLE LÍMITE</span>
-                            </div>
-                            <div class="progress bg-light mb-3" style="height: 12px; border-radius: 6px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 42%"></div>
-                            </div>
-                            
-                            <!-- ESCANEO DE REGLAS D9 -->
-                            <div class="bg-light p-3 rounded">
-                                <h6 class="small font-weight-bold text-dark mb-2"><i class="fas fa-shield-alt mr-2 text-primary"></i> Validación de Reglas D9</h6>
-                                <div class="row small">
-                                    <div class="col-6 mb-2 text-success"><i class="fas fa-check-circle mr-1"></i> Formación Continua</div>
-                                    <div class="col-6 mb-2 text-success"><i class="fas fa-check-circle mr-1"></i> Sin Inhabilidades</div>
-                                    <div class="col-6 text-success"><i class="fas fa-check-circle mr-1"></i> Sin Deudas</div>
-                                    <div class="col-6 text-success"><i class="fas fa-check-circle mr-1"></i> SEA Válido</div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- ENTREGABLES COMPROMETIDOS -->
-                        <div class="col-md-5 pl-4">
-                            <h6 class="small font-weight-bold text-muted text-uppercase mb-2">Entregables de la Solicitud (Evidencias)</h6>
-                            <div class="table-responsive mt-2">
-                                <table class="table table-sm table-bordered bg-white mb-0" style="font-size: 0.65rem;">
-                                    <thead class="bg-light text-muted">
-                                        <tr>
-                                            <th>Tipo de Evidencia</th>
-                                            <th width="100" class="text-center">Fecha Entrega</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="font-weight-bold text-dark">Acta de inicio de actividades</td>
-                                            <td class="text-center">30/05/2026</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="font-weight-bold text-dark">Informe de avance mensual</td>
-                                            <td class="text-center">30/06/2026</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="font-weight-bold text-dark">Base de datos entregada</td>
-                                            <td class="text-center">15/07/2026</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+            <!-- ENTREGABLES COMPROMETIDOS -->
+            <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Entregables de la Solicitud (Evidencias)</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white mb-0" style="font-size: 0.75rem;">
+                            <thead class="bg-light text-muted">
+                                <tr>
+                                    <th>Tipo de Evidencia</th>
+                                    <th width="150" class="text-center">Fecha Entrega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Acta de inicio de actividades</td>
+                                    <td class="text-center">30/05/2026</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Informe de avance mensual</td>
+                                    <td class="text-center">30/06/2026</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Base de datos entregada</td>
+                                    <td class="text-center">15/07/2026</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
