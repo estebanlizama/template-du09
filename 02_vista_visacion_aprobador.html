@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visación de Solicitud D9 - UFRO</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ufro-blue: #004b8d;
+            --ufro-orange: #f47920;
+            --ufro-green: #28a745;
+            --ufro-dark: #1e2d3e;
+            --bg-light: #f8fafd;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: #4a5568;
+        }
+
+        /* Sidebar similar a la primera vista para consistencia */
+        #wrapper { overflow-x: hidden; display: flex; }
+        #sidebar-wrapper {
+            min-height: 100vh;
+            width: 260px;
+            background-color: var(--ufro-dark);
+            transition: margin .25s ease-out;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        #sidebar-wrapper .list-group-item { background: transparent; color: #a0aec0; border: none; padding: 1rem 1.5rem; font-size: 0.9rem; }
+        #sidebar-wrapper .list-group-item.active { color: white; background: rgba(255,255,255,0.1); border-left: 4px solid var(--ufro-orange); }
+
+        #page-content-wrapper { width: 100%; }
+
+        /* Topbar */
+        #dna-topbar { background: white; padding: 0.75rem 2rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Estilo de Tarjetas de Datos del Proyecto */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid #e2e8f0;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        .info-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .info-card .label { font-size: 0.65rem; font-weight: 700; color: #718096; text-uppercase: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; display: block; }
+        .info-card .value { font-size: 0.95rem; font-weight: 600; color: var(--ufro-dark); }
+
+        /* Badge de Estado */
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-in-process { background: #fffaf0; color: #dd6b20; border: 1px solid #fbd38d; }
+
+        /* Tabla Premium (Adaptada para Aprobación) */
+        .table-premium { border-collapse: separate; border-spacing: 0 12px; margin-top: -12px; }
+        .table-premium thead th { border: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #718096; padding: 10px 20px; }
+        .table-premium tbody tr { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
+        .table-premium tbody tr td { padding: 1.25rem 1.5rem; vertical-align: middle; border: none; }
+        .table-premium tbody tr td:first-child { border-radius: 12px 0 0 12px; border-left: 5px solid transparent; }
+        .table-premium tbody tr td:last-child { border-radius: 0 12px 12px 0; }
+        
+        .row-accent-sea td:first-child { border-left-color: var(--ufro-green) !important; }
+        .row-accent-warning td:first-child { border-left-color: var(--ufro-orange) !important; }
+
+        /* Panel de Acciones Inferior */
+        .action-panel {
+            background: white;
+            padding: 1.5rem 2.5rem;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -10px 15px -3px rgba(0,0,0,0.05);
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .btn-ufro-approve { background: var(--ufro-green); color: white; border-radius: 8px; font-weight: 700; border: none; padding: 0.6rem 2.5rem; transition: all 0.2s; }
+        .btn-ufro-approve:hover { background: #218838; transform: scale(1.05); color: white; }
+        
+        .btn-ufro-reject { background: #e53e3e; color: white; border-radius: 8px; font-weight: 700; border: none; padding: 0.6rem 1.5rem; }
+        .btn-ufro-observe { background: var(--ufro-orange); color: white; border-radius: 8px; font-weight: 700; border: none; padding: 0.6rem 1.5rem; }
+
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="p-4 mb-3">
+            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item"><i class="fas fa-th-large mr-2"></i> Bandeja Entrada</a>
+            <a href="#" class="list-group-item active"><i class="fas fa-search-dollar mr-2"></i> Revisión PDS</a>
+            <a href="#" class="list-group-item"><i class="fas fa-history mr-2"></i> Historial</a>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <!-- Topbar -->
+        <nav id="dna-topbar">
+            <h5 class="m-0 font-weight-bold" style="color: var(--ufro-dark);">Visación de Prestación de Servicios <span class="text-muted font-weight-light">| D9-2026</span></h5>
+            <div class="user-info d-flex align-items-center">
+                <div class="text-right mr-3">
+                    <div class="small font-weight-bold">GONZALO OPORTO</div>
+                    <div class="text-muted" style="font-size: 0.7rem;">SECRETARIO GENERAL</div>
+                </div>
+                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: bold; color: var(--ufro-blue);">GO</div>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4 px-lg-5">
+            <!-- Header de Solicitud -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="font-weight-bold text-dark mb-0">Solicitud N° 198</h2>
+                    <small class="text-muted">Enviada el 07 de Mayo, 2026 por Pamela Ibarra</small>
+                </div>
+                <div class="status-badge status-in-process">
+                    <i class="fas fa-sync-alt fa-spin mr-2"></i> En Proceso de Firma
+                </div>
+            </div>
+
+            <!-- Ficha Resumen del Proyecto -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-3">
+                    <div class="info-card">
+                        <span class="label">Actividad / Prestación</span>
+                        <div class="value">Asesoría Técnica Plan de Modernización Institucional 2026</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="info-card">
+                        <span class="label">Centro de Costos</span>
+                        <div class="value">21.05.001 - FACULTAD DE INGENIERÍA</div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <div class="info-card">
+                        <span class="label">Inicio Proyecto</span>
+                        <div class="value">01 Mayo 2026</div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <div class="info-card">
+                        <span class="label">Fin Proyecto</span>
+                        <div class="value">31 Dic 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Funcionarios (Personalizable D9) -->
+            <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="letter-spacing: 1px; font-size: 0.8rem;">Personal Asignado y Modalidad</h6>
+            <div class="table-responsive">
+                <table class="table table-premium">
+                    <thead>
+                        <tr>
+                            <th>Funcionario</th>
+                            <th>Perfil / Jornada</th>
+                            <th>Modalidad D9</th>
+                            <th>Temporalidad</th>
+                            <th class="text-right">Monto Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-accent-sea">
+                            <td>
+                                <div class="font-weight-bold text-dark">JUAN PABLO ANDRADE VALDÉS</div>
+                                <div class="small text-muted">12.345.678-9 | Prof. Titular</div>
+                            </td>
+                            <td>
+                                <span class="badge badge-light p-1 px-2 small mb-1" style="background: #e8f0fe; color: #1967d2;">ACADÉMICO</span>
+                                <div class="small text-muted font-weight-bold">Jornada 44h</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small">DENTRO JORNADA</strong>
+                                </div>
+                                <div class="small text-success font-weight-bold">PERMANECE EN SEA</div>
+                            </td>
+                            <td>
+                                <div class="small font-weight-bold text-dark">MAR - DIC</div>
+                                <div class="small text-muted">12 Horas / Mes</div>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark" style="font-size: 1.1rem;">$1.350.000</div>
+                                <small class="text-muted">Bruto: $450.000/mes</small>
+                            </td>
+                        </tr>
+                        <tr class="row-accent-warning">
+                            <td>
+                                <div class="font-weight-bold text-dark">MARÍA ELENA SOTO FIGUEROA</div>
+                                <div class="small text-muted">15.987.654-3 | Profesional</div>
+                            </td>
+                            <td>
+                                <span class="badge badge-light p-1 px-2 small mb-1" style="background: #e2f6f9; color: #007a8c;">ADMINISTRATIVO</span>
+                                <div class="small text-muted font-weight-bold">Jornada 44h</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small">DENTRO JORNADA</strong>
+                                </div>
+                                <div class="small text-warning font-weight-bold">CON COMPENSACIÓN</div>
+                            </td>
+                            <td>
+                                <div class="small font-weight-bold text-dark">ABR - MAY</div>
+                                <div class="small text-muted">8 Horas / Mes</div>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark" style="font-size: 1.1rem;">$560.000</div>
+                                <small class="text-muted">Bruto: $280.000/mes</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resumen de Entregables -->
+            <div class="row mt-4">
+                <div class="col-md-7">
+                    <div class="card border-0 shadow-sm rounded-lg p-4 h-100">
+                        <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="font-size: 0.8rem;">Entregables Comprometidos</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check-circle text-success mr-3"></i>
+                                <span>Acta firmada de asesoría técnica - <span class="text-muted small">Entrega: 30/06/2026</span></span>
+                            </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check-circle text-success mr-3"></i>
+                                <span>Informe mensual de evidencias - <span class="text-muted small">Entrega Mensual</span></span>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success mr-3"></i>
+                                <span>Base de datos de indicadores actualizada - <span class="text-muted small">Entrega: 15/12/2026</span></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card border-0 shadow-sm rounded-lg p-4 h-100" style="background: #fdfdfd; border-left: 4px solid var(--ufro-blue) !important;">
+                        <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="font-size: 0.8rem;">Historial de Visaciones</h6>
+                        <div class="small">
+                            <div class="mb-2"><i class="fas fa-user-check text-success mr-2"></i> <strong>Solicitante:</strong> Pamela Ibarra <span class="text-muted">(Enviado 07/05)</span></div>
+                            <div class="mb-2"><i class="fas fa-user-check text-success mr-2"></i> <strong>Jefe Proyecto:</strong> Ricardo Gómez <span class="text-muted">(Aprobado 07/05)</span></div>
+                            <div><i class="fas fa-clock text-warning mr-2"></i> <strong>Pendiente:</strong> Secretario General</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Panel de Acciones Inferior -->
+        <div class="action-panel">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-muted small">
+                    <i class="fas fa-info-circle mr-2"></i> Al aprobar, esta solicitud pasará a la etapa de <strong>Toma de Razón Jurídica</strong>.
+                </div>
+                <div>
+                    <button class="btn-ufro-reject mr-2"><i class="fas fa-times-circle mr-2"></i> Rechazar</button>
+                    <button class="btn-ufro-observe mr-2"><i class="fas fa-comment-dots mr-2"></i> Observar</button>
+                    <button class="btn-ufro-approve"><i class="fas fa-check-double mr-2"></i> Aprobar Solicitud</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
