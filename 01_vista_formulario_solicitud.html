@@ -678,10 +678,9 @@
                                     <div class="col-12 mb-3">
                                         <div class="bg-light p-3 rounded border">
                                             <h6 class="small font-weight-bold text-ufro-dark mb-3"><i class="fas fa-calendar-check mr-1"></i> Modalidad de Ejecución y Montos (D9)</h6>
-                                            
                                             <div class="row align-items-end">
                                                 <!-- Tipo de Periodo -->
-                                                <div class="col-md-3 form-group">
+                                                <div class="col-md-3 col-sm-6 mb-3">
                                                     <label class="small text-muted font-weight-bold">Tipo de Periodo</label>
                                                     <div class="d-flex mt-1">
                                                         <div class="custom-control custom-radio mr-3">
@@ -696,9 +695,9 @@
                                                 </div>
 
                                                 <!-- Meses de ejecución -->
-                                                <div class="col-md-4 form-group">
+                                                <div class="col-md-4 col-sm-6 mb-3">
                                                     <label class="small text-muted font-weight-bold">Meses de ejecución</label>
-                                                    <div class="d-flex border rounded p-2 bg-white justify-content-between shadow-xs" style="font-size: 0.65rem;">
+                                                    <div class="d-flex border rounded p-2 bg-white justify-content-between shadow-xs" style="font-size: 0.65rem; min-height: 31px;">
                                                         <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">E</div><input type="checkbox"></div>
                                                         <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">F</div><input type="checkbox"></div>
                                                         <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">M</div><input type="checkbox"></div>
@@ -715,25 +714,27 @@
                                                 </div>
                                                 
                                                 <!-- Horas/Mes -->
-                                                <div class="col-md-1 form-group">
+                                                <div class="col-6 col-md-1 mb-3">
                                                     <label class="small text-muted font-weight-bold">Horas/Mes</label>
                                                     <input type="number" class="form-control form-control-sm text-center px-1" value="0">
                                                 </div>
 
                                                 <!-- Monto Bruto Mes -->
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-6 col-md-2 mb-3">
                                                     <label class="small text-muted font-weight-bold">Monto Bruto Mes</label>
                                                     <div class="input-group input-group-sm">
-                                                        <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                                        <input type="number" class="form-control monto-pago" placeholder="0" oninput="actualizarCalculoTopes()">
+                                                        <div class="input-group-prepend"><span class="input-group-text px-1">$</span></div>
+                                                        <input type="number" class="form-control monto-pago px-1" placeholder="0" oninput="actualizarCalculoTopes()">
                                                     </div>
                                                 </div>
 
                                                 <!-- Total PDS -->
-                                                <div class="col-md-2 form-group">
+                                                <div class="col-12 col-md-2 mb-3">
                                                     <label class="small text-muted font-weight-bold">Total PDS</label>
                                                     <input type="text" id="total_monto_display" class="form-control form-control-sm bg-white border-primary font-weight-bold text-primary text-center px-1" style="border-width: 2px;" readonly value="0">
                                                 </div>
+                                            </div>
+
                                             </div>
 
                                             <!-- WIDGET DE TOPES (50% REGLA) -->
@@ -951,16 +952,22 @@
                         </div>
                     </div>
 
+                    <!-- OBSERVACIONES -->
+                    <div class="card border-0 shadow-sm rounded-lg p-4 mb-4">
+                        <label class="small font-weight-bold text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Observaciones Generales de la Solicitud</label>
+                        <textarea class="form-control border-light bg-light" rows="3" placeholder="Indique cualquier detalle adicional relevante para el flujo de visación o validación D9..." style="font-size: 0.85rem; resize: none;"></textarea>
+                    </div>
+
                     <!-- DOCUMENTACIÓN -->
                     <div class="card border-0 shadow-sm rounded-lg p-4 mb-5">
                         <label class="small font-weight-bold text-muted text-uppercase mb-3" style="letter-spacing: 1px;">Subir documentación justificativa (PDF)</label>
                         <div class="row align-items-end">
-                            <div class="col-md-5">
-                                <label class="small d-block mb-1 text-muted">Nombre del documento <i class="fas fa-file-pdf text-danger ml-1"></i></label>
+                            <div class="col-md-7 mb-3 mb-md-0">
+                                <label class="small d-block mb-1 text-muted">Nombre del documento / Descripción <i class="fas fa-file-pdf text-danger ml-1"></i></label>
                                 <input type="text" class="form-control form-control-sm border-light bg-light" placeholder="Ej: Justificación_Proyecto_IA.pdf">
                             </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-success btn-sm btn-block font-weight-bold bg-ufro-green shadow-sm">
+                            <div class="col-md-5">
+                                <button class="btn btn-success btn-sm btn-block font-weight-bold bg-ufro-green shadow-sm py-2">
                                     <i class="fas fa-upload mr-1"></i> Seleccionar Archivo
                                 </button>
                             </div>
@@ -968,15 +975,17 @@
                     </div>
 
                     <!-- BOTONES ACCIÓN FINALES -->
-                    <div class="d-flex justify-content-end align-items-center mb-5">
-                        <div id="d9_validation_status" class="hidden mr-4 text-right">
+                    <div class="d-flex flex-column flex-sm-row justify-content-end align-items-center mb-5 gap-3">
+                        <div id="d9_validation_status" class="hidden text-center text-sm-right mb-3 mb-sm-0 mr-sm-4">
                             <small class="d-block font-weight-bold text-success"><i class="fas fa-check-circle mr-1"></i> Configuración D9 Validada</small>
                             <small class="text-muted">Lista para envío</small>
                         </div>
-                        <button type="button" class="btn btn-light btn-sm px-4 mr-2 font-weight-bold text-muted border">Guardar Borrador</button>
-                        <button id="btnEnviar" type="button" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm" onclick="enviarSolicitud()">
-                            Enviar Solicitud <i class="fas fa-paper-plane ml-2"></i>
-                        </button>
+                        <div class="w-100 w-sm-auto d-flex">
+                            <button type="button" class="btn btn-light btn-sm px-4 mr-2 font-weight-bold text-muted border flex-grow-1 flex-sm-grow-0">Guardar Borrador</button>
+                            <button id="btnEnviar" type="button" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm flex-grow-1 flex-sm-grow-0" onclick="enviarSolicitud()">
+                                Enviar Solicitud <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </div>
                     </div>
                   </div>
                 </div>
