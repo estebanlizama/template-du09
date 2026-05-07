@@ -9,171 +9,317 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos de Visación */
-        .badge-success-light { background: #e6fffa; color: #2c7a7b; font-weight: bold; border: 1px solid #b2f5ea; }
+        :root {
+            --ufro-blue: #11306e;
+            --ufro-orange: #f98f15;
+            --ufro-light-blue: #f0f4f8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        /* Estilos Premium Espejo de Formulario 01 */
+        .table-premium {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background-color: transparent;
+        }
+        .table-premium thead th {
+            border: none;
+            color: #8492a6;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 1.5rem 0.5rem;
+        }
+        .table-premium tbody tr {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        .table-premium td {
+            border: none;
+            padding: 1.25rem 1rem;
+            vertical-align: middle;
+        }
+        .table-premium td:first-child {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            padding-left: 1.5rem;
+            border-left: 5px solid transparent;
+        }
+        .table-premium td:last-child {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            padding-right: 1.5rem;
+        }
+        .row-accent-sea { border-left-color: #28a745 !important; }
+        .row-accent-warning { border-left-color: #f98f15 !important; }
+
+        .badge-soft-primary { background-color: #e8f0fe; color: #1967d2; }
+        .badge-soft-info { background-color: #e2f6f9; color: #007a8c; }
+        
+        .transition-all { transition: all 0.4s ease; }
+        
+        .sticky-actions {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid #edf2f7;
+            padding: 1rem 0;
+            z-index: 100;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .status-in-process { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+
+        /* Ficha Resumen Horizontal */
+        .summary-label { font-size: 0.65rem; color: #8492a6; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .summary-value { font-size: 0.85rem; color: #1a202c; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div id="wrapper">
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <div class="p-4 mb-3">
-            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
-        </div>
-        <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item"><i class="fas fa-th-large mr-2"></i> Bandeja Entrada</a>
-            <a href="#" class="list-group-item active"><i class="fas fa-search-dollar mr-2"></i> Revisión PDS</a>
-            <a href="#" class="list-group-item"><i class="fas fa-history mr-2"></i> Historial</a>
-        </div>
-    </div>
-
     <!-- Page Content -->
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" style="width: 100%;">
         <!-- Topbar -->
-        <nav id="dna-topbar">
-            <h5 class="m-0 font-weight-bold" style="color: var(--ufro-dark);">Visación de Prestación de Servicios <span class="text-muted font-weight-light">| D9-2026</span></h5>
+        <nav id="dna-topbar" class="px-lg-5">
+            <div class="d-flex align-items-center">
+                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Visación de Solicitud PDS <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-warning py-1 px-3" style="font-size: 0.7rem;">MODO D9</span></h5>
+            </div>
             <div class="user-info d-flex align-items-center">
                 <div class="text-right mr-3">
                     <div class="small font-weight-bold">GONZALO OPORTO</div>
                     <div class="text-muted" style="font-size: 0.7rem;">SECRETARIO GENERAL</div>
                 </div>
-                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: bold; color: var(--ufro-blue);">GO</div>
+                <div class="user-avatar" style="background: var(--ufro-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">GO</div>
             </div>
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">
-            <!-- Header de Solicitud Estilo Calco -->
-            <div class="card shadow-sm border-0 mb-4" style="border-radius: 8px;">
+            <!-- HEADER DE SOLICITUD (CALCO HORIZONTAL) -->
+            <div class="card shadow-sm border-0 mb-4 overflow-hidden" style="border-radius: 12px;">
                 <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h5 class="font-weight-bold text-dark mb-1">SOLICITUD N° 198</h5>
-                            <div class="status-badge status-in-process d-inline-block mt-2">
-                                EN PROCESO
-                            </div>
+                            <span class="text-muted small">SOLICITUD DE PRESTACIÓN DE SERVICIOS</span>
+                            <h4 class="font-weight-bold text-dark mb-0">N° 198 - Proyecto Modernización IA</h4>
+                        </div>
+                        <div class="status-badge status-in-process">
+                            <i class="fas fa-clock mr-2"></i>EN VISACIÓN: SECRETARÍA GENERAL
                         </div>
                     </div>
 
-                    <!-- Ficha Resumen Horizontal (Calco del Sistema) -->
-                    <div class="row no-gutters mb-4" style="border-top: 1px solid #edf2f7; padding-top: 1.5rem;">
-                        <div class="col-md-3 border-right pr-3">
-                            <span class="label">Actividad/prestación de servicio</span>
-                            <div class="value text-truncate">Asesoría Técnica Plan de Modernización Institucional 2026</div>
+                    <div class="row bg-light rounded p-3 no-gutters shadow-xs border">
+                        <div class="col-md-3 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Centro de Costos</div>
+                            <div class="summary-value text-truncate">21.05.001 - INST. AGROINDUSTRIA</div>
                         </div>
-                        <div class="col-md-2 border-right px-3">
-                            <span class="label">Centro de costos</span>
-                            <div class="value text-truncate">INSTITUTO DE AGROINDUSTRIA</div>
+                        <div class="col-md-3 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Vigencia del Proyecto</div>
+                            <div class="summary-value">01/05/2026 - 31/12/2026</div>
                         </div>
-                        <div class="col-md-2 border-right px-3">
-                            <span class="label">Inicio de Proyecto</span>
-                            <div class="value">1 de mayo de 2026</div>
+                        <div class="col-md-3 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Responsable / Jefe</div>
+                            <div class="summary-value">HECTOR PABLO SANDOVAL VIDAL</div>
                         </div>
-                        <div class="col-md-2 border-right px-3">
-                            <span class="label">Fin de Proyecto</span>
-                            <div class="value">31 de mayo de 2026</div>
+                        <div class="col-md-3 px-3">
+                            <div class="summary-label">Total Solicitado</div>
+                            <div class="summary-value text-success" style="font-size: 1.1rem;">$1.910.000</div>
                         </div>
-                        <div class="col-md-2 border-right px-3">
-                            <span class="label">Tipo de Periodo</span>
-                            <div class="value"><span class="badge badge-info" style="background-color: var(--ufro-blue); font-size: 0.7rem;">MENSUAL</span></div>
-                        </div>
-                        <div class="col-md-1 pl-3">
-                            <span class="label">Jefe proyecto</span>
-                            <div class="value text-truncate">19.477.728-0</div>
-                        </div>
-                    </div>
-
-                    <!-- Tabla de Funcionarios (Columnas Calco + Atributos D9) -->
-                    <div class="table-responsive mt-2">
-                        <table class="table table-sm table-hover" style="font-size: 0.85rem;">
-                            <thead class="text-muted" style="border-bottom: 2px solid #edf2f7;">
-                                <tr>
-                                    <th class="font-weight-bold border-0 py-3">Nombre</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Jerarquía</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Ítem</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Razón</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Periodos</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Fecha Inicio</th>
-                                    <th class="font-weight-bold border-0 py-3 text-center">Fecha de Término</th>
-                                    <th class="font-weight-bold border-0 py-3 text-right">Bruto</th>
-                                    <th class="font-weight-bold border-0 py-3 text-right">Total del funcionario</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: 1px solid #f7fafc;">
-                                    <td class="py-3">
-                                        <div class="font-weight-bold text-primary">ESTEBAN NICOLAS LIZAMA ALLAPAN</div>
-                                        <!-- Atributo D9 visible como badge sutil -->
-                                        <span class="badge badge-success-light small mt-1" style="font-size: 0.65rem; background: #e6fffa; color: #2c7a7b;">DENTRO JORNADA - SEA</span>
-                                    </td>
-                                    <td class="py-3 text-center text-muted">HONORARIOS</td>
-                                    <td class="py-3 text-center text-muted">A01</td>
-                                    <td class="py-3 text-center text-muted">adsad</td>
-                                    <td class="py-3 text-center text-muted">2 Meses</td>
-                                    <td class="py-3 text-center text-muted">01/05/2026</td>
-                                    <td class="py-3 text-center text-muted">31/05/2026</td>
-                                    <td class="py-3 text-right text-muted">100.000</td>
-                                    <td class="py-3 text-right font-weight-bold text-dark">200.000</td>
-                                </tr>
-                                <!-- Fila de Totales (Calco del Sistema) -->
-                                <tr>
-                                    <td colspan="8" class="text-right py-3 font-weight-bold text-dark" style="border-top: 2px solid #edf2f7;">Total:</td>
-                                    <td class="text-right py-3 font-weight-bold text-dark" style="border-top: 2px solid #edf2f7; font-size: 1rem;">200.000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Botones de Acción (Ubicación Calco: Abajo a la Derecha) -->
-                    <div class="d-flex justify-content-end mt-4 pt-3" style="border-top: 1px solid #edf2f7;">
-                        <button class="btn btn-success font-weight-bold px-4 py-2 mr-2" style="border-radius: 6px; font-size: 0.85rem;" onclick="aprobar()">
-                            <i class="fas fa-check mr-2"></i> Aprobar
-                        </button>
-                        <button class="btn btn-danger font-weight-bold px-4 py-2 mr-2" style="border-radius: 6px; font-size: 0.85rem;">
-                            <i class="fas fa-times mr-2"></i> Rechazar
-                        </button>
-                        <button class="btn btn-warning text-white font-weight-bold px-4 py-2" style="border-radius: 6px; font-size: 0.85rem; background-color: var(--ufro-orange);" onclick="devolver()">
-                            <i class="fas fa-reply mr-2"></i> Devolver a corrección
-                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Sección de Entregables D9 (Añadida como atributo extra bajo la tabla principal) -->
-            <div class="card shadow-sm border-0" style="border-radius: 8px;">
+            <!-- PASO 4 ESPEJO: TABLA DE RESUMEN PREMIUM (D9) -->
+            <h6 class="small font-weight-bold text-muted text-uppercase mb-3 px-1" style="letter-spacing: 1px;">Detalle de Funcionarios y Cumplimiento D9</h6>
+            <div class="table-responsive mb-4">
+                <table class="table table-premium mb-0">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 280px;">Funcionario / Jerarquía</th>
+                            <th style="min-width: 180px;">Perfil Laboral</th>
+                            <th style="min-width: 220px;">Modalidad D9</th>
+                            <th style="min-width: 150px;">Temporalidad</th>
+                            <th class="text-right" style="min-width: 150px;">Finanzas</th>
+                            <th class="text-center">Validación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ACADÉMICO EN SEA -->
+                        <tr class="row-accent-sea">
+                            <td>
+                                <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">JUAN PABLO ANDRADE VALDÉS</div>
+                                <div class="text-muted small mt-1">12.345.678-9 <span class="mx-1 text-light">|</span> <span class="text-uppercase" style="font-size: 0.65rem;">Profesor Titular</span></div>
+                            </td>
+                            <td>
+                                <span class="badge badge-soft-primary px-2 py-1 mb-1" style="font-size: 0.65rem;">ACADÉMICO</span><br>
+                                <div class="small font-weight-bold text-muted">Jornada Completa (44h)</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small text-dark">DENTRO JORNADA</strong>
+                                </div>
+                                <div class="small text-muted" style="line-height: 1.2;">Perteneciente a SEA<br><span class="text-success font-weight-bold" style="font-size: 0.6rem;">CUMPLE NORMATIVA D9</span></div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-1 mb-1">
+                                    <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">MAR</span>
+                                    <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">ABR</span>
+                                    <span class="badge badge-light border-0" style="background: #f1f3f4; font-size: 0.6rem;">MAY</span>
+                                </div>
+                                <small class="font-weight-bold text-dark">12 Horas / Mes</small>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark" style="font-size: 1rem;">$450.000</div>
+                                <div class="small font-weight-bold text-success mt-1">TOTAL: $1.350.000</div>
+                            </td>
+                            <td class="text-center">
+                                <i class="fas fa-check-shield text-success fa-lg" title="Validado por DGDP"></i>
+                            </td>
+                        </tr>
+
+                        <!-- ADMINISTRATIVO CON COMPENSACIÓN -->
+                        <tr class="row-accent-warning">
+                            <td>
+                                <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">MARÍA ELENA SOTO FIGUEROA</div>
+                                <div class="text-muted small mt-1">15.987.654-3 <span class="mx-1 text-light">|</span> <span class="text-uppercase" style="font-size: 0.65rem;">Profesional Nivel 1</span></div>
+                            </td>
+                            <td>
+                                <span class="badge badge-soft-info px-2 py-1 mb-1" style="font-size: 0.65rem;">ADMINISTRATIVO</span><br>
+                                <div class="small font-weight-bold text-muted">Jornada Completa (44h)</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small text-dark">DENTRO JORNADA</strong>
+                                </div>
+                                <div class="small text-muted" style="line-height: 1.2;">Requiere Recuperación<br><span class="text-warning font-weight-bold" style="font-size: 0.6rem;">TABLA DE HORARIOS ADJUNTA</span></div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-1 mb-1">
+                                    <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">ABR</span>
+                                    <span class="badge badge-light border-0" style="background: #f1f3f4; font-size: 0.6rem;">MAY</span>
+                                </div>
+                                <small class="font-weight-bold text-dark">8 Horas / Mes</small>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark" style="font-size: 1rem;">$280.000</div>
+                                <div class="small font-weight-bold text-success mt-1">TOTAL: $560.000</div>
+                            </td>
+                            <td class="text-center">
+                                <i class="fas fa-check-shield text-success fa-lg" title="Validado por DGDP"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- WIDGET DE CONTROL DE LÍMITES (ESPEJO) -->
+            <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px; border-left: 5px solid var(--ufro-orange) !important;">
                 <div class="card-body p-4">
-                    <h6 class="font-weight-bold text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 0.5px;">EVIDENCIAS Y ENTREGABLES (D9)</h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="fas fa-check-circle text-success mr-2"></i>
-                                <span class="small text-dark">Acta firmada - <span class="text-muted italic">30/06/2026</span></span>
+                    <div class="row align-items-center">
+                        <div class="col-md-7 border-right pr-4">
+                            <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Resumen de Topes Financieros (REGLA 50%)</h6>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="small font-weight-bold text-dark">Gasto Total Acumulado vs Tope Referencial</span>
+                                <span class="badge badge-success px-2 py-1">CUMPLE LÍMITE</span>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-check-circle text-success mr-2"></i>
-                                <span class="small text-dark">Informe con evidencias - <span class="text-muted italic">Mensual</span></span>
+                            <div class="progress bg-light" style="height: 12px; border-radius: 6px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 42%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2 small text-muted">
+                                <span>Solicitud Actual: $1.910.000</span>
+                                <span>Límite Máximo: $4.550.000</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5 pl-4">
+                            <h6 class="small font-weight-bold text-muted text-uppercase mb-2">Entregables Comprometidos (Evidencias D9)</h6>
+                            <div class="small d-flex flex-column gap-2">
+                                <div class="text-dark"><i class="fas fa-file-alt mr-2 text-primary"></i> Acta de inicio de actividades (30/05)</div>
+                                <div class="text-dark"><i class="fas fa-file-medical mr-2 text-primary"></i> Informe de avance mensual (30/06)</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- OBSERVACIONES Y DOCUMENTOS -->
+            <div class="row mb-5">
+                <div class="col-md-7">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Observaciones del Solicitante</h6>
+                            <p class="small text-dark" style="line-height: 1.6;">
+                                Se solicita la contratación de académicos para el proyecto IA-2026. Todos los participantes han sido validados previamente en el sistema SEA y cumplen con las horas de formación continua requeridas por la nueva normativa D.U. 009/2026. Adjunto resolución de decanatura que autoriza el uso de fondos externos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
+                        <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                            <h6 class="small font-weight-bold text-muted text-uppercase mb-3">Documentación de Respaldo</h6>
+                            <a href="#" class="btn btn-outline-primary btn-sm btn-block py-2 mb-2">
+                                <i class="fas fa-file-pdf mr-2"></i> Justificacion_IA_2026.pdf
+                            </a>
+                            <a href="#" class="btn btn-outline-primary btn-sm btn-block py-2">
+                                <i class="fas fa-file-pdf mr-2"></i> Res_Decanato_044.pdf
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN (STIKY FOOTER) -->
+            <div class="sticky-actions text-right px-3">
+                <div class="container-fluid px-lg-5">
+                    <button class="btn btn-success font-weight-bold px-5 py-2 mr-2 shadow-sm" onclick="confirmarVisacion('aprobar')">
+                        <i class="fas fa-check-circle mr-2"></i> VISAR SOLICITUD
+                    </button>
+                    <button class="btn btn-warning text-white font-weight-bold px-4 py-2 mr-2 shadow-sm" style="background-color: var(--ufro-orange);" onclick="confirmarVisacion('devolver')">
+                        <i class="fas fa-reply mr-2"></i> DEVOLVER PARA CORRECCIÓN
+                    </button>
+                    <button class="btn btn-danger font-weight-bold px-4 py-2 shadow-sm" onclick="confirmarVisacion('rechazar')">
+                        <i class="fas fa-ban mr-2"></i> RECHAZAR
+                    </button>
+                </div>
+            </div>
+
         </div>
-    </div>
-</div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function devolver() {
-        if(confirm("¿Desea devolver esta solicitud al solicitante para correcciones?")) {
-            window.location.href = "01_vista_formulario_solicitud.html";
+    function confirmarVisacion(accion) {
+        let mensaje = "";
+        let color = "";
+        
+        switch(accion) {
+            case 'aprobar': mensaje = "¿Está seguro de VISAR esta solicitud? Se enviará a la siguiente etapa de la matriz de roles."; color = "success"; break;
+            case 'devolver': mensaje = "¿Desea DEVOLVER la solicitud al solicitante para ajustes?"; color = "warning"; break;
+            case 'rechazar': mensaje = "¿Está seguro de RECHAZAR definitivamente esta solicitud?"; color = "danger"; break;
         }
-    }
-    
-    function aprobar() {
-        alert("Solicitud aprobada con éxito. Continuando el flujo hacia Toma de Razón.");
+        
+        if(confirm(mensaje)) {
+            alert("Acción procesada con éxito. Actualizando estado en Sybase...");
+            window.location.href = "index.html";
+        }
     }
 </script>
 </body>
