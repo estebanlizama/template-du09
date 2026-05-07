@@ -241,14 +241,28 @@
             <!-- Simulación de Logo UFRO -->
             <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
         </div>
-        <div class="sidebar-heading">Prestación de Servicios</div>
+        <div class="sidebar-heading">Menú Principal</div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item"><i class="fas fa-th-large mr-2"></i> Dashboard</a>
-            <a href="#" class="list-group-item active"><i class="fas fa-file-alt mr-2"></i> Nueva Solicitud</a>
-            <a href="#" class="list-group-item"><i class="fas fa-hand-holding-usd mr-2"></i> Solicitud Pago</a>
-            <hr class="mx-3 my-2">
-            <a href="#" class="list-group-item"><i class="fas fa-user-circle mr-2"></i> Mi Perfil</a>
-            <a href="#" class="list-group-item text-danger"><i class="fas fa-power-off mr-2"></i> Salir</a>
+            <!-- Menú Único Solicitado -->
+            <a href="#menuPDS" data-toggle="collapse" class="list-group-item list-group-item-action bg-transparent text-white border-0 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-file-contract mr-2"></i> Prestación de servicios</span>
+                <i class="fas fa-chevron-down small"></i>
+            </a>
+            <div class="collapse show" id="menuPDS">
+                <a href="01_vista_formulario_solicitud.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small active">
+                    <i class="fas fa-plus-circle mr-2"></i> Nueva solicitud
+                </a>
+                <a href="02_vista_visacion_aprobador.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
+                    <i class="fas fa-clock mr-2"></i> Solicitud en espera
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small text-muted">
+                    <i class="fas fa-history mr-2"></i> Solicitud histórica
+                </a>
+            </div>
+            
+            <hr class="mx-3 my-2 border-secondary" style="opacity: 0.2;">
+            <a href="#" class="list-group-item bg-transparent text-white border-0 small opacity-50"><i class="fas fa-user-circle mr-2"></i> Mi Perfil</a>
+            <a href="#" class="list-group-item bg-transparent text-white border-0 small opacity-50"><i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión</a>
         </div>
     </div>
 
