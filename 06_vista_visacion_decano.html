@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visación Decano - UFRO</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --ufro-blue: #11306e;
+            --ufro-orange: #f98f15;
+            --ufro-light-blue: #f0f4f8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        /* Estilos Premium Espejo */
+        .table-premium {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            background-color: transparent;
+        }
+        .table-premium thead th {
+            border: none;
+            color: #8492a6;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 1.5rem 0.5rem;
+        }
+        .table-premium tbody tr {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        .table-premium td {
+            border: none;
+            padding: 1.25rem 1rem;
+            vertical-align: middle;
+        }
+        .table-premium td:first-child {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            padding-left: 1.5rem;
+            border-left: 5px solid transparent;
+        }
+        .table-premium td:last-child {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+            padding-right: 1.5rem;
+        }
+        .row-accent-sea { border-left-color: #28a745 !important; }
+        .row-accent-warning { border-left-color: #f98f15 !important; }
+
+        .badge-soft-primary { background-color: #e8f0fe; color: #1967d2; }
+        .badge-soft-info { background-color: #e2f6f9; color: #007a8c; }
+        
+        .sticky-actions {
+            position: sticky;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid #edf2f7;
+            padding: 1rem 0;
+            z-index: 100;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .status-in-process { background-color: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+
+        .summary-label { font-size: 0.65rem; color: #8492a6; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .summary-value { font-size: 0.85rem; color: #1a202c; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="logo-cont">
+            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+        </div>
+        <div class="sidebar-heading">Menú Principal</div>
+        <div class="list-group list-group-flush">
+            <a href="#menuPDS" data-toggle="collapse" class="list-group-item list-group-item-action bg-transparent text-white border-0 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-file-contract mr-2"></i> Prestación de servicios</span>
+                <i class="fas fa-chevron-down small"></i>
+            </a>
+            <div class="collapse show" id="menuPDS">
+                <a href="01_vista_formulario_solicitud.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
+                    <i class="fas fa-plus-circle mr-2"></i> Nueva solicitud
+                </a>
+                <a href="02_vista_visacion_aprobador.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small active">
+                    <i class="fas fa-clock mr-2"></i> Solicitud en espera
+                </a>
+                <a href="03_vista_visacion_jefatura.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
+                    <i class="fas fa-history mr-2"></i> Solicitud histórica
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <!-- Topbar -->
+        <nav id="dna-topbar" class="px-lg-5">
+            <div class="d-flex align-items-center">
+                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Visación PDS <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-danger py-1 px-3 mr-3" style="font-size: 0.7rem;">DECANATO / VICERRECTORÍA</span></h5>
+            </div>
+            <div class="user-info d-flex align-items-center">
+                <div class="text-right mr-3">
+                    <div class="small font-weight-bold text-uppercase">RODRIGO NAVIA</div>
+                    <div class="text-muted font-weight-bold" style="font-size: 0.7rem; color: var(--ufro-orange) !important;">DECANO / AUTORIDAD SUPERIOR</div>
+                </div>
+                <div class="user-avatar" style="background: var(--ufro-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">RN</div>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4 px-lg-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0 mb-4 small">
+                    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Visación Final Decanato</li>
+                </ol>
+            </nav>
+
+            <!-- HEADER DE SOLICITUD -->
+            <div class="card shadow-sm border-0 mb-4 overflow-hidden" style="border-radius: 12px;">
+                <div class="card-body p-4">
+                    <header class="main-header d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h5 class="mb-0 font-weight-bold text-dark">Autorización de Solicitud <span class="text-primary">#PDS-2026-001</span></h5>
+                            <div class="d-flex align-items-center mt-1">
+                                <span class="badge badge-soft-danger mr-2">NIVEL: ALTA DIRECCIÓN</span>
+                                <small class="text-muted"><i class="far fa-clock mr-1"></i> Revisión Final: 07/05/2026</small>
+                            </div>
+                        </div>
+                        <div class="status-badge status-in-process" style="background-color: #fce4ec; color: #c2185b; border-color: #f8bbd0;">
+                            <i class="fas fa-shield-alt mr-2"></i>PENDIENTE FIRMA DECANO
+                        </div>
+                    </header>
+
+                    <div class="row bg-light rounded p-3 no-gutters shadow-xs border">
+                        <div class="col-md-3 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Centro de Costos</div>
+                            <div class="summary-value">21.05.001 - INST. AGROINDUSTRIA</div>
+                        </div>
+                        <div class="col-md-2 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Tipo de Fondo</div>
+                            <div class="summary-value">05 - FONDOS EXTERNOS</div>
+                        </div>
+                        <div class="col-md-3 border-right px-3 mb-3 mb-md-0">
+                            <div class="summary-label">Jefe Responsable</div>
+                            <div class="summary-value">HECTOR PABLO SANDOVAL</div>
+                        </div>
+                        <div class="col-md-4 px-3 text-right">
+                            <div class="summary-label">Presupuesto Comprometido</div>
+                            <div class="summary-value text-success" style="font-size: 1.1rem;">$1.910.000 CLP</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE FUNCIONARIOS (DATOS 03) -->
+            <h6 class="small font-weight-bold text-muted text-uppercase mb-3 px-1" style="letter-spacing: 1px;">Personal a Contratar y Validaciones D9</h6>
+            <div class="table-responsive mb-4">
+                <table class="table table-premium mb-0">
+                    <thead>
+                        <tr>
+                            <th style="min-width: 280px;">Funcionario</th>
+                            <th style="min-width: 180px;">Categoría</th>
+                            <th style="min-width: 220px;">Análisis de Tope (D9)</th>
+                            <th style="min-width: 150px;">Carga Horaria</th>
+                            <th class="text-right" style="min-width: 150px;">Monto Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ACADÉMICO -->
+                        <tr class="row-accent-sea">
+                            <td>
+                                <div class="font-weight-bold text-dark">JUAN PABLO ANDRADE VALDÉS</div>
+                                <div class="text-muted small mt-1">12.345.678-9 <span class="badge badge-light ml-2">SEA</span></div>
+                            </td>
+                            <td>
+                                <span class="badge badge-soft-primary px-2 py-1">ACADÉMICO</span><br>
+                                <div class="small text-muted mt-1">Jornada 44h</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small text-dark">CUMPLE NORMATIVA D9</strong>
+                                </div>
+                                <div class="progress mt-2" style="height: 4px; border-radius: 2px;">
+                                    <div class="progress-bar bg-success" style="width: 42%"></div>
+                                </div>
+                                <div class="mt-1 d-flex justify-content-between small">
+                                    <span class="text-muted" style="font-size: 0.6rem;">Tope: $1.200.000</span>
+                                    <span class="font-weight-bold" style="font-size: 0.6rem;">Utilizado: 42%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <small class="font-weight-bold text-dark">12 Horas / Mes</small>
+                                <div class="text-muted italic small">Vigencia: 8 meses</div>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark">$1.350.000</div>
+                            </td>
+                        </tr>
+
+                        <!-- ADMINISTRATIVO -->
+                        <tr class="row-accent-warning">
+                            <td>
+                                <div class="font-weight-bold text-dark">MARÍA ELENA SOTO FIGUEROA</div>
+                                <div class="text-muted small mt-1">15.987.654-3</div>
+                            </td>
+                            <td>
+                                <span class="badge badge-soft-info px-2 py-1">ADMINISTRATIVO</span><br>
+                                <div class="small text-muted mt-1">Jornada 44h</div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center mb-1">
+                                    <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
+                                    <strong class="small text-dark">TOPE PRÓXIMO AL 50%</strong>
+                                </div>
+                                <div class="progress mt-2" style="height: 4px; border-radius: 2px;">
+                                    <div class="progress-bar bg-warning" style="width: 48%"></div>
+                                </div>
+                                <div class="mt-1 d-flex justify-content-between small">
+                                    <span class="text-muted" style="font-size: 0.6rem;">Validado DGDP</span>
+                                    <span class="text-warning font-weight-bold" style="font-size: 0.6rem;">Alerta</span>
+                                </div>
+                            </td>
+                            <td>
+                                <small class="font-weight-bold text-dark">8 Horas / Mes</small>
+                                <div class="bg-light border rounded p-1 mt-1" style="font-size: 0.5rem;">
+                                    Recup: Lun/Mie 18:30-20:30
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="font-weight-bold text-dark">$560.000</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <div class="sticky-actions text-right px-3">
+                <div class="container-fluid px-lg-5">
+                    <button class="btn btn-success font-weight-bold px-5 py-2 mr-2 shadow-sm" onclick="confirmarVisacion('aprobar')">
+                        <i class="fas fa-file-signature mr-2"></i> AUTORIZAR Y ENVIAR A FINANZAS CENTRAL
+                    </button>
+                    <button class="btn btn-warning text-white font-weight-bold px-4 py-2 mr-2 shadow-sm" style="background-color: var(--ufro-orange);" onclick="confirmarVisacion('devolver')">
+                        <i class="fas fa-reply mr-2"></i> DEVOLVER A CORRECCIÓN
+                    </button>
+                    <button class="btn btn-danger font-weight-bold px-4 py-2 shadow-sm" onclick="confirmarVisacion('rechazar')">
+                        <i class="fas fa-times-circle mr-2"></i> RECHAZAR DEFINITIVO
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function confirmarVisacion(accion) {
+        if(accion === 'aprobar') {
+            window.location.href = "07_vista_visacion_finanzas_central.html";
+        } else {
+            window.location.href = "01_vista_formulario_solicitud.html";
+        }
+    }
+</script>
+</body>
+</html>

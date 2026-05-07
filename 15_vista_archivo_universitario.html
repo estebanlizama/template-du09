@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivo Universitario - UFRO</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --ufro-blue: #11306e;
+            --ufro-orange: #f98f15;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7fa; }
+        
+        .pdf-viewer-container {
+            background: #525659;
+            border-radius: 8px;
+            height: 750px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .legacy-sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            height: 100%;
+        }
+
+        .instruction-step { font-size: 0.75rem; color: #444; margin-bottom: 15px; }
+
+        .btn-legacy {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 10px 20px;
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+
+        .btn-archive { background-color: #455a64; color: white; border: none; }
+        .btn-download { background-color: #0d47a1; color: white; border: none; }
+
+        .status-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="logo-cont">
+            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+        </div>
+        <div class="sidebar-heading">Menú Principal</div>
+        <div class="list-group list-group-flush">
+            <a href="01_vista_formulario_solicitud.html" class="list-group-item list-group-item-action bg-transparent text-white border-0">
+                <i class="fas fa-archive mr-2"></i> Archivo Universitario
+            </a>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <!-- Topbar -->
+        <nav id="dna-topbar" class="px-lg-5">
+            <div class="d-flex align-items-center">
+                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Cierre de Proceso <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-info py-1 px-3 shadow-sm">ARCHIVO UNIVERSITARIO</span></h5>
+            </div>
+            <div class="user-info d-flex align-items-center">
+                <div class="text-right mr-3">
+                    <div class="small font-weight-bold text-uppercase">Jefe de Archivo</div>
+                    <div class="text-muted font-weight-bold" style="font-size: 0.7rem;">ARCHIVO UNIVERSITARIO</div>
+                </div>
+                <div class="user-avatar" style="background: #455a64; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">AU</div>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4 px-lg-5">
+            <div class="row">
+                <!-- Visor de Documento -->
+                <div class="col-lg-9">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                            <h6 class="font-weight-bold m-0 text-dark">DOCUMENTO FINAL - LISTO PARA ARCHIVAR</h6>
+                            <span class="badge badge-success status-badge px-3 py-2">TOTALMENTE TRAMITADO</span>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="pdf-viewer-container">
+                                <div class="bg-white shadow-lg p-5 text-dark" style="width: 85%; height: 95%; font-family: 'Times New Roman', serif; position: relative;">
+                                    <!-- Marca de Agua -->
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 5rem; color: rgba(0,0,0,0.03); font-weight: bold; pointer-events: none;">TRAMITADO</div>
+                                    
+                                    <div class="text-center mb-4">
+                                        <div class="mt-2 small"><strong>UNIVERSIDAD DE LA FRONTERA</strong></div>
+                                    </div>
+                                    <div class="text-right mb-4"><strong>RESOLUCIÓN EXENTA Nº 2026/001</strong></div>
+                                    <p class="small">Resolución final con todas las firmas y Toma de Razón de Contraloría...</p>
+                                    
+                                    <div class="mt-5 pt-5 row">
+                                        <div class="col-4 text-center">
+                                            <div class="small mt-4">__________</div>
+                                            <div class="x-small">Sec. General</div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="small mt-4">__________</div>
+                                            <div class="x-small">Rector</div>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <div class="small mt-4">__________</div>
+                                            <div class="x-small">Contralor</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar de Instrucciones -->
+                <div class="col-lg-3">
+                    <div class="legacy-sidebar">
+                        <div class="instruction-step">
+                            El proceso ha finalizado legalmente. Proceda a archivar el documento en el repositorio institucional digital.
+                        </div>
+                        
+                        <button class="btn btn-legacy btn-download">
+                            <i class="fas fa-file-download mr-2"></i> DESCARGAR ORIGINAL
+                        </button>
+
+                        <button class="btn btn-legacy btn-archive" onclick="confirmarAccion('archivar')">
+                            <i class="fas fa-archive mr-2"></i> FINALIZAR Y ARCHIVAR DOCUMENTO
+                        </button>
+
+                        <div class="mt-5 p-3 bg-light rounded text-center border">
+                            <i class="fas fa-check-circle text-success mb-2" style="font-size: 2rem;"></i>
+                            <div class="small font-weight-bold">SOLICITUD FINALIZADA</div>
+                            <div class="x-small text-muted mt-1">ID: PDS-2026-001</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarAccion(accion) {
+        if(accion === 'archivar') {
+            // Fin definitivo, vuelve al inicio
+            window.location.href = "01_vista_formulario_solicitud.html";
+        }
+    }
+</script>
+</body>
+</html>

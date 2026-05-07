@@ -382,7 +382,7 @@
             <div class="sticky-actions text-right px-3">
                 <div class="container-fluid px-lg-5">
                     <button class="btn btn-success font-weight-bold px-5 py-2 mr-2 shadow-sm" onclick="confirmarVisacion('aprobar')">
-                        <i class="fas fa-check-circle mr-2"></i> VISAR Y ENVIAR A SIGUIENTE ETAPA
+                        <i class="fas fa-check-circle mr-2"></i> VISAR Y ENVIAR A JEFATURA
                     </button>
                     <button class="btn btn-warning text-white font-weight-bold px-4 py-2 mr-2 shadow-sm" style="background-color: var(--ufro-orange);" onclick="confirmarVisacion('devolver')">
                         <i class="fas fa-reply mr-2"></i> DEVOLVER AL SOLICITANTE
@@ -401,27 +401,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function confirmarVisacion(accion) {
-        let mensaje = "";
-        
-        switch(accion) {
-            case 'aprobar': 
-                mensaje = "¿Está seguro de VISAR esta solicitud? Se enviará a la JEFATURA DIRECTA para su revisión."; 
-                break;
-            case 'devolver': 
-                mensaje = "¿Desea DEVOLVER la solicitud al SOLICITANTE? El funcionario recibirá una notificación para corregir los antecedentes."; 
-                break;
-            case 'rechazar': 
-                mensaje = "¿Está seguro de RECHAZAR definitivamente esta solicitud? Esta acción es irreversible y notificará al solicitante."; 
-                break;
-        }
-        
-        if(confirm(mensaje)) {
-            alert("Acción procesada con éxito. Actualizando estado en Sybase...");
-            if(accion === 'aprobar') {
-                window.location.href = "03_vista_visacion_jefatura.html";
-            } else {
-                window.location.href = "01_vista_formulario_solicitud.html";
-            }
+        if(accion === 'aprobar') {
+            window.location.href = "03_vista_visacion_jefatura.html";
+        } else {
+            window.location.href = "01_vista_formulario_solicitud.html";
         }
     }
 </script>
