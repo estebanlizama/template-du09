@@ -112,14 +112,10 @@
                 <a href="02_vista_visacion_aprobador.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small active">
                     <i class="fas fa-clock mr-2"></i> Solicitud en espera
                 </a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small text-muted">
+                <a href="03_vista_visacion_jefatura.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
                     <i class="fas fa-history mr-2"></i> Solicitud histórica
                 </a>
             </div>
-            
-            <hr class="mx-3 my-2 border-secondary" style="opacity: 0.2;">
-            <a href="#" class="list-group-item bg-transparent text-white border-0 small opacity-50"><i class="fas fa-user-circle mr-2"></i> Mi Perfil</a>
-            <a href="#" class="list-group-item bg-transparent text-white border-0 small opacity-50"><i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión</a>
         </div>
     </div>
 
@@ -128,14 +124,14 @@
         <!-- Topbar -->
         <nav id="dna-topbar" class="px-lg-5">
             <div class="d-flex align-items-center">
-                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Visación de Solicitud PDS <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-warning py-1 px-3" style="font-size: 0.7rem;">MODO D9</span></h5>
+                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Visación de Solicitud PDS <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-warning py-1 px-3 mr-3" style="font-size: 0.7rem;">MODO D9</span></h5>
             </div>
             <div class="user-info d-flex align-items-center">
                 <div class="text-right mr-3">
-                    <div class="small font-weight-bold">GONZALO OPORTO</div>
-                    <div class="text-muted" style="font-size: 0.7rem;">SECRETARIO GENERAL</div>
+                    <div class="small font-weight-bold text-uppercase">HECTOR PABLO SANDOVAL</div>
+                    <div class="text-muted font-weight-bold" style="font-size: 0.7rem; color: var(--ufro-orange) !important;">JEFE DE PROYECTO</div>
                 </div>
-                <div class="user-avatar" style="background: var(--ufro-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">GO</div>
+                <div class="user-avatar" style="background: var(--ufro-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">HS</div>
             </div>
         </nav>
 
@@ -386,13 +382,13 @@
             <div class="sticky-actions text-right px-3">
                 <div class="container-fluid px-lg-5">
                     <button class="btn btn-success font-weight-bold px-5 py-2 mr-2 shadow-sm" onclick="confirmarVisacion('aprobar')">
-                        <i class="fas fa-check-circle mr-2"></i> VISAR SOLICITUD
+                        <i class="fas fa-check-circle mr-2"></i> VISAR Y ENVIAR A SIGUIENTE ETAPA
                     </button>
                     <button class="btn btn-warning text-white font-weight-bold px-4 py-2 mr-2 shadow-sm" style="background-color: var(--ufro-orange);" onclick="confirmarVisacion('devolver')">
-                        <i class="fas fa-reply mr-2"></i> DEVOLVER PARA CORRECCIÓN
+                        <i class="fas fa-reply mr-2"></i> DEVOLVER AL SOLICITANTE
                     </button>
                     <button class="btn btn-danger font-weight-bold px-4 py-2 shadow-sm" onclick="confirmarVisacion('rechazar')">
-                        <i class="fas fa-ban mr-2"></i> RECHAZAR
+                        <i class="fas fa-ban mr-2"></i> RECHAZAR SOLICITUD
                     </button>
                 </div>
             </div>
@@ -406,17 +402,26 @@
 <script>
     function confirmarVisacion(accion) {
         let mensaje = "";
-        let color = "";
         
         switch(accion) {
-            case 'aprobar': mensaje = "¿Está seguro de VISAR esta solicitud? Se enviará a la siguiente etapa de la matriz de roles."; color = "success"; break;
-            case 'devolver': mensaje = "¿Desea DEVOLVER la solicitud al solicitante para ajustes?"; color = "warning"; break;
-            case 'rechazar': mensaje = "¿Está seguro de RECHAZAR definitivamente esta solicitud?"; color = "danger"; break;
+            case 'aprobar': 
+                mensaje = "¿Está seguro de VISAR esta solicitud? Se enviará a la JEFATURA DIRECTA para su revisión."; 
+                break;
+            case 'devolver': 
+                mensaje = "¿Desea DEVOLVER la solicitud al SOLICITANTE? El funcionario recibirá una notificación para corregir los antecedentes."; 
+                break;
+            case 'rechazar': 
+                mensaje = "¿Está seguro de RECHAZAR definitivamente esta solicitud? Esta acción es irreversible y notificará al solicitante."; 
+                break;
         }
         
         if(confirm(mensaje)) {
             alert("Acción procesada con éxito. Actualizando estado en Sybase...");
-            window.location.href = "index.html";
+            if(accion === 'aprobar') {
+                window.location.href = "03_vista_visacion_jefatura.html";
+            } else {
+                window.location.href = "01_vista_formulario_solicitud.html";
+            }
         }
     }
 </script>
