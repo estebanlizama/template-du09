@@ -122,161 +122,119 @@
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">
-            <!-- Header de Solicitud -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 class="font-weight-bold text-dark mb-0">Solicitud N° 198</h2>
-                    <small class="text-muted">Enviada el 07 de Mayo, 2026 por Pamela Ibarra</small>
-                </div>
-                <div class="status-badge status-in-process">
-                    <i class="fas fa-sync-alt fa-spin mr-2"></i> En Proceso de Firma
+            <!-- Header de Solicitud Estilo Calco -->
+            <div class="card shadow-sm border-0 mb-4" style="border-radius: 8px;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h5 class="font-weight-bold text-dark mb-1">SOLICITUD N° 198</h5>
+                            <div class="status-badge status-in-process d-inline-block mt-2">
+                                EN PROCESO
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ficha Resumen Horizontal (Calco del Sistema) -->
+                    <div class="row no-gutters mb-4" style="border-top: 1px solid #edf2f7; padding-top: 1.5rem;">
+                        <div class="col-md-3 border-right pr-3">
+                            <span class="label">Actividad/prestación de servicio</span>
+                            <div class="value text-truncate">Asesoría Técnica Plan de Modernización Institucional 2026</div>
+                        </div>
+                        <div class="col-md-2 border-right px-3">
+                            <span class="label">Centro de costos</span>
+                            <div class="value text-truncate">INSTITUTO DE AGROINDUSTRIA</div>
+                        </div>
+                        <div class="col-md-2 border-right px-3">
+                            <span class="label">Inicio de Proyecto</span>
+                            <div class="value">1 de mayo de 2026</div>
+                        </div>
+                        <div class="col-md-2 border-right px-3">
+                            <span class="label">Fin de Proyecto</span>
+                            <div class="value">31 de mayo de 2026</div>
+                        </div>
+                        <div class="col-md-3 pl-3">
+                            <span class="label">Jefe del proyecto</span>
+                            <div class="value">19.477.728-0</div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Funcionarios (Columnas Calco + Atributos D9) -->
+                    <div class="table-responsive mt-2">
+                        <table class="table table-sm table-hover" style="font-size: 0.85rem;">
+                            <thead class="text-muted" style="border-bottom: 2px solid #edf2f7;">
+                                <tr>
+                                    <th class="font-weight-bold border-0 py-3">Nombre</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Jerarquía</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Ítem</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Razón</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Periodos</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Fecha Inicio</th>
+                                    <th class="font-weight-bold border-0 py-3 text-center">Fecha de Término</th>
+                                    <th class="font-weight-bold border-0 py-3 text-right">Bruto</th>
+                                    <th class="font-weight-bold border-0 py-3 text-right">Total del funcionario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f7fafc;">
+                                    <td class="py-3">
+                                        <div class="font-weight-bold text-primary">ESTEBAN NICOLAS LIZAMA ALLAPAN</div>
+                                        <!-- Atributo D9 visible como badge sutil -->
+                                        <span class="badge badge-success-light small mt-1" style="font-size: 0.65rem; background: #e6fffa; color: #2c7a7b;">DENTRO JORNADA - SEA</span>
+                                    </td>
+                                    <td class="py-3 text-center text-muted">HONORARIOS</td>
+                                    <td class="py-3 text-center text-muted">A01</td>
+                                    <td class="py-3 text-center text-muted">adsad</td>
+                                    <td class="py-3 text-center text-muted">2 Mes</td>
+                                    <td class="py-3 text-center text-muted">01/05/2026</td>
+                                    <td class="py-3 text-center text-muted">31/05/2026</td>
+                                    <td class="py-3 text-right text-muted">100.000</td>
+                                    <td class="py-3 text-right font-weight-bold text-dark">200.000</td>
+                                </tr>
+                                <!-- Fila de Totales (Calco del Sistema) -->
+                                <tr>
+                                    <td colspan="8" class="text-right py-3 font-weight-bold text-dark" style="border-top: 2px solid #edf2f7;">Total:</td>
+                                    <td class="text-right py-3 font-weight-bold text-dark" style="border-top: 2px solid #edf2f7; font-size: 1rem;">200.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Botones de Acción (Ubicación Calco: Abajo a la Derecha) -->
+                    <div class="d-flex justify-content-end mt-4 pt-3" style="border-top: 1px solid #edf2f7;">
+                        <button class="btn btn-success font-weight-bold px-4 py-2 mr-2" style="border-radius: 6px; font-size: 0.85rem;">
+                            <i class="fas fa-check mr-2"></i> Aprobar
+                        </button>
+                        <button class="btn btn-danger font-weight-bold px-4 py-2 mr-2" style="border-radius: 6px; font-size: 0.85rem;">
+                            <i class="fas fa-times mr-2"></i> Rechazar
+                        </button>
+                        <button class="btn btn-warning text-white font-weight-bold px-4 py-2" style="border-radius: 6px; font-size: 0.85rem; background-color: var(--ufro-orange);">
+                            <i class="fas fa-reply mr-2"></i> Devolver a corrección
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Ficha Resumen del Proyecto -->
-            <div class="row mb-5">
-                <div class="col-md-4 mb-3">
-                    <div class="info-card">
-                        <span class="label">Actividad / Prestación</span>
-                        <div class="value">Asesoría Técnica Plan de Modernización Institucional 2026</div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="info-card">
-                        <span class="label">Centro de Costos</span>
-                        <div class="value">21.05.001 - FACULTAD DE INGENIERÍA</div>
-                    </div>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <div class="info-card">
-                        <span class="label">Inicio Proyecto</span>
-                        <div class="value">01 Mayo 2026</div>
-                    </div>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <div class="info-card">
-                        <span class="label">Fin Proyecto</span>
-                        <div class="value">31 Dic 2026</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabla de Funcionarios (Personalizable D9) -->
-            <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="letter-spacing: 1px; font-size: 0.8rem;">Personal Asignado y Modalidad</h6>
-            <div class="table-responsive">
-                <table class="table table-premium">
-                    <thead>
-                        <tr>
-                            <th>Funcionario</th>
-                            <th>Perfil / Jornada</th>
-                            <th>Modalidad D9</th>
-                            <th>Temporalidad</th>
-                            <th class="text-right">Monto Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="row-accent-sea">
-                            <td>
-                                <div class="font-weight-bold text-dark">JUAN PABLO ANDRADE VALDÉS</div>
-                                <div class="small text-muted">12.345.678-9 | Prof. Titular</div>
-                            </td>
-                            <td>
-                                <span class="badge badge-light p-1 px-2 small mb-1" style="background: #e8f0fe; color: #1967d2;">ACADÉMICO</span>
-                                <div class="small text-muted font-weight-bold">Jornada 44h</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center mb-1">
-                                    <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
-                                    <strong class="small">DENTRO JORNADA</strong>
-                                </div>
-                                <div class="small text-success font-weight-bold">PERMANECE EN SEA</div>
-                            </td>
-                            <td>
-                                <div class="small font-weight-bold text-dark">MAR - DIC</div>
-                                <div class="small text-muted">12 Horas / Mes</div>
-                            </td>
-                            <td class="text-right">
-                                <div class="font-weight-bold text-dark" style="font-size: 1.1rem;">$1.350.000</div>
-                                <small class="text-muted">Bruto: $450.000/mes</small>
-                            </td>
-                        </tr>
-                        <tr class="row-accent-warning">
-                            <td>
-                                <div class="font-weight-bold text-dark">MARÍA ELENA SOTO FIGUEROA</div>
-                                <div class="small text-muted">15.987.654-3 | Profesional</div>
-                            </td>
-                            <td>
-                                <span class="badge badge-light p-1 px-2 small mb-1" style="background: #e2f6f9; color: #007a8c;">ADMINISTRATIVO</span>
-                                <div class="small text-muted font-weight-bold">Jornada 44h</div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center mb-1">
-                                    <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
-                                    <strong class="small">DENTRO JORNADA</strong>
-                                </div>
-                                <div class="small text-warning font-weight-bold">CON COMPENSACIÓN</div>
-                            </td>
-                            <td>
-                                <div class="small font-weight-bold text-dark">ABR - MAY</div>
-                                <div class="small text-muted">8 Horas / Mes</div>
-                            </td>
-                            <td class="text-right">
-                                <div class="font-weight-bold text-dark" style="font-size: 1.1rem;">$560.000</div>
-                                <small class="text-muted">Bruto: $280.000/mes</small>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Resumen de Entregables -->
-            <div class="row mt-4">
-                <div class="col-md-7">
-                    <div class="card border-0 shadow-sm rounded-lg p-4 h-100">
-                        <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="font-size: 0.8rem;">Entregables Comprometidos</h6>
-                        <ul class="list-unstyled mb-0">
-                            <li class="d-flex align-items-center mb-2">
-                                <i class="fas fa-check-circle text-success mr-3"></i>
-                                <span>Acta firmada de asesoría técnica - <span class="text-muted small">Entrega: 30/06/2026</span></span>
-                            </li>
-                            <li class="d-flex align-items-center mb-2">
-                                <i class="fas fa-check-circle text-success mr-3"></i>
-                                <span>Informe mensual de evidencias - <span class="text-muted small">Entrega Mensual</span></span>
-                            </li>
-                            <li class="d-flex align-items-center">
-                                <i class="fas fa-check-circle text-success mr-3"></i>
-                                <span>Base de datos de indicadores actualizada - <span class="text-muted small">Entrega: 15/12/2026</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="card border-0 shadow-sm rounded-lg p-4 h-100" style="background: #fdfdfd; border-left: 4px solid var(--ufro-blue) !important;">
-                        <h6 class="font-weight-bold text-muted text-uppercase mb-3" style="font-size: 0.8rem;">Historial de Visaciones</h6>
-                        <div class="small">
-                            <div class="mb-2"><i class="fas fa-user-check text-success mr-2"></i> <strong>Solicitante:</strong> Pamela Ibarra <span class="text-muted">(Enviado 07/05)</span></div>
-                            <div class="mb-2"><i class="fas fa-user-check text-success mr-2"></i> <strong>Jefe Proyecto:</strong> Ricardo Gómez <span class="text-muted">(Aprobado 07/05)</span></div>
-                            <div><i class="fas fa-clock text-warning mr-2"></i> <strong>Pendiente:</strong> Secretario General</div>
+            <!-- Sección de Entregables D9 (Añadida como atributo extra bajo la tabla principal) -->
+            <div class="card shadow-sm border-0" style="border-radius: 8px;">
+                <div class="card-body p-4">
+                    <h6 class="font-weight-bold text-muted mb-3" style="font-size: 0.8rem; letter-spacing: 0.5px;">EVIDENCIAS Y ENTREGABLES (D9)</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-check-circle text-success mr-2"></i>
+                                <span class="small text-dark">Acta firmada - <span class="text-muted italic">30/06/2026</span></span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle text-success mr-2"></i>
+                                <span class="small text-dark">Informe con evidencias - <span class="text-muted italic">Mensual</span></span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-        <!-- Panel de Acciones Inferior -->
-        <div class="action-panel">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="text-muted small">
-                    <i class="fas fa-info-circle mr-2"></i> Al aprobar, esta solicitud pasará a la etapa de <strong>Toma de Razón Jurídica</strong>.
-                </div>
-                <div>
-                    <button class="btn-ufro-reject mr-2"><i class="fas fa-times-circle mr-2"></i> Rechazar</button>
-                    <button class="btn-ufro-observe mr-2"><i class="fas fa-comment-dots mr-2"></i> Observar</button>
-                    <button class="btn-ufro-approve"><i class="fas fa-check-double mr-2"></i> Aprobar Solicitud</button>
-                </div>
-            </div>
-        </div>
+    </div>
+</div>
     </div>
 </div>
 
