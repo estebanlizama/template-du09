@@ -469,7 +469,8 @@
                                                         <tr>
                                                             <th class="py-1">Tipo de evidencia</th>
                                                             <th class="py-1" style="width: 150px;">Fecha de entrega</th>
-                                                            <th class="py-1 text-center" style="width: 80px;">Custodia</th>
+                                                            <th class="py-1" style="width: 100px;">Aceptado</th>
+                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -712,7 +713,7 @@
                                                         <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">D</div><input type="checkbox"></div>
                                                     </div>
                                                 </div>
-
+                                                
                                                 <!-- Horas/Mes -->
                                                 <div class="col-md-1 form-group">
                                                     <label class="small text-muted font-weight-bold">Horas/Mes</label>
@@ -724,19 +725,37 @@
                                                     <label class="small text-muted font-weight-bold">Monto Bruto Mes</label>
                                                     <div class="input-group input-group-sm">
                                                         <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                                        <input type="number" class="form-control" placeholder="0">
+                                                        <input type="number" class="form-control monto-pago" placeholder="0" oninput="actualizarCalculoTopes()">
                                                     </div>
                                                 </div>
 
                                                 <!-- Total PDS -->
                                                 <div class="col-md-2 form-group">
                                                     <label class="small text-muted font-weight-bold">Total PDS</label>
-                                                    <div class="form-control form-control-sm bg-white border-primary font-weight-bold text-primary text-center px-1" style="border-width: 2px;">0</div>
+                                                    <input type="text" id="total_monto_display" class="form-control form-control-sm bg-white border-primary font-weight-bold text-primary text-center px-1" style="border-width: 2px;" readonly value="0">
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                            <div class="row">
+
+                                            <!-- WIDGET DE TOPES (50% REGLA) -->
+                                            <div class="mt-3 pt-3 border-top">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-8">
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.5px;">Control de Límite (Máx 50% Remuneración)</span>
+                                                            <span id="tope_pct" class="badge badge-success px-2">Cumple 50%</span>
+                                                        </div>
+                                                        <div class="progress progress-sm bg-white border shadow-xs" style="height: 10px; border-radius: 5px;">
+                                                            <div id="tope_progress" class="progress-bar bg-success transition-all" role="progressbar" style="width: 0%"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 text-right">
+                                                        <small class="text-muted d-block" style="font-size: 0.65rem;">Tope referencial (D.U. 009/2026)</small>
+                                                        <strong class="text-dark" style="font-size: 0.85rem;">$2.205.400</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                                               <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
+                                            <div class="row mt-3">
                                                 <div class="col-md-6 mb-3">
                                                     <label class="small font-weight-bold text-muted d-block">¿Fuera o dentro de la jornada?</label>
                                                     <div class="custom-control custom-radio custom-control-inline">
@@ -749,7 +768,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- Validaciones Dinámicas según Diagrama -->
+                                                <!-- Validaciones Dinámicas según Perfil -->
                                                 <div id="d9_path_validation" class="col-md-6 mb-3 dynamic-section hidden">
                                                     <!-- Caso Académico: SEA -->
                                                     <div id="path_acad_sea" class="dynamic-section hidden">
@@ -766,11 +785,11 @@
                                                     
                                                     <!-- Caso Admin/No SEA: Tabla Compensación -->
                                                     <div id="path_compensacion" class="dynamic-section hidden">
-                                                        <div class="alert alert-warning py-1 px-2 mb-2 small border-warning">
-                                                            <i class="fas fa-exclamation-triangle mr-1"></i> Requiere <strong>Compensación horaria</strong>
+                                                        <div class="alert alert-warning py-1 px-2 mb-2 small border-warning" style="background-color: #fff9e6;">
+                                                            <i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong>
                                                         </div>
                                                         <div class="table-responsive">
-                                                            <table class="table table-xs table-bordered mb-0 bg-white" style="font-size: 0.7rem;">
+                                                            <table class="table table-xs table-bordered mb-0 bg-white shadow-xs" style="font-size: 0.7rem;">
                                                                 <thead class="bg-light">
                                                                     <tr><th>Día</th><th>Desde</th><th>Hasta</th></tr>
                                                                 </thead>
@@ -784,56 +803,57 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    </div>
-                                    <div id="d9_evidence_container" class="col-12 mt-3">
-                                        <h6 class="small font-weight-bold text-muted mb-2 text-uppercase" style="letter-spacing: 0.5px;">Evidencias Verificables y Plazos (D9)</h6>
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-bordered bg-white shadow-xs mb-2" style="font-size: 0.75rem;">
-                                                <thead class="bg-light text-muted">
-                                                    <tr>
-                                                        <th width="40" class="text-center"><i class="fas fa-check-square"></i></th>
-                                                        <th>Tipo de Entregable / Producto</th>
-                                                        <th width="160">Fecha Estimada</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center align-middle"><input type="checkbox"></td>
-                                                        <td class="align-middle font-weight-bold text-dark">Acta firmada</td>
-                                                        <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center align-middle"><input type="checkbox"></td>
-                                                        <td class="align-middle font-weight-bold text-dark">Informe con evidencias</td>
-                                                        <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center align-middle"><input type="checkbox"></td>
-                                                        <td class="align-middle font-weight-bold text-dark">Base de datos entregada</td>
-                                                        <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center align-middle"><input type="checkbox"></td>
-                                                        <td class="align-middle font-weight-bold text-dark">Proyecto presentado</td>
-                                                        <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center align-middle"><input type="checkbox"></td>
-                                                        <td class="align-middle">
-                                                            <div class="d-flex align-items-center">
-                                                                <span class="font-weight-bold text-dark mr-2">Otra:</span>
-                                                                <input type="text" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique..." style="font-size: 0.7rem; background: transparent;">
-                                                            </div>
-                                                        </td>
-                                                        <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <!-- EVIDENCIAS VERIFICABLES -->
+                                            <div id="d9_evidence_container" class="col-12 mt-4 pt-3 border-top">
+                                                <h6 class="small font-weight-bold text-muted mb-2 text-uppercase" style="letter-spacing: 0.5px;">Evidencias Verificables y Plazos (D9)</h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered bg-white shadow-xs mb-2" style="font-size: 0.75rem;">
+                                                        <thead class="bg-light text-muted">
+                                                            <tr>
+                                                                <th width="40" class="text-center"><i class="fas fa-check-square"></i></th>
+                                                                <th>Tipo de Entregable / Producto</th>
+                                                                <th width="160">Fecha Estimada</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Acta firmada</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Informe con evidencias</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Base de datos entregada</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span class="font-weight-bold text-dark mr-2">Otra:</span>
+                                                                        <input type="text" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique..." style="font-size: 0.7rem; background: transparent;">
+                                                                    </div>
+                                                                </td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!-- BOTÓN ACCIÓN D9 -->
+                                            <div class="col-12 text-right mt-3 mb-4">
+                                                <button type="button" class="btn btn-primary bg-ufro-orange border-0 btn-sm px-4 font-weight-bold shadow-sm" style="border-radius: 20px;">
+                                                    <i class="fas fa-plus-circle mr-1"></i> Agregar Funcionario D9
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                 </div>
                             </div>
