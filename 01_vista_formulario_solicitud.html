@@ -425,7 +425,7 @@
                                 <div class="col-md-12 form-group">
                                     <label class="small text-muted font-weight-bold">Centro de Costo</label>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" id="cc_display" class="form-control bg-light" readonly placeholder="Seleccione un Centro de Costo...">
+                                        <input type="text" id="cc_display" class="form-control bg-light" readonly placeholder="Ej: 21.05.001 - INSTITUTO DE AGROINDUSTRIA">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary bg-ufro-dark" type="button" data-toggle="modal" data-target="#modalSearchCC">
                                                 <i class="fas fa-search mr-1"></i> Buscar CC
@@ -455,9 +455,13 @@
                                 <!-- CAMPOS DEL PROYECTO SELECCIONADO D9 -->
                                 <div id="d9_project_fields_content" class="col-12 hidden">
                                     <div class="row">
-                                        <div class="col-md-12 form-group">
+                                        <div class="col-md-6 form-group">
                                             <label class="small text-muted font-weight-bold">Unidad ejecutora</label>
-                                            <input type="text" id="unidad_ejecutora" class="form-control form-control-sm bg-light" readonly placeholder="Se autocompleta...">
+                                            <input type="text" id="unidad_ejecutora" class="form-control form-control-sm bg-light" readonly placeholder="21.05 - INST. AGROINDUSTRIA">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="small text-muted font-weight-bold">Tipo de Fondo</label>
+                                            <input type="text" id="tipo_fondo" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly placeholder="05 - FONDOS EXTERNOS">
                                         </div>
 
                                         <!-- COMPROMISO DE ENTREGABLES (TABLA - Basado en Diagrama v2) -->
