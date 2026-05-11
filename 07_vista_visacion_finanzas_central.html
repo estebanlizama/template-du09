@@ -8,83 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --ufro-blue: #11306e;
-            --ufro-orange: #f98f15;
-            --ufro-light-blue: #f0f4f8;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7fa;
-        }
-
-        /* Estilos Premium Espejo */
-        .table-premium {
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            background-color: transparent;
-        }
-        .table-premium thead th {
-            border: none;
-            color: #8492a6;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0 1.5rem 0.5rem;
-        }
-        .table-premium tbody tr {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
-        }
-        .table-premium td {
-            border: none;
-            padding: 1.25rem 1rem;
-            vertical-align: middle;
-        }
-        .table-premium td:first-child {
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            padding-left: 1.5rem;
-            border-left: 5px solid transparent;
-        }
-        .table-premium td:last-child {
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
-            padding-right: 1.5rem;
-        }
-        .row-accent-sea { border-left-color: #28a745 !important; }
-        .row-accent-warning { border-left-color: #f98f15 !important; }
-
-        .badge-soft-primary { background-color: #e8f0fe; color: #1967d2; }
-        .badge-soft-info { background-color: #e2f6f9; color: #007a8c; }
-        
-        .sticky-actions {
-            position: sticky;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            border-top: 1px solid #edf2f7;
-            padding: 1rem 0;
-            z-index: 100;
-        }
-
-        .status-badge {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .status-in-process { background-color: #e1f5fe; color: #0277bd; border: 1px solid #b3e5fc; }
-
-        .summary-label { font-size: 0.65rem; color: #8492a6; font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
-        .summary-value { font-size: 0.85rem; color: #1a202c; font-weight: 600; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
 </head>
 <body>
 
@@ -92,42 +17,45 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <div class="logo-cont">
-            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+            <img src="https://intranet.ufro.cl/estilo/img/logo_bl.png" class="logo" alt="UFRO">
         </div>
-        <div class="sidebar-heading">Menú Principal</div>
         <div class="list-group list-group-flush">
-            <a href="#menuPDS" data-toggle="collapse" class="list-group-item list-group-item-action bg-transparent text-white border-0 d-flex justify-content-between align-items-center">
-                <span><i class="fas fa-file-contract mr-2"></i> Prestación de servicios</span>
-                <i class="fas fa-chevron-down small"></i>
-            </a>
-            <div class="collapse show" id="menuPDS">
-                <a href="01_vista_formulario_solicitud.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
-                    <i class="fas fa-plus-circle mr-2"></i> Nueva solicitud
-                </a>
-                <a href="02_vista_visacion_aprobador.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small active">
-                    <i class="fas fa-clock mr-2"></i> Solicitud en espera
-                </a>
-                <a href="03_vista_visacion_jefatura.html" class="list-group-item list-group-item-action bg-transparent border-0 pl-5 small">
-                    <i class="fas fa-history mr-2"></i> Solicitud histórica
-                </a>
-            </div>
+            <h6 class="sidebar-heading">SOLICITUDES</h6>
+            <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
+            <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de servicios</a>
+            <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de costos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
+            <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
+            <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
         </div>
     </div>
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
         <!-- Topbar -->
-        <nav id="dna-topbar" class="px-lg-5">
+        <nav id="dna-topbar">
             <div class="d-flex align-items-center">
-                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Visación PDS <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-primary py-1 px-3 mr-3" style="font-size: 0.7rem; background-color: var(--ufro-blue);">DIRECCIÓN DE FINANZAS</span></h5>
+                <img class="topbar-logo mr-3" src="https://intranet.ufro.cl/estilo/img/logo_bl.png" alt="UFRO">
+                <button class="btn-toggle-menu mr-3" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h5 class="topbar-title m-0">VALIDACIÓN FINANZAS CENTRAL</h5>
             </div>
-            <div class="user-info d-flex align-items-center">
-                <div class="text-right mr-3">
-                    <div class="small font-weight-bold text-uppercase">CARLA SANDOVAL</div>
-                    <div class="text-muted font-weight-bold" style="font-size: 0.7rem; color: var(--ufro-orange) !important;">DIRECTORA DE FINANZAS</div>
+            
+            <div class="d-flex align-items-center ml-auto">
+                <div class="user-details text-right mr-3">
+                    <span class="user-name d-block">CARLA SANDOVAL</span>
+                    <span class="user-role small">DIRECTORA DE FINANZAS</span>
                 </div>
-                <div class="user-avatar" style="background: var(--ufro-blue); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">CS</div>
+                <div class="topbar-icon-circle mr-2">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="topbar-icon-circle">
+                    <i class="fas fa-bell"></i>
+                </div>
             </div>
+            <div class="topbar-rainbow-bar"></div>
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">

@@ -8,52 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --ufro-blue: #11306e;
-            --ufro-orange: #f98f15;
-            --ufro-green: #28a745;
-        }
-        body { font-family: 'Inter', sans-serif; background-color: #f4f7fa; }
-        
-        .pdf-viewer-container {
-            background: #525659;
-            border-radius: 8px;
-            height: 750px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .legacy-sidebar {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-            height: 100%;
-        }
-
-        .instruction-step { font-size: 0.75rem; color: #444; margin-bottom: 15px; }
-
-        .btn-legacy {
-            font-weight: 700;
-            font-size: 0.75rem;
-            padding: 10px 20px;
-            width: 100%;
-            margin-bottom: 12px;
-            border-radius: 6px;
-        }
-
-        .btn-download { background-color: #0d47a1; color: white; border: none; }
-        .btn-upload { background-color: #546e7a; color: white; border: none; }
-        .btn-approve { background-color: var(--ufro-green); color: white; border: none; }
-        .btn-reject { background-color: #d32f2f; color: white; border: none; }
-
-        .approval-info { border: 1px solid #ddd; border-radius: 6px; padding: 15px; margin-top: 30px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
 </head>
 <body>
 
@@ -61,30 +17,45 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <div class="logo-cont">
-            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+            <img src="https://intranet.ufro.cl/estilo/img/logo_bl.png" class="logo" alt="UFRO">
         </div>
-        <div class="sidebar-heading">Menú Principal</div>
         <div class="list-group list-group-flush">
-            <a href="01_vista_formulario_solicitud.html" class="list-group-item list-group-item-action bg-transparent text-white border-0">
-                <i class="fas fa-file-contract mr-2"></i> Prestación de servicios
-            </a>
+            <h6 class="sidebar-heading">SOLICITUDES</h6>
+            <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
+            <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de servicios</a>
+            <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de costos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
+            <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
+            <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
         </div>
     </div>
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
         <!-- Topbar -->
-        <nav id="dna-topbar" class="px-lg-5">
+        <nav id="dna-topbar">
             <div class="d-flex align-items-center">
-                <h5 class="m-0 font-weight-bold" style="color: var(--ufro-blue);">Firma Final Rectoría <span class="text-muted font-weight-light mx-2">|</span> <span class="badge badge-warning py-1 px-3 shadow-sm">RECTORÍA</span></h5>
+                <img class="topbar-logo mr-3" src="https://intranet.ufro.cl/estilo/img/logo_bl.png" alt="UFRO">
+                <button class="btn-toggle-menu mr-3" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h5 class="topbar-title m-0">FIRMA FINAL RECTORÍA</h5>
             </div>
-            <div class="user-info d-flex align-items-center">
-                <div class="text-right mr-3">
-                    <div class="small font-weight-bold text-uppercase">Eduardo Hebel Weiss</div>
-                    <div class="text-muted font-weight-bold" style="font-size: 0.7rem;">RECTOR</div>
+            
+            <div class="d-flex align-items-center ml-auto">
+                <div class="user-details text-right mr-3">
+                    <span class="user-name d-block">EDUARDO HEBEL WEISS</span>
+                    <span class="user-role small">RECTOR</span>
                 </div>
-                <div class="user-avatar" style="background: var(--ufro-orange); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">EH</div>
+                <div class="topbar-icon-circle mr-2">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="topbar-icon-circle">
+                    <i class="fas fa-bell"></i>
+                </div>
             </div>
+            <div class="topbar-rainbow-bar"></div>
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">
