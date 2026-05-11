@@ -427,3 +427,12 @@ body {
 .dot-10 { background-color: #86198f; }
 .dot-11 { background-color: #111827; }
 .dot-12 { background-color: #9d174d; }
+
+/* Responsive Border Utilities */
+@media (min-width: 768px) {
+    .border-md-right { border-right: 1px solid #e1e7f1 !important; }
+    .border-md-bottom-0 { border-bottom: 0 !important; }
+}
+@media (max-width: 767px) {
+    .border-sm-bottom { border-bottom: 1px solid #e1e7f1 !important; }
+}

@@ -313,21 +313,28 @@
             <!-- ESPACIO PARA FOOTER -->
             <div style="height: 100px;"></div>
 
-            <!-- BOTONES DE ACCIÓN (STIKY FOOTER) -->
+            <!-- BOTONES DE ACCIÓN NORMALIZADOS -->
             <div class="sticky-actions">
-                <div class="container-fluid px-lg-5 d-flex justify-content-end align-items-center">
-                    <div class="text-muted small mr-4 italic">
-                        Al visar, esta solicitud pasará a revisión de <strong>Jefatura Superior</strong>.
+                <div class="container-fluid px-lg-5">
+                    <div class="d-flex flex-column flex-md-row justify-content-end align-items-center">
+                        <div class="text-muted small mb-3 mb-md-0 mr-md-4 italic text-center text-md-left">
+                            <i class="fas fa-info-circle mr-1"></i> Selección de acción para el expediente <strong>#PDS-2026-001</strong>
+                        </div>
+                        <div class="d-flex w-100 w-md-auto gap-2">
+                            <button class="btn btn-warning text-white font-weight-bold px-3 py-2" style="background-color: var(--ufro-orange); border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('devolver')">
+                                <i class="fas fa-reply mr-1"></i> DEVOLVER A SOLICITANTE
+                            </button>
+                            <button class="btn btn-danger font-weight-bold px-3 py-2 mx-1" style="border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('rechazar')">
+                                <i class="fas fa-times-circle mr-1"></i> RECHAZAR
+                            </button>
+                            <button class="btn btn-info font-weight-bold px-3 py-2 mr-1" style="border-radius: 8px; font-size: 0.75rem; background-color: #3490dc; border:none;" onclick="confirmarVisacion('alcance')">
+                                <i class="fas fa-exclamation-circle mr-1"></i> APROBAR CON ALCANCE
+                            </button>
+                            <button class="btn btn-success font-weight-bold px-4 py-2" style="background-color: var(--ufro-green); border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('aprobar')">
+                                <i class="fas fa-shield-check mr-1"></i> VISAR Y CONTINUAR
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-warning text-white font-weight-bold px-4 py-2 mr-2 shadow-sm" style="background-color: var(--ufro-orange); border-radius: 8px;" onclick="confirmarVisacion('devolver')">
-                        <i class="fas fa-reply mr-2"></i> DEVOLVER
-                    </button>
-                    <button class="btn btn-danger font-weight-bold px-4 py-2 mr-2 shadow-sm" style="border-radius: 8px;" onclick="confirmarVisacion('rechazar')">
-                        <i class="fas fa-ban mr-2"></i> RECHAZAR
-                    </button>
-                    <button class="btn btn-primary font-weight-bold px-5 py-2 shadow-sm" style="border-radius: 8px;" onclick="confirmarVisacion('aprobar')">
-                        <i class="fas fa-check-circle mr-2"></i> VISAR SOLICITUD
-                    </button>
                 </div>
             </div>
 

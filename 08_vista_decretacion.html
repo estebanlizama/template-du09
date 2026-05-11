@@ -6,10 +6,103 @@
     <title>Generación de Decreto - UFRO</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <style>
+        /* Audit Sheet Styles for Parity */
+        .audit-sheet {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+        .sheet-header-premium {
+            background: linear-gradient(to right, #f8fafc, #fff);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .audit-section {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .audit-section:last-child { border-bottom: none; }
+        
+        .section-title-audit {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--ufro-blue);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .section-title-audit i { margin-right: 10px; font-size: 0.9rem; }
+        
+        .audit-data-table {
+            width: 100%;
+            font-size: 0.75rem;
+            border: 1px solid #f1f5f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .audit-data-table th { background: #f8fafc; padding: 10px 15px; color: #64748b; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
+        .audit-data-table td { padding: 10px 15px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+
+        /* Resolution Editor Styles */
+        .editor-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .editor-container {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+        }
+        .editor-container:focus-within {
+            border-color: var(--ufro-blue);
+            box-shadow: 0 0 0 3px rgba(0, 83, 155, 0.1);
+        }
+        .editor-toolbar {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-bottom: 1px solid #cbd5e1;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            gap: 5px;
+        }
+        .editor-toolbar button {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #64748b;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .editor-toolbar button:hover {
+            background: #e2e8f0;
+            color: var(--ufro-blue);
+        }
+        .editor-content {
+            padding: 15px;
+            min-height: 80px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,11 +116,8 @@
             <h6 class="sidebar-heading">SOLICITUDES</h6>
             <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
             <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de servicios</a>
-            <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de costos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
-            <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
-            <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-history"></i> Historial</a>
+            <a href="#" class="list-group-item"><i class="fas fa-file-signature"></i> Decretos Emitidos</a>
         </div>
     </div>
 
@@ -40,16 +130,16 @@
                 <button class="btn-toggle-menu mr-3" id="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h5 class="topbar-title m-0">DECRETACIÓN Y FORMALIZACIÓN</h5>
+                <h5 class="topbar-title m-0 text-uppercase">DECRETACIÓN Y FORMALIZACIÓN</h5>
             </div>
             
             <div class="d-flex align-items-center ml-auto">
                 <div class="user-details text-right mr-3">
-                    <span class="user-name d-block">CLAUDIA ALVAREZ</span>
-                    <span class="user-role small">JEFA DE DECRETACIÓN</span>
+                    <span class="user-name d-block font-weight-bold">CLAUDIA ALVAREZ</span>
+                    <span class="user-role small text-muted text-uppercase">JEFA DE DECRETACIÓN</span>
                 </div>
                 <div class="topbar-icon-circle mr-2">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-file-contract"></i>
                 </div>
                 <div class="topbar-icon-circle">
                     <i class="fas fa-bell"></i>
@@ -60,48 +150,176 @@
 
         <div class="container-fluid py-4 px-lg-5">
             
-            <div class="section-title-bar">
-                <span><i class="fas fa-file-invoice mr-2"></i> FORMATO DE RESOLUCIÓN - SOLICITUD #PDS-2026-001</span>
-                <span class="badge badge-warning" style="font-size: 0.65rem;">SISTEMA DE GESTIÓN 2026</span>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="font-weight-bold text-dark m-0">Formatización de Acto Administrativo <span class="text-primary">#PDS-2026-001</span></h4>
+                <div class="text-right">
+                    <span class="badge badge-warning px-3 py-2" style="font-size: 0.65rem; border-radius: 20px;">
+                        <i class="fas fa-spinner fa-spin mr-1"></i> BORRADOR EN EDICIÓN
+                    </span>
+                </div>
             </div>
 
-            <!-- Información General del Proyecto -->
-            <div class="row mb-4">
+            <!-- Información del Proyecto -->
+            <div class="card border-0 shadow-sm mb-4" style="border-left: 5px solid var(--ufro-blue); border-radius: 12px;">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-8 border-right">
+                            <h6 class="text-muted text-uppercase small font-weight-bold mb-2">Proyecto de Origen</h6>
+                            <h5 class="font-weight-bold text-dark mb-1">Modernización de Plataformas de Gestión UFRO-2026</h5>
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-primary mr-2" style="background-color: var(--ufro-blue); font-size: 0.6rem;">ID: PRJ-2026-0045</span>
+                                <span class="text-muted small">Responsable: <strong>Dr. Ricardo Fuentes Sandoval</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-md-4">
+                            <h6 class="text-muted text-uppercase small font-weight-bold mb-2">Vigencia Resolución</h6>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="small text-muted">Desde:</span>
+                                <span class="small font-weight-bold">01/05/2026</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="small text-muted">Hasta:</span>
+                                <span class="small font-weight-bold">31/12/2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editores de Resolución -->
+            <div class="row mb-5">
                 <div class="col-12">
-                    <div class="card border-0 shadow-sm" style="border-left: 5px solid var(--ufro-blue); border-radius: 12px;">
-                        <div class="card-body p-4">
-                            <div class="row">
-                                <div class="col-md-6 border-right">
-                                    <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Información del Proyecto</h6>
-                                    <h5 class="font-weight-bold text-dark mb-1">Modernización de Plataformas de Gestión UFRO-2026</h5>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="badge badge-primary mr-2" style="background-color: var(--ufro-blue);">ID: PRJ-2026-0045</span>
-                                        <span class="text-muted small">Unidad: DIRECCIÓN DE INFORMÁTICA</span>
-                                    </div>
-                                    <p class="small text-muted mb-0"><strong>Investigador Responsable:</strong> Dr. Ricardo Fuentes Sandoval</p>
+                    <h5 class="font-weight-bold text-dark mb-3"><i class="fas fa-edit mr-2 text-primary"></i> Editores de Texto Normativo</h5>
+                    
+                    <!-- VISTO -->
+                    <label class="editor-label">VISTO (Antecedentes Legales)</label>
+                    <div class="editor-container shadow-sm">
+                        <div class="editor-toolbar">
+                            <button title="Negrita"><i class="fas fa-bold"></i></button>
+                            <button title="Cursiva"><i class="fas fa-italic"></i></button>
+                            <span class="text-muted mx-1">|</span>
+                            <button><i class="fas fa-list-ul"></i></button>
+                        </div>
+                        <div class="editor-content" contenteditable="true">
+                            Ley Nº 19.886, Ley de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES; Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación.
+                        </div>
+                    </div>
+
+                    <!-- CONSIDERANDO -->
+                    <label class="editor-label">CONSIDERANDO (Justificación Técnica)</label>
+                    <div class="editor-container shadow-sm">
+                        <div class="editor-toolbar">
+                            <button><i class="fas fa-bold"></i></button>
+                            <button><i class="fas fa-italic"></i></button>
+                        </div>
+                        <div class="editor-content" contenteditable="true">
+                            1. Que la Institución requiere contar con servicios especializados para el proyecto de Modernización Tecnológica.<br>
+                            2. Que se ha verificado la disponibilidad presupuestaria y el cumplimiento de la normativa DU09/DU288 por parte de la Dirección de Gestión de Personas.
+                        </div>
+                    </div>
+
+                    <!-- RESUELVO -->
+                    <label class="editor-label">RESUELVO (Disposición)</label>
+                    <div class="editor-container shadow-sm" style="border-left: 4px solid var(--ufro-blue);">
+                        <div class="editor-toolbar">
+                            <button><i class="fas fa-bold"></i></button>
+                            <button><i class="fas fa-italic"></i></button>
+                        </div>
+                        <div class="editor-content" contenteditable="true">
+                            <strong>DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios, por el monto bruto que se señala, para ser pagado con la remuneración del mes correspondiente, a los funcionarios/as que se detallan en la presente resolución.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERSONAL AUDITADO (Audit Sheets - Paridad con 06/07) -->
+            <div class="mb-5">
+                <h5 class="font-weight-bold text-dark mb-4">
+                    <i class="fas fa-shield-alt mr-2 text-success"></i> Nómina de Personal Validada (Revisión Técnica)
+                </h5>
+
+                <!-- FUNCIONARIO 1 (MARÍA ELENA SOTO - DETALLE COMPLETO) -->
+                <div class="audit-sheet" style="border-left: 6px solid var(--ufro-blue);">
+                    <div class="sheet-header-premium">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box bg-primary text-white mr-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="m-0 font-weight-bold text-dark">SOTO FIGUEROA MARÍA ELENA</h5>
+                                <span class="text-muted small">15.987.654-3 | ADMINISTRATIVO | GRADO 16</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="text-right mr-4">
+                                <div class="data-label">Monto Bruto</div>
+                                <div class="h5 m-0 font-weight-bold text-ufro-blue">$280.000</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="data-label text-success">Líquido Estimado</div>
+                                <div class="h5 m-0 font-weight-bold text-success">$241.500</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DETALLE DE ACTIVIDAD -->
+                    <div class="px-4 py-3 border-bottom bg-light">
+                        <div class="data-label mb-1">Actividad Específica Validada</div>
+                        <div class="small text-dark font-weight-bold" style="line-height: 1.4;">
+                            Apoyo administrativo en la recopilación de actas, foliación de expedientes físicos y digitalización de documentos para el repositorio de procesos.
+                        </div>
+                    </div>
+
+                    <!-- CONTROL DE TOPES -->
+                    <div class="audit-section">
+                        <h6 class="section-title-audit">
+                            <span><i class="fas fa-calculator"></i> Verificación de Límites de Pago</span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="audit-data-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Mes de Pago</th>
+                                        <th>Grado Ref.</th>
+                                        <th>Tope Máximo (50%)</th>
+                                        <th>Otras PDS</th>
+                                        <th>Monto Actual</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-weight-bold">Mayo 2026</td>
+                                        <td>Grado 12</td>
+                                        <td class="text-primary font-weight-bold">$553.079</td>
+                                        <td>$150.000</td>
+                                        <td class="font-weight-bold">$280.000</td>
+                                        <td class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> DENTRO DE TOPE</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- MATRIZ DE CUMPLIMIENTO -->
+                    <div class="audit-section mb-0 border-bottom-0 pb-3">
+                        <div class="row">
+                            <div class="col-md-4 border-right">
+                                <h6 class="section-title-audit"><span><i class="fas fa-clock"></i> SEA / Jornada</span></h6>
+                                <div class="p-2 bg-light rounded text-center small">
+                                    <i class="fas fa-calendar-check text-success mr-1"></i> Validado Sábados (8h)
                                 </div>
-                                <div class="col-md-6 pl-md-4">
-                                    <h6 class="text-muted text-uppercase small font-weight-bold mb-3">Vigencia y Control</h6>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="small text-muted">Fecha Inicio</div>
-                                            <div class="font-weight-bold">01/05/2026</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="small text-muted">Fecha Término</div>
-                                            <div class="font-weight-bold">31/12/2026</div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3">
-                                        <div class="small text-muted mb-1">Estado de Tramitación</div>
-                                        <div class="progress" style="height: 6px;">
-                                            <div class="progress-bar bg-success" style="width: 53%;"></div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-1">
-                                            <span class="x-small text-muted">Etapa 08 de 15</span>
-                                            <span class="x-small font-weight-bold text-success">53% Completado</span>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 border-right">
+                                <h6 class="section-title-audit"><span><i class="fas fa-users"></i> Parentesco</span></h6>
+                                <div class="p-2 bg-light rounded text-center small">
+                                    <i class="fas fa-check-circle text-success mr-1"></i> Sin vínculos detectados
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="section-title-audit"><span><i class="fas fa-file-invoice-dollar"></i> Deudas</span></h6>
+                                <div class="p-2 bg-light rounded text-center small">
+                                    <i class="fas fa-check-circle text-success mr-1"></i> Sin deudas vigentes
                                 </div>
                             </div>
                         </div>
@@ -109,185 +327,23 @@
                 </div>
             </div>
 
-            <!-- Datos de Encabezado -->
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <label class="editor-label">Secretaría General / Decretación</label>
-                    <select class="form-control form-control-sm border-0 shadow-sm" style="border-radius: 8px;">
-                        <option>CLAUDIA ALVAREZ - JEFA DE DECRETACIÓN</option>
-                    </select>
+            <!-- SECCIÓN DE EXCLUIDOS (Paridad con 06/07) -->
+            <div class="mb-5">
+                <h5 class="font-weight-bold text-danger mb-3">
+                    <i class="fas fa-user-times mr-2"></i> Personal Excluido de la Resolución
+                </h5>
+                <div class="alert alert-soft-danger border-danger small mb-3">
+                    <i class="fas fa-info-circle mr-1"></i> El siguiente personal ha sido filtrado por no cumplimiento normativo (Topes/SEA/Deudas) y no figurará en el acto administrativo final.
                 </div>
-                <div class="col-md-4">
-                    <label class="editor-label">Fecha de Resolución</label>
-                    <input type="date" class="form-control form-control-sm border-0 shadow-sm" style="border-radius: 8px;" value="2026-05-07">
-                </div>
-            </div>
-
-            <!-- Editores de Texto (Calco Legacy) -->
-            <div class="row">
-                <div class="col-12">
-                    <!-- VISTO -->
-                    <label class="editor-label">VISTO:</label>
-                    <div class="editor-container shadow-sm">
-                        <div class="editor-toolbar">
-                            <button><i class="fas fa-bold"></i></button>
-                            <button><i class="fas fa-italic"></i></button>
-                            <button><i class="fas fa-underline"></i></button>
-                            <span class="text-muted mx-1">|</span>
-                            <button><i class="fas fa-align-left"></i></button>
-                            <button><i class="fas fa-align-center"></i></button>
-                            <button><i class="fas fa-list-ul"></i></button>
+                <div class="audit-sheet" style="opacity: 0.6; filter: grayscale(1);">
+                    <div class="sheet-header-premium" style="background: #f1f5f9;">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box bg-secondary text-white mr-3 shadow-sm" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <h6 class="m-0 font-weight-bold text-muted">LIZAMA AILLAPAN ESTEBAN ANDRÉS</h6>
                         </div>
-                        <div class="editor-content" contenteditable="true">
-                            Ley Nº 19.886, Ley de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios.<br>
-                            D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES que fija el texto refundido de la Ley Nº 18.575.<br>
-                            Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación.
-                        </div>
-                    </div>
-
-                    <!-- CONSIDERANDO -->
-                    <label class="editor-label">CONSIDERANDO:</label>
-                    <div class="editor-container shadow-sm">
-                        <div class="editor-toolbar">
-                            <button><i class="fas fa-bold"></i></button>
-                            <button><i class="fas fa-italic"></i></button>
-                            <span class="text-muted mx-1">|</span>
-                            <button><i class="fas fa-align-left"></i></button>
-                        </div>
-                        <div class="editor-content" contenteditable="true">
-                            1. Que el artículo 9º de la Ley 18.883 establece que se podrán contratar profesionales y técnicos extranjeros o nacionales, sobre la base de honorarios, para la realización de labores accidentales no habituales de la institución.<br>
-                            2. Que la Universidad requiere contar con servicios especializados para el proyecto de Modernización Tecnológica.
-                        </div>
-                    </div>
-
-                    <!-- RESUELVO -->
-                    <label class="editor-label">RESUELVO:</label>
-                    <div class="editor-container shadow-sm" style="border-left: 4px solid var(--ufro-blue);">
-                        <div class="editor-toolbar">
-                            <button><i class="fas fa-bold"></i></button>
-                            <button><i class="fas fa-italic"></i></button>
-                        </div>
-                        <div class="editor-content" contenteditable="true">
-                            <strong>DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios, por el monto bruto que se señala, para ser pagado con la remuneración del mes correspondiente, a los siguientes funcionarios/as de la Corporación.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Resumen de Tabla (Matriz de Control de Decretación) -->
-            <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
-                <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
-                    <h6 class="font-weight-bold m-0" style="color: var(--ufro-blue);">MATRIZ DE CONTROL PARA DECRETACIÓN (HISTORIAL COMPLETO)</h6>
-                    <span class="badge badge-info px-3 py-2">DATOS CONSOLIDADOS ETAPAS 01-07</span>
-                </div>
-                <div class="card-body p-4">
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered table-hover" style="font-size: 0.7rem; min-width: 1200px;">
-                            <thead class="bg-light text-center">
-                                <tr>
-                                    <th colspan="3" class="border-bottom-0 bg-white">IDENTIFICACIÓN Y CONTRATO</th>
-                                    <th colspan="2" class="border-bottom-0 bg-white text-info">AUDITORÍA DGDP</th>
-                                    <th colspan="3" class="border-bottom-0 bg-white text-success">CARGA Y SEA</th>
-                                    <th colspan="2" class="border-bottom-0 bg-white text-primary">FINANZAS</th>
-                                    <th colspan="3" class="border-bottom-0 bg-white text-danger">MONTOS</th>
-                                </tr>
-                                <tr>
-                                    <th>Funcionario / RUT</th>
-                                    <th>Estamento / Grado</th>
-                                    <th>Jerarquía / Jornada</th>
-                                    
-                                    <th>Tope D9</th>
-                                    <th>Auditoría Forense</th>
-                                    
-                                    <th>Estado SEA</th>
-                                    <th>Horas/Mes</th>
-                                    <th>Recuperación</th>
-                                    
-                                    <th>CC / Ítem</th>
-                                    <th>Disponibilidad</th>
-                                    
-                                    <th>Bruto Mensual</th>
-                                    <th>Meses</th>
-                                    <th>Bruto Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- ACADÉMICO -->
-                                <tr>
-                                    <td class="bg-light-y">
-                                        <div class="font-weight-bold text-dark">JUAN PABLO ANDRADE VALDÉS</div>
-                                        <div class="text-muted" style="font-size: 0.65rem;">12.345.678-9</div>
-                                    </td>
-                                    <td class="text-center text-uppercase">Académico<br><span class="badge badge-light border">G-04</span></td>
-                                    <td class="text-center text-uppercase">Asociado<br>44 Horas</td>
-                                    
-                                    <td class="text-center">
-                                        <div class="badge badge-success-soft text-success px-2 py-1">
-                                            <i class="fas fa-check mr-1"></i> 42% OK
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="text-success font-weight-bold"><i class="fas fa-shield-alt mr-1"></i> LIMPIO</span>
-                                    </td>
-                                    
-                                    <td class="text-center">
-                                        <span class="badge badge-info px-2 py-1">SEA VALIDADO</span>
-                                    </td>
-                                    <td class="text-center font-weight-bold">12 hrs</td>
-                                    <td class="text-center text-muted">N/A</td>
-                                    
-                                    <td class="text-center">123450 / 21521</td>
-                                    <td class="text-center">
-                                        <span class="text-success"><i class="fas fa-coins mr-1"></i> VIGENTE</span>
-                                    </td>
-                                    
-                                    <td class="text-right">$225.000</td>
-                                    <td class="text-center">6</td>
-                                    <td class="text-right font-weight-bold bg-light">$1.350.000</td>
-                                </tr>
-                                
-                                <!-- ADMINISTRATIVO -->
-                                <tr>
-                                    <td class="bg-light-y">
-                                        <div class="font-weight-bold text-dark">MARÍA ELENA SOTO FIGUEROA</div>
-                                        <div class="text-muted" style="font-size: 0.65rem;">15.987.654-3</div>
-                                    </td>
-                                    <td class="text-center text-uppercase">Administrativo<br><span class="badge badge-light border">G-12</span></td>
-                                    <td class="text-center text-uppercase">Profesional<br>44 Horas</td>
-                                    
-                                    <td class="text-center">
-                                        <div class="badge badge-warning-soft text-dark px-2 py-1" style="background-color: #fff3cd; color: #856404;">
-                                            <i class="fas fa-exclamation-triangle mr-1"></i> 48% LÍMITE
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="text-success font-weight-bold"><i class="fas fa-shield-alt mr-1"></i> LIMPIO</span>
-                                    </td>
-                                    
-                                    <td class="text-center text-muted">N/A</td>
-                                    <td class="text-center font-weight-bold">8 hrs</td>
-                                    <td class="text-center text-primary font-weight-bold">SÍ (8h)</td>
-                                    
-                                    <td class="text-center">110200 / 21521</td>
-                                    <td class="text-center">
-                                        <span class="text-success"><i class="fas fa-coins mr-1"></i> VIGENTE</span>
-                                    </td>
-                                    
-                                    <td class="text-right">$280.000</td>
-                                    <td class="text-center">2</td>
-                                    <td class="text-right font-weight-bold bg-light">$560.000</td>
-                                </tr>
-                            </tbody>
-                            <tfoot class="bg-light">
-                                <tr>
-                                    <td colspan="12" class="text-right font-weight-bold">TOTAL BRUTO DE LA RESOLUCIÓN</td>
-                                    <td class="text-right font-weight-bold text-danger" style="font-size: 0.9rem;">$1.910.000</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="mt-3 small text-muted italic">
-                        <i class="fas fa-info-circle mr-1"></i> Esta tabla consolida la información técnica validada por Auditoría Interna, Finanzas y la Dirección de Gestión de Personas.
+                        <span class="badge badge-danger x-small">PARENTESCO / DEUDAS</span>
                     </div>
                 </div>
             </div>
@@ -297,14 +353,14 @@
                 <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
                         <div class="card-body">
-                            <h6 class="editor-label mb-3">Vistos Buenos Requeridos</h6>
+                            <h6 class="editor-label mb-3">Vistos Buenos Digitales</h6>
                             <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="vb1" checked>
-                                <label class="custom-control-label small" for="vb1">VICERRECTOR DE ADM. Y FINANZAS (Validado)</label>
+                                <input type="checkbox" class="custom-control-input" id="vb1" checked disabled>
+                                <label class="custom-control-label small" for="vb1">VICERRECTOR DE ADM. Y FINANZAS <span class="text-success">(Validado)</span></label>
                             </div>
                             <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="vb2" checked>
-                                <label class="custom-control-label small" for="vb2">SECRETARIO GENERAL (Validado)</label>
+                                <input type="checkbox" class="custom-control-input" id="vb2" checked disabled>
+                                <label class="custom-control-label small" for="vb2">SECRETARIO GENERAL <span class="text-success">(Validado)</span></label>
                             </div>
                         </div>
                     </div>
@@ -312,21 +368,14 @@
                 <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="editor-label m-0">Distribución</h6>
-                                <button class="btn btn-xs btn-outline-primary py-0 px-2" style="font-size: 0.6rem;">Añadir</button>
+                            <h6 class="editor-label mb-3">Distribución Oficial</h6>
+                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
+                                <span><i class="fas fa-university mr-2"></i> Rectoría (Copia Digital)</span>
+                                <i class="fas fa-check text-success"></i>
                             </div>
-                            <div class="dist-item">
-                                <span>Rectoría (Digital)</span>
-                                <i class="fas fa-times text-danger cursor-pointer"></i>
-                            </div>
-                            <div class="dist-item">
-                                <span>Contraloría Interna</span>
-                                <i class="fas fa-times text-danger cursor-pointer"></i>
-                            </div>
-                            <div class="dist-item">
-                                <span>Dirección de Finanzas</span>
-                                <i class="fas fa-times text-danger cursor-pointer"></i>
+                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
+                                <span><i class="fas fa-gavel mr-2"></i> Contraloría Interna</span>
+                                <i class="fas fa-check text-success"></i>
                             </div>
                         </div>
                     </div>
@@ -334,23 +383,18 @@
             </div>
 
             <!-- Sticky Actions -->
-            <div class="sticky-actions text-right px-3">
+            <div class="sticky-actions text-right">
                 <div class="container-fluid px-lg-5">
-                    <div class="row align-items-center">
-                        <div class="col-md-4 text-left">
-                            <button class="btn btn-outline-info font-weight-bold px-4">
-                                <i class="fas fa-file-pdf mr-2"></i> PREVISUALIZAR DOCUMENTO
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-info font-weight-bold px-4" style="border-radius: 8px;">
+                            <i class="fas fa-file-pdf mr-2"></i> PREVISUALIZAR DECRETO
+                        </button>
+                        <div>
+                            <button class="btn btn-warning text-white font-weight-bold px-4 mr-2" style="border-radius: 8px;" onclick="location.href='01_vista_formulario_solicitud.html'">
+                                <i class="fas fa-reply mr-2"></i> DEVOLVER
                             </button>
-                        </div>
-                        <div class="col-md-8">
-                            <button class="btn btn-warning text-white font-weight-bold px-4 mr-2" onclick="location.href='01_vista_formulario_solicitud.html'">
-                                <i class="fas fa-reply mr-2"></i> DEVOLVER A CORRECCIÓN
-                            </button>
-                            <button class="btn btn-success font-weight-bold px-5 mr-2" onclick="location.href='09_vista_visacion_juridico_director.html'">
-                                <i class="fas fa-paper-plane mr-2"></i> APROBAR GENERACIÓN DE RESOLUCIÓN
-                            </button>
-                            <button class="btn btn-danger font-weight-bold px-4" onclick="location.href='01_vista_formulario_solicitud.html'">
-                                <i class="fas fa-times-circle mr-2"></i> RECHAZAR
+                            <button class="btn btn-success font-weight-bold px-5" style="border-radius: 8px; background-color: var(--ufro-green);" onclick="location.href='09_vista_visacion_juridico_director.html'">
+                                <i class="fas fa-paper-plane mr-2"></i> FORMALIZAR Y ENVIAR A JURÍDICA
                             </button>
                         </div>
                     </div>
@@ -363,5 +407,11 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("menu-toggle").onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("wrapper").classList.toggle("toggled");
+    };
+</script>
 </body>
 </html>

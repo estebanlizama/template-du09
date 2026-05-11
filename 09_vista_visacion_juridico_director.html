@@ -6,10 +6,59 @@
     <title>Visación Dirección Jurídica - UFRO</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <style>
+        /* Audit Sheet Styles for Parity */
+        .audit-sheet {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .sheet-header-premium {
+            background: linear-gradient(to right, #f8fafc, #fff);
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .audit-section {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .pdf-viewer-container {
+            background: #cbd5e1;
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            min-height: 800px;
+        }
+        .pdf-page {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            min-height: 1000px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 60px 80px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+            line-height: 1.5;
+        }
+        .legal-sidebar {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            position: sticky;
+            top: 20px;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,11 +72,7 @@
             <h6 class="sidebar-heading">SOLICITUDES</h6>
             <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
             <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de servicios</a>
-            <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de costos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
-            <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
-            <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
+            <a href="#" class="list-group-item"><i class="fas fa-balance-scale"></i> Bandeja Jurídica</a>
         </div>
     </div>
 
@@ -40,16 +85,16 @@
                 <button class="btn-toggle-menu mr-3" id="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <h5 class="topbar-title m-0">REVISIÓN LEGAL DIRECCIÓN</h5>
+                <h5 class="topbar-title m-0 text-uppercase">REVISIÓN LEGAL DIRECCIÓN</h5>
             </div>
             
             <div class="d-flex align-items-center ml-auto">
                 <div class="user-details text-right mr-3">
-                    <span class="user-name d-block">HUMBERTO DEL PINO</span>
-                    <span class="user-role small">DIRECTOR JURÍDICO</span>
+                    <span class="user-name d-block font-weight-bold">HUMBERTO DEL PINO</span>
+                    <span class="user-role small text-muted text-uppercase">DIRECTOR JURÍDICO</span>
                 </div>
                 <div class="topbar-icon-circle mr-2">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-gavel"></i>
                 </div>
                 <div class="topbar-icon-circle">
                     <i class="fas fa-bell"></i>
@@ -60,93 +105,101 @@
 
         <div class="container-fluid py-4 px-lg-5">
             <div class="row">
-                <!-- Visor de Documento (Calco de la imagen) -->
+                <!-- Visor de Documento -->
                 <div class="col-lg-9">
-                    <div class="card border-0 shadow-sm mb-4">
-                        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-                            <h6 class="m-0 font-weight-bold text-dark">DOCUMENTO DE RESOLUCIÓN GENERADA</h6>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-search-plus"></i></button>
-                                <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-search-minus"></i></button>
-                                <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-print"></i></button>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="font-weight-bold text-dark m-0">Expediente de Resolución <span class="text-primary">#PDS-2026-001</span></h4>
+                        <div class="btn-group shadow-sm">
+                            <button class="btn btn-sm btn-white border"><i class="fas fa-download mr-1"></i> Descargar</button>
+                            <button class="btn btn-sm btn-white border"><i class="fas fa-print mr-1"></i> Imprimir</button>
                         </div>
-                        <div class="card-body p-0">
-                            <div class="pdf-viewer-container">
-                                <!-- Simulador de Visor PDF -->
-                                <div class="bg-white shadow-lg p-5 text-dark" style="width: 80%; height: 90%; font-family: 'Times New Roman', serif; font-size: 11pt;">
-                                    <div class="text-center mb-4">
-                                        <strong>UNIVERSIDAD DE LA FRONTERA</strong><br>
-                                        <small>TEMUCO - CHILE</small>
-                                    </div>
-                                    <div class="text-right mb-5">
-                                        <strong>RESOLUCIÓN EXENTA Nº ______/</strong>
-                                    </div>
-                                    <p><strong>VISTOS:</strong> El D.F.L. Nº 156 de 1981 del Ministerio de Educación...</p>
-                                    <p><strong>CONSIDERANDO:</strong> Que la Universidad requiere la prestación de servicios de los profesionales que se indican...</p>
-                                    <p><strong>RESUELVO:</strong></p>
-                                    <table class="table table-sm table-bordered mt-3" style="font-size: 9pt;">
-                                        <thead>
-                                            <tr>
-                                                <th>Nombre</th>
-                                                <th>RUT</th>
-                                                <th>Monto Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>JUAN PABLO ANDRADE VALDÉS</td>
-                                                <td>12.345.678-9</td>
-                                                <td>$1.350.000</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                    </div>
+
+                    <div class="pdf-viewer-container shadow-inner">
+                        <div class="pdf-page">
+                            <div class="text-center mb-5">
+                                <h6 class="m-0">UNIVERSIDAD DE LA FRONTERA</h6>
+                                <small>DIRECCIÓN JURÍDICA</small>
+                            </div>
+                            <div class="text-right mb-5">
+                                <h5 class="font-weight-bold">RESOLUCIÓN EXENTA Nº ______/</h5>
+                            </div>
+                            <div class="mb-4">
+                                <p><strong>VISTOS:</strong> El D.F.L. Nº 156 de 1981 del Ministerio de Educación; la Ley Nº 19.886 de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; la Resolución Nº 6 y Nº 7 de 2019 de la Contraloría General de la República...</p>
+                            </div>
+                            <div class="mb-4">
+                                <p><strong>CONSIDERANDO:</strong> Que la Universidad de La Frontera requiere contratar los servicios de los profesionales que se indican para labores accidentales no habituales de la institución, en el marco del proyecto de Modernización de Plataformas de Gestión 2026...</p>
+                            </div>
+                            <div class="mb-4">
+                                <p><strong>RESUELVO:</strong></p>
+                                <p><strong>1. DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios a los siguientes funcionarios/as:</p>
+                                <table class="table table-bordered mt-3 text-center" style="font-size: 10pt;">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>NOMBRE COMPLETO</th>
+                                            <th>RUT</th>
+                                            <th>MONTO BRUTO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>ANDRADE VALDÉS JUAN PABLO</td>
+                                            <td>12.345.678-9</td>
+                                            <td>$225.000</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SOTO FIGUEROA MARÍA ELENA</td>
+                                            <td>15.987.654-3</td>
+                                            <td>$280.000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="mt-5 pt-5 text-center">
+                                <p class="mb-0">__________________________________</p>
+                                <p class="font-weight-bold">RECTOR (S) / SECRETARIO GENERAL</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel de Acciones (Sidebar de la imagen) -->
+                <!-- Panel de Acciones Jurídicas -->
                 <div class="col-lg-3">
-                    <div class="legacy-sidebar">
-                        <!-- NUEVA OPCIÓN: ASIGNAR RESPONSABLE -->
-                        <div class="mb-4">
-                            <label class="small font-weight-bold text-uppercase text-muted">Asignar Profesional Jurídico</label>
-                            <select class="form-control form-control-sm shadow-xs border-primary">
+                    <div class="legal-sidebar shadow-sm">
+                        <h6 class="font-weight-bold text-dark mb-4 text-uppercase small" style="letter-spacing: 1px;">Gestión de Revisión</h6>
+                        
+                        <!-- ASIGNACIÓN -->
+                        <div class="form-group mb-4">
+                            <label class="x-small font-weight-bold text-muted text-uppercase">Asignar Abogado Revisor</label>
+                            <select class="form-control form-control-sm border-primary">
                                 <option value="">Seleccione responsable...</option>
                                 <option value="1">ABOG. CRISTIAN CAMPOS</option>
-                                <option value="2">ABOG. MARÍA JOSÉ ORELLANA</option>
+                                <option value="2" selected>ABOG. MARÍA JOSÉ ORELLANA</option>
                                 <option value="3">ABOG. RICARDO FUENTES</option>
                             </select>
-                            <small class="text-muted mt-1 d-block">Este profesional recibirá la solicitud para su revisión legal.</small>
                         </div>
 
                         <hr>
 
-                        <div class="instruction-step active">
-                            1. Revise el contenido de la resolución generada automáticamente.
+                        <div class="mb-4">
+                            <p class="x-small text-muted mb-3 italic">Al asignar un profesional, la solicitud pasará a su bandeja para el informe de legalidad definitivo.</p>
+                            
+                            <button class="btn btn-primary btn-block font-weight-bold mb-2 shadow-sm py-2" onclick="confirmarAccion('aprobar')">
+                                <i class="fas fa-user-tag mr-2"></i> ASIGNAR Y ENVIAR
+                            </button>
+                            
+                            <button class="btn btn-outline-warning btn-block font-weight-bold mb-2 py-2" onclick="confirmarAccion('devolver')">
+                                <i class="fas fa-undo mr-2"></i> DEVOLVER A DECRETACIÓN
+                            </button>
+                            
+                            <button class="btn btn-outline-danger btn-block font-weight-bold py-2" onclick="confirmarAccion('rechazar')">
+                                <i class="fas fa-times-circle mr-2"></i> RECHAZAR SOLICITUD
+                            </button>
                         </div>
-                        
-                        <button class="btn btn-legacy btn-primary" style="background-color: var(--ufro-blue);" onclick="confirmarAccion('aprobar')">
-                            <i class="fas fa-user-check mr-2"></i> ASIGNAR PROFESIONAL Y ENVIAR A REVISIÓN
-                        </button>
 
-                        <div class="instruction-step">
-                            2. En caso de discrepancias legales, devuelva al paso de decretación.
-                        </div>
-
-                        <button class="btn btn-legacy btn-warning text-white" style="background-color: var(--ufro-orange);" onclick="confirmarAccion('devolver')">
-                            <i class="fas fa-undo mr-2"></i> DEVOLVER A CORRECCIÓN
-                        </button>
-
-                        <button class="btn btn-legacy btn-danger" onclick="confirmarAccion('rechazar')">
-                            <i class="fas fa-times-circle mr-2"></i> RECHAZAR RESOLUCIÓN
-                        </button>
-
-                        <div class="mt-4 p-3 bg-light rounded border text-center">
-                            <small class="text-muted d-block mb-2">Estado de Firma</small>
-                            <span class="badge badge-secondary px-3 py-1">PENDIENTE ASIGNACIÓN</span>
+                        <div class="p-3 bg-light rounded border text-center">
+                            <span class="x-small text-muted d-block mb-1">Estado Legal</span>
+                            <span class="badge badge-soft-primary px-3 py-1" style="font-size: 0.65rem;">PENDIENTE REVISIÓN</span>
                         </div>
                     </div>
                 </div>
@@ -155,10 +208,16 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    document.getElementById("menu-toggle").onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("wrapper").classList.toggle("toggled");
+    };
+
     function confirmarAccion(accion) {
         if(accion === 'aprobar') {
-            // Pasa a la Etapa 10: Profesional Jurídico
             window.location.href = "10_vista_visacion_juridico_profesional.html";
         } else {
             window.location.href = "08_vista_decretacion.html";
