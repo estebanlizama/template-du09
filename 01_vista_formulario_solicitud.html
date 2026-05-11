@@ -10,77 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos de funcionalidad */
+        /* Estilos específicos de esta vista que no están en style.css */
         .step-container { margin-bottom: 2rem; border-left: 3px solid transparent; transition: all 0.3s; }
-        .step-active { border-left-color: var(--ufro-orange); background: white; }
-        .card-pds { border: 1px solid #e2e8f0; border-radius: 12px; transition: all 0.3s; }
-        .card-pds:hover { border-color: var(--ufro-blue); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .btn-action { width: 32px; height: 32px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; border: 1px solid #edf2f9; background: #fff; color: #4d5969; }
-        .btn-action:hover { background: var(--ufro-blue); color: #fff; transform: translateY(-2px); }
-        .btn-delete:hover { background: #e63757 !important; }
-
-        /* Form Styling */
-        .card {
-            border: none;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-header {
-            background-color: #fff;
-            border-bottom: 1px solid #edf2f9;
-            padding: 1rem 1.25rem;
-            font-weight: bold;
-            color: var(--ufro-blue);
-            font-size: 1rem;
-        }
-
-        .section-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--ufro-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid var(--ufro-orange);
-            display: inline-block;
-            margin-bottom: 1.25rem;
-            padding-bottom: 3px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: #5e6e82;
-            margin-bottom: 0.4rem;
-        }
-
-        .form-control {
-            border-radius: 4px;
-            border: 1px solid #d8e2ef;
-            font-size: 0.85rem;
-            color: #4d5969;
-            padding: 0.5rem 0.75rem;
-        }
-
-        .form-control:focus {
-            border-color: var(--ufro-blue);
-            box-shadow: 0 0 0 0.2rem rgba(17, 48, 110, 0.1);
-        }
-
-        .btn-primary {
-            background-color: var(--ufro-blue);
-            border-color: var(--ufro-blue);
-            padding: 8px 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary:hover {
-            background-color: #0d2658;
-            border-color: #0d2658;
-        }
-
+        .step-active { border-left-color: var(--ufro-blue); background: white; }
+        
         /* Animaciones para secciones dinámicas */
         .dynamic-section {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -93,143 +26,9 @@
             display: none !important;
         }
 
-        /* Premium Table Styles */
-        .table-premium {
-            border-collapse: separate;
-            border-spacing: 0 12px;
-            background-color: transparent;
-        }
-        .table-premium thead th {
-            border: none;
-            color: #8492a6;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 0 1.5rem 0.5rem;
-        }
-        .table-premium tbody tr {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-        .table-premium tbody tr:hover {
-            transform: translateY(-3px) scale(1.005);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            z-index: 2;
-        }
-        .table-premium td {
-            border: none;
-            padding: 1.25rem 1rem;
-            vertical-align: middle;
-        }
-        .table-premium td:first-child {
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            padding-left: 1.5rem;
-            border-left: 5px solid transparent;
-        }
-        .table-premium td:last-child {
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
-            padding-right: 1.5rem;
-        }
-        .row-accent-sea { border-left-color: #28a745 !important; }
-        .row-accent-warning { border-left-color: #f98f15 !important; }
-
-        .btn-action {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            border: 1px solid #edf2f9;
-            background: #fff;
-            color: #4d5969;
-        }
-        .btn-action:hover {
-            background: var(--ufro-blue);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-        .btn-action.btn-delete:hover {
-            background: #e63757;
-        }
-
         /* Temas Dinámicos */
         .theme-legacy { --accent-color: var(--ufro-blue); --accent-light: var(--ufro-light-blue); }
-        .theme-d9 { --accent-color: var(--ufro-orange); --accent-light: #fff9f2; }
-
-        .custom-radio-card {
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            padding: 1.25rem;
-            border-radius: 12px;
-            background: #fff;
-        }
-
-        .custom-radio-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-        }
-
-        .custom-radio-card.active {
-            border-color: var(--ufro-blue);
-            background-color: var(--ufro-light-blue);
-            box-shadow: 0 4px 12px rgba(17, 48, 110, 0.15) !important;
-        }
-
-        .custom-radio-card.active-d9 {
-            border-color: var(--ufro-orange);
-            background-color: #fff9f2;
-            box-shadow: 0 4px 12px rgba(249, 143, 21, 0.15) !important;
-        }
-
-        .bg-ufro-dark { background-color: var(--ufro-blue); }
-        .bg-ufro-orange { background-color: var(--ufro-orange); }
-
-        .badge-pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 143, 21, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(249, 143, 21, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 143, 21, 0); }
-        }
-
-        .scanning-indicator {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scanning-indicator::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: scan 1.5s infinite;
-        }
-
-        @keyframes scan {
-            0% { left: -100%; }
-            100% { left: 150%; }
-        }
-
-        .tope-widget {
-            border-radius: 10px;
-            padding: 10px;
-            background: #fff;
-            border-left: 4px solid var(--ufro-orange);
-        }
-
-        .progress-sm { height: 6px; border-radius: 10px; }
+        .theme-d9 { --accent-color: var(--ufro-blue); --accent-light: #fff9f2; }
     </style>
 </head>
 <body class="theme-legacy">
@@ -239,7 +38,7 @@
     <div id="sidebar-wrapper">
         <div class="logo-cont">
             <!-- Simulación de Logo UFRO -->
-            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-orange);">.</span></div>
+            <div style="color: white; font-weight: bold; font-size: 1.5rem;">UFRO <span style="color: var(--ufro-blue);">.</span></div>
         </div>
         <div class="sidebar-heading">Menú Principal</div>
         <div class="list-group list-group-flush">
@@ -311,7 +110,6 @@
                                             <input type="radio" id="flowLegacy" name="flowType" class="custom-control-input" checked>
                                             <label class="custom-control-label w-100 cursor-pointer" for="flowLegacy">
                                                 <span class="d-block h6 font-weight-bold text-dark mb-1">Programa docente especiales (acroventus) </span>
-                                                <small class="text-muted d-block">Sin validaciones preventivas DGDP. Flujo heredado (Legacy).</small>
                                             </label>
                                         </div>
                                     </div>
@@ -321,8 +119,7 @@
                                         <div class="custom-control custom-radio">
                                             <input type="radio" id="flowD9" name="flowType" class="custom-control-input">
                                             <label class="custom-control-label w-100 cursor-pointer" for="flowD9">
-                                                <span class="d-block h6 font-weight-bold text-dark mb-1">(DU 288-D9/2026) <span class="badge badge-warning badge-pulse ml-1">Nuevo</span></span>
-                                                <small class="text-warning font-weight-bold d-block">Validación automática de topes, SEA y formación continua.</small>
+                                                <span class="d-block h6 font-weight-bold text-dark mb-1">(DU 288-D9/2026) <span class="badge badge-info badge-pulse ml-1">Nuevo</span></span>
                                             </label>
                                         </div>
                                     </div>
@@ -330,8 +127,8 @@
                             </div>
 
                             <!-- BLOQUE INFORMATIVO: ELEGIBILIDAD D9/2026 -->
-                            <div id="d9_eligibility_info" class="mt-3 p-0 rounded border border-warning overflow-hidden" style="display:none; transition: all 0.4s ease;">
-                                <div class="d-flex align-items-center px-3 py-2 bg-warning" style="cursor:pointer;" onclick="toggleEligibilityDetail()">
+                            <div id="d9_eligibility_info" class="mt-3 p-0 rounded border border-info overflow-hidden" style="display:none; transition: all 0.4s ease;">
+                                <div class="d-flex align-items-center px-3 py-2 bg-info" style="cursor:pointer;" onclick="toggleEligibilityDetail()">
                                     <i class="fas fa-shield-alt mr-2 text-dark"></i>
                                     <span class="font-weight-bold text-dark small" style="flex:1;">¿Quiénes pueden realizar una solicitud en Modo Preventivo (D9/2026)?</span>
                                     <i id="eligibility_chevron" class="fas fa-chevron-down text-dark small"></i>
@@ -374,25 +171,7 @@
 
                         </div>
                     </div>
-                          <!-- PASO 1: DATOS JEFE DE PROYECTO -->
-                    <div class="card shadow-sm border-0 mb-4 rounded-lg overflow-hidden">
-                        <div class="card-body">
-                            <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar Datos de Jefe de Proyecto</h6>
-                            <button class="btn btn-sm btn-primary bg-ufro-dark mb-3 px-3" data-toggle="modal" data-target="#modalSearchStaff" onclick="setSearchTarget('chief')">
-                                <i class="fas fa-search mr-1"></i> Buscar datos de Jefe de proyecto
-                            </button>
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    <label class="small text-muted font-weight-bold">Rut del jefe de proyecto</label>
-                                    <input type="text" id="rut_jefe" class="form-control form-control-sm bg-light" readonly value="12.345.678-9">
-                                </div>
-                                <div class="col-md-9 form-group">
-                                    <label class="small text-muted font-weight-bold">Nombre del jefe de proyecto</label>
-                                    <input type="text" id="nombre_jefe" class="form-control form-control-sm bg-light" readonly value="DR. MARIO GODOY RIVERA">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- PASO 2: CONTEXTO E IMPUTACIÓN -->
                     <div class="card shadow-sm border-0 mb-4 rounded-lg">
@@ -435,7 +214,7 @@
                                 <div class="col-md-12 form-group">
                                     <label class="small text-muted font-weight-bold">Centro de Costo</label>
                                     <div class="input-group input-group-sm">
-                                        <input type="text" id="cc_display" class="form-control bg-light" readonly placeholder="Ej: 21.05.001 - INSTITUTO DE AGROINDUSTRIA">
+                                        <input type="text" id="cc_display" class="form-control bg-light" readonly placeholder="Ej: 4050.21 - INSTITUTO DE AGROINDUSTRIA">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary bg-ufro-dark" type="button" data-toggle="modal" data-target="#modalSearchCC">
                                                 <i class="fas fa-search mr-1"></i> Buscar CC
@@ -448,55 +227,43 @@
                                         <div id="check_estructural" class="text-success font-weight-bold mr-3"><i class="fas fa-check-circle"></i> No es Estructural (11)</div>
                                         <div id="check_habilitado" class="text-success font-weight-bold mr-3"><i class="fas fa-check-circle"></i> CC Habilitado</div>
                                         <div id="check_vigencia" class="text-success font-weight-bold mr-3"><i class="fas fa-check-circle"></i> CC Vigente</div>
-                                        <div id="check_presupuesto" class="text-success font-weight-bold"><i class="fas fa-check-circle"></i> Control Presupuestario (Saldo Disponible)</div>
+                                        <div id="check_presupuesto" class="text-success font-weight-bold"><i class="fas fa-check-circle"></i> Control Presupuestario (Saldo Disponible: <span id="cc_saldo_val" class="badge badge-success">$0</span>)</div>
                                     </div>
                                 </div>
 
-                                <!-- SELECCIÓN DE PROYECTO (Dependiente de CC D9) -->
-                                <div id="d9_projects_sublist" class="col-12 hidden mb-3">
-                                    <div class="bg-light p-3 rounded border">
-                                        <label class="small font-weight-bold text-dark mb-2"><i class="fas fa-project-diagram mr-1"></i> Seleccione el Proyecto asociado al CC</label>
-                                        <div id="project_list" class="list-group list-group-flush shadow-xs bg-white rounded">
-                                            <div class="p-3 text-center text-muted small italic">Seleccione un CC primero...</div>
-                                        </div>
-                                    </div>
+                                <!-- DATOS DEL JEFE (Auto-rellenado debajo del CC) -->
+                                <div class="col-md-3 form-group">
+                                    <label class="small text-muted font-weight-bold">Rut Jefe de Proyecto</label>
+                                    <input type="text" id="rut_jefe_d9" class="form-control form-control-sm bg-light" readonly>
+                                </div>
+                                <div class="col-md-9 form-group">
+                                    <label class="small text-muted font-weight-bold">Nombre Jefe de Proyecto</label>
+                                    <input type="text" id="nombre_jefe_d9" class="form-control form-control-sm bg-light" readonly>
+                                </div>
+
+                                <!-- Nombre del Proyecto (Auto-rellenado desde CC) -->
+                                <div id="d9_project_name_container" class="col-12 mb-3">
+                                    <label class="small text-muted font-weight-bold">Nombre del Proyecto</label>
+                                    <input type="text" id="proyecto_nombre_d9" class="form-control form-control-sm bg-light" readonly>
                                 </div>
 
                                 <!-- CAMPOS DEL PROYECTO SELECCIONADO D9 -->
-                                <div id="d9_project_fields_content" class="col-12 hidden">
+                                <div id="d9_project_fields_content" class="col-12">
                                     <div class="row">
-                                        <div class="col-md-6 form-group">
+                                        <div class="col-md-4 form-group">
                                             <label class="small text-muted font-weight-bold">Unidad ejecutora</label>
-                                            <input type="text" id="unidad_ejecutora" class="form-control form-control-sm bg-light" readonly placeholder="21.05 - INST. AGROINDUSTRIA">
+                                            <input type="text" id="unidad_ejecutora" class="form-control form-control-sm bg-light" readonly placeholder="...">
                                         </div>
-                                        <div class="col-md-6 form-group">
-                                            <label class="small text-muted font-weight-bold">Tipo de Fondo</label>
-                                            <input type="text" id="tipo_fondo" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly placeholder="05 - FONDOS EXTERNOS">
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Tipo de Financiamiento</label>
+                                            <input type="text" id="tipo_financiamiento" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly placeholder="...">
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Decreto Afecto</label>
+                                            <input type="text" id="decreto_afecto" class="form-control form-control-sm bg-light font-weight-bold" readonly placeholder="...">
                                         </div>
 
-                                        <!-- COMPROMISO DE ENTREGABLES (TABLA - Basado en Diagrama v2) -->
-                                        <div class="col-md-12 form-group mb-3">
-                                            <div class="p-3 border rounded bg-white shadow-xs">
-                                                <label class="small font-weight-bold text-dark mb-2"><i class="fas fa-file-contract mr-1 text-primary"></i> Compromiso de Entregables Técnicos</label>
-                                                <table class="table table-sm table-bordered mb-0" style="font-size: 0.75rem;">
-                                                    <thead class="bg-light">
-                                                        <tr>
-                                                            <th class="py-1">Tipo de evidencia</th>
-                                                            <th class="py-1" style="width: 150px;">Fecha de entrega</th>
-                                                            <th class="py-1" style="width: 100px;">Aceptado</th>
-                                                            
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr><td>Acta firmada</td><td><input type="date" class="form-control form-control-xs border-0 py-0 h-auto"></td><td class="text-center"><input type="checkbox"></td></tr>
-                                                        <tr><td>Informe con evidencias</td><td><input type="date" class="form-control form-control-xs border-0 py-0 h-auto"></td><td class="text-center"><input type="checkbox"></td></tr>
-                                                        <tr><td>Base de datos entregada</td><td><input type="date" class="form-control form-control-xs border-0 py-0 h-auto"></td><td class="text-center"><input type="checkbox"></td></tr>
-                                                        <tr><td>Proyecto presentado</td><td><input type="date" class="form-control form-control-xs border-0 py-0 h-auto"></td><td class="text-center"><input type="checkbox"></td></tr>
-                                                        <tr><td><input type="text" class="form-control form-control-xs border-0 py-0 h-auto" placeholder="Otra:"></td><td><input type="date" class="form-control form-control-xs border-0 py-0 h-auto"></td><td class="text-center"><input type="checkbox"></td></tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                  
 
                                         <div class="col-md-12 form-group mb-4">
                                             <label class="small text-muted font-weight-bold d-block mb-2">Tipo de prestación</label>
@@ -506,26 +273,68 @@
                                                 <div class="custom-control custom-checkbox d-flex align-items-center"><input type="checkbox" class="custom-control-input" id="tp_otro"><label class="custom-control-label small font-weight-bold mr-2" for="tp_otro">Otro:</label><input type="text" class="form-control form-control-sm border-top-0 border-left-0 border-right-0 rounded-0 py-0" style="width: 150px; height: 24px;"></div>
                                             </div>
                                         </div>
+                                           <!-- EVIDENCIAS VERIFICABLES -->
+                                            <div id="d9_evidence_container" class="col-12 mt-4 pt-3 border-top">
+                                                <h6 class="small font-weight-bold text-muted mb-2 text-uppercase" style="letter-spacing: 0.5px;">Evidencias para prestación</h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered bg-white shadow-xs mb-2" style="font-size: 0.75rem;">
+                                                        <thead class="bg-light text-muted">
+                                                            <tr>
+                                                                <th width="40" class="text-center"><i class="fas fa-check-square"></i></th>
+                                                                <th>Tipo de Entregable</th>
+                                                                <th width="160">Fecha Estimada</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Acta firmada</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Informe con evidencias</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle font-weight-bold text-dark">Base de datos entregada</td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="align-middle">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span class="font-weight-bold text-dark mr-2">Otra:</span>
+                                                                        <input type="text" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique..." style="font-size: 0.7rem; background: transparent;">
+                                                                    </div>
+                                                                </td>
+                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         <!-- Certificaciones eliminadas por requerimiento -->
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 form-group mt-3">
                                     <label class="small text-muted font-weight-bold">Descripción de la actividad D9</label>
-                                    <textarea class="form-control form-control-sm" rows="2" placeholder="Especifique las tareas..."></textarea>
+                                    <textarea id="d9_descripcion" class="form-control form-control-sm" rows="2" placeholder="Especifique las tareas..."></textarea>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label class="small text-muted font-weight-bold">Inicio de Ejecución D9</label>
                                     <div class="input-group input-group-sm">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                        <input type="date" class="form-control">
+                                        <input type="date" id="d9_fecha_inicio" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label class="small text-muted font-weight-bold">Fin de Ejecución D9</label>
                                     <div class="input-group input-group-sm">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                        <input type="date" class="form-control">
+                                        <input type="date" id="d9_fecha_fin" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -629,22 +438,10 @@
                             <!-- ========================================== -->
                             <div id="d9_staff_container" class="hidden dynamic-section">
                                 <!-- ALERTA COMPATIBILIDAD -->
-                                <div id="d9_compatibility_info" class="alert alert-info border-0 shadow-sm mb-4" style="background-color: #f0f7ff; border-left: 4px solid #1565c0 !important;">
-                                    <div class="d-flex align-items-center">
-                                        <div class="mr-3"><i class="fas fa-balance-scale fa-2x text-primary"></i></div>
-                                        <div>
-                                            <h6 class="small font-weight-bold text-primary mb-1 text-uppercase">Perfil del Funcionario y Compatibilidad Laboral (D.U. 009/2026)</h6>
-                                            <p class="small text-dark mb-0" style="line-height: 1.4;">
-                                                Los <strong>académicos</strong> integran labores según el REA. 
-                                                El <strong>personal administrativo</strong> debe ejecutar tareas fuera de jornada o compensarlas.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar Funcionario (Modo Preventivo)</h6>
-                                <button class="btn btn-sm btn-primary bg-ufro-orange border-0 mb-3 px-3 shadow-sm" data-toggle="modal" data-target="#modalSearchStaff" onclick="setSearchTarget('staff')">
-                                    <i class="fas fa-search mr-1"></i> Buscar y Validar Reglas D9
+                       
+                                <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar Funcionario</h6>
+                                <button class="btn btn-sm btn-primary bg-ufro-blue border-0 mb-3 px-3 shadow-sm" data-toggle="modal" data-target="#modalSearchStaff" onclick="setSearchTarget('staff')">
+                                    <i class="fas fa-search mr-1"></i> Seleccionar Funcionario
                                 </button>
                                 
                                 <div class="row">
@@ -673,19 +470,11 @@
                                     </div>
                                     <div class="col-md-4 form-group">
                                         <label class="small text-muted font-weight-bold">Estamento</label>
-                                        <select id="estamento" class="form-control form-control-sm" onchange="evaluarReglas()">
-                                            <option value="ACAD">Académico</option>
-                                            <option value="ADMIN">Administrativo / Profesional</option>
-                                            <option value="DOC">Docente</option>
-                                        </select>
+                                        <input type="text" id="estamento_d9" class="form-control form-control-sm bg-light" readonly>
                                     </div>
                                     <div class="col-md-4 form-group">
                                         <label class="small text-muted font-weight-bold">Tipo de Jornada</label>
-                                        <select id="tipo_jornada" class="form-control form-control-sm">
-                                            <option value="44">Completa (44 hrs)</option>
-                                            <option value="22">Media (22 hrs)</option>
-                                            <option value="PH">Por horas</option>
-                                        </select>
+                                        <input type="text" id="tipo_jornada_d9" class="form-control form-control-sm bg-light" readonly>
                                     </div>
 
                                     <!-- MODALIDAD DE EJECUCIÓN D9 -->
@@ -693,45 +482,27 @@
                                         <div class="bg-light p-3 rounded border">
                                             <h6 class="small font-weight-bold text-ufro-dark mb-3"><i class="fas fa-calendar-check mr-1"></i> Modalidad de Ejecución y Montos (D9)</h6>
                                             <div class="row align-items-end">
-                                                <!-- Tipo de Periodo -->
-                                                <div class="col-md-3 col-sm-6 mb-3">
-                                                    <label class="small text-muted font-weight-bold">Tipo de Periodo</label>
-                                                    <div class="d-flex mt-1">
-                                                        <div class="custom-control custom-radio mr-3">
-                                                            <input type="radio" id="tp_meses_d9" name="tp_d9" class="custom-control-input" checked>
-                                                            <label class="custom-control-label small font-weight-bold" for="tp_meses_d9">Meses</label>
-                                                        </div>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="tp_horas_d9" name="tp_d9" class="custom-control-input">
-                                                            <label class="custom-control-label small font-weight-bold" for="tp_horas_d9">Horas</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Meses de ejecución -->
-                                                <div class="col-md-4 col-sm-6 mb-3">
-                                                    <label class="small text-muted font-weight-bold">Meses de ejecución</label>
-                                                    <div class="d-flex border rounded p-2 bg-white justify-content-between shadow-xs" style="font-size: 0.65rem; min-height: 31px;">
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">E</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">F</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">M</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">A</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">M</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">J</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">J</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">A</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">S</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">O</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">N</div><input type="checkbox"></div>
-                                                        <div class="text-center px-1"><div class="mb-1 text-muted" style="font-size: 0.6rem;">D</div><input type="checkbox"></div>
+                                                
+                                                <!-- Meses de ejecución (Grid Table) -->
+                                                <div class="col-md-8 mb-3">
+                                                    <label class="small text-muted font-weight-bold">Selección de meses de ejecución <span class="text-danger small font-weight-bold">(Máximo 2 meses por año)</span></label>
+                                                    <div class="month-grid shadow-xs" id="month_picker_grid">
+                                                        <div class="month-item" data-month="ENE">ENE</div>
+                                                        <div class="month-item" data-month="FEB">FEB</div>
+                                                        <div class="month-item" data-month="MAR">MAR</div>
+                                                        <div class="month-item" data-month="ABR">ABR</div>
+                                                        <div class="month-item" data-month="MAY">MAY</div>
+                                                        <div class="month-item" data-month="JUN">JUN</div>
+                                                        <div class="month-item" data-month="JUL">JUL</div>
+                                                        <div class="month-item" data-month="AGO">AGO</div>
+                                                        <div class="month-item" data-month="SEP">SEP</div>
+                                                        <div class="month-item" data-month="OCT">OCT</div>
+                                                        <div class="month-item" data-month="NOV">NOV</div>
+                                                        <div class="month-item" data-month="DIC">DIC</div>
                                                     </div>
                                                 </div>
                                                 
-                                                <!-- Horas/Mes -->
-                                                <div class="col-6 col-md-1 mb-3">
-                                                    <label class="small text-muted font-weight-bold">Horas/Mes</label>
-                                                    <input type="number" class="form-control form-control-sm text-center px-1" value="0">
-                                                </div>
+                                                <!-- Horas/Mes Removido por DU09 -->
 
                                                 <!-- Monto Bruto Mes -->
                                                 <div class="col-6 col-md-2 mb-3">
@@ -764,8 +535,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 text-right">
-                                                        <small class="text-muted d-block" style="font-size: 0.65rem;">Tope referencial (D.U. 009/2026)</small>
-                                                        <strong class="text-dark" style="font-size: 0.85rem;">$2.205.400</strong>
+                                                        <small class="text-muted d-block" style="font-size: 0.65rem;">Límite acumulado (D.U. 009/2026)</small>
+                                                        <strong id="label_tope_total" class="text-dark" style="font-size: 0.85rem;">$0</strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -800,18 +571,23 @@
                                                     
                                                     <!-- Caso Admin/No SEA: Tabla Compensación -->
                                                     <div id="path_compensacion" class="dynamic-section hidden">
-                                                        <div class="alert alert-warning py-1 px-2 mb-2 small border-warning" style="background-color: #fff9e6;">
-                                                            <i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong>
+                                                        <div class="alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center" style="background-color: #fff9e6;">
+                                                            <span><i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong></span>
+                                                            <button type="button" class="btn btn-xs btn-primary py-0" onclick="agregarFilaCompensacion()">
+                                                                <i class="fas fa-plus mr-1"></i> Agregar Día
+                                                            </button>
                                                         </div>
                                                         <div class="table-responsive">
-                                                            <table class="table table-xs table-bordered mb-0 bg-white shadow-xs" style="font-size: 0.7rem;">
+                                                            <table id="tabla_compensacion" class="table table-xs table-bordered mb-0 bg-white shadow-xs" style="font-size: 0.7rem;">
                                                                 <thead class="bg-light">
-                                                                    <tr><th>Día</th><th>Desde</th><th>Hasta</th></tr>
+                                                                    <tr>
+                                                                        <th>Día</th>
+                                                                        <th width="100">Hrs</th>
+                                                                        <th width="40"></th>
+                                                                    </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr><td><input type="text" class="form-control form-control-xs border-0 py-0 h-auto" placeholder="Día"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td></tr>
-                                                                    <tr><td><input type="text" class="form-control form-control-xs border-0 py-0 h-auto" placeholder="Día"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td></tr>
-                                                                    <tr><td><input type="text" class="form-control form-control-xs border-0 py-0 h-auto" placeholder="Día"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td><td><input type="time" class="form-control form-control-xs border-0 py-0 h-auto"></td></tr>
+                                                                    <!-- Se llena dinámicamente -->
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -819,52 +595,11 @@
                                                 </div>
                                             </div>
 
-                                            <!-- EVIDENCIAS VERIFICABLES -->
-                                            <div id="d9_evidence_container" class="col-12 mt-4 pt-3 border-top">
-                                                <h6 class="small font-weight-bold text-muted mb-2 text-uppercase" style="letter-spacing: 0.5px;">Evidencias Verificables y Plazos (D9)</h6>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm table-bordered bg-white shadow-xs mb-2" style="font-size: 0.75rem;">
-                                                        <thead class="bg-light text-muted">
-                                                            <tr>
-                                                                <th width="40" class="text-center"><i class="fas fa-check-square"></i></th>
-                                                                <th>Tipo de Entregable / Producto</th>
-                                                                <th width="160">Fecha Estimada</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="text-center align-middle"><input type="checkbox"></td>
-                                                                <td class="align-middle font-weight-bold text-dark">Acta firmada</td>
-                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center align-middle"><input type="checkbox"></td>
-                                                                <td class="align-middle font-weight-bold text-dark">Informe con evidencias</td>
-                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center align-middle"><input type="checkbox"></td>
-                                                                <td class="align-middle font-weight-bold text-dark">Base de datos entregada</td>
-                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center align-middle"><input type="checkbox"></td>
-                                                                <td class="align-middle">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <span class="font-weight-bold text-dark mr-2">Otra:</span>
-                                                                        <input type="text" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique..." style="font-size: 0.7rem; background: transparent;">
-                                                                    </div>
-                                                                </td>
-                                                                <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                         
 
                                             <!-- BOTÓN ACCIÓN D9 -->
                                             <div class="col-12 text-right mt-3 mb-4">
-                                                <button type="button" class="btn btn-primary bg-ufro-orange border-0 btn-sm px-4 font-weight-bold shadow-sm" style="border-radius: 20px;">
+                                                <button type="button" class="btn btn-primary bg-ufro-blue border-0 btn-sm px-4 font-weight-bold shadow-sm" style="border-radius: 20px;" onclick="addStaffToSummary()">
                                                     <i class="fas fa-plus-circle mr-1"></i> Agregar Funcionario D9
                                                 </button>
                                             </div>
@@ -876,7 +611,7 @@
                     </div>
 
                     <!-- PASO 4: TABLA DE RESUMEN PREMIUM (D9) -->
-                    <div id="d9_summary_container" class="bg-light p-4 rounded-lg shadow-sm mb-4 hidden" style="background-color: #f8fafd !important; border: 1px solid #e1e7f1;">
+                    <div id="d9_summary_container" class="bg-light p-4 rounded-lg shadow-sm mb-4" style="background-color: #f8fafd !important; border: 1px solid #e1e7f1;">
                         <div class="table-responsive">
                             <table class="table table-premium mb-0">
                                 <thead>
@@ -889,105 +624,15 @@
                                         <th class="text-center" style="color: var(--ufro-blue);">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- EJEMPLO 1: ACADÉMICO EN SEA -->
-                                    <tr class="row-accent-sea">
-                                        <td>
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">JUAN PABLO ANDRADE VALDÉS</div>
-                                            <div class="text-muted small mt-1">12.345.678-9 <span class="mx-1 text-light">|</span> <span class="text-uppercase" style="font-size: 0.65rem;">Profesor Titular</span></div>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-soft-primary px-2 py-1 mb-1" style="background-color: #e8f0fe; color: #1967d2; font-size: 0.65rem;">ACADÉMICO</span><br>
-                                            <div class="small font-weight-bold text-muted">Jornada Completa (44h)</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center mb-1">
-                                                <div class="rounded-circle bg-success mr-2" style="width: 8px; height: 8px;"></div>
-                                                <strong class="small text-dark">DENTRO JORNADA</strong>
-                                            </div>
-                                            <div class="small text-muted" style="line-height: 1.2;">Perteneciente a SEA<br><span class="text-success font-weight-bold" style="font-size: 0.6rem;">SIN COMPENSACIÓN</span></div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-wrap gap-1 mb-1">
-                                                <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">MAR</span>
-                                                <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">ABR</span>
-                                                <span class="badge badge-light border-0" style="background: #f1f3f4; font-size: 0.6rem;">MAY</span>
-                                            </div>
-                                            <small class="font-weight-bold text-dark">12 Horas / Mes</small>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="font-weight-bold text-dark" style="font-size: 1rem;">$450.000</div>
-                                            <div class="small font-weight-bold text-success mt-1">TOTAL: $1.350.000</div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn-action mr-2" title="Editar"><i class="fas fa-pencil-alt fa-xs"></i></button>
-                                                <button class="btn-action btn-delete" title="Eliminar"><i class="fas fa-trash-alt fa-xs"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- EJEMPLO 2: ADMINISTRATIVO CON COMPENSACIÓN -->
-                                    <tr class="row-accent-warning">
-                                        <td>
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.9rem;">MARÍA ELENA SOTO FIGUEROA</div>
-                                            <div class="text-muted small mt-1">15.987.654-3 <span class="mx-1 text-light">|</span> <span class="text-uppercase" style="font-size: 0.65rem;">Profesional Nivel 1</span></div>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-soft-info px-2 py-1 mb-1" style="background-color: #e2f6f9; color: #007a8c; font-size: 0.65rem;">ADMINISTRATIVO</span><br>
-                                            <div class="small font-weight-bold text-muted">Jornada Completa (44h)</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center mb-1">
-                                                <div class="rounded-circle bg-warning mr-2" style="width: 8px; height: 8px;"></div>
-                                                <strong class="small text-dark">DENTRO JORNADA</strong>
-                                            </div>
-                                            <div class="small text-muted" style="line-height: 1.2;">Requiere Recuperación<br><span class="text-warning font-weight-bold" style="font-size: 0.6rem;">TABLA DE HORARIOS ACTIVA</span></div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-wrap gap-1 mb-1">
-                                                <span class="badge badge-light border-0 mr-1" style="background: #f1f3f4; font-size: 0.6rem;">ABR</span>
-                                                <span class="badge badge-light border-0" style="background: #f1f3f4; font-size: 0.6rem;">MAY</span>
-                                            </div>
-                                            <small class="font-weight-bold text-dark">8 Horas / Mes</small>
-                                        </td>
-                                        <td class="text-right">
-                                            <div class="font-weight-bold text-dark" style="font-size: 1rem;">$280.000</div>
-                                            <div class="small font-weight-bold text-success mt-1">TOTAL: $560.000</div>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn-action mr-2" title="Editar"><i class="fas fa-pencil-alt fa-xs"></i></button>
-                                                <button class="btn-action btn-delete" title="Eliminar"><i class="fas fa-trash-alt fa-xs"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tbody id="d9_summary_body">
+                                    <!-- Se llena dinámicamente mediante la función addStaffToSummary -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- DOCUMENTACIÓN -->
-                    <div class="card border-0 shadow-sm rounded-lg p-4 mb-5">
-                        <label class="small font-weight-bold text-muted text-uppercase mb-3" style="letter-spacing: 1px;">Subir documentación justificativa (PDF)</label>
-                        <div class="row align-items-end">
-                            <div class="col-md-7 mb-3 mb-md-0">
-                                <label class="small d-block mb-1 text-muted">Nombre del documento / Descripción <i class="fas fa-file-pdf text-danger ml-1"></i></label>
-                                <input type="text" class="form-control form-control-sm border-light bg-light" placeholder="Ej: Justificación_Proyecto_IA.pdf">
-                            </div>
-                            <div class="col-md-5">
-                                <button class="btn btn-success btn-sm btn-block font-weight-bold bg-ufro-green shadow-sm py-2">
-                                    <i class="fas fa-upload mr-1"></i> Seleccionar Archivo
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- BOTONES ACCIÓN FINALES -->
                     <div class="d-flex flex-column flex-sm-row justify-content-end align-items-center mb-5 gap-3">
-                        <div id="d9_validation_status" class="hidden text-center text-sm-right mb-3 mb-sm-0 mr-sm-4">
-                            <small class="d-block font-weight-bold text-success"><i class="fas fa-check-circle mr-1"></i> Configuración D9 Validada</small>
-                            <small class="text-muted">Lista para envío</small>
-                        </div>
                         <div class="w-100 w-sm-auto d-flex">
                             <button type="button" class="btn btn-light btn-sm px-4 mr-2 font-weight-bold text-muted border flex-grow-1 flex-sm-grow-0">Guardar Borrador</button>
                             <button id="btnEnviar" type="button" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm flex-grow-1 flex-sm-grow-0" onclick="enviarSolicitud()">
@@ -1004,7 +649,7 @@
 
        <!-- MODAL BÚSQUEDA CENTRO DE COSTO -->
     <div class="modal fade" id="modalSearchCC" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-ufro-dark text-white">
                     <h5 class="modal-title small font-weight-bold text-uppercase"><i class="fas fa-search mr-2"></i> Buscador de Centro de Costos</h5>
@@ -1024,22 +669,31 @@
                             <tr>
                                 <th>Código CC</th>
                                 <th>Nombre Centro de Costo</th>
-                                <th>Tipo</th>
-                                <th width="100"></th>
+                                <th>Financiamiento</th>
+                                <th>Decreto</th>
+                                <th>Unidad Ejecutora</th>
+                                <th>Jefe de Proyecto</th>
+                                <th width="100">Acción</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="font-weight-bold">21.05.001</td>
-                                <td>FACULTAD DE INGENIERÍA Y CIENCIAS</td>
-                                <td><span class="badge badge-info">21</span> <small class="text-muted ml-1">UNIDAD ACADÉMICA</small></td>
-                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('1', '21.05.001', 'FACULTAD DE INGENIERÍA Y CIENCIAS')" data-dismiss="modal">Seleccionar</button></td>
+                                <td class="font-weight-bold">4050.21</td>
+                                <td>INSTITUTO DE AGROINDUSTRIA</td>
+                                <td><span class="badge badge-info">21 - Fondos Propios</span></td>
+                                <td><span class="text-primary font-weight-bold">0 - DU 288</span></td>
+                                <td>FACULTAD DE INGENIERÍA</td>
+                                <td>DR. MARIO GODOY RIVERA</td>
+                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('1', '4050.21', 'INSTITUTO DE AGROINDUSTRIA')" data-dismiss="modal">Seleccionar</button></td>
                             </tr>
                             <tr>
-                                <td class="font-weight-bold">44.10.022</td>
-                                <td>PROYECTO FONDECYT 123456</td>
-                                <td><span class="badge badge-success">44</span> <small class="text-muted ml-1">PROYECTO</small></td>
-                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('2', '44.10.022', 'PROYECTO FONDECYT 123456')" data-dismiss="modal">Seleccionar</button></td>
+                                <td class="font-weight-bold">8120.44</td>
+                                <td>INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE</td>
+                                <td><span class="badge badge-success">44 - Terceros</span></td>
+                                <td><span class="text-primary font-weight-bold">4 - Resol 4129</span></td>
+                                <td>FACULTAD DE INGENIERÍA</td>
+                                <td>DRA. ELENA SALAZAR</td>
+                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('2', '8120.44', 'INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE')" data-dismiss="modal">Seleccionar</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1111,7 +765,7 @@
             
             if(headerPaso2) {
                 headerPaso2.classList.remove('bg-ufro-dark');
-                headerPaso2.classList.add('bg-ufro-orange');
+                headerPaso2.classList.add('bg-ufro-blue');
             }
             if(btnEnviar) btnEnviar.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar validación D9';
             simulateValidation();
@@ -1128,7 +782,7 @@
             if(compatibilityInfo) compatibilityInfo.classList.add('hidden');
             
             if(headerPaso2) {
-                headerPaso2.classList.remove('bg-ufro-orange');
+                headerPaso2.classList.remove('bg-ufro-blue');
                 headerPaso2.classList.add('bg-ufro-dark');
             }
             if(btnEnviar) btnEnviar.innerHTML = 'Enviar solicitud';
@@ -1153,55 +807,45 @@
         
         checks.classList.remove('hidden');
         
-        if (code.startsWith('11.')) {
+        if (code.startsWith('11')) {
             structural.className = 'text-danger font-weight-bold mr-3';
             structural.innerHTML = '<i class="fas fa-times-circle"></i> Es Estructural (No permitido)';
-            document.getElementById('d9_projects_sublist').classList.add('hidden');
+            
+            // Limpiar datos
+            document.getElementById('rut_jefe_d9').value = "";
+            document.getElementById('nombre_jefe_d9').value = "";
         } else {
             structural.className = 'text-success font-weight-bold mr-3';
             structural.innerHTML = '<i class="fas fa-check-circle"></i> No es Estructural';
             
-            // Simular Check Presupuestario D9
+            // Auto-rellenado de Identidad y Proyecto (Datos desde BDD)
+            document.getElementById('rut_jefe_d9').value = "12.345.678-9";
+            document.getElementById('nombre_jefe_d9').value = "DR. MARIO GODOY RIVERA";
+            document.getElementById('proyecto_nombre_d9').value = "INVESTIGACIÓN AVANZADA " + name;
+
+            // Simular Check Presupuestario
             const checkP = document.getElementById('check_presupuesto');
             checkP.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validando Saldo...';
             setTimeout(() => {
                 checkP.innerHTML = '<i class="fas fa-check-circle"></i> Control Presupuestario (Saldo Disponible)';
+                document.getElementById('cc_saldo_val').innerHTML = "$15.420.000";
             }, 1000);
 
-            // Mostrar Proyectos
-            document.getElementById('d9_projects_sublist').classList.remove('hidden');
-            loadProjects(code);
+            // Poblar campos derivados
+            document.getElementById('unidad_ejecutora').value = "FACULTAD DE INGENIERÍA";
+            document.getElementById('tipo_financiamiento').value = "21 - Fondos Propios";
+            document.getElementById('decreto_afecto').value = "0 - DU 288";
+
+            // Nuevos campos auto-rellenados (Requerimiento)
+            document.getElementById('tp_asistencia').checked = true;
+            document.getElementById('tp_investigacion').checked = true;
+            document.getElementById('d9_descripcion').value = "Apoyo técnico y profesional en el marco del proyecto de investigación avanzada de la unidad.";
+            document.getElementById('d9_fecha_inicio').value = "2026-05-01";
+            document.getElementById('d9_fecha_fin').value = "2026-12-31";
         }
     }
 
-    function loadProjects(ccCode) {
-        const list = document.getElementById('project_list');
-        list.innerHTML = '';
-        
-        // Mock data de proyectos según CC
-        const projects = [
-            { id: 101, name: 'INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE', unidad: 'FACULTAD DE INGENIERÍA' },
-            { id: 102, name: 'PROGRAMA DE ASISTENCIA PYME 2026', unidad: 'DEPARTAMENTO DE ADMINISTRACIÓN' }
-        ];
 
-        projects.forEach(p => {
-            const item = document.createElement('label');
-            item.className = 'list-group-item list-group-item-action py-2 d-flex justify-content-between align-items-center cursor-pointer';
-            item.innerHTML = `
-                <div>
-                    <input type="radio" name="project_item" onchange="selectProject('${p.id}', '${p.name}', '${p.unidad}')">
-                    <span class="ml-2 small font-weight-bold">${p.name}</span>
-                </div>
-                <span class="badge badge-success">Activo</span>
-            `;
-            list.appendChild(item);
-        });
-    }
-
-    function selectProject(id, name, unidad) {
-        document.getElementById('d9_project_fields_content').classList.remove('hidden');
-        document.getElementById('unidad_ejecutora').value = unidad;
-    }
 
     function simulateStaffSearch() {
         const jerarquiaInput = document.getElementById('funcionario_jerarquia');
@@ -1235,38 +879,221 @@
         }
     }
 
+    // Inicializar Month Picker
+    document.querySelectorAll('.month-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const selectedCount = document.querySelectorAll('.month-item.selected').length;
+            
+            if (this.classList.contains('selected')) {
+                this.classList.remove('selected');
+            } else {
+                if (selectedCount < 2) {
+                    this.classList.add('selected');
+                } else {
+                    alert('Normativa DU09: Solo se permite un máximo de 2 meses de ejecución.');
+                }
+            }
+            actualizarCalculoTopes();
+        });
+    });
+
+    // Lógica de Compensación Horaria
+    function agregarFilaCompensacion() {
+        const tbody = document.querySelector('#tabla_compensacion tbody');
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+            <td>
+                <select class="form-control form-control-xs border-0 py-0 h-auto" style="font-size: 0.7rem;">
+                    <option value="">Seleccione día...</option>
+                    <option>Lunes</option>
+                    <option>Martes</option>
+                    <option>Miércoles</option>
+                    <option>Jueves</option>
+                    <option>Viernes</option>
+                    <option>Sábado</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-xs border-0 py-0 h-auto" min="1" max="8" value="1" style="font-size: 0.7rem;">
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-link text-danger p-0" onclick="eliminarFilaCompensacion(this)">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    function eliminarFilaCompensacion(btn) {
+        btn.closest('tr').remove();
+    }
+
+    function addStaffToSummary() {
+        const nombre = document.getElementById('nombre_funcionario').value;
+        const rut = document.getElementById('rut_funcionario').value;
+        const jerarquia = document.getElementById('funcionario_jerarquia').value;
+        const estamento = document.getElementById('estamento_d9').value;
+        const jornada = document.getElementById('tipo_jornada_d9').value;
+        
+        if (!nombre || !rut) {
+            alert('Por favor, seleccione un funcionario.');
+            return;
+        }
+
+        // Modalidad
+        const isDentro = document.getElementById('j_dentro').checked;
+        const modalidadText = isDentro ? 'DENTRO JORNADA' : 'FUERA JORNADA';
+        const modalidadColor = isDentro ? 'bg-success' : 'bg-warning';
+        
+        // SEA / Compensación
+        let extraInfo = '';
+        let compensacionDetail = '';
+        if (estamento.includes('Académico')) {
+            const isSea = document.getElementById('sea_si').checked;
+            extraInfo = isSea ? 'Perteneciente a SEA' : 'No pertenece a SEA';
+            if (!isSea) {
+                // Obtener detalle de compensación
+                const filasComp = document.querySelectorAll('#tabla_compensacion tbody tr');
+                if (filasComp.length > 0) {
+                    const detalles = Array.from(filasComp).map(f => {
+                        const dia = f.querySelector('select').value;
+                        const hrs = f.querySelector('input').value;
+                        return dia ? `${dia.substring(0,3)} (${hrs}h)` : '';
+                    }).filter(d => d !== '').join(', ');
+                    compensacionDetail = detalles ? `<div class="mt-1"><span class="badge badge-light border text-muted" style="font-size: 0.65rem;">Comp: ${detalles}</span></div>` : '';
+                }
+            }
+        } else {
+            extraInfo = 'Personal Administrativo';
+            const filasComp = document.querySelectorAll('#tabla_compensacion tbody tr');
+            if (filasComp.length > 0) {
+                const detalles = Array.from(filasComp).map(f => {
+                    const dia = f.querySelector('select').value;
+                    const hrs = f.querySelector('input').value;
+                    return dia ? `${dia.substring(0,3)} (${hrs}h)` : '';
+                }).filter(d => d !== '').join(', ');
+                compensacionDetail = detalles ? `<div class="mt-1"><span class="badge badge-light border text-muted" style="font-size: 0.65rem;">Comp: ${detalles}</span></div>` : '';
+            }
+        }
+
+        const mesesElements = document.querySelectorAll('.month-item.selected');
+        const meses = mesesElements.length;
+        if (meses === 0) {
+            alert('Por favor, seleccione al menos un mes de ejecución.');
+            return;
+        }
+
+        const mesesStr = Array.from(mesesElements).map(m => m.getAttribute('data-month')).join(', ');
+        
+        // Finanzas
+        const montoMes = document.querySelector('.monto-pago').value;
+        const totalPds = document.getElementById('total_monto_display').value;
+
+        const tbody = document.getElementById('d9_summary_body');
+        const row = document.createElement('tr');
+        row.className = estamento.includes('Académico') ? 'row-accent-sea' : 'row-accent-warning';
+        
+        row.innerHTML = `
+            <td>
+                <div class="font-weight-bold text-dark">${nombre}</div>
+                <div class="text-muted small">${rut} <span class="mx-1 text-light">|</span> ${jerarquia}</div>
+            </td>
+            <td>
+                <div class="small font-weight-bold text-dark mb-1">${estamento}</div>
+                <div class="small text-muted">${jornada}</div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center mb-1">
+                    <span class="badge ${isDentro ? 'badge-success' : 'badge-warning'} mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                    <span class="small font-weight-bold">${modalidadText}</span>
+                </div>
+                <div class="small text-muted">${extraInfo}</div>
+                ${compensacionDetail}
+            </td>
+            <td>
+                <div class="small font-weight-bold text-dark">${meses} Mes(es)</div>
+                <div class="small text-muted">${mesesStr}</div>
+            </td>
+            <td class="text-right">
+                <div class="font-weight-bold text-dark">$${totalPds}</div>
+                <div class="small text-muted" style="font-size: 0.75rem;">$${montoMes} / mes</div>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="deleteStaffSummaryRow(this)" title="Eliminar">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        `;
+        
+        tbody.appendChild(row);
+        document.getElementById('d9_summary_container').classList.remove('hidden');
+        
+        // Limpiar formulario Módulo 2
+        limpiarFormularioFuncionario();
+    }
+
+    function deleteStaffSummaryRow(btn) {
+        if(confirm('¿Está seguro de eliminar este funcionario de la solicitud?')) {
+            btn.closest('tr').remove();
+            // Ya no ocultamos el contenedor para mantener la maqueta siempre visible
+        }
+    }
+
+    function limpiarFormularioFuncionario() {
+        document.getElementById('nombre_funcionario').value = '';
+        document.getElementById('rut_funcionario').value = '';
+        document.getElementById('funcionario_jerarquia').value = '';
+        document.getElementById('estamento_d9').value = '';
+        document.getElementById('tipo_jornada_d9').value = '';
+        document.querySelector('.monto-pago').value = '';
+        document.getElementById('total_monto_display').value = '0';
+        document.querySelectorAll('.month-item').forEach(m => m.classList.remove('selected'));
+        document.querySelector('#tabla_compensacion tbody').innerHTML = '';
+        document.getElementById('d9_path_validation').classList.add('hidden');
+        actualizarCalculoTopes();
+    }
+
     function actualizarCalculoTopes() {
         const montoInput = document.querySelector('.monto-pago');
         const totalDisplay = document.getElementById('total_monto_display');
         const progressBar = document.getElementById('tope_progress');
         const topePct = document.getElementById('tope_pct');
+        const labelTopeTotal = document.getElementById('label_tope_total');
         
         if (!montoInput || !totalDisplay) return;
 
-        const monto = parseFloat(montoInput.value) || 0;
+        const montoMes = parseFloat(montoInput.value) || 0;
+        const mesesSeleccionados = document.querySelectorAll('.month-item.selected').length;
+        const totalSolicitado = montoMes * mesesSeleccionados;
         
-        // Simular que hay 2 meses seleccionados por defecto
-        const mesesContados = 2; 
-        const total = monto * mesesContados;
-        
-        if (totalDisplay) totalDisplay.value = total.toLocaleString('es-CL');
+        if (totalDisplay) totalDisplay.value = totalSolicitado.toLocaleString('es-CL');
 
-        // Tope referencial DU09 (Ejemplo: $2.205.400)
-        const topeMax = 2205400;
-        const pct = Math.min((monto / topeMax) * 100, 100);
+        // Sueldo base simulado del funcionario
+        const sueldoBruto = 2500000; 
+        const topeMensual = sueldoBruto * 0.5;
+        const topeAcumulado = topeMensual * mesesSeleccionados;
+        
+        // Calcular porcentaje basado en el acumulado (si no hay meses, usar 1 para evitar division por 0)
+        const pct = mesesSeleccionados > 0 ? Math.min((totalSolicitado / topeAcumulado) * 100, 100) : 0;
         
         if (progressBar) {
             progressBar.style.width = pct + '%';
-            if (pct > 90) progressBar.className = 'progress-bar bg-danger';
-            else if (pct > 50) progressBar.className = 'progress-bar bg-warning';
+            if (pct > 95) progressBar.className = 'progress-bar bg-danger';
+            else if (pct > 70) progressBar.className = 'progress-bar bg-warning';
             else progressBar.className = 'progress-bar bg-success';
         }
         
+        if (labelTopeTotal) {
+            labelTopeTotal.innerHTML = `Límite: $${topeAcumulado.toLocaleString('es-CL')} (${mesesSeleccionados} meses)`;
+        }
+
         if (topePct) {
-            if (pct > 90) {
+            if (pct > 95) {
                 topePct.className = 'badge badge-danger px-2';
                 topePct.innerHTML = 'Excede Límite';
-            } else if (pct > 50) {
+            } else if (pct > 70) {
                 topePct.className = 'badge badge-warning px-2';
                 topePct.innerHTML = 'Cercano al Límite';
             } else {
@@ -1280,7 +1107,9 @@
         const isD9 = document.getElementById('flowD9').checked;
         if (!isD9) return;
 
-        const estamento = document.getElementById('estamento').value;
+        const estamentoText = document.getElementById('estamento_d9').value;
+        const estamento = estamentoText.includes('Académico') ? 'ACAD' : 'ADMIN';
+        
         const jDentro = document.getElementById('j_dentro').checked;
         const seaSi = document.getElementById('sea_si').checked;
         const seaNo = document.getElementById('sea_no').checked;
@@ -1301,16 +1130,15 @@
                 // Académicos: Mostrar pregunta SEA
                 if(pathAcadSea) pathAcadSea.classList.remove('hidden');
                 
+                // Si NO es SEA, debe compensar obligatoriamente
                 if (seaNo) {
-                    // No pertenece a SEA -> Debe compensar
                     if(pathCompensacion) pathCompensacion.classList.remove('hidden');
-                } else if (seaSi) {
-                    // Pertenece a SEA -> Pasa sin problemas (Ocultar tabla)
+                } else {
                     if(pathCompensacion) pathCompensacion.classList.add('hidden');
                 }
             } else {
                 // Administrativo / Profesional Docente: Siempre compensa si es dentro de jornada
-                if(pathAcadSea) pathAcadSea.classList.add('hidden'); // Ocultar pregunta SEA
+                if(pathAcadSea) pathAcadSea.classList.add('hidden');
                 if(pathCompensacion) pathCompensacion.classList.remove('hidden');
             }
         }
@@ -1331,7 +1159,13 @@
         } else {
             document.getElementById('rut_funcionario').value = rut;
             document.getElementById('nombre_funcionario').value = name;
-            simulateStaffSearch(); // Solo para D9: Actualizar jerarquía y validaciones
+            
+            // Auto-rellenado de datos del funcionario (Simulado desde BDD SISPER)
+            document.getElementById('funcionario_jerarquia').value = "Profesor Asociado";
+            document.getElementById('estamento_d9').value = "Académico";
+            document.getElementById('tipo_jornada_d9').value = "Jornada Completa (44 hrs)";
+            
+            simulateStaffSearch(); // Actualizar validaciones preventivas D9
         }
     }
 
