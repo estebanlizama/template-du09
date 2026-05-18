@@ -49,6 +49,33 @@
             position: sticky;
             top: 20px;
         }
+
+        /* Trace logs style (standardized across screens) */
+        .trace-log-item {
+            font-size: 0.72rem;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 12px;
+            margin-bottom: 8px;
+            position: relative;
+            line-height: 1.5;
+            color: #475569;
+            text-align: left;
+        }
+
+        .trace-log-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            position: absolute;
+            left: -4px;
+            top: 5px;
+        }
+
+        .trace-log-item.active-log::before {
+            background: var(--ufro-green, #008f62);
+        }
     </style>
 </head>
 <body>
@@ -112,7 +139,7 @@
                                 <small>ARCHIVO CENTRAL</small>
                             </div>
                             <div class="text-right mb-4">
-                                <h5 class="font-weight-bold">RESOLUCIÓN EXENTA Nº 2026/001</h5>
+                                <h5 class="font-weight-bold">RESOLUCIÓN EXENTA Nº 102/2026</h5>
                             </div>
                             <p><strong>CERTIFÍQUESE</strong> que el presente acto administrativo ha cumplido con todas las etapas de visación, decretación y toma de razón legal correspondientes...</p>
                             
@@ -129,6 +156,51 @@
                                     <div class="mb-1"><strong>CONTRALOR</strong></div>
                                     <i class="fas fa-check-circle text-success"></i> Toma de Razón
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TRAZABILIDAD DOCUMENTAL DE LA SOLICITUD (Standardized) -->
+                    <div class="card p-4 mt-4" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: #fff;">
+                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3">
+                            <i class="fas fa-history mr-2 text-primary"></i> Historial y Trazabilidad Documental de la Solicitud
+                        </h6>
+                        <div id="container-trace-logs" class="p-3 bg-light rounded border" style="max-height: 180px; overflow-y: auto;">
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">05/05/2026 09:30:15</span> &bull; Solicitud de contratación de servicios creada por <strong class="text-dark">Dr. Mario Godoy Rivera (Jefe de Proyecto)</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">06/05/2026 11:20:44</span> &bull; Visación de la solicitud aprobada por <strong class="text-dark">Hector Pablo Sandoval (Jefe de Proyecto)</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">08/05/2026 14:15:30</span> &bull; Visación del Director DGDP aprobada en conformidad con la normativa DU09/DU288.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">10/05/2026 16:45:12</span> &bull; Visación financiera de la Facultad registrada por el Analista de Finanzas.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">12/05/2026 10:10:00</span> &bull; Aprobación técnica y legal de Decanato confirmada.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">14/05/2026 15:30:22</span> &bull; Control presupuestario y visación de Finanzas Central aprobada con éxito.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">15/05/2026 17:15:30</span> &bull; Borrador de la resolución formalizado y decretado en Decretación Jurídica por <strong class="text-dark">Claudia Alvarez</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">18/05/2026 11:40:05</span> &bull; Firma de Secretario General registrada correctamente por <strong class="text-dark">Gonzalo Oporto Venegas</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">18/05/2026 16:25:30</span> &bull; Firma y decretación final de Rectoría aprobada por <strong class="text-dark">Eduardo Hebel Weiss (Rector)</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">19/05/2026 09:45:10</span> &bull; Toma de Razón favorable visada por Andrés Martínez (Profesional Contraloría).
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">19/05/2026 14:30:22</span> &bull; Toma de Razón definitiva decretada y autorizada por el Contralor Joaquín Bernales.
+                            </div>
+                            <div class="trace-log-item active-log">
+                                <span class="font-weight-bold">Hoy (Finalizado)</span> &bull; Expediente archivado en el Repositorio de Archivo Central de la Universidad de La Frontera.
                             </div>
                         </div>
                     </div>

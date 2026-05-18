@@ -3,66 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visación Rectoría - UFRO</title>
+    <title>Firma y Decretación Rectoral - UFRO</title>
+    <!-- CSS Dependencies -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
     <style>
-        .audit-sheet {
+        /* CSS Variables */
+        :root {
+            --ufro-blue: #005c9e;
+            --ufro-green: #008f62;
+            --ufro-orange: #f47920;
+            --ufro-red: #d32f2f;
+            --neutral-dark: #1e293b;
+            --neutral-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        /* Minimalist card style matching standard PDS premium aesthetics */
+        .card-minimal {
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header-premium {
+            background-color: #ffffff;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        /* 15-Stage horizontal timeline (Standard across pages) */
+        .stage-timeline-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 12px 10px;
             background: #fff;
-            border-radius: 12px;
+            border-radius: 8px;
             border: 1px solid #e2e8f0;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
         }
-        .sheet-header-premium {
-            background: linear-gradient(to right, #f8fafc, #fff);
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
+
+        .stage-timeline {
+            display: inline-flex;
             align-items: center;
+            min-width: 100%;
+            justify-content: space-between;
         }
-        .audit-section {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid #f1f5f9;
+
+        .stage-item {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 0 10px;
+            text-align: center;
+            opacity: 0.6;
+            transition: all 0.2s ease;
         }
-        .pdf-viewer-container {
-            background: #e2e8f0;
-            border-radius: 12px;
-            padding: 40px;
+
+        .stage-item.completed {
+            opacity: 1;
+        }
+
+        .stage-item.active {
+            opacity: 1;
+            font-weight: 700;
+            transform: scale(1.02);
+        }
+
+        .stage-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            color: #64748b;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 4px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #cbd5e1;
+            z-index: 2;
+        }
+
+        .stage-item.completed .stage-badge {
+            background: var(--ufro-blue);
+            color: #fff;
+            box-shadow: 0 0 0 2px var(--ufro-blue);
+        }
+
+        .stage-item.active .stage-badge {
+            background: var(--ufro-orange);
+            color: #fff;
+            box-shadow: 0 0 0 2px var(--ufro-orange);
+        }
+
+        .stage-name {
+            font-size: 0.6rem;
+            color: #475569;
+            max-width: 80px;
+            white-space: normal;
+        }
+
+        /* Tabs styling matching the minimalist image */
+        .nav-tabs-premium {
+            border-bottom: 1px solid #e2e8f0;
+            padding-left: 1rem;
+            background: #f8fafc;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .nav-tabs-premium .nav-link {
+            border: none;
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 0.9rem 1.25rem;
+            background: transparent;
+            margin-bottom: -1px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .nav-tabs-premium .nav-link:hover {
+            color: var(--ufro-blue);
+            border-bottom-color: #cbd5e1;
+        }
+
+        .nav-tabs-premium .nav-link.active {
+            color: var(--ufro-blue);
+            font-weight: 700;
+            background: #ffffff;
+            border-bottom: 2.5px solid var(--ufro-blue);
+        }
+
+        /* Central Document Container */
+        .document-wrapper {
+            background-color: #ffffff;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            min-height: 700px;
+            padding: 1.5rem;
+        }
+
+        /* Mock A4 PDF Sheet */
+        .pdf-canvas {
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            padding: 2.5rem 1.5rem;
             display: flex;
             justify-content: center;
-            min-height: 800px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+            max-height: 75vh;
+            overflow-y: auto;
         }
-        .pdf-page {
-            background: white;
+
+        .pdf-page-sheet {
+            background: #ffffff;
             width: 100%;
-            max-width: 800px;
-            height: auto;
-            min-height: 1000px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            padding: 60px 80px;
+            max-width: 760px;
+            padding: 3rem 3.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 2px;
             font-family: 'Times New Roman', Times, serif;
             color: #000;
-            line-height: 1.6;
+            line-height: 1.5;
         }
-        .action-sidebar {
-            background: #fff;
-            border-radius: 12px;
-            padding: 1.5rem;
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 18px;
+        }
+
+        .pdf-header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--ufro-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-header-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .pdf-res-number {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .pdf-body-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 18px 0;
+        }
+
+        .pdf-section-text {
+            text-align: justify;
+            text-indent: 40px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        .pdf-bold-tag {
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            text-indent: 0;
+            margin-right: 10px;
+        }
+
+        .pdf-annex-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            margin: 12px 0;
+        }
+
+        .pdf-annex-table th, .pdf-annex-table td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+        }
+
+        .pdf-annex-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
+        }
+
+        .pdf-signatures {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .pdf-signature-box {
+            width: 45%;
+        }
+
+        .pdf-signature-line {
+            border-top: 1px solid #000;
+            margin-top: 35px;
+            padding-top: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .pdf-distrib {
+            margin-top: 30px;
+            font-size: 0.6rem;
+            border-top: 1px solid #ddd;
+            padding-top: 6px;
+            color: #555;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Right Sidebar Panel Style (Matching the user's image exactly) */
+        .sidebar-actions-panel {
+            background: #ffffff;
+            border-radius: 8px;
             border: 1px solid #e2e8f0;
-            position: sticky;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .instruction-step {
+            margin-bottom: 1.5rem;
+        }
+
+        .instruction-number-text {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        /* Signature visual status box */
+        .signature-status-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.85rem;
+            margin-top: 1.25rem;
+        }
+
+        .signature-status-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        /* Generic premium styled buttons */
+        .btn-ufro {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.55rem 1rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+            letter-spacing: 0.1px;
+        }
+
+        .btn-ufro-primary {
+            background: var(--ufro-blue);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-primary:hover {
+            background: #004b82;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-ufro-outline {
+            background: transparent;
+            color: #475569;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .btn-ufro-outline:hover {
+            background: #f1f5f9;
+            color: var(--neutral-dark);
+            border-color: #94a3b8;
+        }
+
+        .btn-ufro-success {
+            background: var(--ufro-green);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-success:hover:not(:disabled) {
+            background: #00704e;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-ufro-success:disabled {
+            background-color: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-ufro-danger {
+            background: var(--ufro-red);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-danger:hover {
+            background: #b52020;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Premium Alert Toast */
+        .ufro-alert-toast {
+            position: fixed;
             top: 20px;
+            right: 20px;
+            z-index: 1060;
+            background: #ffffff;
+            border-radius: 6px;
+            border-left: 4px solid var(--ufro-green);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            min-width: 280px;
+            max-width: 340px;
+            transform: translateX(120%);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ufro-alert-toast.show {
+            transform: translateX(0);
+        }
+
+        /* Trace logs style (standardized across screens) */
+        .trace-log-item {
+            font-size: 0.72rem;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 12px;
+            margin-bottom: 8px;
+            position: relative;
+            line-height: 1.5;
+            color: #475569;
+        }
+
+        .trace-log-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            position: absolute;
+            left: -4px;
+            top: 5px;
+        }
+
+        .trace-log-item.active-log::before {
+            background: var(--ufro-green);
         }
     </style>
 </head>
 <body>
 
 <div id="wrapper">
-    <!-- Sidebar -->
+    <!-- Sidebar (Standard common layout across views) -->
     <div id="sidebar-wrapper">
         <div class="logo-cont">
             <img src="https://intranet.ufro.cl/estilo/img/logo_bl.png" class="logo" alt="UFRO">
@@ -79,7 +460,7 @@
         </div>
     </div>
 
-    <!-- Page Content -->
+    <!-- Page Content Wrapper -->
     <div id="page-content-wrapper">
         <!-- Topbar -->
         <nav id="dna-topbar">
@@ -92,7 +473,7 @@
             </div>
             
             <div class="d-flex align-items-center ml-auto">
-                <div class="user-details text-right mr-3">
+                <div class="user-details text-right mr-3 d-none d-sm-block">
                     <span class="user-name d-block font-weight-bold">EDUARDO HEBEL WEISS</span>
                     <span class="user-role small text-muted text-uppercase">RECTOR</span>
                 </div>
@@ -107,67 +488,313 @@
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">
+            
+            <!-- 15-Stage horizontal timeline (Ensures visual progression across files) -->
+            <div class="stage-timeline-container shadow-sm">
+                <div class="stage-timeline">
+                    <div class="stage-item completed"><span class="stage-badge">1</span><span class="stage-name">Creación</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">2</span><span class="stage-name">Jefe Proy.</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">3</span><span class="stage-name">Dirección</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">4</span><span class="stage-name">DGDP</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">5</span><span class="stage-name">Finanzas Fac.</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">6</span><span class="stage-name">Decanato</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">7</span><span class="stage-name">Finanzas Ctrl.</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">8</span><span class="stage-name">Decretación</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">9</span><span class="stage-name">Abogado DGDP</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">10</span><span class="stage-name">Firma Dir. DGDP</span></div>
+                    <div class="stage-item completed"><span class="stage-badge">11</span><span class="stage-name">Firma Sec. Gral</span></div>
+                    <div class="stage-item active"><span class="stage-badge">12</span><span class="stage-name">Firma Rector</span></div>
+                    <div class="stage-item"><span class="stage-badge">13</span><span class="stage-name">Toma Razón</span></div>
+                    <div class="stage-item"><span class="stage-badge">14</span><span class="stage-name">Registro</span></div>
+                    <div class="stage-item"><span class="stage-badge">15</span><span class="stage-name">Cierre</span></div>
+                </div>
+            </div>
+
+            <!-- LAYOUT MINIMALISTA -->
             <div class="row">
-                <!-- Visor de Documento -->
-                <div class="col-lg-9">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="font-weight-bold text-dark m-0">Resolución Decretada Final <span class="text-primary">#RES-2026-001</span></h4>
+                
+                <!-- COLUMNA IZQUIERDA: VISOR DE DOCUMENTO CON TABS (Focal Point) -->
+                <div class="col-lg-8 col-xl-9 mb-4">
+                    <div class="card-minimal">
+                        
+                        <!-- Header with tabs (Matching exactly: Formato de resolución, Anexo) -->
+                        <ul class="nav nav-tabs nav-tabs-premium" id="documentTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="resolution-tab" data-toggle="tab" href="#resolution-content" role="tab" aria-controls="resolution-content" aria-selected="true">
+                                    <i class="far fa-file-pdf text-danger mr-1"></i> Borrador de Resolución Decretada
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="anexo-tab" data-toggle="tab" href="#anexo-content" role="tab" aria-controls="anexo-content" aria-selected="false">
+                                    <i class="fas fa-users-cog text-primary mr-1"></i> Nómina de Personal y Actividades
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab contents -->
+                        <div class="tab-content document-wrapper" id="documentTabsContent">
+                            
+                            <!-- TAB 1: Borrador de Resolución (Mock A4) -->
+                            <div class="tab-pane fade show active" id="resolution-content" role="tabpanel" aria-labelledby="resolution-tab">
+                                <div class="pdf-canvas">
+                                    <div class="pdf-page-sheet shadow">
+                                        <div class="pdf-header">
+                                            <div>
+                                                <span class="pdf-header-title">Universidad de La Frontera</span>
+                                                <div class="pdf-header-subtitle">Rectoría</div>
+                                            </div>
+                                            <div class="pdf-res-number">
+                                                RESOLUCIÓN EXENTA Nº 102/2026
+                                            </div>
+                                        </div>
+
+                                        <div class="pdf-body-title">
+                                            RESOLUCIÓN EXENTA
+                                        </div>
+
+                                        <div class="pdf-section-text">
+                                            <span class="pdf-bold-tag">VISTOS:</span>
+                                            1. La solicitud de formalización de prestación de servicios N° PDS-2026-001 presentada por el Instituto de Agroindustria de la Universidad de La Frontera.<br>
+                                            2. Lo dispuesto en el Decreto Universitario N° 009 de 2026 y Decreto Universitario N° 288 de la Universidad de La Frontera que norma el régimen general de servicios y prestaciones específicas.<br>
+                                            3. La visación previa emitida de conformidad por la Dirección General de Desarrollo de Personas (DGDP) y la Dirección de Finanzas.<br>
+                                            4. Las atribuciones que me confiere el estatuto orgánico de esta Casa de Estudios.
+                                        </div>
+
+                                        <div class="pdf-section-text">
+                                            <span class="pdf-bold-tag">CONSIDERANDO:</span>
+                                            Que la Universidad de La Frontera, en cumplimiento de su misión y funciones de vinculación con el medio, capacitación, investigación aplicada e innovación tecnológica, requiere la contratación transitoria de personal técnico y profesional altamente calificado para la ejecución integral de las prestaciones técnicas comprometidas con el sector agroindustrial, lo que justifica plenamente la formalización de las obligaciones estipuladas.
+                                        </div>
+
+                                        <div class="pdf-section-text">
+                                            <span class="pdf-bold-tag">RESUELVO:</span>
+                                            <strong>1. APRUÉBESE</strong> el personal propuesto y los términos de prestación de servicios en conformidad con la normativa DU N° 009/2026 y N° 288 de la Universidad de La Frontera para la ejecución del proyecto correspondiente al Instituto de Agroindustria, detallado en la planilla anexa de la presente resolución.
+                                        </div>
+
+                                        <div class="pdf-section-text">
+                                            <strong>2. AUTORÍCESE</strong> el pago de los honorarios y compensaciones horarias que procedan a los profesionales y administrativos especificados, con cargo estricto al respectivo Centro de Costos <strong class="text-dark">4050.21</strong> asignado.
+                                        </div>
+
+                                        <div class="pdf-signatures">
+                                            <div class="pdf-signature-box">
+                                                <div class="small font-weight-bold text-muted">DOCUMENTO VISADO</div>
+                                                <div class="pdf-signature-line text-uppercase">GONZALO OPORTO VENEGAS</div>
+                                                <div class="small text-muted" style="font-size: 0.6rem;">Secretario General</div>
+                                            </div>
+                                            <div class="pdf-signature-box">
+                                                <div class="small font-weight-bold text-primary"><i class="fas fa-signature mr-1"></i> FIRMA DIGITAL RECTOR</div>
+                                                <div class="pdf-signature-line text-uppercase text-primary" style="border-top-color: var(--ufro-blue);">EDUARDO HEBEL WEISS</div>
+                                                <div class="small text-muted" style="font-size: 0.6rem;">Rector</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="pdf-distrib">
+                                            <strong>DISTRIBUCIÓN:</strong><br>
+                                            - Rectoría &bull; Secretaría General &bull; Dirección General de Desarrollo de Personas (DGDP) &bull; Dirección de Finanzas &bull; Oficina de Partes y Archivo Universitario.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TAB 2: Nómina de Personal y Actividades (DU09) -->
+                            <div class="tab-pane fade" id="anexo-content" role="tabpanel" aria-labelledby="anexo-tab">
+                                <h6 class="font-weight-bold text-dark mb-3"><i class="fas fa-list-ul mr-2 text-primary"></i> Nómina de Personal y Actividades Específicas del Expediente</h6>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped text-center" style="font-size: 0.75rem;">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>RUT</th>
+                                                <th>Funcionario</th>
+                                                <th>Actividad Específica</th>
+                                                <th>Periodo de Ejecución</th>
+                                                <th>Centro Costo</th>
+                                                <th>Honorario Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="font-weight-bold">15.890.342-K</td>
+                                                <td>Lizama Aillapán Esteban Nicolás</td>
+                                                <td>Diseño de arquitectura de microservicios y validación técnica.</td>
+                                                <td>01/05/2026 a 30/06/2026</td>
+                                                <td>4050.21</td>
+                                                <td class="font-weight-bold text-dark">$900.000</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">16.452.891-2</td>
+                                                <td>María Elena Soto Figueroa</td>
+                                                <td>Apoyo administrativo y gestión de procesos documentales.</td>
+                                                <td>01/06/2026 a 31/07/2026</td>
+                                                <td>4050.21</td>
+                                                <td class="font-weight-bold text-dark">$560.000</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">15.845.221-K</td>
+                                                <td>Dr. Carlos Fuentes R.</td>
+                                                <td>Asesor Científico Principal</td>
+                                                <td>18/05/2026 a 18/07/2026</td>
+                                                <td>4050.21</td>
+                                                <td class="font-weight-bold text-dark">$1.850.000</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="pdf-viewer-container">
-                        <div class="pdf-page">
-                            <div class="text-center mb-5">
-                                <h6 class="m-0">UNIVERSIDAD DE LA FRONTERA</h6>
-                                <small>RECTORÍA</small>
+                    <!-- TRAZABILIDAD DOCUMENTAL DE LA SOLICITUD (Standardized) -->
+                    <div class="card-minimal p-4 mt-4">
+                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3">
+                            <i class="fas fa-history mr-2 text-primary"></i> Historial y Trazabilidad Documental de la Solicitud
+                        </h6>
+                        <div id="container-trace-logs" class="p-3 bg-light rounded border" style="max-height: 180px; overflow-y: auto;">
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">05/05/2026 09:30:15</span> &bull; Solicitud de contratación de servicios creada por <strong class="text-dark">Dr. Mario Godoy Rivera (Jefe de Proyecto)</strong>.
                             </div>
-                            <div class="text-right mb-4">
-                                <h5 class="font-weight-bold">RESOLUCIÓN EXENTA Nº 2026/001</h5>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">06/05/2026 11:20:44</span> &bull; Visación de la solicitud aprobada por <strong class="text-dark">Hector Pablo Sandoval (Jefe de Proyecto)</strong>.
                             </div>
-                            <p><strong>VISTOS Y CONSIDERANDO:</strong> Los antecedentes legales visados por las unidades competentes...</p>
-                            <p><strong>TÓMESE RAZÓN Y COMUNÍQUESE</strong></p>
-                            
-                            <div class="mt-5 pt-5 text-center">
-                                <div class="mb-2">_______________________</div>
-                                <div class="font-weight-bold">EDUARDO HEBEL WEISS</div>
-                                <div>Rector</div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">08/05/2026 14:15:30</span> &bull; Visación del Director DGDP aprobada en conformidad con la normativa DU09/DU288.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">10/05/2026 16:45:12</span> &bull; Visación financiera de la Facultad registrada por el Analista de Finanzas.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">12/05/2026 10:10:00</span> &bull; Aprobación técnica y legal de Decanato confirmada.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">14/05/2026 15:30:22</span> &bull; Control presupuestario y visación de Finanzas Central aprobada con éxito.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">15/05/2026 17:15:30</span> &bull; Borrador de la resolución formalizado y decretado en Decretación Jurídica por <strong class="text-dark">Claudia Alvarez</strong>.
+                            </div>
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">18/05/2026 11:40:05</span> &bull; Firma de Secretario General registrada correctamente por <strong class="text-dark">Gonzalo Oporto Venegas</strong>.
+                            </div>
+                            <div class="trace-log-item active-log">
+                                <span class="font-weight-bold">Hoy (Pendiente)</span> &bull; Expediente en Rectoría esperando decretación definitiva y firma de Eduardo Hebel Weiss.
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel de Firma Rector -->
-                <div class="col-lg-3">
-                    <div class="action-sidebar shadow-sm">
+                <!-- COLUMNA DERECHA: SIDEBAR DE ACCIONES SEQUENCIALES (Exacto al sistema existente) -->
+                <div class="col-lg-4 col-xl-3">
+                    <div class="sidebar-actions-panel">
+                        
                         <div class="text-center mb-4">
-                            <i class="fas fa-pen-nib fa-2x text-primary mb-2"></i>
-                            <h6 class="font-weight-bold small m-0 text-uppercase">Firma Rectoral</h6>
+                            <h6 class="font-weight-bold text-uppercase text-dark m-0" style="letter-spacing: 0.5px;">Acciones de Firma</h6>
+                            <hr class="my-2">
                         </div>
 
-                        <hr>
-
-                        <div class="mb-4">
-                            <button class="btn btn-outline-secondary btn-block btn-sm mb-3">
-                                <i class="fas fa-download mr-2"></i> DESCARGAR VISADO
+                        <!-- 1. Descargar resolución -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">
+                                <strong class="text-dark">Paso 1:</strong> Descargue el Borrador de la Resolución Decretada para su última validación.
+                            </div>
+                            <button class="btn btn-block btn-ufro btn-ufro-outline" onclick="simularDescarga()">
+                                <i class="fas fa-download mr-1"></i> DESCARGAR RESOLUCIÓN
                             </button>
-                            <button class="btn btn-outline-primary btn-block btn-sm mb-4">
-                                <i class="fas fa-upload mr-2"></i> SUBIR CON FIRMA RECTOR
+                        </div>
+
+                        <!-- 2. Subir con firma electrónica -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">
+                                <strong class="text-dark">Paso 2:</strong> Suba el documento firmado electrónicamente por Rectoría.
+                            </div>
+                            
+                            <input type="file" id="pdf_upload_input" style="display: none;" onchange="manejarArchivoSubido(event)">
+                            <button class="btn btn-block btn-ufro btn-ufro-outline" id="btn_subir_firma" onclick="document.getElementById('pdf_upload_input').click()">
+                                <i class="fas fa-upload mr-1"></i> SUBIR DOCUMENTO FIRMADO
                             </button>
 
-                            <button class="btn btn-success btn-block font-weight-bold mb-2 shadow-sm py-2" onclick="confirmarAccion('finalizar')">
-                                <i class="fas fa-file-signature mr-2"></i> DECRETAR Y ENVIAR A TOMA RAZÓN
+                            <div class="signature-status-card" id="card_estado_firma">
+                                <div class="signature-status-title">Certificación Digital</div>
+                                <div class="d-flex align-items-center" style="gap: 6px;">
+                                    <span class="badge badge-warning text-white" id="badge_estado_firma" style="font-size: 0.65rem; padding: 4px 8px;">PENDIENTE FIRMA RECTOR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- 3. Acciones de aprobación / devolución -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">
+                                <strong class="text-dark">Paso 3:</strong> Finalice la etapa registrando la acción resolutiva correspondiente.
+                            </div>
+                            
+                            <button class="btn btn-block btn-ufro btn-ufro-success mb-2 py-2 shadow-sm" id="btn_aprobar_rector" onclick="prepararAccion('aprobar')">
+                                <i class="fas fa-file-signature mr-1"></i> DECRETAR Y TOMA RAZÓN
                             </button>
                             
-                            <button class="btn btn-outline-danger btn-block font-weight-bold py-2" onclick="confirmarAccion('rechazar')">
-                                <i class="fas fa-times-circle mr-2"></i> DEVOLVER / REPRESENTAR
+                            <button class="btn btn-block btn-ufro btn-ufro-outline text-warning border-warning mb-2" onclick="prepararAccion('devolver_secretario')">
+                                <i class="fas fa-reply mr-1"></i> DEVOLVER A SEC. GENERAL
+                            </button>
+
+                            <button class="btn btn-block btn-ufro btn-ufro-danger py-2" onclick="prepararAccion('devolver_decretacion')">
+                                <i class="fas fa-undo mr-1"></i> REPRESENTAR (RECHAZAR)
                             </button>
                         </div>
 
-                        <div class="p-3 bg-light rounded border text-center">
-                            <div class="x-small text-muted mb-1 text-uppercase font-weight-bold">Certificación Digital</div>
-                            <span class="badge badge-soft-success px-3 py-1">LISTO PARA FIRMA</span>
-                        </div>
                     </div>
                 </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICACIÓN -->
+<div class="ufro-alert-toast p-3" id="alertToast">
+    <div class="d-flex align-items-center" style="gap: 10px;">
+        <div style="font-size: 1.25rem;" class="text-success" id="toastIcon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div>
+            <h6 class="m-0 font-weight-bold text-dark" style="font-size: 0.8rem;" id="toastTitle">Éxito</h6>
+            <p class="m-0 text-muted" style="font-size: 0.72rem;" id="toastMsg">Operación completada.</p>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE ACCIÓN Y VALIDACIÓN DE COMENTARIOS -->
+<div class="modal fade" id="modalAccion" tabindex="-1" role="dialog" aria-labelledby="modalAccionTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 10px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header border-0 text-white" id="modalAccionHeader" style="background-color: var(--ufro-blue); padding: 1.2rem 1.5rem;">
+                <h5 class="modal-title font-weight-bold" id="modalAccionTitle" style="font-size: 1rem;">
+                    <i class="fas fa-shield-alt mr-2"></i> Confirmar Acción
+                </h5>
+                <button type="button" class="close text-white border-0 bg-transparent font-weight-bold" data-dismiss="modal" aria-label="Close" style="opacity: 0.8; outline: none; cursor: pointer;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <div class="modal-body p-4 text-left">
+                <p class="font-weight-bold text-dark mb-3" id="modalAccionMessage" style="font-size: 0.92rem; line-height: 1.5;"></p>
+                
+                <div id="modalCommentContainer">
+                    <label class="font-weight-bold text-secondary small text-uppercase" style="letter-spacing: 0.5px;">
+                        <i class="fas fa-comment-dots mr-1 text-primary"></i> Observaciones o Alcance
+                    </label>
+                    <textarea id="modal_comentario" class="form-control" rows="3" placeholder="Ingrese las razones o detalles del alcance..." style="font-size: 0.85rem; border-radius: 6px; border: 1px solid #cbd5e1;"></textarea>
+                    <div id="modal_comment_error" class="text-danger small mt-1 d-none" style="font-weight: 600;">
+                        <i class="fas fa-exclamation-circle mr-1"></i> Debe ingresar observaciones detalladas para continuar.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end" style="gap: 8px;">
+                <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2" data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">
+                    CANCELAR
+                </button>
+                <button type="button" class="btn text-white font-weight-bold px-4 py-2" id="modalAccionSubmitBtn" onclick="submitAccionForm()" style="border-radius: 6px; font-size: 0.75rem; background-color: var(--ufro-green); border: none;">
+                    CONFIRMAR
+                </button>
             </div>
         </div>
     </div>
@@ -176,17 +803,144 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    let accionGlobal = '';
+    let archivoSubido = false;
+
+    // Sidebar Toggle
     document.getElementById("menu-toggle").onclick = function(e) {
         e.preventDefault();
         document.getElementById("wrapper").classList.toggle("toggled");
     };
 
-    function confirmarAccion(accion) {
-        if(accion === 'finalizar') {
-            window.location.href = "13_vista_visacion_contraloria_profesional.html";
-        } else {
-            window.location.href = "08_vista_decretacion.html";
+    function simularDescarga() {
+        showToast("Descargando...", "El borrador de la resolución exenta está siendo descargado.", "success");
+    }
+
+    function manejarArchivoSubido(event) {
+        const input = event.target;
+        if(input.files && input.files[0]) {
+            archivoSubido = true;
+            
+            // Actualizar visualización del estado
+            const badge = document.getElementById("badge_estado_firma");
+            badge.className = "badge badge-success text-white";
+            badge.innerHTML = '<i class="fas fa-check-circle mr-1"></i> FIRMADO Y VERIFICADO';
+            
+            const btnSubir = document.getElementById("btn_subir_firma");
+            btnSubir.innerHTML = '<i class="fas fa-check mr-1"></i> RESOLUCIÓN CARGADA';
+            btnSubir.className = "btn btn-block btn-ufro btn-ufro-success";
+            
+            showToast("Documento Cargado", "El documento firmado ha sido cargado e indexado con éxito.", "success");
         }
+    }
+
+    function prepararAccion(accion) {
+        accionGlobal = accion;
+        
+        const modal = $('#modalAccion');
+        const header = $('#modalAccionHeader');
+        const title = $('#modalAccionTitle');
+        const msg = $('#modalAccionMessage');
+        const commentContainer = $('#modalCommentContainer');
+        const submitBtn = $('#modalAccionSubmitBtn');
+        const errorMsg = $('#modal_comment_error');
+        const textarea = $('#modal_comentario');
+        
+        textarea.val('');
+        errorMsg.addClass('d-none');
+        textarea.removeClass('border-danger');
+        
+        if (accion === 'aprobar') {
+            if(!archivoSubido) {
+                showToast("Falta Firma", "Debe subir el documento firmado electrónicamente antes de poder autorizar y decretar.", "warning");
+                return;
+            }
+            header.css('background-color', 'var(--ufro-green)');
+            title.html('<i class="fas fa-file-signature mr-2"></i> Autorizar y Decretar');
+            msg.html('¿Está seguro de firmar definitivamente esta resolución exenta y proceder con su envío a Toma de Razón en Contraloría?');
+            commentContainer.hide();
+            submitBtn.text('SÍ, DECRETAR Y ENVIAR').css('background-color', 'var(--ufro-green)');
+        } else if (accion === 'devolver_secretario') {
+            header.css('background-color', 'var(--ufro-orange)');
+            title.html('<i class="fas fa-reply mr-2"></i> Devolver a Secretaría General');
+            msg.html('Esta resolución será devuelta a la bandeja del Secretario General para subsanar observaciones en el articulado o anexo técnico.');
+            commentContainer.show();
+            textarea.attr('placeholder', 'Indique las observaciones técnicas o alcances requeridos...');
+            submitBtn.text('CONFIRMAR DEVOLUCIÓN').css('background-color', 'var(--ufro-orange)');
+        } else if (accion === 'devolver_decretacion') {
+            header.css('background-color', 'var(--ufro-red)');
+            title.html('<i class="fas fa-undo mr-2"></i> Representar / Devolver a Decretación');
+            msg.html('Esta acción representará jurídicamente la solicitud, devolviéndola al área de Decretación Jurídica para rehacer el borrador completo.');
+            commentContainer.show();
+            textarea.attr('placeholder', 'Indique detalladamente las objeciones y fundamentos de la representación...');
+            submitBtn.text('REPRESENTAR SOLICITUD').css('background-color', 'var(--ufro-red)');
+        }
+        
+        modal.modal('show');
+    }
+
+    function submitAccionForm() {
+        const textarea = $('#modal_comentario');
+        const errorMsg = $('#modal_comment_error');
+        const comentario = textarea.val().trim();
+        
+        if ((accionGlobal === 'devolver_secretario' || accionGlobal === 'devolver_decretacion') && !comentario) {
+            errorMsg.removeClass('d-none');
+            textarea.addClass('border-danger');
+            textarea.focus();
+            return;
+        }
+        
+        $('#modalAccion').modal('hide');
+        ejecutarAccion(comentario);
+    }
+
+    function ejecutarAccion(comentario) {
+        if(accionGlobal === 'aprobar') {
+            showToast("Expediente Firmado", "Redireccionando a Toma de Razón...", "success");
+            setTimeout(() => {
+                window.location.href = "13_vista_visacion_contraloria_profesional.html";
+            }, 1500);
+        } else if(accionGlobal === 'devolver_secretario') {
+            showToast("Devolución Registrada", "El expediente ha sido devuelto a Secretaría General.", "warning");
+            setTimeout(() => {
+                window.location.href = "11_vista_visacion_secretario_general.html";
+            }, 1500);
+        } else if(accionGlobal === 'devolver_decretacion') {
+            showToast("Expediente Representado", "El expediente ha sido devuelto a la etapa de Decretación Jurídica.", "warning");
+            setTimeout(() => {
+                window.location.href = "08_vista_decretacion.html";
+            }, 1500);
+        }
+    }
+
+    function showToast(title, message, type) {
+        const toast = document.getElementById("alertToast");
+        const tTitle = document.getElementById("toastTitle");
+        const tMsg = document.getElementById("toastMsg");
+        const tIcon = document.getElementById("toastIcon");
+        
+        tTitle.innerText = title;
+        tMsg.innerText = message;
+        
+        if (type === 'success') {
+            toast.style.borderLeftColor = 'var(--ufro-green)';
+            tIcon.className = 'text-success';
+            tIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+        } else if (type === 'warning') {
+            toast.style.borderLeftColor = 'var(--ufro-orange)';
+            tIcon.className = 'text-warning';
+            tIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        } else {
+            toast.style.borderLeftColor = 'var(--ufro-red)';
+            tIcon.className = 'text-danger';
+            tIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+        }
+        
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3500);
     }
 </script>
 </body>

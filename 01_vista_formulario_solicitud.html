@@ -155,7 +155,11 @@
                                     </div>
                                     <div class="alert alert-light border-left border-primary pl-2 py-2 mb-1 mt-1 small">
                                         <i class="fas fa-info-circle text-primary mr-1"></i>
-                                        <strong>Condiciones adicionales:</strong> No pueden percibir asignación quienes mantengan deudas no regularizadas con la Universidad, se encuentren en licencia médica, en permiso sin goce de sueldo, o cuyo proyecto ya haya finalizado formalmente. La actividad <strong>no puede corresponder a Formación Continua</strong> (postitulos, diplomados, cursos).
+                                        <strong>Condiciones adicionales:</strong> No pueden percibir asignación quienes mantengan deudas no regularizadas con la Universidad, se encuentren en licencia médica, en permiso sin goce de sueldo, o cuyo proyecto ya haya finalizado formalmente. La actividad <strong>no puede corresponder a Formación Continua</strong> (postítulos, diplomados, cursos).
+                                    </div>
+                                    <div class="alert alert-warning py-1 px-2 mt-2 mb-0 small border-warning" style="font-size: 0.7rem;">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i> 
+                                        <strong>Regla de Meses:</strong> Se permite un máximo de 2 meses por año calendario para una misma actividad o proyecto.
                                     </div>
                                 </div>
                             </div>
@@ -294,11 +298,11 @@
                                                                 <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
                                                             </tr>
                                                             <tr>
-                                                                <td class="text-center align-middle"><input type="checkbox"></td>
+                                                                <td class="text-center align-middle"><input type="checkbox" id="check_evi_otra"></td>
                                                                 <td class="align-middle">
                                                                     <div class="d-flex align-items-center">
                                                                         <span class="font-weight-bold text-dark mr-2">Otra:</span>
-                                                                        <input type="text" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique..." style="font-size: 0.7rem; background: transparent;">
+                                                                        <input type="text" id="desc_evi_otra" class="form-control form-control-xs border-bottom border-top-0 border-left-0 border-right-0 rounded-0 p-0 h-auto" placeholder="Especifique evidencia obligatoria..." style="font-size: 0.7rem; background: transparent;">
                                                                     </div>
                                                                 </td>
                                                                 <td><input type="date" class="form-control form-control-xs border-0 bg-light py-0 h-auto" style="font-size: 0.7rem;"></td>
@@ -319,14 +323,14 @@
                                     <label class="small text-muted font-weight-bold">Inicio de Ejecución D9</label>
                                     <div class="input-group input-group-sm">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                        <input type="date" id="d9_fecha_inicio" class="form-control" value="2026-05-01">
+                                        <input type="date" id="d9_fecha_inicio" class="form-control" value="">
                                     </div>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label class="small text-muted font-weight-bold">Fin de Ejecución D9</label>
                                     <div class="input-group input-group-sm">
                                         <div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar-alt"></i></span></div>
-                                        <input type="date" id="d9_fecha_fin" class="form-control" value="2026-06-30">
+                                        <input type="date" id="d9_fecha_fin" class="form-control" value="">
                                     </div>
                                 </div>
                             </div>
@@ -456,17 +460,61 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 form-group">
-                                        <label class="small text-muted font-weight-bold">Jerarquía</label>
-                                        <input type="text" id="funcionario_jerarquia" class="form-control form-control-sm bg-light" readonly>
+                                    <!-- SELECCIÓN DE CONTRATO VIGENTE (P01-B08) -->
+                                    <div class="col-md-12 mb-3">
+                                        <label class="small text-muted font-weight-bold d-block mb-2">Selección de Contrato Vigente (SISPER) - <span class="text-primary">Defina contrato para cálculo de topes</span></label>
+                                        <div class="table-responsive rounded shadow-xs border" style="max-height: 200px; overflow-y: auto;">
+                                            <table id="tabla_contratos_sisper" class="table table-sm table-hover mb-0" style="font-size: 0.7rem;">
+                                                <thead class="bg-light text-muted sticky-top">
+                                                    <tr>
+                                                        <th class="pl-3" width="30">Sel.</th>
+                                                        <th>Contrato</th>
+                                                        <th>Estamento</th>
+                                                        <th>Jerarquía / Grado</th>
+                                                        <th class="text-center">Jornada</th>
+                                                        <th class="text-center">Antigüedad</th>
+                                                        <th class="text-right">Renta Bruta</th>
+                                                        <th class="text-right pr-3">Renta Líquida</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr id="contratos_empty_row">
+                                                        <td colspan="8" class="text-center text-muted py-3">
+                                                            <i class="fas fa-info-circle mr-1"></i> Seleccione un funcionario para cargar sus contratos vigentes en SISPER.
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 form-group">
+
+                                    <div class="col-md-3 form-group">
                                         <label class="small text-muted font-weight-bold">Estamento</label>
-                                        <input type="text" id="estamento_d9" class="form-control form-control-sm bg-light" readonly>
+                                        <input type="text" id="estamento_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
-                                    <div class="col-md-4 form-group">
-                                        <label class="small text-muted font-weight-bold">Tipo de Jornada</label>
-                                        <input type="text" id="tipo_jornada_d9" class="form-control form-control-sm bg-light" readonly>
+                                    <div class="col-md-3 form-group">
+                                        <label class="small text-muted font-weight-bold">Antigüedad (SISPER)</label>
+                                        <input type="text" id="antiguedad_d9" class="form-control form-control-sm bg-light" readonly value="">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label class="small text-muted font-weight-bold">Jerarquía</label>
+                                        <input type="text" id="funcionario_jerarquia" class="form-control form-control-sm bg-light" readonly value="">
+                                    </div>
+                                    <div class="col-md-3 form-group">
+                                        <label class="small text-muted font-weight-bold">Jornada</label>
+                                        <input type="text" id="tipo_jornada_d9" class="form-control form-control-sm bg-light" readonly value="">
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label class="small text-muted font-weight-bold">Grado</label>
+                                        <input type="text" id="grado_d9" class="form-control form-control-sm bg-light text-center" readonly value="">
+                                    </div>
+                                    <div class="col-md-5 form-group">
+                                        <label class="small text-muted font-weight-bold">Renta Bruta Base para Tope</label>
+                                        <input type="text" id="renta_bruta_d9" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly value="">
+                                    </div>
+                                    <div class="col-md-5 form-group">
+                                        <label class="small text-muted font-weight-bold">Renta Líquida</label>
+                                        <input type="text" id="renta_liquida_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
 
                                     <div class="col-md-12 form-group">
@@ -488,8 +536,8 @@
                                                         <div class="month-item" data-month="FEB">FEB</div>
                                                         <div class="month-item" data-month="MAR">MAR</div>
                                                         <div class="month-item" data-month="ABR">ABR</div>
-                                                        <div class="month-item selected" data-month="MAY">MAY</div>
-                                                        <div class="month-item selected" data-month="JUN">JUN</div>
+                                                        <div class="month-item" data-month="MAY">MAY</div>
+                                                        <div class="month-item" data-month="JUN">JUN</div>
                                                         <div class="month-item" data-month="JUL">JUL</div>
                                                         <div class="month-item" data-month="AGO">AGO</div>
                                                         <div class="month-item" data-month="SEP">SEP</div>
@@ -525,71 +573,80 @@
                                                     <div class="col-md-8">
                                                         <div class="d-flex justify-content-between align-items-center mb-1">
                                                             <span class="small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.5px;">Control de Límite (Máx 50% Remuneración)</span>
-                                                            <span id="tope_pct" class="badge badge-success px-2">Cumple 50%</span>
+                                                            <span id="tope_pct" class="badge badge-secondary px-2">Sin Selección</span>
                                                         </div>
                                                         <div class="progress progress-sm bg-white border shadow-xs" style="height: 10px; border-radius: 5px;">
                                                             <div id="tope_progress" class="progress-bar bg-success transition-all" role="progressbar" style="width: 0%"></div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 text-right">
-                                                        <small class="text-muted d-block" style="font-size: 0.65rem;">Límite acumulado (D.U. 009/2026)</small>
+                                                        <small class="text-muted d-block" style="font-size: 0.65rem;">Límite mensual (Art. DU 288)</small>
                                                         <strong id="label_tope_total" class="text-dark" style="font-size: 0.85rem;">$0</strong>
                                                     </div>
                                                 </div>
                                             </div>
-                                                                               <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
+                                            
+                                            <!-- MENSAJE DE BLOQUEO POR TOPE -->
+                                            <div id="tope_block_alert" class="alert alert-danger py-1 px-2 mt-2 small hidden">
+                                                <i class="fas fa-times-circle mr-1"></i> <strong>Bloqueo:</strong> El monto solicitado excede el tope del 50% permitido para este funcionario.
+                                            </div>
+                                            
+                                            <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
                                             <div class="row mt-3">
+                                                <!-- Fuera o Dentro de la Jornada -->
                                                 <div class="col-md-6 mb-3">
                                                     <label class="small font-weight-bold text-muted d-block">¿Fuera o dentro de la jornada?</label>
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="j_fuera" name="tipo_jornada_e" class="custom-control-input" checked onchange="evaluarReglas()">
-                                                        <label class="custom-control-label small" for="j_fuera">Fuera de jornada</label>
+                                                        <label class="custom-control-label small text-dark font-weight-bold" for="j_fuera">Fuera de jornada</label>
                                                     </div>
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="j_dentro" name="tipo_jornada_e" class="custom-control-input" onchange="evaluarReglas()">
-                                                        <label class="custom-control-label small" for="j_dentro">Dentro de jornada</label>
+                                                        <label class="custom-control-label small text-dark font-weight-bold" for="j_dentro">Dentro de jornada</label>
                                                     </div>
                                                 </div>
 
-                                                <!-- Validaciones Dinámicas según Perfil -->
-                                                <div id="d9_path_validation" class="col-md-6 mb-3 dynamic-section hidden">
-                                                    <!-- Caso Académico: SEA -->
-                                                    <div id="path_acad_sea" class="dynamic-section hidden">
-                                                        <label class="small font-weight-bold text-muted d-block">¿Pertenecen a SEA?</label>
-                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" id="sea_si" name="sea_opt" class="custom-control-input" onchange="evaluarReglas()">
-                                                            <label class="custom-control-label small" for="sea_si">Sí</label>
-                                                        </div>
-                                                        <div class="custom-control custom-radio custom-control-inline">
-                                                            <input type="radio" id="sea_no" name="sea_opt" class="custom-control-input" onchange="evaluarReglas()">
-                                                            <label class="custom-control-label small" for="sea_no">No</label>
-                                                        </div>
+                                                <!-- ¿Pertenecen a SEA? (Siempre visible) -->
+                                                <div class="col-md-6 mb-3" id="path_acad_sea">
+                                                    <label class="small font-weight-bold text-muted d-block">¿Pertenecen a SEA?</label>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="sea_si" name="sea_opt" class="custom-control-input" onchange="evaluarReglas()">
+                                                        <label class="custom-control-label small text-dark font-weight-bold" for="sea_si">Sí</label>
                                                     </div>
-                                                    
-                                                    <!-- Caso Admin/No SEA: Tabla Compensación -->
-                                                    <div id="path_compensacion" class="dynamic-section hidden">
-                                                        <div class="alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center" style="background-color: #fff9e6;">
-                                                            <span><i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong></span>
-                                                            <button type="button" class="btn btn-xs btn-primary py-0" onclick="agregarFilaCompensacion()">
-                                                                <i class="fas fa-plus mr-1"></i> Agregar Día
-                                                            </button>
-                                                        </div>
-                                                        <div class="table-responsive">
-                                                            <table id="tabla_compensacion" class="table table-xs table-bordered mb-0 bg-white shadow-xs" style="font-size: 0.7rem;">
-                                                                <thead class="bg-light">
-                                                                    <tr>
-                                                                        <th>Día</th>
-                                                                        <th width="100">Hrs</th>
-                                                                        <th width="40"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <!-- Se llena dinámicamente -->
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="sea_no" name="sea_opt" class="custom-control-input" onchange="evaluarReglas()">
+                                                        <label class="custom-control-label small text-dark font-weight-bold" for="sea_no">No</label>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            
+                                            <!-- Caso Admin/No SEA: Tabla Compensación (Siempre visible) -->
+                                            <div class="row">
+                                                <div id="path_compensacion" class="col-md-12 mb-3">
+                                                    <div id="compensacion_alert" class="alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center" style="background-color: #fff9e6; transition: all 0.3s ease;">
+                                                        <span id="compensacion_msg"><i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong></span>
+                                                        <button type="button" id="btn_agregar_compensacion" class="btn btn-xs btn-primary py-0" onclick="agregarFilaCompensacion()">
+                                                            <i class="fas fa-plus mr-1"></i> Agregar Día
+                                                        </button>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table id="tabla_compensacion" class="table table-xs table-bordered mb-0 bg-white shadow-xs" style="font-size: 0.7rem;">
+                                                            <thead class="bg-light">
+                                                                <tr>
+                                                                    <th>Día</th>
+                                                                    <th width="100">Hrs</th>
+                                                                    <th width="40"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr id="compensacion_empty_row" class="text-center text-muted">
+                                                                    <td colspan="3" class="py-2">No se han registrado días de compensación.</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>                                    </div>
                                             </div>
 
                                          
@@ -607,35 +664,58 @@
                         </div>
                     </div>
 
-                    <!-- PASO 4: TABLA DE RESUMEN PREMIUM (D9) -->
-                    <div id="d9_summary_container" class="bg-light p-4 rounded-lg shadow-sm mb-4" style="background-color: #f8fafd !important; border: 1px solid #e1e7f1;">
-                        <div class="table-responsive">
-                            <table class="table table-premium mb-0">
-                                <thead>
-                                    <tr>
-                                        <th style="min-width: 280px; color: var(--ufro-blue);">Funcionario / Jerarquía</th>
-                                        <th style="min-width: 180px; color: var(--ufro-blue);">Perfil Laboral</th>
-                                        <th style="min-width: 220px; color: var(--ufro-blue);">Modalidad D9</th>
-                                        <th style="min-width: 150px; color: var(--ufro-blue);">Temporalidad</th>
-                                        <th class="text-right" style="min-width: 150px; color: var(--ufro-blue);">Finanzas</th>
-                                        <th class="text-center" style="color: var(--ufro-blue);">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="d9_summary_body">
-                                    <!-- Se llena dinámicamente mediante la función addStaffToSummary -->
-                                </tbody>
-                            </table>
+                    <!-- PASO 4: TABLA RESUMEN DE FUNCIONARIOS (P01-B12) -->
+                    <div id="d9_summary_container" class="card shadow-sm border-0 mb-4 rounded-lg transition-all">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h6 class="m-0 font-weight-bold text-dark"><i class="fas fa-list-ul mr-2 text-primary"></i> Resumen de Funcionarios Agregados (P01-B12)</h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-premium mb-0" style="table-layout: auto; min-width: 1200px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="pl-4" style="width: 25%;">Funcionario / Contrato / Actividad</th>
+                                            <th style="width: 16%;">Prestación y Evidencias (Checks)</th>
+                                            <th style="width: 18%;">Validaciones D9 (Checks)</th>
+                                            <th style="width: 16%;">Modalidad / Compensación</th>
+                                            <th style="width: 10%;">Temporalidad</th>
+                                            <th class="text-right" style="width: 10%;">Finanzas</th>
+                                            <th class="text-center pr-4" style="width: 5%;">Acciones</th>
+<th style="width: 8%;" class="text-center">Detalle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="d9_summary_body">
+                                        <tr id="d9_summary_empty_row" class="text-center text-muted">
+                                            <td colspan="7" class="py-4">
+                                                <i class="fas fa-users-slash fa-2x mb-2 text-muted d-block" style="opacity: 0.5;"></i>
+                                                <span class="small font-weight-bold text-muted">No se han agregado funcionarios a la nómina de esta solicitud.</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- BOTONES ACCIÓN FINALES -->
-                    <div class="d-flex flex-column flex-sm-row justify-content-end align-items-center mb-5 gap-3">
-                        <div class="w-100 w-sm-auto d-flex">
-                            <button type="button" class="btn btn-light btn-sm px-4 mr-2 font-weight-bold text-muted border flex-grow-1 flex-sm-grow-0">Guardar Borrador</button>
-                            <button id="btnEnviar" type="button" class="btn btn-success bg-ufro-green btn-sm px-5 font-weight-bold shadow-sm flex-grow-1 flex-sm-grow-0" onclick="enviarSolicitud()">
-                                Enviar Solicitud <i class="fas fa-paper-plane ml-2"></i>
-                            </button>
+                    <!-- ACCIONES FINALES DE LA SOLICITUD (P01-B14) -->
+                    <div class="card shadow-sm border-0 mb-5 rounded-lg overflow-hidden">
+                        <div class="card-body bg-light py-3">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                                <div class="text-muted small mb-3 mb-md-0 italic">
+                                    <i class="fas fa-info-circle mr-1"></i> Al enviar, la solicitud pasará a revisión por el <strong>Jefe de Proyecto</strong>.
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-secondary font-weight-bold px-4 py-2" style="border-radius: 8px; font-size: 0.8rem;">
+                                        <i class="fas fa-save mr-1"></i> GUARDAR BORRADOR
+                                    </button>
+                                    <button class="btn btn-primary bg-ufro-green border-0 font-weight-bold px-5 py-2 shadow-sm" style="border-radius: 8px; font-size: 0.8rem;" onclick="enviarSolicitud()">
+                                        <i class="fas fa-paper-plane mr-1"></i> ENVIAR SOLICITUD
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+      </div>
                     </div>
                   </div>
                 </div>
@@ -896,8 +976,19 @@
 
     // Lógica de Compensación Horaria
     function agregarFilaCompensacion() {
+        const btn = document.getElementById('btn_agregar_compensacion');
+        if (btn.disabled || btn.classList.contains('disabled')) return;
+
         const tbody = document.querySelector('#tabla_compensacion tbody');
+        
+        // Ocultar fila vacía si existe
+        const emptyRow = document.getElementById('compensacion_empty_row');
+        if (emptyRow) {
+            emptyRow.style.display = 'none';
+        }
+
         const row = document.createElement('tr');
+        row.className = 'compensacion-item-row';
         
         row.innerHTML = `
             <td>
@@ -925,53 +1016,97 @@
 
     function eliminarFilaCompensacion(btn) {
         btn.closest('tr').remove();
+        
+        // Si no quedan filas de compensación, volver a mostrar el mensaje de tabla vacía
+        const tbody = document.querySelector('#tabla_compensacion tbody');
+        const remainingRows = tbody.querySelectorAll('tr.compensacion-item-row');
+        if (remainingRows.length === 0) {
+            const emptyRow = document.getElementById('compensacion_empty_row');
+            if (emptyRow) {
+                emptyRow.style.display = 'table-row';
+            }
+        }
     }
 
     function addStaffToSummary() {
+        if (!validateTotalHours()) return;
+        
         const nombre = document.getElementById('nombre_funcionario').value;
         const rut = document.getElementById('rut_funcionario').value;
         const jerarquia = document.getElementById('funcionario_jerarquia').value;
         const estamento = document.getElementById('estamento_d9').value;
         const jornada = document.getElementById('tipo_jornada_d9').value;
+        const grado = document.getElementById('grado_d9').value || "N/A";
+        const antiguedad = document.getElementById('antiguedad_d9').value || "N/A";
+        const actividad = document.getElementById('actividad_funcionario_d9').value || "No especificada";
         
         if (!nombre || !rut) {
             alert('Por favor, seleccione un funcionario.');
             return;
         }
 
-        // Modalidad
+        // Tipo de Prestación (Checks)
+        const tpAsistencia = document.getElementById('tp_asistencia').checked;
+        const tpInvestigacion = document.getElementById('tp_investigacion').checked;
+        const tpOtro = document.getElementById('tp_otro').checked;
+
+        let prestHtml = '';
+        prestHtml += `<div style="font-size: 0.72rem; line-height: 1.25;">`;
+        prestHtml += tpAsistencia ? `<div><i class="fas fa-check-square text-success mr-1"></i> Asistencia</div>` : `<div><i class="far fa-square text-muted mr-1" style="opacity:0.6;"></i> Asistencia</div>`;
+        prestHtml += tpInvestigacion ? `<div><i class="fas fa-check-square text-success mr-1"></i> Investigación</div>` : `<div><i class="far fa-square text-muted mr-1" style="opacity:0.6;"></i> Investigación</div>`;
+        prestHtml += tpOtro ? `<div><i class="fas fa-check-square text-success mr-1"></i> Otro</div>` : `<div><i class="far fa-square text-muted mr-1" style="opacity:0.6;"></i> Otro</div>`;
+        prestHtml += `</div>`;
+
+        // Evidencias (Entregables)
+        const eviRows = document.querySelectorAll('#d9_evidence_container tbody tr');
+        let evidencesSelected = [];
+        if (eviRows.length > 0) {
+            eviRows.forEach((r, idx) => {
+                const cb = r.querySelector('input[type="checkbox"]');
+                if (cb && cb.checked) {
+                    if (idx === 0) evidencesSelected.push("Acta");
+                    else if (idx === 1) evidencesSelected.push("Informe");
+                    else if (idx === 2) evidencesSelected.push("BD");
+                    else if (idx === 3) {
+                        const customVal = document.getElementById('desc_evi_otra').value || "Otra";
+                        evidencesSelected.push(customVal);
+                    }
+                }
+            });
+        }
+        let eviHtml = '';
+        if (evidencesSelected.length > 0) {
+            eviHtml = `<div class="mt-1 d-flex flex-wrap" style="gap: 2px !important;">` + 
+                evidencesSelected.map(e => `<span class="badge badge-light border text-dark font-weight-bold" style="font-size:0.62rem; padding: 1px 3px; border-radius: 3px;">${e}</span>`).join('') + 
+                `</div>`;
+        } else {
+            eviHtml = `<div class="mt-1 text-muted small italic" style="font-size:0.65rem;">Sin entregables</div>`;
+        }
+
+        // Modalidad D9
         const isDentro = document.getElementById('j_dentro').checked;
-        const modalidadText = isDentro ? 'DENTRO JORNADA' : 'FUERA JORNADA';
-        const modalidadColor = isDentro ? 'bg-success' : 'bg-warning';
-        
-        // SEA / Compensación
+        const modalidadText = isDentro ? 'Dentro de Jornada' : 'Fuera de Jornada';
         let extraInfo = '';
         let compensacionDetail = '';
-        if (estamento.includes('Académico')) {
-            const isSea = document.getElementById('sea_si').checked;
-            extraInfo = isSea ? 'Perteneciente a SEA' : 'No pertenece a SEA';
-            if (!isSea) {
-                // Obtener detalle de compensación
-                const filasComp = document.querySelectorAll('#tabla_compensacion tbody tr');
-                if (filasComp.length > 0) {
-                    const detalles = Array.from(filasComp).map(f => {
-                        const dia = f.querySelector('select').value;
-                        const hrs = f.querySelector('input').value;
-                        return dia ? `${dia.substring(0,3)} (${hrs}h)` : '';
-                    }).filter(d => d !== '').join(', ');
-                    compensacionDetail = detalles ? `<div class="mt-1"><span class="badge badge-light border text-muted" style="font-size: 0.65rem;">Comp: ${detalles}</span></div>` : '';
-                }
+
+        if (isDentro) {
+            if (estamento.includes('Académico')) {
+                const seaSi = document.getElementById('sea_si').checked;
+                extraInfo = seaSi ? '<span class="badge badge-success" style="font-size:0.6rem;">SEA VIGENTE</span>' : '<span class="badge badge-warning" style="font-size:0.6rem;">SIN SEA</span>';
+            } else {
+                extraInfo = '<span class="badge badge-info" style="font-size:0.6rem;">ADMIN / PROF</span>';
             }
-        } else {
-            extraInfo = 'Personal Administrativo';
-            const filasComp = document.querySelectorAll('#tabla_compensacion tbody tr');
-            if (filasComp.length > 0) {
-                const detalles = Array.from(filasComp).map(f => {
-                    const dia = f.querySelector('select').value;
-                    const hrs = f.querySelector('input').value;
+
+            const compRows = document.querySelectorAll('#tabla_compensacion tbody tr.compensacion-item-row');
+            if (compRows.length > 0) {
+                const detalles = Array.from(compRows).map(f => {
+                    const selectEl = f.querySelector('select');
+                    const inputEl = f.querySelector('input');
+                    const dia = selectEl ? selectEl.value : '';
+                    const hrs = inputEl ? inputEl.value : '';
                     return dia ? `${dia.substring(0,3)} (${hrs}h)` : '';
                 }).filter(d => d !== '').join(', ');
-                compensacionDetail = detalles ? `<div class="mt-1"><span class="badge badge-light border text-muted" style="font-size: 0.65rem;">Comp: ${detalles}</span></div>` : '';
+                compensacionDetail = detalles ? `<div class="mt-1"><span class="badge badge-light border text-muted" style="font-size: 0.65rem; padding: 2px 4px; border-radius:3px;">Comp: ${detalles}</span></div>` : '';
             }
         }
 
@@ -987,45 +1122,133 @@
         // Finanzas
         const montoMes = document.querySelector('.monto-pago').value;
         const totalPds = document.getElementById('total_monto_display').value;
+        const pctText = document.getElementById('tope_pct').innerText;
 
         const tbody = document.getElementById('d9_summary_body');
+        
+        // Ocultar la fila vacía si está visible
+        const emptyRow = document.getElementById('d9_summary_empty_row');
+        if (emptyRow) {
+            emptyRow.style.display = 'none';
+        }
+
         const row = document.createElement('tr');
         row.className = estamento.includes('Académico') ? 'row-accent-sea' : 'row-accent-warning';
+        row.style.backgroundColor = '#fafbfc';
         
         row.innerHTML = `
-            <td>
-                <div class="font-weight-bold text-dark">${nombre}</div>
-                <div class="text-muted small">${rut} <span class="mx-1 text-light">|</span> ${jerarquia}</div>
+            <td class="pl-4">
+                <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">${nombre}</div>
+                <div class="text-muted small mb-1" style="font-size: 0.72rem;">${rut} <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">${estamento}</span></div>
+                <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">${jerarquia} <span class="mx-1 text-light">|</span> ${jornada} <span class="mx-1 text-light">|</span> G: ${grado} <span class="mx-1 text-light">|</span> Ant: ${antiguedad}</div>
+                <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.7rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${actividad}">
+                    <i class="fas fa-tasks mr-1 text-primary"></i>"${actividad}"
+                </div>
             </td>
             <td>
-                <div class="small font-weight-bold text-dark mb-1">${estamento}</div>
-                <div class="small text-muted">${jornada}</div>
+                ${prestHtml}
+                ${eviHtml}
+            </td>
+            <td>
+                <div class="d-flex flex-column" style="gap: 3px !important;">
+                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Formación OK</div>
+                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>
+                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>
+                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>
+                    <div style="font-size: 0.68rem;" class="${parseInt(pctText) >= 45 ? 'text-warning' : 'text-success'} font-weight-bold"><i class="fas ${parseInt(pctText) >= 45 ? 'fa-exclamation-triangle' : 'fa-check-circle'} mr-1"></i> Límite 50% (${pctText})</div>
+                </div>
             </td>
             <td>
                 <div class="d-flex align-items-center mb-1">
                     <span class="badge ${isDentro ? 'badge-success' : 'badge-warning'} mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
-                    <span class="small font-weight-bold">${modalidadText}</span>
+                    <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${modalidadText}</span>
                 </div>
-                <div class="small text-muted">${extraInfo}</div>
+                <div class="small text-muted mb-1" style="font-size: 0.7rem;">${extraInfo}</div>
                 ${compensacionDetail}
             </td>
             <td>
-                <div class="small font-weight-bold text-dark">${meses} Mes(es)</div>
-                <div class="small text-muted">${mesesStr}</div>
+                <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">${meses} Mes(es)</div>
+                <div class="text-muted" style="font-size: 0.7rem;">${mesesStr}</div>
             </td>
             <td class="text-right">
-                <div class="font-weight-bold text-dark">$${totalPds}</div>
-                <div class="small text-muted" style="font-size: 0.75rem;">$${montoMes} / mes</div>
+                <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">$${totalPds}</div>
+                <div class="small text-muted" style="font-size: 0.72rem;">$${parseInt(montoMes).toLocaleString('es-CL')} / mes</div>
             </td>
-            <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="deleteStaffSummaryRow(this)" title="Eliminar">
+            <td class="text-center pr-4">
+                <button type="button" class="btn btn-action btn-delete border-0 text-danger" onclick="deleteStaffSummaryRow(this)" title="Eliminar" style="padding: 0.25rem 0.5rem;">
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </td>
         `;
         
+        // Crear Fila Secundaria de Validación P02-B12
+        const valRow = document.createElement('tr');
+        valRow.className = `validation-sub-row ${estamento.includes('Académico') ? 'row-accent-sea' : 'row-accent-warning'}`;
+        valRow.style.backgroundColor = estamento.includes('Académico') ? '#f7fafc' : '#fcf8f2';
+        
+        const isAcademic = estamento.includes('Académico');
+        const limitText = parseInt(pctText) >= 45 ? 'AL LÍMITE' : 'CUMPLE';
+        const limitColorClass = parseInt(pctText) >= 45 ? 'text-warning' : 'text-success';
+        const limitBorderColor = parseInt(pctText) >= 45 ? 'var(--ufro-orange)' : 'var(--ufro-green)';
+        const limitIcon = parseInt(pctText) >= 45 ? 'fa-exclamation-triangle' : 'fa-check-circle';
+        
+        const compText = !isDentro && !isAcademic 
+            ? `Registra compensación horaria obligatoria configurada fuera de la jornada ordinaria.`
+            : `No requiere compensación horaria (Académico o Dentro de jornada laboral).`;
+        const compColorClass = !isDentro && !isAcademic ? 'text-warning' : 'text-success';
+        const compBorderColor = !isDentro && !isAcademic ? 'var(--ufro-orange)' : 'var(--ufro-green)';
+        const compIcon = !isDentro && !isAcademic ? 'fa-history' : 'fa-check-circle';
+
+        valRow.innerHTML = `
+            <td colspan="7" class="p-3 pl-4">
+                <div class="p-3 rounded bg-white border shadow-sm">
+                    <div class="font-weight-bold text-ufro-blue mb-3 pb-2 border-bottom d-flex justify-content-between align-items-center" style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                        <span><i class="fas fa-check-double mr-2 ${isAcademic ? 'text-success' : 'text-warning'}"></i>VALIDACIÓN DE REQUISITOS Y TOPES DE CONTROL</span>
+                        <span class="badge ${parseInt(pctText) >= 45 ? 'badge-warning' : 'badge-success'} font-weight-bold px-2 py-1">
+                            <i class="fas ${parseInt(pctText) >= 45 ? 'fa-exclamation-triangle' : 'fa-check'} mr-1"></i>
+                            ${parseInt(pctText) >= 45 ? 'REQUERIMIENTOS CON ALERTA' : 'REQUERIMIENTOS CUMPLIDOS'}
+                        </span>
+                    </div>
+                    <div class="row text-left">
+                        <!-- REGLA 1 -->
+                        <div class="col-md-3">
+                            <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid var(--ufro-green) !important;">
+                                <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">1. Centro de Costo</div>
+                                <div class="font-weight-bold text-success my-1" style="font-size: 0.72rem;"><i class="fas fa-check-circle mr-1"></i>CUMPLE</div>
+                                <div class="text-muted" style="font-size: 0.65rem; line-height: 1.2;">CC 4050.21 validado con saldo disponible. Conforme a norma DU 288.</div>
+                            </div>
+                        </div>
+                        <!-- REGLA 2 -->
+                        <div class="col-md-3">
+                            <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid var(--ufro-green) !important;">
+                                <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">2. Elegibilidad Funcionario</div>
+                                <div class="font-weight-bold text-success my-1" style="font-size: 0.72rem;"><i class="fas fa-check-circle mr-1"></i>CUMPLE</div>
+                                <div class="text-muted" style="font-size: 0.65rem; line-height: 1.2;">Sin inhabilidades vigentes ni deudas pendientes de cobro institucional en SISPER.</div>
+                            </div>
+                        </div>
+                        <!-- REGLA 3 -->
+                        <div class="col-md-3">
+                            <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid ${limitBorderColor} !important;">
+                                <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">3. Control Tope Salarial</div>
+                                <div class="font-weight-bold ${limitColorClass} my-1" style="font-size: 0.72rem;"><i class="fas ${limitIcon} mr-1"></i>${limitText} (${pctText})</div>
+                                <div class="text-muted" style="font-size: 0.65rem; line-height: 1.2;">El honorario mensual de $${parseInt(montoMes).toLocaleString('es-CL')} representa el ${pctText} de su renta base.</div>
+                            </div>
+                        </div>
+                        <!-- REGLA 4 -->
+                        <div class="col-md-3">
+                            <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid ${compBorderColor} !important;">
+                                <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">4. Jornada y Compensación</div>
+                                <div class="font-weight-bold ${compColorClass} my-1" style="font-size: 0.72rem;"><i class="fas ${compIcon} mr-1"></i>${!isDentro && !isAcademic ? 'COMPENSACIÓN' : 'CUMPLE'}</div>
+                                <div class="text-muted" style="font-size: 0.65rem; line-height: 1.2;">${compText}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        `;
+        
         tbody.appendChild(row);
-        document.getElementById('d9_summary_container').classList.remove('hidden');
+        tbody.appendChild(valRow);
         
         // Limpiar formulario Módulo 2
         limpiarFormularioFuncionario();
@@ -1033,8 +1256,21 @@
 
     function deleteStaffSummaryRow(btn) {
         if(confirm('¿Está seguro de eliminar este funcionario de la solicitud?')) {
-            btn.closest('tr').remove();
-            // Ya no ocultamos el contenedor para mantener la maqueta siempre visible
+            const mainRow = btn.closest('tr');
+            const subRow = mainRow.nextElementSibling;
+            if (subRow && subRow.classList.contains('validation-sub-row')) {
+                subRow.remove();
+            }
+            mainRow.remove();
+            
+            const tbody = document.getElementById('d9_summary_body');
+            const remainingRows = tbody.querySelectorAll('tr:not(#d9_summary_empty_row)');
+            if (remainingRows.length === 0) {
+                const emptyRow = document.getElementById('d9_summary_empty_row');
+                if (emptyRow) {
+                    emptyRow.style.display = 'table-row';
+                }
+            }
         }
     }
 
@@ -1048,8 +1284,42 @@
         document.querySelector('.monto-pago').value = '';
         document.getElementById('total_monto_display').value = '0';
         document.querySelectorAll('.month-item').forEach(m => m.classList.remove('selected'));
-        document.querySelector('#tabla_compensacion tbody').innerHTML = '';
-        document.getElementById('d9_path_validation').classList.add('hidden');
+
+        // Resetear Prestación y Evidencias
+        document.getElementById('tp_asistencia').checked = false;
+        document.getElementById('tp_investigacion').checked = false;
+        document.getElementById('tp_otro').checked = false;
+        const otroInput = document.querySelector('#tp_otro').closest('.custom-control').nextElementSibling;
+        if (otroInput && otroInput.tagName === 'INPUT') otroInput.value = '';
+        
+        document.querySelectorAll('#d9_evidence_container tbody input[type="checkbox"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('#d9_evidence_container tbody input[type="date"]').forEach(inp => inp.value = '');
+        const descEviOtra = document.getElementById('desc_evi_otra');
+        if (descEviOtra) descEviOtra.value = '';
+        
+        // Mantener la estructura limpia de la tabla de compensación siempre visible
+        const tbody = document.querySelector('#tabla_compensacion tbody');
+        if (tbody) {
+            tbody.querySelectorAll('tr.compensacion-item-row').forEach(tr => tr.remove());
+            const emptyRow = document.getElementById('compensacion_empty_row');
+            if (emptyRow) {
+                emptyRow.style.display = 'table-row';
+            }
+        }
+
+        // Resetear la alerta de compensación a un estado neutro/inicial
+        const compAlert = document.getElementById('compensacion_alert');
+        const compMsg = document.getElementById('compensacion_msg');
+        const btnAddComp = document.getElementById('btn_agregar_compensacion');
+        if (compAlert && compMsg && btnAddComp) {
+            compAlert.style.backgroundColor = '#f3f4f6';
+            compAlert.className = "alert alert-secondary py-1 px-2 mb-2 small border-secondary d-flex justify-content-between align-items-center";
+            compMsg.innerHTML = '<i class="fas fa-info-circle mr-1 text-muted"></i> Seleccione un funcionario y configure su jornada.';
+            btnAddComp.disabled = true;
+            btnAddComp.classList.add('disabled', 'btn-secondary');
+            btnAddComp.classList.remove('btn-primary');
+        }
+
         actualizarCalculoTopes();
     }
 
@@ -1059,6 +1329,8 @@
         const progressBar = document.getElementById('tope_progress');
         const topePct = document.getElementById('tope_pct');
         const labelTopeTotal = document.getElementById('label_tope_total');
+        const blockAlert = document.getElementById('tope_block_alert');
+        const btnAdd = document.querySelector('button[onclick="addStaffToSummary()"]');
         
         if (!montoInput || !totalDisplay) return;
 
@@ -1068,35 +1340,40 @@
         
         if (totalDisplay) totalDisplay.value = totalSolicitado.toLocaleString('es-CL');
 
-        // Sueldo base simulado del funcionario (Ejemplo: Profesor Asociado A Haber Total 2026)
-        const sueldoBruto = 3508060; 
-        const topeMensual = sueldoBruto * 0.5;
-        const topeAcumulado = topeMensual * mesesSeleccionados;
+        // Sueldo bruto del contrato seleccionado (Simulación)
+        const rentaBrutaText = document.getElementById('renta_bruta_d9').value.replace(/[^0-9]/g, '');
+        const sueldoBruto = parseInt(rentaBrutaText) || 0;
         
-        // Calcular porcentaje basado en el acumulado (si no hay meses, usar 1 para evitar division por 0)
-        const pct = mesesSeleccionados > 0 ? Math.min((totalSolicitado / topeAcumulado) * 100, 100) : 0;
+        const topeMensual = sueldoBruto * 0.5;
+        const pct = sueldoBruto > 0 ? (montoMes / topeMensual) * 100 : 0;
         
         if (progressBar) {
-            progressBar.style.width = pct + '%';
-            if (pct > 95) progressBar.className = 'progress-bar bg-danger';
-            else if (pct > 70) progressBar.className = 'progress-bar bg-warning';
+            progressBar.style.width = Math.min(pct, 100) + '%';
+            if (pct > 100) progressBar.className = 'progress-bar bg-danger';
+            else if (pct > 80) progressBar.className = 'progress-bar bg-warning';
             else progressBar.className = 'progress-bar bg-success';
         }
         
         if (labelTopeTotal) {
-            labelTopeTotal.innerHTML = `Límite: $${topeAcumulado.toLocaleString('es-CL')} (${mesesSeleccionados} meses)`;
+            labelTopeTotal.innerHTML = `$${topeMensual.toLocaleString('es-CL')}`;
         }
 
         if (topePct) {
-            if (pct > 95) {
+            if (pct > 100) {
                 topePct.className = 'badge badge-danger px-2';
-                topePct.innerHTML = 'Excede Límite';
-            } else if (pct > 70) {
+                topePct.innerHTML = `Excede Límite (${Math.round(pct)}%)`;
+                if(blockAlert) blockAlert.classList.remove('hidden');
+                if(btnAdd) btnAdd.disabled = true;
+            } else if (pct > 80) {
                 topePct.className = 'badge badge-warning px-2';
-                topePct.innerHTML = 'Cercano al Límite';
+                topePct.innerHTML = `Cercano al Límite (${Math.round(pct)}%)`;
+                if(blockAlert) blockAlert.classList.add('hidden');
+                if(btnAdd) btnAdd.disabled = false;
             } else {
                 topePct.className = 'badge badge-success px-2';
-                topePct.innerHTML = 'Cumple 50%';
+                topePct.innerHTML = `Cumple 50% (${Math.round(pct)}%)`;
+                if(blockAlert) blockAlert.classList.add('hidden');
+                if(btnAdd) btnAdd.disabled = false;
             }
         }
     }
@@ -1105,46 +1382,179 @@
         const isD9 = document.getElementById('flowD9').checked;
         if (!isD9) return;
 
-        const estamentoText = document.getElementById('estamento_d9').value;
+        const estamentoText = document.getElementById('estamento_d9').value || '';
         const estamento = estamentoText.includes('Académico') ? 'ACAD' : 'ADMIN';
         
-        const jDentro = document.getElementById('j_dentro').checked;
-        const seaSi = document.getElementById('sea_si').checked;
-        const seaNo = document.getElementById('sea_no').checked;
+        // Simulación lógica SEA (P01-F18): Académico + >1y antigüedad
+        const antiguedadText = document.getElementById('antiguedad_d9').value || '';
+        const antiguedad = parseInt(antiguedadText) || 0;
+        const isSEA = (estamento === 'ACAD' && antiguedad >= 1);
+
+        // Auto-seleccionar radios de SEA según los datos
+        if (isSEA) {
+            document.getElementById('sea_si').checked = true;
+            document.getElementById('sea_no').checked = false;
+        } else {
+            document.getElementById('sea_si').checked = false;
+            document.getElementById('sea_no').checked = true;
+        }
+
+        // Auto-seleccionar si es Fuera o Dentro de Jornada según los datos por defecto:
+        // Si es Académico con SEA, por defecto es Dentro de Jornada.
+        // Si no tiene SEA o es Administrativo, por defecto es Fuera de Jornada, pero el usuario puede cambiarlo.
+        const jDentroRad = document.getElementById('j_dentro');
+        const jFueraRad = document.getElementById('j_fuera');
         
-        const pathValidation = document.getElementById('d9_path_validation');
-        const pathAcadSea = document.getElementById('path_acad_sea');
-        const pathCompensacion = document.getElementById('path_compensacion');
-
-        // Reset inicial
-        if(pathValidation) pathValidation.classList.add('hidden');
-        if(pathAcadSea) pathAcadSea.classList.add('hidden');
-        if(pathCompensacion) pathCompensacion.classList.add('hidden');
-
-        if (jDentro) {
-            if(pathValidation) pathValidation.classList.remove('hidden');
-            
-            if (estamento === 'ACAD') {
-                // Académicos: Mostrar pregunta SEA
-                if(pathAcadSea) pathAcadSea.classList.remove('hidden');
-                
-                // Si NO es SEA, debe compensar obligatoriamente
-                if (seaNo) {
-                    if(pathCompensacion) pathCompensacion.classList.remove('hidden');
-                } else {
-                    if(pathCompensacion) pathCompensacion.classList.add('hidden');
-                }
+        if (estamentoText !== '') { // Solo calcular automáticamente si hay un contrato seleccionado
+            if (estamento === 'ACAD' && isSEA) {
+                jDentroRad.checked = true;
+                jFueraRad.checked = false;
             } else {
-                // Administrativo / Profesional Docente: Siempre compensa si es dentro de jornada
-                if(pathAcadSea) pathAcadSea.classList.add('hidden');
-                if(pathCompensacion) pathCompensacion.classList.remove('hidden');
+                // Si es Administrativo o Académico sin SEA, dejamos por defecto Fuera de Jornada si no hay selección previa
+                if (!jDentroRad.checked && !jFueraRad.checked) {
+                    jFueraRad.checked = true;
+                }
             }
         }
+
+        // Lógica de compensación siempre visible, pero con comportamiento y alertas dinámicas
+        const jDentro = jDentroRad.checked;
+        const compAlert = document.getElementById('compensacion_alert');
+        const compMsg = document.getElementById('compensacion_msg');
+        const btnAddComp = document.getElementById('btn_agregar_compensacion');
+
+        if (jDentro && (!isSEA || estamento === 'ADMIN')) {
+            // Requiere compensación
+            if (compAlert && compMsg && btnAddComp) {
+                compAlert.style.backgroundColor = '#fff9e6';
+                compAlert.className = "alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center";
+                compMsg.innerHTML = '<i class="fas fa-exclamation-triangle mr-1 text-warning"></i> Requiere <strong>Compensación horaria</strong> (Jornada ordinaria)';
+                btnAddComp.disabled = false;
+                btnAddComp.classList.remove('disabled', 'btn-secondary');
+                btnAddComp.classList.add('btn-primary');
+            }
+        } else {
+            // No requiere compensación
+            if (compAlert && compMsg && btnAddComp) {
+                compAlert.style.backgroundColor = '#f3f4f6';
+                compAlert.className = "alert alert-secondary py-1 px-2 mb-2 small border-secondary d-flex justify-content-between align-items-center";
+                compMsg.innerHTML = '<i class="fas fa-info-circle mr-1 text-muted"></i> No requiere compensación horaria para esta modalidad.';
+                btnAddComp.disabled = true;
+                btnAddComp.classList.add('disabled', 'btn-secondary');
+                btnAddComp.classList.remove('btn-primary');
+                
+                // Limpiar filas agregadas ya que no corresponde compensación
+                const tbody = document.querySelector('#tabla_compensacion tbody');
+                if (tbody) {
+                    tbody.querySelectorAll('tr.compensacion-item-row').forEach(tr => tr.remove());
+                    const emptyRow = document.getElementById('compensacion_empty_row');
+                    if (emptyRow) {
+                        emptyRow.style.display = 'table-row';
+                    }
+                }
+            }
+        }
+    }
+
+    function validateTotalHours() {
+        // RF-P01-060: Max 12 hours daily (Base + Compensation)
+        const compRows = document.querySelectorAll('#tabla_compensacion tbody tr.compensacion-item-row');
+        let isValid = true;
+        compRows.forEach(row => {
+            const inputEl = row.querySelector('input');
+            if (inputEl) {
+                const hrsComp = parseFloat(inputEl.value) || 0;
+                const baseHrs = 8.8; // Simulación: 44h / 5 días
+                if (baseHrs + hrsComp > 12) {
+                    alert(`Error: La suma de jornada base (${baseHrs}h) y compensación (${hrsComp}h) supera el límite de 12 horas diarias.`);
+                    isValid = false;
+                }
+            }
+        });
+        return isValid;
     }
 
     let searchTarget = 'staff';
     function setSearchTarget(target) {
         searchTarget = target;
+    }
+
+    function seleccionarContratoFila(fila, tipo, estamento, jerarquia, grado, jornada, antiguedad, rentaBruta, rentaLiquida) {
+        // Desmarcar todos y marcar actual
+        const tbody = fila.closest('tbody');
+        tbody.querySelectorAll('input[type="radio"]').forEach(rad => rad.checked = false);
+        fila.querySelector('input[type="radio"]').checked = true;
+        
+        // Quitar clase highlight y añadir a la actual
+        tbody.querySelectorAll('tr').forEach(tr => tr.classList.remove('table-primary'));
+        fila.classList.add('table-primary');
+
+        // Actualizar campos del formulario
+        document.getElementById('estamento_d9').value = estamento;
+        document.getElementById('antiguedad_d9').value = antiguedad;
+        document.getElementById('funcionario_jerarquia').value = jerarquia;
+        document.getElementById('tipo_jornada_d9').value = jornada;
+        document.getElementById('grado_d9').value = grado;
+        document.getElementById('renta_bruta_d9').value = `$${rentaBruta.toLocaleString('es-CL')}`;
+        document.getElementById('renta_liquida_d9').value = `$${rentaLiquida.toLocaleString('es-CL')}`;
+        
+        // Re-ejecutar cálculos y reglas de negocio
+        actualizarCalculoTopes();
+        evaluarReglas();
+    }
+
+    const MOCK_CONTRATOS = {
+        '19.477.728-0': [
+            { tipo: 'CONTRATO INDEFINIDO', estamento: 'Académico', jerarquia: 'Profesor Asociado', grado: '4', jornada: '44 Hrs', antiguedad: '12 años', bruto: 3508060, liquido: 2840500 },
+            { tipo: 'CONTRATO HONORARIOS', estamento: 'Académico', jerarquia: 'Docente Invitado', grado: '9', jornada: '11 Hrs', antiguedad: '2 años', bruto: 450000, liquido: 405000 }
+        ],
+        '15.654.321-0': [
+            { tipo: 'CONTRATO CONTRATA', estamento: 'Administrativo', jerarquia: 'Técnico Universitario', grado: '12', jornada: '44 Hrs', antiguedad: '5 años', bruto: 850000, liquido: 688500 },
+            { tipo: 'CONTRATO HONORARIOS', estamento: 'Administrativo', jerarquia: 'Apoyo Administrativo', grado: '15', jornada: '22 Hrs', antiguedad: '1 año', bruto: 420000, liquido: 378000 }
+        ]
+    };
+
+    function cargarContratosSISPER(rut) {
+        const tbody = document.querySelector('#tabla_contratos_sisper tbody');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+        const contratos = MOCK_CONTRATOS[rut] || [];
+        
+        contratos.forEach((c, idx) => {
+            const tr = document.createElement('tr');
+            tr.className = 'cursor-pointer';
+            
+            // Usamos una clausura segura o pasamos los parámetros
+            tr.onclick = function() {
+                seleccionarContratoFila(this, c.tipo, c.estamento, c.jerarquia, c.grado, c.jornada, c.antiguedad, c.bruto, c.liquido);
+            };
+            
+            const isChecked = idx === 0 ? 'checked' : '';
+            tr.innerHTML = `
+                <td class="pl-3 text-center">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" name="sisper_contract" class="custom-control-input" ${isChecked}>
+                        <label class="custom-control-label"></label>
+                    </div>
+                </td>
+                <td class="font-weight-bold">${c.tipo}</td>
+                <td>${c.estamento}</td>
+                <td>${c.jerarquia} (Grado ${c.grado})</td>
+                <td class="text-center">${c.jornada}</td>
+                <td class="text-center">${c.antiguedad}</td>
+                <td class="text-right font-weight-bold text-primary">$${c.bruto.toLocaleString('es-CL')}</td>
+                <td class="text-right pr-3">$${c.liquido.toLocaleString('es-CL')}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        // Auto-seleccionar primer contrato
+        const primeraFila = tbody.querySelector('tr');
+        if (primeraFila && contratos.length > 0) {
+            const first = contratos[0];
+            seleccionarContratoFila(primeraFila, first.tipo, first.estamento, first.jerarquia, first.grado, first.jornada, first.antiguedad, first.bruto, first.liquido);
+        }
     }
 
     function selectStaff(rut, name) {
@@ -1158,16 +1568,38 @@
             document.getElementById('rut_funcionario').value = rut;
             document.getElementById('nombre_funcionario').value = name;
             
-            // Auto-rellenado de datos del funcionario (Simulado desde BDD SISPER)
-            document.getElementById('funcionario_jerarquia').value = "Profesor Asociado";
-            document.getElementById('estamento_d9').value = "Académico";
-            document.getElementById('tipo_jornada_d9').value = "Jornada Completa (44 hrs)";
+            // Cargar contratos dinámicamente y disparar los cálculos en cascada
+            cargarContratosSISPER(rut);
             
             simulateStaffSearch(); // Actualizar validaciones preventivas D9
         }
     }
 
     function enviarSolicitud() {
+        // Re-validación crítica pre-envío (RF-P01-076)
+        const hasStaff = document.querySelectorAll('#d9_summary_body tr:not(#d9_summary_empty_row)').length > 0;
+        const ccSelected = document.getElementById('cc_display').value !== '';
+        const descriptionOk = document.getElementById('d9_descripcion').value.length > 10;
+
+        if (!ccSelected) {
+            alert('Error: Debe seleccionar un Centro de Costo válido.');
+            return;
+        }
+        if (!descriptionOk) {
+            alert('Error: Debe ingresar una descripción detallada de la actividad.');
+            return;
+        }
+        if (!hasStaff) {
+            alert('Error: Debe agregar al menos un funcionario a la nómina.');
+            return;
+        }
+
+        $('#modalEnvioSolicitud').modal('show');
+    }
+
+    function confirmarEnvioSolicitud() {
+        $('#modalEnvioSolicitud').modal('hide');
+        console.log("Solicitud enviada exitosamente. Estado: ENVIADA.");
         window.location.href = "02_vista_visacion_aprobador.html";
     }
 
@@ -1178,8 +1610,37 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         toggleFlow(false); // Iniciar en modo Legacy (DU288) por defecto
+        limpiarFormularioFuncionario();
     });
 </script>
+
+<div class="modal fade" id="modalEnvioSolicitud" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header text-white" style="background-color: var(--ufro-green); padding: 1.2rem 1.5rem; border: none;">
+                <h5 class="modal-title font-weight-bold" style="font-size: 1rem; letter-spacing: 0.5px;">
+                    <i class="fas fa-paper-plane mr-2"></i> Confirmar Envio de Solicitud
+                </h5>
+                <button type="button" class="close text-white border-0 bg-transparent font-weight-bold" data-dismiss="modal" aria-label="Close" style="opacity: 0.8; outline: none; font-size: 1.2rem; cursor: pointer;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-left">
+                <p class="font-weight-bold text-dark mb-0" style="font-size: 0.95rem; line-height: 1.6;">
+                    ¿Esta seguro de enviar formalmente la solicitud para iniciar el flujo de validacion D9?
+                </p>
+            </div>
+            <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2 mr-2" data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">
+                    CANCELAR
+                </button>
+                <button type="button" class="btn text-white font-weight-bold px-4 py-2" onclick="confirmarEnvioSolicitud()" style="border-radius: 6px; font-size: 0.75rem; background-color: var(--ufro-green); border: none;">
+                    ENVIAR SOLICITUD
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- MODAL BÚSQUEDA DE PERSONAS (Staff / Jefe Proyecto) - CALCADO -->
 <div class="modal fade" id="modalSearchStaff" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1228,6 +1689,13 @@
                                 <td class="align-middle text-uppercase">LIZAMA AILLAPAN ESTEBAN NICOLAS</td>
                                 <td class="text-right">
                                     <button class="btn btn-sm btn-primary bg-ufro-dark px-3 py-0 font-weight-bold" style="border-radius: 4px; font-size: 0.7rem; height: 24px;" onclick="selectStaff('19.477.728-0', 'LIZAMA AILLAPAN ESTEBAN NICOLAS')" data-dismiss="modal">Seleccionar</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">156543210</td>
+                                <td class="align-middle text-uppercase">FUENTES MEZA CARLOS HERNAN</td>
+                                <td class="text-right">
+                                    <button class="btn btn-sm btn-primary bg-ufro-dark px-3 py-0 font-weight-bold" style="border-radius: 4px; font-size: 0.7rem; height: 24px;" onclick="selectStaff('15.654.321-0', 'FUENTES MEZA CARLOS HERNAN')" data-dismiss="modal">Seleccionar</button>
                                 </td>
                             </tr>
                         </tbody>

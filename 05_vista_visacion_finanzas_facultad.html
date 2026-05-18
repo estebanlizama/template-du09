@@ -100,6 +100,53 @@
             padding: 15px;
             border: 1px solid #e2e8f0;
         }
+        .official-sidebar-card {
+            border-left-width: 4px !important;
+            border-left-style: solid !important;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 12px;
+        }
+        .official-sidebar-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05) !important;
+        }
+        .official-sidebar-card.active {
+            background-color: #f1f5f9 !important;
+            border-color: var(--ufro-blue) !important;
+            border-left-color: var(--ufro-blue) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important;
+        }
+        .border-left-success-p { border-left-color: var(--ufro-green) !important; }
+        .border-left-warning-p { border-left-color: var(--ufro-orange) !important; }
+        .status-summary-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            height: 100%;
+        }
+        .status-summary-card .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #64748b;
+            letter-spacing: 0.5px;
+        }
+        .status-summary-card .value {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .review-log-card {
+            display: none;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid #2563eb;
+            border-radius: 10px;
+            padding: 0.9rem 1rem;
+            margin-top: 1rem;
+        }
     </style>
     </style>
 </head>
@@ -262,48 +309,130 @@
                 </div>
             </div>
 
-            <!-- TÍTULO SECCIÓN: PERSONAL EXCLUIDO -->
-            <div class="mb-3 mt-4 d-flex align-items-center">
-                <i class="fas fa-user-times h5 m-0 text-danger mr-2"></i>
-                <h5 class="m-0 font-weight-bold text-dark">Personal Excluido en Etapas Previas</h5>
+            <div class="card-minimal mb-4 overflow-hidden border shadow-sm" style="border-top: 4px solid var(--ufro-blue) !important; border-radius: 12px;">
+                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 0.5px;">
+                        <i class="fas fa-chart-line mr-1"></i> Resumen Ejecutivo Financiero y Estado Consolidado
+                    </h6>
+                    <span class="badge badge-soft-primary font-weight-bold px-2 py-1" style="font-size: 0.65rem;">P05-B04 | B17</span>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="status-summary-card">
+                                <div class="label">Monto Original</div>
+                                <div class="value text-primary">$1.460.000</div>
+                                <div class="small text-muted">2 funcionarios incorporados</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="status-summary-card">
+                                <div class="label">Monto Vigente</div>
+                                <div class="value text-success" id="financial-total-vigente">$560.000</div>
+                                <div class="small text-muted" id="financial-count-vigentes">1 funcionario vigente</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="status-summary-card">
+                                <div class="label">Monto Excluido DGDP</div>
+                                <div class="value text-danger">$900.000</div>
+                                <div class="small text-muted">1 funcionario excluido</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="status-summary-card">
+                                <div class="label">Estado Financiero Global</div>
+                                <div class="value" id="financial-review-state">Pendiente</div>
+                                <div class="small text-muted" id="financial-review-detail">Debe resolver la revisión individual</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="status-summary-card">
+                                <div class="label">Funcionarios Aprobados</div>
+                                <div class="value text-success" id="financial-approved-count">0</div>
+                                <div class="small text-muted">Aprobados financieramente</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="status-summary-card">
+                                <div class="label">Funcionarios Rechazados</div>
+                                <div class="value text-danger" id="financial-rejected-count">0</div>
+                                <div class="small text-muted">Con observación financiera</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="status-summary-card">
+                                <div class="label">Funcionarios Pendientes</div>
+                                <div class="value text-warning" id="financial-pending-count">1</div>
+                                <div class="small text-muted">Bloquean la aprobación global</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- FICHA INTEGRAL FUNCIONARIO 1 (ESTEBAN LIZAMA - EXCLUIDO) -->
-            <div class="audit-sheet" style="border-left: 6px solid #e3342f; opacity: 0.85;">
+            <div class="alert alert-info small mb-4" id="financial-notification-alert" style="display: none; border-radius: 10px;">
+                <i class="fas fa-bell mr-2"></i><span id="financial-notification-text"></span>
+            </div>
+
+            <div class="mb-3 mt-4 d-flex align-items-center">
+                <i class="fas fa-user-times h5 m-0 text-danger mr-2"></i>
+                <h5 class="m-0 font-weight-bold text-dark">Funcionarios Excluidos Previamente</h5>
+            </div>
+
+            <div class="audit-sheet" style="border-left: 6px solid #e3342f; opacity: 0.9;">
                 <div class="sheet-header-premium flex-column flex-md-row align-items-start align-items-md-center bg-light">
                     <div class="d-flex align-items-center mb-3 mb-md-0">
-                        <div class="icon-box bg-danger text-white mr-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                            <i class="fas fa-user-times"></i>
-                        </div>
+                        <div class="icon-box bg-danger text-white mr-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;"><i class="fas fa-user-times"></i></div>
                         <div>
-                            <h5 class="m-0 font-weight-bold text-dark text-decoration-line-through" style="color:#777 !important;">LIZAMA AILLAPAN ESTEBAN ANDRÉS</h5>
-                            <span class="text-muted small">12.345.678-9 | <strong>ACADÉMICO</strong> | <strong class="text-danger">EXCLUIDO POR DGDP</strong></span>
+                            <h5 class="m-0 font-weight-bold text-dark text-decoration-line-through" style="color:#777 !important;">LIZAMA AILLAPAN ESTEBAN NICOLAS</h5>
+                            <span class="text-muted small">15.890.342-K | <strong>ACADÉMICO</strong> | <strong class="text-danger">EXCLUIDO POR DGDP</strong></span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center ml-md-auto w-100 w-md-auto justify-content-between justify-content-md-end">
-                        <div class="text-right mr-4">
-                            <div class="data-label">Monto Bruto Original</div>
-                            <div class="h5 m-0 font-weight-bold text-muted text-decoration-line-through">$450.000</div>
-                        </div>
-                        <span class="badge badge-danger px-3 py-2 shadow-sm" style="font-size:0.85rem;"><i class="fas fa-ban mr-1"></i> RECHAZADO (DGDP)</span>
+                        <div class="text-right mr-4"><div class="data-label">Monto Bruto Original</div><div class="h5 m-0 font-weight-bold text-muted text-decoration-line-through">$900.000</div></div>
+                        <span class="badge badge-danger px-3 py-2 shadow-sm" style="font-size:0.85rem;"><i class="fas fa-ban mr-1"></i> EXCLUIDO POR DGDP</span>
                     </div>
                 </div>
                 <div class="px-4 py-3 bg-white border-bottom">
-                    <div class="small text-danger font-weight-bold"><i class="fas fa-exclamation-triangle mr-1"></i> Motivo de Exclusión Técnica:</div>
-                    <div class="small text-muted mt-1">
-                        El funcionario presenta similitud de funciones (100% de coincidencia) superando el límite permitido, además de registrar una rendición de fondos pendiente (Fdo. por Rendir), contraviniendo el DU 288 Art. 4.
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0">
+                            <thead class="bg-light text-center"><tr><th>Etapa</th><th>Motivo resumido</th><th>Comentario</th><th>Regla/Causal</th></tr></thead>
+                            <tbody><tr class="text-center"><td>DGDP</td><td>Exclusion por deuda institucional</td><td>Funcionario excluido por DGDP debido a deuda institucional observada.</td><td>Credito Solidario / DU 288</td></tr></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- TÍTULO SECCIÓN: PERSONAL VALIDADO -->
-            <div class="mb-3 mt-5 d-flex align-items-center">
-                <i class="fas fa-users h5 m-0 text-success mr-2"></i>
-                <h5 class="m-0 font-weight-bold text-dark">Personal Validado (Continúa en Proceso)</h5>
-            </div>
+            <div class="row mb-4 mt-5">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="card-minimal border shadow-sm h-100 bg-white" style="border-radius: 12px; overflow: hidden;">
+                        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 0.5px;">
+                                <i class="fas fa-users-cog mr-1"></i> Nómina Vigente para Revisión
+                            </h6>
+                            <span class="badge badge-soft-primary px-2 font-weight-bold" style="font-size: 0.6rem;">P05-B08 | B09</span>
+                        </div>
+                        <div class="list-group list-group-flush p-2" id="sidebar-officials-list">
+                            <div class="list-group-item list-group-item-action official-sidebar-card active p-3 mb-2 border border-left-success-p" id="sidebar-card-soto" onclick="selectOfficial('soto')" style="background-color: #f8fafc; border-radius: 8px;">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <h6 class="font-weight-bold text-dark mb-0 small" style="font-size: 0.8rem;">SOTO FIGUEROA MARIA ELENA</h6>
+                                    <span class="badge badge-success text-success px-2 py-0.5" id="sidebar-badge-soto" style="font-size: 0.55rem; background-color: #dcfce7; border: 1px solid #bbf7d0;">APROBADO</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center small text-muted">
+                                    <span>RUT: 16.452.891-2</span>
+                                    <span class="font-weight-bold text-ufro-blue">$560.000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-lg-8">
             <!-- FICHA INTEGRAL FUNCIONARIO 2 (MARÍA ELENA SOTO - CASO CUMPLIMIENTO) -->
-            <div class="audit-sheet" style="border-left: 6px solid var(--ufro-green);">
+            <div class="audit-sheet approved" id="ficha-soto" style="border-left: 6px solid var(--ufro-green);">
                 <div class="sheet-header-premium flex-column flex-md-row align-items-start align-items-md-center">
                     <div class="d-flex align-items-center mb-3 mb-md-0">
                         <div class="icon-box bg-success text-white mr-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem; background-color: var(--ufro-green);">
@@ -311,15 +440,15 @@
                         </div>
                         <div>
                             <h5 class="m-0 font-weight-bold text-dark">SOTO FIGUEROA MARÍA ELENA</h5>
-                            <span class="text-muted small">15.987.654-3 | <strong>ADMINISTRATIVO</strong> | <strong>GRADO 16</strong></span>
+                            <span class="text-muted small">16.452.891-2 | <strong>ADMINISTRATIVO</strong> | <strong>GRADO 16</strong></span>
                         </div>
                     </div>
                     <div class="d-flex align-items-center ml-md-auto w-100 w-md-auto justify-content-between justify-content-md-end">
                         <div class="text-right mr-4">
                             <div class="data-label">Monto Bruto</div>
-                            <div class="h5 m-0 font-weight-bold text-ufro-blue">$280.000</div>
+                            <div class="h5 m-0 font-weight-bold text-ufro-blue">$560.000</div>
                         </div>
-                        <span class="badge badge-success px-3 py-2 shadow-sm" style="font-size:0.85rem; background-color: var(--ufro-green);"><i class="fas fa-check-double mr-1"></i> VALIDADO TÉCNICAMENTE</span>
+                        <span class="badge badge-success px-3 py-2 shadow-sm text-success" id="soto-financial-badge" style="font-size:0.85rem; background-color: #dcfce7; border: 1px solid #bbf7d0;"><i class="fas fa-check-circle mr-1"></i> APROBADO FINANCIERAMENTE</span>
                     </div>
                 </div>
 
@@ -331,136 +460,338 @@
                     </div>
                 </div>
 
-                <!-- PANEL DE INTEGRIDAD INDIVIDUAL -->
                 <div class="audit-section">
-                    <h6 class="section-title-audit">
-                        <span><i class="fas fa-shield-alt"></i> Panel de Integridad y Reglas Normativas</span>
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-id-badge mr-1"></i> Detalle Contractual y Laboral</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B09</span>
                     </h6>
-                    <div class="row mb-2">
-                        <div class="col-md-2 pr-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Duración</div>
-                                    <span class="x-small text-muted">Max. 2 Meses</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 px-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Naturaleza</div>
-                                    <span class="x-small text-muted">PDS Regular</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 px-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Autoridad</div>
-                                    <span class="x-small text-muted">Sin Inhabilidad</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 px-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Contrato</div>
-                                    <span class="x-small text-muted">Vigente SISPER</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 px-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Licencias</div>
-                                    <span class="x-small text-muted">Sin bloqueos</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2 pl-1">
-                            <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-1 border-success">
-                                <div class="mr-2 text-success"><i class="fas fa-check-circle"></i></div>
-                                <div class="small line-height-1">
-                                    <div class="font-weight-bold">Deudas</div>
-                                    <span class="x-small text-muted">Sin Deudas</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DOCUMENTACIÓN DE RESPALDO -->
-                <div class="audit-section bg-light">
-                    <h6 class="section-title-audit">
-                        <span><i class="fas fa-folder-open"></i> Documentación de Respaldo de la Persona</span>
-                    </h6>
-                    <div class="d-flex flex-wrap gap-3">
-                        <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-2 mr-2" style="cursor: pointer; min-width: 200px;">
-                            <div class="mr-3 text-danger"><i class="fas fa-file-pdf fa-lg"></i></div>
-                            <div class="small overflow-hidden" style="max-width: 150px;">
-                                <div class="font-weight-bold text-truncate">CV_Actualizado.pdf</div>
-                                <span class="x-small text-muted text-uppercase">Currículum Vitae</span>
-                            </div>
-                        </div>
-                        <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-2 mr-2" style="cursor: pointer; min-width: 200px;">
-                            <div class="mr-3 text-danger"><i class="fas fa-file-pdf fa-lg"></i></div>
-                            <div class="small overflow-hidden" style="max-width: 150px;">
-                                <div class="font-weight-bold text-truncate">Certificado_Estudios.pdf</div>
-                                <span class="x-small text-muted text-uppercase">Certificado Técnico</span>
-                            </div>
-                        </div>
-                        <div class="p-2 border rounded bg-white shadow-sm d-flex align-items-center mb-2 mr-2" style="cursor: pointer; min-width: 200px;">
-                            <div class="mr-3 text-danger"><i class="fas fa-file-pdf fa-lg"></i></div>
-                            <div class="small overflow-hidden" style="max-width: 150px;">
-                                <div class="font-weight-bold text-truncate">Declaracion_Jurada.pdf</div>
-                                <span class="x-small text-muted text-uppercase">No Inhabilidad</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PLAN DE PAGOS Y ENTREGABLES -->
-                <div class="audit-section">
-                    <h6 class="section-title-audit">
-                        <span><i class="fas fa-calendar-alt"></i> Plan de Pagos y Entregables Específicos</span>
-                    </h6>
-                    <div class="table-responsive">
-                        <table class="audit-data-table text-center bg-white mb-0" style="border: 1px solid #dee2e6;">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th style="width: 15%;">Periodo</th>
-                                    <th style="width: 20%;">Monto Cuota</th>
-                                    <th>Producto / Entregable Asociado</th>
-                                    <th style="width: 15%;">Estado</th>
-                                </tr>
-                            </thead>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered bg-white small mb-0">
                             <tbody>
                                 <tr>
-                                    <td class="font-weight-bold">Mayo 2026</td>
-                                    <td class="text-dark font-weight-bold">$140.000</td>
-                                    <td class="text-left small italic">Recopilación de antecedentes (Fase 1)</td>
-                                    <td><span class="badge badge-soft-success px-2">VALIDADO</span></td>
+                                    <th class="bg-light" style="width: 22%;">Jerarquia</th>
+                                    <td>Administrativo de apoyo</td>
+                                    <th class="bg-light" style="width: 22%;">Grado</th>
+                                    <td>16</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-weight-bold">Junio 2026</td>
-                                    <td class="text-dark font-weight-bold">$140.000</td>
-                                    <td class="text-left small italic">Digitalización completa (Fase 2)</td>
-                                    <td><span class="badge badge-soft-success px-2">VALIDADO</span></td>
+                                    <th class="bg-light">Tipo de vinculacion</th>
+                                    <td>Planta General</td>
+                                    <th class="bg-light">Jornada</th>
+                                    <td>44 horas semanales</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Horas jornada</th>
+                                    <td>44 horas</td>
+                                    <th class="bg-light">Contratos vigentes</th>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Renta bruta</th>
+                                    <td>$1.084.000</td>
+                                    <th class="bg-light">Renta neta referencial</th>
+                                    <td>$842.500</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Estado DGDP</th>
+                                    <td>Cumple / Aprobado DGDP</td>
+                                    <th class="bg-light">Item asociado</th>
+                                    <td>21.03.004 - Administrativo</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- SECCIÓN 1: LÍMITES DE PAGO -->
+                <div class="audit-section bg-light">
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-file-invoice-dollar mr-1"></i> Prestaciones Solicitadas</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B10</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0 text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Prestacion</th>
+                                    <th>Actividad especifica</th>
+                                    <th>Descripcion</th>
+                                    <th>Meses pago</th>
+                                    <th>Total comprometido</th>
+                                    <th>Total en jornada</th>
+                                    <th>Total fuera jornada</th>
+                                    <th>Total compensacion</th>
+                                    <th>Item</th>
+                                    <th>Estado item</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">Apoyo Administrativo</td>
+                                    <td>Digitalizacion y foliacion</td>
+                                    <td class="text-left">Apoyo administrativo en la recopilación de actas, foliación de expedientes físicos y digitalización de documentos.</td>
+                                    <td>May-Jun 2026</td>
+                                    <td>$560.000</td>
+                                    <td>$0</td>
+                                    <td>$560.000</td>
+                                    <td>8 hrs semanales</td>
+                                    <td>21.03.004</td>
+                                    <td><span class="badge badge-success">VALIDO</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="audit-section">
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-file-contract mr-1"></i> Contratos Vigentes y Datos Asociados</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B11</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0 text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Contrato</th>
+                                    <th>Referencia</th>
+                                    <th>Descripcion actividad</th>
+                                    <th>Meses pago</th>
+                                    <th>Total comprometido</th>
+                                    <th>Total en jornada</th>
+                                    <th>Total fuera jornada</th>
+                                    <th>Total compensacion</th>
+                                    <th>SEA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-primary">
+                                    <td class="font-weight-bold">PLA-ADM-01162</td>
+                                    <td><span class="badge badge-primary">Seleccionado PDS</span></td>
+                                    <td class="text-left">Funciones administrativas de apoyo y archivo institucional.</td>
+                                    <td>May-Jun 2026</td>
+                                    <td>$560.000</td>
+                                    <td>$0</td>
+                                    <td>$560.000</td>
+                                    <td>8 hrs</td>
+                                    <td>No aplica</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">ANX-ADM-0315</td>
+                                    <td><span class="badge badge-light">Compensacion</span></td>
+                                    <td class="text-left">Planificación horaria de compensación fuera de jornada.</td>
+                                    <td>May-Jun 2026</td>
+                                    <td>$0</td>
+                                    <td>$0</td>
+                                    <td>$0</td>
+                                    <td>8 hrs</td>
+                                    <td>Registrado</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="audit-section bg-light">
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-history mr-1"></i> Historial de Prestaciones Previas</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B12</span>
+                    </h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered bg-white small mb-0 text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Solicitud</th>
+                                    <th>Periodo</th>
+                                    <th>Centro de costo</th>
+                                    <th>Tipo</th>
+                                    <th>Meses</th>
+                                    <th>Monto mensual</th>
+                                    <th>Monto total</th>
+                                    <th>Estado</th>
+                                    <th>Observaciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">PDS-2026-0007</td>
+                                    <td>Mar-Abr 2026</td>
+                                    <td>4050.21</td>
+                                    <td>Apoyo Administrativo</td>
+                                    <td>2</td>
+                                    <td>$240.000</td>
+                                    <td>$480.000</td>
+                                    <td><span class="badge badge-success">Pagada</span></td>
+                                    <td>Sin incidencia presupuestaria adicional</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">PDS-2025-0211</td>
+                                    <td>Oct 2025</td>
+                                    <td>4048.19</td>
+                                    <td>Archivo y apoyo</td>
+                                    <td>1</td>
+                                    <td>$220.000</td>
+                                    <td>$220.000</td>
+                                    <td><span class="badge badge-light">Cerrada</span></td>
+                                    <td>Antecedente histórico</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light" style="width: 30%;">Total pagado histórico relevante</th>
+                                    <td>$700.000</td>
+                                    <th class="bg-light" style="width: 30%;">Total prestaciones registradas</th>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Ultimo pago registrado</th>
+                                    <td>Abril 2026</td>
+                                    <th class="bg-light">Total comprometido actual</th>
+                                    <td>$560.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="audit-section">
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-wallet mr-1"></i> Historial de Pagos e Informacion Financiera</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B13</span>
+                    </h6>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered bg-white small mb-0 text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Periodo pago</th>
+                                    <th>Centro de costo</th>
+                                    <th>Monto bruto</th>
+                                    <th>Monto neto</th>
+                                    <th>Total periodo</th>
+                                    <th>Estado</th>
+                                    <th>Tipo prestacion</th>
+                                    <th>Observacion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Abr 2026</td>
+                                    <td>4050.21</td>
+                                    <td>$240.000</td>
+                                    <td>$194.300</td>
+                                    <td>$240.000</td>
+                                    <td><span class="badge badge-success">Pagado</span></td>
+                                    <td>Apoyo Administrativo</td>
+                                    <td>Sin observaciones</td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 2025</td>
+                                    <td>4048.19</td>
+                                    <td>$220.000</td>
+                                    <td>$178.100</td>
+                                    <td>$220.000</td>
+                                    <td><span class="badge badge-success">Pagado</span></td>
+                                    <td>Archivo y apoyo</td>
+                                    <td>Registro cerrado</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0">
+                            <tbody>
+                                <tr>
+                                    <th class="bg-light" style="width: 30%;">Monto bruto mensual solicitado</th>
+                                    <td>$280.000</td>
+                                    <th class="bg-light" style="width: 30%;">Monto total PDS actual</th>
+                                    <td>$560.000</td>
+                                </tr>
+                                <tr>
+                                    <th class="bg-light">Otras solicitudes vigentes</th>
+                                    <td>$0</td>
+                                    <th class="bg-light">Comparacion historico vs actual</th>
+                                    <td>Sin sobrecompromiso financiero</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="audit-section bg-light">
+                    <h6 class="section-title-audit mb-3">
+                        <span><i class="fas fa-user-shield mr-1"></i> Estado Resumido de Validaciones Previas</span>
+                        <span class="badge badge-soft-secondary text-muted" style="font-size: 0.6rem;">P05-B14</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white small mb-0 text-center">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Estado DGDP</th>
+                                    <th>Tope normativo</th>
+                                    <th>Deudas</th>
+                                    <th>Inhabilidad por cargo</th>
+                                    <th>SEA y compensacion</th>
+                                    <th>Observaciones heredadas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge badge-success">CUMPLE</span></td>
+                                    <td><span class="badge badge-success">VALIDADO</span></td>
+                                    <td>Sin deuda</td>
+                                    <td>Sin inhabilidad</td>
+                                    <td>Compensacion validada</td>
+                                    <td>Sin observaciones normativas pendientes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- P05-B15: VALIDACION PRESUPUESTARIA POR FUNCIONARIO E ITEM -->
+                <div class="audit-section bg-light">
+                    <h6 class="section-title-audit">
+                        <span><i class="fas fa-coins"></i> Validacion Presupuestaria por Item</span>
+                        <span class="badge badge-soft-primary text-primary" style="font-size: 0.6rem;">P05-B15</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="audit-data-table text-center bg-white mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Categoria</th>
+                                    <th>Saldo Disponible</th>
+                                    <th>Monto Solicitud</th>
+                                    <th>Acumulado del Item</th>
+                                    <th>Saldo Proyectado</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">21.03.004</td>
+                                    <td>Administrativo</td>
+                                    <td class="text-success font-weight-bold">$1.200.000</td>
+                                    <td>$560.000</td>
+                                    <td>$560.000</td>
+                                    <td class="text-success font-weight-bold">$640.000</td>
+                                    <td><span class="indicator-pill pill-success" id="soto-item-status"><i class="fas fa-check mr-1"></i> VALIDO</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="normative-box mt-3">
+                        <strong>Resultado financiero por item</strong>
+                        El item presupuestario asociado al cargo del funcionario cuenta con saldo suficiente para financiar el monto vigente de la prestacion.
+                    </div>
+                </div>
+
+                <!-- P05-B15 / B12: Referencia de Topes e Incidencia Financiera -->
                 <div class="audit-section">
                     <h6 class="section-title-audit">
-                        <span><i class="fas fa-calculator"></i> Control de Topes Salariales</span>
+                        <span><i class="fas fa-calculator"></i> Topes e Incidencia Financiera</span>
                         <i class="fas fa-info-circle info-norm-trigger" 
                            data-toggle="popover" data-trigger="hover" title="Base Normativa: DU 288 Art. 2.1" 
                            data-content="Para académicos, la asignación mensual no puede exceder el 50% de su remuneración bruta mensual del mes anterior."></i>
@@ -489,8 +820,7 @@
                         </div>
                     </div>
 
-                    <!-- Historial y Proyección de Pagos -->
-                    <div class="data-label mb-2"><i class="fas fa-history mr-1"></i> Historial de Pagos y Proyección (Últimos meses)</div>
+                    <div class="data-label mb-2"><i class="fas fa-history mr-1"></i> Proyeccion de pagos y respaldo mensual</div>
                     <div class="table-responsive">
                         <table class="audit-data-table text-center bg-white mb-2">
                             <thead class="bg-light">
@@ -528,10 +858,10 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN 2: CONTROL DE COMPENSACIÓN DE HORAS (SEA) -->
+                <!-- P05-B11 / B14: SEA y Compensacion -->
                 <div class="audit-section">
                     <h6 class="section-title-audit">
-                        <span><i class="fas fa-history"></i> Planificación de Compensación (SEA)</span>
+                        <span><i class="fas fa-history"></i> SEA y Compensacion Horaria</span>
                     </h6>
                     <div class="table-responsive">
                         <table class="audit-data-table text-center bg-white mb-0">
@@ -553,7 +883,7 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN 3: PARENTESCOS -->
+                <!-- P05-B14: Parentescos como antecedente heredado -->
                 <div class="audit-section">
                     <h6 class="section-title-audit">
                         <span><i class="fas fa-users"></i> Matriz de Parentesco e Incompatibilidades</span>
@@ -572,11 +902,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-danger">
+                                <tr>
                                     <td class="font-weight-bold">MARÍA LIZAMA </td>
                                     <td>Hija</td>
                                     <td>INST. AGROINDUSTRIA / TÉCNICO</td>
-                                    <td class="text-center"><span class="indicator-pill pill-danger"><i class="fas fa-times-circle mr-1"></i> CONFLICTO (MISMA UNIDAD)</span></td>
+                                    <td class="text-center"><span class="indicator-pill pill-success"><i class="fas fa-check mr-1"></i> VALIDADO</span></td>
                                 </tr>
                                 <tr>
                                     <td>ANDREA AILLAPAN QUILODRAN</td>
@@ -589,7 +919,7 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN 4: DEUDAS -->
+                <!-- P05-B14: Deudas como antecedente heredado -->
                 <div class="audit-section">
                     <h6 class="section-title-audit">
                         <span><i class="fas fa-file-invoice-dollar"></i> Control de Deudas Institucionales</span>
@@ -608,19 +938,68 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="table-danger">
-                                    <td class="font-weight-bold text-danger">Crédito Solidario</td>
-                                    <td><span class="indicator-pill pill-danger">MORA</span></td>
-                                    <td>Deuda vencida Abril 2026 ($12.450)</td>
-                                    <td class="text-center"><i class="fas fa-lock text-danger"></i></td>
+                                <tr>
+                                    <td class="font-weight-bold text-success">Crédito Solidario</td>
+                                    <td><span class="indicator-pill pill-success">AL DIA</span></td>
+                                    <td>Sin deuda vigente registrada</td>
+                                    <td class="text-center"><i class="fas fa-check-circle text-success"></i></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+                <div class="audit-section bg-light">
+                    <h6 class="section-title-audit">
+                        <span><i class="fas fa-user-check"></i> Revision Financiera Individual</span>
+                        <span class="badge badge-soft-primary text-primary" style="font-size: 0.6rem;">P05-B16</span>
+                    </h6>
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+                        <div class="small text-muted mb-3 mb-md-0">
+                            Estado actual: <strong id="soto-review-status-text">Aprobado financieramente</strong>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-success btn-sm font-weight-bold px-3 mr-2" style="border-radius: 8px;" onclick="aprobarRevisionFinanciera('soto')">
+                                <i class="fas fa-check mr-1"></i> APROBAR FINANCIERAMENTE
+                            </button>
+                            <button class="btn btn-danger btn-sm font-weight-bold px-3" style="border-radius: 8px;" onclick="abrirRevisionFinancieraModal('soto', 'SOTO FIGUEROA MARIA ELENA')">
+                                <i class="fas fa-times-circle mr-1"></i> RECHAZAR FINANCIERAMENTE
+                            </button>
+                        </div>
+                    </div>
+                    <div class="review-log-card" id="soto-review-log-card">
+                        <div class="small font-weight-bold text-primary mb-1">Registro de revisión financiera</div>
+                        <div class="small text-muted" id="soto-review-log-text">Funcionario aprobado financieramente sin observaciones.</div>
+                    </div>
+                </div>
+            </div>
+                </div>
             </div>
 
-          
+            <!-- SECCIÓN FINAL: EVIDENCIAS Y TRAZABILIDAD (HORIZONTAL) -->
+            <div class="row mt-3">
+                <div class="col-md-7">
+                    <div class="card-minimal p-3 d-flex align-items-center shadow-none border" style="background-color: #fcfdfe;">
+                        <h6 class="m-0 font-weight-bold text-muted small text-uppercase mr-4" style="letter-spacing: 0.5px; min-width: 180px;">
+                            <i class="fas fa-clipboard-check mr-2"></i> Evidencias Requeridas
+                        </h6>
+                        <div class="d-flex flex-wrap">
+                            <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;"><i class="fas fa-check mr-1"></i> ACTA FIRMADA</div>
+                            <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;"><i class="fas fa-check mr-1"></i> INFORME CON EVIDENCIAS</div>
+                            <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;"><i class="fas fa-check mr-1"></i> BASE DE DATOS ENTREGADA</div>
+                            <div class="badge badge-light border text-success py-1 px-3 mb-1" style="font-size: 0.65rem;"><i class="fas fa-check mr-1"></i> OTROS</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card-minimal p-3 d-flex align-items-center justify-content-around shadow-none border" style="background-color: #fcfdfe;">
+                        <div class="d-flex align-items-center mr-2"><span class="state-dot dot-1"></span><span class="text-muted" style="font-size: 0.6rem;">05/05 - Creada (JP)</span></div>
+                        <div class="d-flex align-items-center mr-2"><span class="state-dot dot-2"></span><span class="text-muted" style="font-size: 0.6rem;">06/05 - Visación JP</span></div>
+                        <div class="d-flex align-items-center mr-2"><span class="state-dot dot-2"></span><span class="text-dark font-weight-bold" style="font-size: 0.6rem;">Hoy - Finanzas Facultad</span></div>
+                        <div class="d-flex align-items-center op-5"><i class="fas fa-arrow-right mx-1 text-muted" style="font-size: 0.6rem;"></i><span class="state-dot" style="background-color: #cbd5e1;"></span><span class="text-muted" style="font-size: 0.6rem;">Pend: Decano/a</span></div>
+                    </div>
+                </div>
+            </div>
 
             <!-- ESPACIO PARA FOOTER -->
             <div style="height: 100px;"></div>
@@ -648,23 +1027,92 @@
                             <i class="fas fa-info-circle mr-1"></i> Revisión presupuestaria completada para el expediente <strong>#PDS-2026-001</strong>
                         </div>
                         <div class="d-flex w-100 w-md-auto gap-2">
-                            <button class="btn btn-warning text-white font-weight-bold px-3 py-2" style="background-color: var(--ufro-orange); border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('devolver')">
-                                <i class="fas fa-reply mr-1"></i> DEVOLVER A SOLICITANTE
+                            <button class="btn btn-warning text-white font-weight-bold px-3 py-2" style="background-color: var(--ufro-orange); border-radius: 8px; font-size: 0.75rem;" onclick="prepararAccionGlobal('devolver')">
+                                <i class="fas fa-reply mr-1"></i> DEVOLVER CON CORRECCION
                             </button>
-                            <button class="btn btn-danger font-weight-bold px-3 py-2 mx-1" style="border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('rechazar')">
-                                <i class="fas fa-times-circle mr-1"></i> RECHAZAR
+                            <button class="btn btn-danger font-weight-bold px-3 py-2 mx-1" style="border-radius: 8px; font-size: 0.75rem;" onclick="prepararAccionGlobal('rechazar')">
+                                <i class="fas fa-times-circle mr-1"></i> RECHAZAR SOLICITUD
                             </button>
-                            <button class="btn btn-info font-weight-bold px-3 py-2 mr-1" style="border-radius: 8px; font-size: 0.75rem; background-color: #3490dc; border:none;" onclick="confirmarVisacion('alcance')">
-                                <i class="fas fa-exclamation-circle mr-1"></i> APROBAR CON ALCANCE
-                            </button>
-                            <button class="btn btn-success font-weight-bold px-4 py-2" style="background-color: var(--ufro-green); border-radius: 8px; font-size: 0.75rem;" onclick="confirmarVisacion('aprobar')">
-                                <i class="fas fa-check-double mr-1"></i> CERTIFICAR PRESUPUESTO
+                            <button class="btn btn-success font-weight-bold px-4 py-2" id="btn-aprobar-global" style="background-color: var(--ufro-green); border-radius: 8px; font-size: 0.75rem;" onclick="prepararAccionGlobal('aprobar')">
+                                <i class="fas fa-check-double mr-1"></i> APROBAR Y CONTINUAR
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalRevisionFinanciera" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header bg-danger text-white" style="padding: 1.2rem 1.5rem; border: none;">
+                <h5 class="modal-title font-weight-bold" style="font-size: 1rem; letter-spacing: 0.5px;">
+                    <i class="fas fa-times-circle mr-2"></i> Rechazar Financieramente Funcionario
+                </h5>
+                <button type="button" class="close text-white border-0 bg-transparent font-weight-bold" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-left">
+                <div class="small text-muted font-weight-bold text-uppercase mb-1">Funcionario</div>
+                <div class="font-weight-bold text-dark h6 mb-3" id="financial-review-modal-name">--</div>
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold text-dark small">Motivo del rechazo financiero *</label>
+                    <select class="form-control" id="financial-review-reason">
+                        <option value="" selected disabled>-- Seleccione causal --</option>
+                        <option value="item">Item presupuestario insuficiente</option>
+                        <option value="saldo">Saldo global insuficiente</option>
+                        <option value="sea">Observacion SEA o compensacion</option>
+                        <option value="otro">Otra observacion financiera</option>
+                    </select>
+                </div>
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold text-dark small">Comentario obligatorio *</label>
+                    <textarea class="form-control" id="financial-review-comment" rows="3" placeholder="Ingrese el comentario financiero asociado..."></textarea>
+                    <div id="financial-review-error" class="text-danger small mt-1" style="display: none;">
+                        Debe ingresar motivo y comentario para rechazar financieramente.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2 mr-2" data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">CANCELAR</button>
+                <button type="button" class="btn btn-danger text-white font-weight-bold px-4 py-2" onclick="confirmarRevisionFinanciera()" style="border-radius: 6px; font-size: 0.75rem; border: none;">RECHAZAR FINANCIERAMENTE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalVisacionGlobal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header text-white" id="modalVisacionGlobalHeader" style="padding: 1.2rem 1.5rem; border: none; background-color: var(--ufro-blue);">
+                <h5 class="modal-title font-weight-bold" id="modalVisacionGlobalTitle" style="font-size: 1rem; letter-spacing: 0.5px;">
+                    <i class="fas fa-shield-alt mr-2"></i> Confirmar Accion
+                </h5>
+                <button type="button" class="close text-white border-0 bg-transparent font-weight-bold" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-left">
+                <p class="font-weight-bold text-dark mb-3" id="modalVisacionGlobalMessage" style="font-size: 0.95rem; line-height: 1.5;"></p>
+                <div id="modalGlobalSummary" class="alert alert-light border small mb-3" style="display: none;"></div>
+                <div id="modalGlobalCommentContainer" class="mt-3">
+                    <label class="font-weight-bold text-secondary small text-uppercase" style="letter-spacing: 0.5px;">
+                        <i class="fas fa-comment-dots mr-1 text-primary"></i> Motivo / Observacion tecnica
+                    </label>
+                    <textarea id="modal_global_comentario" class="form-control border-primary" rows="3" placeholder="Ingrese el motivo de la decision..." style="font-size: 0.88rem; border-radius: 8px; border: 1px solid #cbd5e1;"></textarea>
+                    <div id="modal_global_comment_error" class="text-danger small mt-1" style="display: none; font-size: 0.78rem; font-weight: 600;">
+                        Debe ingresar el motivo para continuar con esta accion.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end gap-2">
+                <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2 mr-2" data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">CANCELAR</button>
+                <button type="button" class="btn text-white font-weight-bold px-4 py-2" id="modalVisacionGlobalSubmitBtn" onclick="submitVisacionGlobal()" style="border-radius: 6px; font-size: 0.75rem; background-color: var(--ufro-green); border: none;">CONFIRMAR</button>
+            </div>
         </div>
     </div>
 </div>
@@ -709,29 +1157,188 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const financialOfficials = {
+        soto: {
+            id: 'soto',
+            name: 'SOTO FIGUEROA MARIA ELENA',
+            status: 'aprobado',
+            amount: 560000,
+            itemStatus: 'suficiente',
+            reason: '',
+            comment: ''
+        }
+    };
+
+    let currentOfficial = 'soto';
+    let globalAction = '';
+    let financialReviewTarget = '';
+
     document.getElementById("menu-toggle").onclick = function(e) {
         e.preventDefault();
         document.getElementById("wrapper").classList.toggle("toggled");
     };
 
-    function confirmarVisacion(accion) {
-        if(accion === 'aprobar' || accion === 'alcance') {
-            window.location.href = "06_vista_visacion_decano.html";
+    function selectOfficial(id) {
+        currentOfficial = id;
+        $('#sidebar-card-soto').toggleClass('active', id === 'soto');
+        $('#ficha-soto').toggle(id === 'soto');
+    }
+
+    function abrirRevisionFinancieraModal(id, name) {
+        financialReviewTarget = id;
+        $('#financial-review-modal-name').text(name);
+        $('#financial-review-reason').val('');
+        $('#financial-review-comment').val('');
+        $('#financial-review-error').hide();
+        $('#modalRevisionFinanciera').modal('show');
+    }
+
+    function confirmarRevisionFinanciera() {
+        const reason = $('#financial-review-reason').val();
+        const comment = $('#financial-review-comment').val().trim();
+        if (!reason || comment.length < 10) {
+            $('#financial-review-error').show();
+            return;
+        }
+
+        const official = financialOfficials[financialReviewTarget];
+        official.status = 'rechazado';
+        official.reason = $('#financial-review-reason option:selected').text();
+        official.comment = comment;
+
+        $('#modalRevisionFinanciera').modal('hide');
+        $('#soto-financial-badge').removeClass('badge-warning badge-success text-warning text-success').addClass('badge-danger text-danger').css({ backgroundColor: '#fee2e2', border: '1px solid #fecaca' }).html('<i class="fas fa-times-circle mr-1"></i> RECHAZADO FINANCIERAMENTE');
+        $('#sidebar-badge-soto').removeClass('badge-warning badge-success text-warning text-success').addClass('badge-danger text-danger').css({ backgroundColor: '#fee2e2', border: '1px solid #fecaca' }).text('RECHAZADO');
+        $('#soto-review-status-text').text('Rechazado financieramente');
+        $('#soto-review-log-text').text(`Motivo: ${official.reason}. Comentario: ${official.comment}`);
+        $('#soto-review-log-card').slideDown();
+        showFinancialNotification('Se notifico el rechazo financiero del funcionario revisado.');
+        recalculateFinancialReview();
+    }
+
+    function aprobarRevisionFinanciera(id) {
+        const official = financialOfficials[id];
+        official.status = 'aprobado';
+        official.reason = '';
+        official.comment = '';
+        $('#soto-financial-badge').removeClass('badge-warning badge-danger text-warning text-danger').addClass('badge-success text-success').css({ backgroundColor: '#dcfce7', border: '1px solid #bbf7d0' }).html('<i class="fas fa-check-circle mr-1"></i> APROBADO FINANCIERAMENTE');
+        $('#sidebar-badge-soto').removeClass('badge-warning badge-danger text-warning text-danger').addClass('badge-success text-success').css({ backgroundColor: '#dcfce7', border: '1px solid #bbf7d0' }).text('APROBADO');
+        $('#soto-review-status-text').text('Aprobado financieramente');
+        $('#soto-review-log-text').text('Funcionario aprobado financieramente sin observaciones.');
+        $('#soto-review-log-card').slideDown();
+        recalculateFinancialReview();
+    }
+
+    function getFinancialTotals() {
+        let approved = 0;
+        let rejected = 0;
+        let pending = 0;
+        let approvedAmount = 0;
+
+        Object.keys(financialOfficials).forEach(function(id) {
+            const official = financialOfficials[id];
+            if (official.status === 'aprobado') {
+                approved++;
+                approvedAmount += official.amount;
+            } else if (official.status === 'rechazado') {
+                rejected++;
+            } else {
+                pending++;
+            }
+        });
+
+        return { approved, rejected, pending, approvedAmount };
+    }
+
+    function recalculateFinancialReview() {
+        const totals = getFinancialTotals();
+        $('#financial-approved-count').text(totals.approved);
+        $('#financial-rejected-count').text(totals.rejected);
+        $('#financial-pending-count').text(totals.pending);
+
+        if (totals.pending > 0) {
+            $('#financial-review-state').text('Bloqueada').removeClass('text-success text-danger').addClass('text-warning');
+            $('#financial-review-detail').text('Existen funcionarios pendientes de revisión financiera');
+            $('#btn-aprobar-global').prop('disabled', true).addClass('opacity-50').attr('title', 'Debe resolver la revisión financiera individual antes de aprobar.');
+        } else if (totals.approved === 0) {
+            $('#financial-review-state').text('Bloqueada').removeClass('text-success text-warning').addClass('text-danger');
+            $('#financial-review-detail').text('No existen funcionarios aprobados financieramente');
+            $('#btn-aprobar-global').prop('disabled', true).addClass('opacity-50').attr('title', 'No puede aprobar sin funcionarios aprobados financieramente.');
         } else {
-            window.location.href = "01_vista_formulario_solicitud.html";
+            $('#financial-review-state').text('Habilitada').removeClass('text-warning text-danger').addClass('text-success');
+            $('#financial-review-detail').text('La solicitud cumple para decisión global');
+            $('#btn-aprobar-global').prop('disabled', false).removeClass('opacity-50').removeAttr('title');
+        }
+
+        $('#financial-total-vigente').text(new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(totals.approvedAmount || 560000));
+    }
+
+    function prepararAccionGlobal(action) {
+        globalAction = action;
+        const totals = getFinancialTotals();
+        $('#modal_global_comentario').val('');
+        $('#modal_global_comment_error').hide();
+        $('#modalGlobalSummary').hide();
+
+        if (action === 'aprobar') {
+            $('#modalVisacionGlobalHeader').css('background-color', 'var(--ufro-green)');
+            $('#modalVisacionGlobalTitle').html('<i class="fas fa-check-circle mr-2"></i> Aprobar y Continuar');
+            $('#modalVisacionGlobalMessage').text('Se aprobara la solicitud y continuara a la siguiente etapa del flujo con los funcionarios financieramente aprobados.');
+            $('#modalGlobalSummary').html(`Funcionarios aprobados: <strong>${totals.approved}</strong><br>Funcionarios rechazados: <strong>${totals.rejected}</strong><br>Funcionarios pendientes: <strong>${totals.pending}</strong>`).show();
+            $('#modalGlobalCommentContainer').hide();
+            $('#modalVisacionGlobalSubmitBtn').text('APROBAR Y CONTINUAR').css('background-color', 'var(--ufro-green)');
+        } else if (action === 'devolver') {
+            $('#modalVisacionGlobalHeader').css('background-color', 'var(--ufro-orange)');
+            $('#modalVisacionGlobalTitle').html('<i class="fas fa-reply mr-2"></i> Devolver con Correccion');
+            $('#modalVisacionGlobalMessage').text('La solicitud sera devuelta al solicitante para correccion. Debe ingresar el comentario obligatorio.');
+            $('#modal_global_comentario').attr('placeholder', 'Indique detalladamente la observacion financiera o presupuestaria...');
+            $('#modalGlobalCommentContainer').show();
+            $('#modalVisacionGlobalSubmitBtn').text('CONFIRMAR DEVOLUCION').css('background-color', 'var(--ufro-orange)');
+        } else {
+            $('#modalVisacionGlobalHeader').css('background-color', '#dc3545');
+            $('#modalVisacionGlobalTitle').html('<i class="fas fa-times-circle mr-2"></i> Rechazar Solicitud');
+            $('#modalVisacionGlobalMessage').text('La solicitud sera rechazada definitivamente. Debe ingresar el comentario obligatorio del rechazo.');
+            $('#modal_global_comentario').attr('placeholder', 'Indique detalladamente los fundamentos financieros del rechazo...');
+            $('#modalGlobalCommentContainer').show();
+            $('#modalVisacionGlobalSubmitBtn').text('RECHAZAR SOLICITUD').css('background-color', '#dc3545');
+        }
+
+        $('#modalVisacionGlobal').modal('show');
+    }
+
+    function submitVisacionGlobal() {
+        const comment = $('#modal_global_comentario').val().trim();
+        if ((globalAction === 'devolver' || globalAction === 'rechazar') && comment.length < 10) {
+            $('#modal_global_comment_error').show();
+            return;
+        }
+        $('#modalVisacionGlobal').modal('hide');
+        ejecutarAccionGlobal(globalAction);
+    }
+
+    function ejecutarAccionGlobal(action) {
+        const totals = getFinancialTotals();
+        if (action === 'aprobar') {
+            if (totals.pending > 0 || totals.approved === 0) {
+                return;
+            }
+            window.location.href = '06_vista_visacion_decano.html?solicitud=PDS-2026-001&monto=' + encodeURIComponent($('#financial-total-vigente').text());
+        } else if (action === 'devolver') {
+            window.location.href = '01_vista_formulario_solicitud.html?status=devuelto&solicitud=PDS-2026-001';
+        } else {
+            window.location.href = '01_vista_formulario_solicitud.html?status=rechazado&solicitud=PDS-2026-001';
         }
     }
 
-    function quitarFuncionario(btn, nombre) {
-        if(confirm(`¿Está seguro de quitar a ${nombre} de esta solicitud de prestación? Esta acción no se puede deshacer para este expediente.`)) {
-            $(btn).closest('.audit-sheet').fadeOut(500, function() {
-                $(this).remove();
-            });
-        }
+    function showFinancialNotification(message) {
+        $('#financial-notification-text').text(message);
+        $('#financial-notification-alert').stop(true, true).slideDown();
     }
 
     $(function () {
         $('[data-toggle="popover"]').popover();
+        selectOfficial('soto');
+        recalculateFinancialReview();
     });
 </script>
 </body>

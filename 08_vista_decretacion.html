@@ -3,104 +3,683 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generación de Decreto - UFRO</title>
+    <title>Decretación y Formalización del Acto Administrativo - UFRO</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Audit Sheet Styles for Parity */
+        :root {
+            --ufro-blue: #004b8d;
+            --ufro-green: #00875e;
+            --ufro-orange: #f47920;
+            --ufro-blue-light: #e6f0fa;
+            --ufro-green-light: #e6f4ee;
+            --ufro-orange-light: #fef2e6;
+            --neutral-dark: #1e293b;
+            --neutral-light: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--neutral-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Standard Layout Structure inherited from style.css */
+        #page-content-wrapper {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            padding-bottom: 90px; /* Space for sticky actions */
+        }
+
+        /* Standard Timeline styles */
+
+        /* Timeline and Steps */
+        .timeline-traceability {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            padding: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .timeline-traceability::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .trace-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            min-width: 100px;
+            flex: 1;
+        }
+
+        .trace-dot-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #fff;
+            border: 2px solid #cbd5e1;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .trace-step.completed .trace-dot-icon {
+            background: var(--ufro-green);
+            border-color: var(--ufro-green);
+            color: #fff;
+        }
+
+        .trace-step.active .trace-dot-icon {
+            background: var(--ufro-orange);
+            border-color: var(--ufro-orange);
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(244, 121, 32, 0.2);
+            animation: pulse-orange 2s infinite;
+        }
+
+        .trace-step.pending .trace-dot-icon {
+            background: #fff;
+            border-color: #cbd5e1;
+            color: #94a3b8;
+        }
+
+        .trace-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+
+        .trace-step.active .trace-label {
+            color: var(--ufro-orange);
+        }
+
+        .trace-date {
+            font-size: 0.55rem;
+            color: #64748b;
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(244, 121, 32, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(244, 121, 32, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 121, 32, 0); }
+        }
+
+        /* Card styles */
+        .card-minimal {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-minimal:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Audit Dossier Sheet Styles */
         .audit-sheet {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid #e2e8f0;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             overflow: hidden;
         }
+
         .sheet-header-premium {
-            background: linear-gradient(to right, #f8fafc, #fff);
-            padding: 1.5rem 2rem;
+            background: #f8fafc;
+            padding: 1.2rem 1.5rem;
             border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
+        .icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .data-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
         .audit-section {
-            padding: 1.5rem 2rem;
+            padding: 1.2rem 1.5rem;
             border-bottom: 1px solid #f1f5f9;
         }
-        .audit-section:last-child { border-bottom: none; }
-        
+
+        .audit-section:last-child {
+            border-bottom: none;
+        }
+
         .section-title-audit {
             font-size: 0.75rem;
             font-weight: 800;
             color: var(--ufro-blue);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1.25rem;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .section-title-audit i { margin-right: 10px; font-size: 0.9rem; }
-        
+
+        .section-title-audit i {
+            margin-right: 6px;
+        }
+
         .audit-data-table {
             width: 100%;
-            font-size: 0.75rem;
-            border: 1px solid #f1f5f9;
-            border-radius: 8px;
+            font-size: 0.7rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
             overflow: hidden;
         }
-        .audit-data-table th { background: #f8fafc; padding: 10px 15px; color: #64748b; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
-        .audit-data-table td { padding: 10px 15px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
 
-        /* Resolution Editor Styles */
+        .audit-data-table th {
+            background: #f8fafc;
+            padding: 6px 12px;
+            color: #475569;
+            font-weight: 700;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .audit-data-table td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        /* Editor Styles */
         .editor-label {
             font-size: 0.75rem;
-            font-weight: 700;
-            color: #475569;
+            font-weight: 750;
+            color: var(--neutral-dark);
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
             display: block;
         }
+
         .editor-container {
             background: #fff;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             transition: all 0.2s;
+            overflow: hidden;
         }
+
         .editor-container:focus-within {
             border-color: var(--ufro-blue);
             box-shadow: 0 0 0 3px rgba(0, 83, 155, 0.1);
         }
+
         .editor-toolbar {
             background: #f8fafc;
-            padding: 8px 12px;
-            border-bottom: 1px solid #cbd5e1;
-            border-radius: 8px 8px 0 0;
+            padding: 6px 12px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            gap: 5px;
+            gap: 4px;
+            align-items: center;
         }
+
         .editor-toolbar button {
             background: transparent;
             border: 1px solid transparent;
-            color: #64748b;
-            padding: 2px 8px;
+            color: #475569;
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.1s;
         }
+
         .editor-toolbar button:hover {
             background: #e2e8f0;
             color: var(--ufro-blue);
         }
+
         .editor-content {
-            padding: 15px;
-            min-height: 80px;
+            padding: 12px;
+            min-height: 90px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: #334155;
+            outline: none;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        /* Premium Forms */
+        .form-ufro-select {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            padding: 0.45rem;
+            color: var(--neutral-dark);
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.2s;
+            background-color: #fff;
+        }
+
+        .form-ufro-select:focus {
+            border-color: var(--ufro-blue);
+            box-shadow: 0 0 0 3px rgba(0, 83, 155, 0.1);
+            outline: none;
+        }
+
+        /* Distribution Styling */
+        .distribution-table {
+            font-size: 0.75rem;
+            width: 100%;
+        }
+
+        .distribution-table td {
+            padding: 6px 8px;
+            vertical-align: middle;
+        }
+
+        .dist-base-badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            background-color: var(--ufro-blue-light);
+            color: var(--ufro-blue);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .dist-manual-badge {
+            font-size: 0.55rem;
+            font-weight: 700;
+            background-color: var(--ufro-orange-light);
+            color: var(--ufro-orange);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Trace logs */
+        .trace-log-item {
+            font-size: 0.7rem;
+            border-left: 2px solid var(--border-color);
+            padding-left: 10px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .trace-log-item::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            position: absolute;
+            left: -4px;
+            top: 5px;
+        }
+
+        .trace-log-item.active-log::before {
+            background: var(--ufro-green);
+        }
+
+        /* Floating actions */
+        .sticky-actions {
+            position: fixed;
+            bottom: 0;
+            left: 260px; /* Align with sidebar on desktop */
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            padding: 10px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            z-index: 999;
+            transition: left .25s ease-out; /* Smooth transition matching the sidebar toggle */
+        }
+
+        #wrapper.toggled .sticky-actions {
+            left: 0; /* Expand full width when sidebar is hidden */
+        }
+
+        .sticky-actions .btn-ufro, 
+        .sticky-actions .btn-danger {
+            font-size: 0.72rem !important; /* Narrower and more readable font size */
+            padding: 0.45rem 0.9rem !important; /* Compact padding to fit dense content */
+            height: auto;
+            border-radius: 8px !important;
+            letter-spacing: 0.1px;
+            font-weight: 700;
+        }
+
+        .sticky-actions .btn-ufro i,
+        .sticky-actions .btn-danger i {
+            font-size: 0.85rem !important; /* Balanced icon sizing */
+        }
+
+        @media (max-width: 576px) {
+            .sticky-actions {
+                left: 0 !important;
+                padding: 8px 0;
+            }
+            .sticky-actions .container-fluid {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+            .sticky-actions .d-flex {
+                justify-content: center !important;
+                gap: 0.35rem !important;
+            }
+            .sticky-actions .btn-ufro, 
+            .sticky-actions .btn-danger {
+                font-size: 0.65rem !important;
+                padding: 0.4rem 0.6rem !important;
+            }
+        }
+
+
+        .btn-ufro {
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.55rem 1.25rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-ufro-primary {
+            background: var(--ufro-blue);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-ufro-primary:hover {
+            background: #003e75;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-ufro-success {
+            background: var(--ufro-green);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-ufro-success:hover {
+            background: #00704e;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-ufro-warning {
+            background: var(--ufro-orange);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-ufro-warning:hover {
+            background: #d86210;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-ufro-outline {
+            background: transparent;
+            color: #475569;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .btn-ufro-outline:hover {
+            background: #f1f5f9;
+            color: var(--neutral-dark);
+            border-color: #94a3b8;
+            transform: translateY(-1px);
+        }
+
+        /* Custom alert */
+        .ufro-alert-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1060;
+            background: #fff;
+            border-radius: 8px;
+            border-left: 4px solid var(--ufro-green);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-width: 280px;
+            max-width: 350px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ufro-alert-toast.show {
+            transform: translateX(0);
+        }
+
+        /* PDF Preview Sheet Styles */
+        .pdf-page-container {
+            background-color: #525659;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            max-height: 70vh;
+            overflow-y: auto;
+            border-radius: 8px;
+        }
+
+        .pdf-sheet {
+            background: #fff;
+            width: 100%;
+            max-width: 800px;
+            padding: 3rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+            line-height: 1.4;
             font-size: 0.85rem;
-            line-height: 1.6;
-            color: #1e293b;
+            min-height: 1000px;
+            position: relative;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--ufro-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-logo-subtext {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .pdf-resolution-id {
+            text-align: right;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .pdf-body-title {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 25px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-text-block {
+            text-align: justify;
+            text-indent: 40px;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+
+        .pdf-label-word {
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            text-indent: 0;
+            margin-right: 15px;
+        }
+
+        .pdf-prestaciones-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            margin: 20px 0;
+        }
+
+        .pdf-prestaciones-table th, .pdf-prestaciones-table td {
+            border: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+        }
+
+        .pdf-prestaciones-table th {
+            background-color: #f1f5f9;
+            font-weight: bold;
+        }
+
+        .pdf-signature-section {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .pdf-signature-box {
+            width: 45%;
+        }
+
+        .pdf-signature-line {
+            border-top: 1px solid #000;
+            margin-top: 50px;
+            padding-top: 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .pdf-distribution-box {
+            margin-top: 50px;
+            font-size: 0.65rem;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            color: #555;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Estilos Premium para la Tabla de Personal e Historial */
+        .table-premium {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            background-color: #fff;
+        }
+
+        .table-premium th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 0.65rem;
+        }
+
+        .table-premium td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .table-premium tr.row-accent-sea {
+            background-color: #fff;
+            transition: background-color 0.2s;
+        }
+
+        .table-premium tr.row-accent-sea:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge-success-soft {
+            background-color: #d1fae5 !important;
+            color: #065f46 !important;
+            font-weight: 700;
+            font-size: 0.58rem;
+            padding: 3px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .badge-danger-soft {
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+            font-weight: 700;
+            font-size: 0.58rem;
+            padding: 3px 6px;
+            border-radius: 4px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -126,7 +705,7 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-        <!-- Topbar -->
+        <!-- DNA Topbar -->
         <nav id="dna-topbar">
             <div class="d-flex align-items-center">
                 <img class="topbar-logo mr-3" src="https://intranet.ufro.cl/estilo/img/logo_bl.png" alt="UFRO">
@@ -137,11 +716,11 @@
             </div>
             
             <div class="d-flex align-items-center ml-auto">
-                <div class="user-details text-right mr-3">
+                <div class="user-details text-right mr-3 d-none d-sm-block">
                     <span class="user-name d-block font-weight-bold">CLAUDIA ALVAREZ</span>
                     <span class="user-role small text-muted text-uppercase">JEFA DE DECRETACIÓN</span>
                 </div>
-                <div class="topbar-icon-circle mr-2">
+                <div class="topbar-icon-circle mr-2" title="Manual de Normativas D9">
                     <i class="fas fa-file-contract"></i>
                 </div>
                 <div class="topbar-icon-circle">
@@ -153,382 +732,647 @@
 
         <div class="container-fluid py-4 px-lg-5">
             
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="font-weight-bold text-dark m-0">Formatización de Acto Administrativo <span class="text-primary">#PDS-2026-001</span></h4>
+            <!-- Encabezado del expediente (P08-B01) -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h4 class="font-weight-bold text-dark m-0">Formalización de Acto Administrativo</h4>
+                    <span class="text-muted small">Flujo: PDS Normativo D9 / DU288 / DU09 &bull; ID Expediente: <strong class="text-dark">#PDS-2026-001</strong></span>
+                </div>
                 <div class="text-right">
-                    <span class="badge badge-warning px-3 py-2" style="font-size: 0.65rem; border-radius: 20px;">
+                    <span id="badge-status-doc" class="badge badge-warning px-3 py-2 font-weight-bold" style="font-size: 0.7rem; border-radius: 20px; box-shadow: 0 2px 4px rgba(244, 121, 32, 0.15);">
                         <i class="fas fa-spinner fa-spin mr-1"></i> BORRADOR EN EDICIÓN
                     </span>
                 </div>
             </div>
 
-            <!-- INFORMACIÓN TÉCNICA MAESTRA DE LA PRESTACIÓN -->
-            <div class="card-minimal mb-4 overflow-hidden border shadow-sm" style="border-radius: 12px;">
-                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 1px;">
-                        <i class="fas fa-file-invoice mr-2"></i> Expediente Técnico de la Prestación
-                    </h6>
-                    <span class="badge badge-success px-3 py-1"><i class="fas fa-check-circle mr-1"></i> APROBADO PREVIAMENTE</span>
+            <!-- TRAZABILIDAD CRONOLÓGICA DE ETAPAS PREVIAS (P08-B02) -->
+            <div class="card-minimal mb-4 p-3 border shadow-sm" style="border-radius: 12px;">
+                <div class="d-flex align-items-center justify-content-around flex-wrap gap-2 py-1 w-100">
+                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">05/05 Solicitud</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
+                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">08/05 DGDP</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
+                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">10/05 Finanzas Fac.</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
+                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">12/05 Decanato</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
+                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">14/05 Finanzas Ctrl.</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
+                    <div class="d-flex align-items-center"><span class="state-dot dot-3 animate-pulse"></span><span class="text-dark font-weight-bold small ml-1" style="font-size: 0.65rem;">Hoy - Decretación Jurídica</span></div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem; opacity: 0.5;"></i>
+                    <div class="d-flex align-items-center" style="opacity: 0.5;"><span class="state-dot dot-1" style="background-color: #cbd5e1;"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">Pendiente: Firmas</span></div>
                 </div>
-                <div class="card-body p-4">
-                    <!-- SUMMARY GRID CCTO -->
-                    <div class="summary-grid mb-4 bg-light rounded border p-0 shadow-sm" style="display: grid; grid-template-columns: repeat(5, 1fr);">
-                        <div class="p-3 border-right">
-                            <div class="data-label text-muted">Centro de Costos</div>
-                            <div class="font-weight-bold text-dark h5 mb-0">4050.21</div>
-                            <div class="text-muted small" style="font-size: 0.6rem;">INST. AGROINDUSTRIA</div>
-                        </div>
-                        <div class="p-3 border-right text-center">
-                            <div class="data-label text-muted">Ítem Presupuestario</div>
-                            <div class="font-weight-bold text-primary h5 mb-0">21.03.004</div>
-                        </div>
-                        <div class="p-3 border-right text-center">
-                            <div class="data-label text-muted">Vigencia Resolución</div>
-                            <div class="font-weight-bold text-dark h5 mb-0" style="font-size: 1.1rem;">01/05/26 - 31/12/26</div>
-                        </div>
-                        <div class="p-3 border-right text-center">
-                            <div class="data-label text-muted">Prorrateo Meses</div>
-                            <div class="font-weight-bold text-ufro-blue h5 mb-0">8 MESES</div>
-                        </div>
-                        <div class="p-3 text-right">
-                            <div class="data-label text-muted">Total Asignación</div>
-                            <div class="font-weight-bold text-warning h5 mb-0">$1.460.000</div>
-                        </div>
-                    </div>
+                    <!-- LAYOUT VERTICAL OPTIMIZADO: EDICIÓN JURÍDICA ARRIBA (ANCHO COMPLETO), DOSSIER Y MATRIZ HISTÓRICA COMPLETA ABAJO -->
+            <div class="row">
+                <!-- PANEL SUPERIOR DE FORMALIZACIÓN (ANCHO COMPLETO - col-12) -->
+                <div class="col-12 mb-4">
+                    <h5 class="font-weight-bold text-dark mb-3"><i class="fas fa-file-signature mr-2 text-primary"></i> Formalización del Acto Administrativo</h5>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="data-label">Nombre de la Prestación / Proyecto</div>
-                            <div class="h4 font-weight-bold text-dark mb-4" style="border-left: 4px solid var(--ufro-blue); padding-left: 15px;">
-                                MODERNIZACIÓN Y LEVANTAMIENTO DE PROCESOS CRÍTICOS - AGROINDUSTRIA 2026
-                            </div>
-                            
-                            <!-- Metadata Strip & Checks -->
-                            <div class="row mb-0 bg-white p-3 rounded border mx-0 shadow-sm align-items-center">
-                                <div class="col-md-4 border-right">
-                                    <div class="data-label text-muted mb-1">Responsable Proyecto</div>
-                                    <div class="font-weight-bold text-dark"><i class="fas fa-user-tie mr-1 text-primary"></i> Dr. Ricardo Fuentes Sandoval</div>
+                    <div class="card-minimal p-4 border shadow-sm">
+                        <!-- EDITORES ENRIQUECIDOS (P08-B09) -->
+                        <div class="mb-4">
+                            <!-- VISTO -->
+                            <div class="editor-label">VISTO (Antecedentes Normativos y Legales)</div>
+                            <div class="editor-container shadow-sm">
+                                <div class="editor-toolbar">
+                                    <button type="button" onclick="formatDoc('bold')" title="Negrita"><i class="fas fa-bold"></i></button>
+                                    <button type="button" onclick="formatDoc('italic')" title="Cursiva"><i class="fas fa-italic"></i></button>
+                                    <span class="text-muted mx-1">|</span>
+                                    <button type="button" onclick="formatDoc('insertUnorderedList')" title="Viñeta"><i class="fas fa-list-ul"></i></button>
                                 </div>
-                                <div class="col-md-8 pl-4">
-                                    <div class="data-label text-muted mb-2">Checks de Validación (Flujo Previo)</div>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="text-center">
-                                            <i class="fas fa-check-circle text-success mb-1" style="font-size: 1.2rem;"></i>
-                                            <div class="x-small font-weight-bold">DGDP</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <i class="fas fa-check-circle text-success mb-1" style="font-size: 1.2rem;"></i>
-                                            <div class="x-small font-weight-bold">FINANZAS FAC.</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <i class="fas fa-check-circle text-success mb-1" style="font-size: 1.2rem;"></i>
-                                            <div class="x-small font-weight-bold">DECANATO</div>
-                                        </div>
-                                        <div class="text-center">
-                                            <i class="fas fa-check-circle text-success mb-1" style="font-size: 1.2rem;"></i>
-                                            <div class="x-small font-weight-bold">FINANZAS CTRL.</div>
-                                        </div>
-                                    </div>
+                                <div id="editor-visto" class="editor-content" contenteditable="true">
+                                    Ley Nº 19.886, Ley de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES; Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación; Decreto Universitario Nº 09 de 2022.
+                                </div>
+                            </div>
+
+                            <!-- CONSIDERANDO -->
+                            <div class="editor-label">CONSIDERANDO (Justificación Técnica e Institucional)</div>
+                            <div class="editor-container shadow-sm">
+                                <div class="editor-toolbar">
+                                    <button type="button" onclick="formatDoc('bold')" title="Negrita"><i class="fas fa-bold"></i></button>
+                                    <button type="button" onclick="formatDoc('italic')" title="Cursiva"><i class="fas fa-italic"></i></button>
+                                    <span class="text-muted mx-1">|</span>
+                                    <button type="button" onclick="formatDoc('insertUnorderedList')"><i class="fas fa-list-ul"></i></button>
+                                </div>
+                                <div id="editor-considerando" class="editor-content" contenteditable="true">
+                                    1. Que la Institución requiere contar con servicios especializados para el proyecto de Modernización Tecnológica y levantamiento de procesos en el Instituto de Agroindustria.<br>
+                                    2. Que se ha verificado la disponibilidad presupuestaria correspondiente en el Centro de Costos 4050.21.<br>
+                                    3. Que la Dirección de Gestión de Personas ha emitido informe de conformidad normativo en cumplimiento de las directrices de la resolución DU09/DU288.
+                                </div>
+                            </div>
+
+                            <!-- RESUELVO -->
+                            <div class="editor-label">RESUELVO / DISPÓNESE (Acción Resolutiva)</div>
+                            <div class="editor-container shadow-sm" style="border-left: 4px solid var(--ufro-blue);">
+                                <div class="editor-toolbar">
+                                    <button type="button" onclick="formatDoc('bold')" title="Negrita"><i class="fas fa-bold"></i></button>
+                                    <button type="button" onclick="formatDoc('italic')" title="Cursiva"><i class="fas fa-italic"></i></button>
+                                </div>
+                                <div id="editor-resuelvo" class="editor-content" contenteditable="true">
+                                    <strong>DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios, por el monto bruto que se señala, a contar del 01 de mayo de 2026 y hasta el 31 de diciembre de 2026, para ser pagado con la remuneración del mes correspondiente, a los funcionarios/as que se detallan en la presente resolución.
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Editores de Resolución -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <h5 class="font-weight-bold text-dark mb-3"><i class="fas fa-edit mr-2 text-primary"></i> Editores de Texto Normativo</h5>
-                    
-                    <!-- VISTO -->
-                    <label class="editor-label">VISTO (Antecedentes Legales)</label>
-                    <div class="editor-container shadow-sm">
-                        <div class="editor-toolbar">
-                            <button title="Negrita"><i class="fas fa-bold"></i></button>
-                            <button title="Cursiva"><i class="fas fa-italic"></i></button>
-                            <span class="text-muted mx-1">|</span>
-                            <button><i class="fas fa-list-ul"></i></button>
-                        </div>
-                        <div class="editor-content" contenteditable="true">
-                            Ley Nº 19.886, Ley de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES; Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación.
-                        </div>
-                    </div>
-
-                    <!-- CONSIDERANDO -->
-                    <label class="editor-label">CONSIDERANDO (Justificación Técnica)</label>
-                    <div class="editor-container shadow-sm">
-                        <div class="editor-toolbar">
-                            <button><i class="fas fa-bold"></i></button>
-                            <button><i class="fas fa-italic"></i></button>
-                        </div>
-                        <div class="editor-content" contenteditable="true">
-                            1. Que la Institución requiere contar con servicios especializados para el proyecto de Modernización Tecnológica.<br>
-                            2. Que se ha verificado la disponibilidad presupuestaria y el cumplimiento de la normativa DU09/DU288 por parte de la Dirección de Gestión de Personas.
-                        </div>
-                    </div>
-
-                    <!-- RESUELVO -->
-                    <label class="editor-label">RESUELVO (Disposición)</label>
-                    <div class="editor-container shadow-sm" style="border-left: 4px solid var(--ufro-blue);">
-                        <div class="editor-toolbar">
-                            <button><i class="fas fa-bold"></i></button>
-                            <button><i class="fas fa-italic"></i></button>
-                        </div>
-                        <div class="editor-content" contenteditable="true">
-                            <strong>DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios, por el monto bruto que se señala, para ser pagado con la remuneración del mes correspondiente, a los funcionarios/as que se detallan en la presente resolución.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PERSONAL AUDITADO (Audit Sheets - Paridad con 06/07) -->
-            <div class="mb-5">
-                <h5 class="font-weight-bold text-dark mb-4">
-                    <i class="fas fa-shield-alt mr-2 text-success"></i> Nómina de Personal Validada (Revisión Técnica)
-                </h5>
-
-                <!-- FUNCIONARIO 1 (MARÍA ELENA SOTO - DETALLE COMPLETO) -->
-                <div class="audit-sheet" style="border-left: 6px solid var(--ufro-blue);">
-                    <div class="sheet-header-premium">
-                        <div class="d-flex align-items-center">
-                            <div class="icon-box bg-primary text-white mr-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.2rem;">
-                                <i class="fas fa-user-check"></i>
-                            </div>
-                            <div>
-                                <h5 class="m-0 font-weight-bold text-dark">SOTO FIGUEROA MARÍA ELENA</h5>
-                                <span class="text-muted small">15.987.654-3 | ADMINISTRATIVO | GRADO 16</span>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="text-right mr-4">
-                                <div class="data-label">Monto Bruto</div>
-                                <div class="h5 m-0 font-weight-bold text-ufro-blue">$280.000</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="data-label text-success">Líquido Estimado</div>
-                                <div class="h5 m-0 font-weight-bold text-success">$241.500</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DETALLE DE ACTIVIDAD -->
-                    <div class="px-4 py-3 border-bottom bg-light">
-                        <div class="data-label mb-1">Actividad Específica Validada</div>
-                        <div class="small text-dark font-weight-bold" style="line-height: 1.4;">
-                            Apoyo administrativo en la recopilación de actas, foliación de expedientes físicos y digitalización de documentos para el repositorio de procesos.
-                        </div>
-                    </div>
-
-                    <!-- CONTROL DE TOPES -->
-                    <!-- SECCIÓN 1: VALIDACIÓN DE TOPE (Límite 50%) -->
-                    <div class="audit-section">
-                        <h6 class="section-title-audit">
-                            <span><i class="fas fa-calculator"></i> Validación de Tope</span>
-                            <i class="fas fa-info-circle info-norm-trigger" 
-                               data-toggle="popover" data-trigger="hover" title="Base de Cálculo Normativa" 
-                               data-content="Académicos: 50% Renta Bruta Mes Anterior. Administrativos: 50% Grado Máximo Planta."></i>
-                        </h6>
-                        
-                        <!-- Resumen de Referencia Salarial -->
-                        <div class="row mb-3">
-                            <div class="col-md-6 border-right">
-                                <div class="p-2 bg-light border rounded shadow-sm h-100">
-                                    <div class="text-muted small mb-1"><i class="fas fa-id-card mr-1"></i> Base de Cálculo (SISPER)</div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="small font-weight-bold">Grado 1 (Máximo) Planta Admin.:</span>
-                                        <span class="text-dark font-weight-bold">$1.106.158</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-1 border-top pt-1">
-                                        <span class="small font-weight-bold text-primary">Tope Máximo (50%):</span>
-                                        <span class="text-primary font-weight-bold">$553.079</span>
-                                    </div>
-                                </div>
+                        <!-- SELECCIÓN DE FIRMANTES DIGITALES (P08-B11) -->
+                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-users-cog mr-2 text-primary"></i> Autoridades Firmantes Autorizadas</h6>
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label class="editor-label" for="select-firmante-vr">Vicerrector/a de Adm. y Finanzas</label>
+                                <select id="select-firmante-vr" class="form-ufro-select">
+                                    <option value="Dra. Gloria Gómez Martínez">Dra. Gloria Gómez Martínez (Titular)</option>
+                                    <option value="Dr. Jorge Espinoza Sanhueza">Dr. Jorge Espinoza Sanhueza (Suplente)</option>
+                                </select>
                             </div>
                             <div class="col-md-6">
-                                <div class="p-2 h-100 d-flex flex-column justify-content-center text-center">
-                                    <div class="text-muted small mb-1">Resultado Validación Actual</div>
-                                    <div class="h4 mb-0 text-success font-weight-bold">$123.079</div>
-                                    <div class="small text-muted font-italic">Margen Disponible Post-Pago</div>
+                                <label class="editor-label" for="select-firmante-sg">Secretario/a General</label>
+                                <select id="select-firmante-sg" class="form-ufro-select">
+                                    <option value="Dra. Sandra Oyarzún Valenzuela">Dra. Sandra Oyarzún Valenzuela (Titular)</option>
+                                    <option value="Dr. Pedro Pérez Carrasco">Dr. Pedro Pérez Carrasco (Suplente)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- DISTRIBUCIÓN OFICIAL (P08-B12) -->
+                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3 d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-envelope-open-text mr-2 text-primary"></i> Circuito de Distribución Oficial</span>
+                            <button type="button" class="btn btn-sm btn-outline-primary px-2" style="font-size: 0.65rem;" onclick="abrirAgregarDistribucion()">
+                                <i class="fas fa-plus"></i> AGREGAR DESTINATARIO
+                            </button>
+                        </h6>
+                        
+                        <!-- Panel de inserción dinámico (Oculto por defecto) -->
+                        <div id="panel-add-dist" class="bg-light p-2 rounded mb-3 border border-primary" style="display: none;">
+                            <div class="row align-items-end">
+                                <div class="col-8">
+                                    <label class="editor-label mb-1" for="input-new-dist">Nombre Destinatario</label>
+                                    <input type="text" id="input-new-dist" class="form-control form-control-sm" placeholder="Ej: Contraloría Interna">
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-sm btn-success w-100 font-weight-bold" onclick="guardarNuevoDestinatario()">
+                                        <i class="fas fa-save"></i> GUARDAR
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Historial y Proyección de Pagos -->
-                        <div class="data-label mb-2"><i class="fas fa-history mr-1"></i> Historial de Pagos y Proyección (Últimos meses)</div>
-                        <div class="table-responsive">
-                            <table class="audit-data-table text-center bg-white mb-2">
+                        <div class="table-responsive mb-4 rounded border">
+                            <table class="table table-sm table-striped distribution-table mb-0 bg-white">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th>Periodo</th>
-                                        <th>Ref. Salarial</th>
-                                        <th>Otras PDS</th>
-                                        <th>PDS Actual</th>
-                                        <th>Total Mes</th>
-                                        <th>Margen</th>
-                                        <th>Estado</th>
+                                        <th>Destinatario del Acto</th>
+                                        <th class="text-center">Origen</th>
+                                        <th class="text-center">Acción</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold">Mayo 2026</td>
-                                        <td>$553.079</td>
-                                        <td>$150.000</td>
-                                        <td class="font-weight-bold text-primary">$280.000</td>
-                                        <td>$430.000</td>
-                                        <td class="text-success font-weight-bold">$123.079</td>
-                                        <td><span class="badge badge-success px-2">CUMPLE</span></td>
+                                <tbody id="tbody-distribution">
+                                    <tr id="dist-row-1">
+                                        <td class="font-weight-bold text-dark">Vicerrectoría de Administración y Finanzas</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
                                     </tr>
-                                    <tr class="text-muted small" style="background-color: #fcfcfc;">
-                                        <td>Abril 2026</td>
-                                        <td>$553.079</td>
-                                        <td>$150.000</td>
-                                        <td>-</td>
-                                        <td>$150.000</td>
-                                        <td>$403.079</td>
-                                        <td><span class="badge badge-light px-2">CERRADO</span></td>
+                                    <tr id="dist-row-2">
+                                        <td class="font-weight-bold text-dark">Secretaría General</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
+                                    </tr>
+                                    <tr id="dist-row-3">
+                                        <td class="font-weight-bold text-dark">Dirección de Gestión de Personas (DGDP)</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
+                                    </tr>
+                                    <tr id="dist-row-4">
+                                        <td class="font-weight-bold text-dark">Dirección de Finanzas</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
+                                    </tr>
+                                    <tr id="dist-row-5">
+                                        <td class="font-weight-bold text-dark">Instituto de Agroindustria (Unidad de Origen)</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
+                                    </tr>
+                                    <tr id="dist-row-6">
+                                        <td class="font-weight-bold text-dark">Interesado / Registro Personal</td>
+                                        <td class="text-center"><span class="dist-base-badge">FLUJO BASE</span></td>
+                                        <td class="text-center text-muted small">Requerido</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <!-- MATRIZ DE CUMPLIMIENTO -->
-                    <!-- SECCIÓN 2: PLANIFICACIÓN DE COMPENSACIÓN (SEA) -->
-                    <div class="audit-section">
-                        <h6 class="section-title-audit">
-                            <span><i class="fas fa-history"></i> Planificación de Compensación (SEA)</span>
-                        </h6>
-                        <div class="table-responsive">
-                            <table class="audit-data-table text-center bg-white mb-0">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th>Día de Compensación</th>
-                                        <th>Horas</th>
-                                        <th>Estado SEA</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-weight-bold">Sábado</td>
-                                        <td class="text-primary font-weight-bold">8 hrs</td>
-                                        <td><span class="badge badge-success px-2">VALIDADO SEA</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <!-- HISTORIAL / TRAZABILIDAD DE LA ETAPA ACTUAL (P08-B17) -->
+                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-clipboard-list mr-2 text-primary"></i> Trazabilidad Documental de la Etapa (Claudia Alvarez)</h6>
+                        <div id="container-trace-logs" class="p-3 bg-light rounded border" style="max-height: 150px; overflow-y: auto;">
+                            <div class="trace-log-item">
+                                <span class="font-weight-bold">15:41:15</span> &bull; Solicitud de formalización iniciada. Plantilla base estándar D9 cargada desde la base de datos de manera automática.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL INFERIOR: DOSSIER DE ANTECEDENTES Y MATRIZ HISTÓRICA COMPLETA DE VALIDACIONES (col-12) -->
+                <div class="col-12 mb-4">
+                    <h5 class="font-weight-bold text-dark mb-3"><i class="fas fa-folder-open mr-2 text-primary"></i> Dossier de Antecedentes y Matriz de Controles</h5>
+                    
+                    <!-- Sub-row para Resumen Ejecutivo y Presupuesto side-by-side -->
+                    <div class="row mb-4">
+                        <!-- RESUMEN EJECUTIVO TÉCNICO (P08-B03) -->
+                        <div class="col-lg-5 mb-3 mb-lg-0">
+                            <div class="card-minimal h-100 overflow-hidden border shadow-sm" style="border-top: 4px solid var(--ufro-blue) !important;">
+                                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 0.5px;">
+                                        <i class="fas fa-file-alt mr-1"></i> Expediente Técnico Maestro
+                                    </h6>
+                                    <span class="badge badge-success px-2 py-1" style="font-size: 0.6rem;"><i class="fas fa-check-circle mr-1"></i> APROBADO</span>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="data-label text-muted">Nombre de la Prestación / Proyecto</div>
+                                    <div class="font-weight-bold text-dark mb-3" style="border-left: 3px solid var(--ufro-blue); padding-left: 10px; font-size: 0.82rem; line-height: 1.4;">
+                                        MODERNIZACIÓN Y LEVANTAMIENTO DE PROCESOS CRÍTICOS - AGROINDUSTRIA 2026
+                                    </div>
+                                    <div class="row" style="font-size: 0.75rem;">
+                                        <div class="col-md-6 mb-2">
+                                            <div class="data-label text-muted">Jefe de Proyecto</div>
+                                            <div class="font-weight-bold text-dark small">Dr. Ricardo Fuentes Sandoval</div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="data-label text-muted">Unidad Ejecutora</div>
+                                            <div class="font-weight-bold text-dark small">Instituto de Agroindustria</div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="data-label text-muted">Tipo Financiamiento</div>
+                                            <div class="font-weight-bold text-dark small">Proyecto Convenio Afecto</div>
+                                        </div>
+                                        <div class="col-md-6 mb-2">
+                                            <div class="data-label text-muted">Decreto Normativo</div>
+                                            <div class="font-weight-bold text-dark small">Decreto Universitario Nº 09/2022</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="data-label text-muted">Periodo Vigencia</div>
+                                            <div class="font-weight-bold text-dark small">01/05/2026 al 31/12/2026</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="data-label text-muted">Funcionarios Habilitados</div>
+                                            <div class="font-weight-bold text-success small">1 Activo / 1 Excluido previo</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MATRIZ PRESUPUESTARIA (P08-B04) -->
+                        <div class="col-lg-7">
+                            <div class="card-minimal h-100 overflow-hidden border shadow-sm">
+                                <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 0.5px;">
+                                        <i class="fas fa-coins mr-1"></i> Control Presupuestario Aprobado
+                                    </h6>
+                                    <span class="badge badge-success px-2 py-1" style="font-size: 0.6rem;"><i class="fas fa-check mr-1"></i> SALDO DISPONIBLE</span>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="row align-items-center mb-3 text-center">
+                                        <div class="col-md-6 border-right">
+                                            <div class="data-label text-muted">Centro de Costo</div>
+                                            <div class="h5 mb-0 font-weight-bold text-dark">4050.21</div>
+                                            <span class="text-muted" style="font-size: 0.6rem;">INST. AGROINDUSTRIA</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="data-label text-muted">Presupuesto Disponible CC</div>
+                                            <div class="h5 mb-0 font-weight-bold text-success">$32.550.000</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="table-responsive">
+                                        <table class="audit-data-table text-center bg-white mb-0">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th>Ítem</th>
+                                                    <th>Asignado</th>
+                                                    <th>Comprometido</th>
+                                                    <th>Esta PDS</th>
+                                                    <th>Saldo Proy.</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold text-dark">21.03.004</td>
+                                                    <td>$12.000.000</td>
+                                                    <td>$4.500.000</td>
+                                                    <td class="font-weight-bold text-primary">$2.240.000</td>
+                                                    <td class="text-success font-weight-bold">$5.260.000</td>
+                                                    <td><span class="badge badge-success px-2" style="font-size: 0.55rem;">SUFICIENTE</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- SECCIÓN 3: MATRIZ DE PARENTESCO -->
-                    <div class="audit-section">
-                        <h6 class="section-title-audit">
-                            <span><i class="fas fa-users"></i> Matriz de Parentesco e Incompatibilidades</span>
-                        </h6>
-                        <div class="p-2 bg-light rounded d-flex align-items-center">
-                            <i class="fas fa-check-circle text-success mr-2"></i> 
-                            <span class="small text-muted">Sin vínculos de consanguinidad o afinidad detectados en la unidad solicitante.</span>
+                    <!-- TABLA CONSOLIDADA DE PERSONAL VIGENTE (APROBADO) CON MATRIZ HISTÓRICA COMPLETA DE ETAPAS -->
+                    <div class="card-minimal mb-4 border shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-ufro-blue text-uppercase small" style="letter-spacing: 0.5px;">
+                                <i class="fas fa-check-circle mr-1 text-success"></i> Nómina de Personal Aprobado y Resumen Histórico de Controles
+                            </h6>
+                            <span class="badge badge-success px-2 py-1" style="font-size: 0.6rem;"><i class="fas fa-check mr-1"></i> CONTROL DE ETAPAS COMPLETO</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table-premium mb-0">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            <th style="min-width: 210px;"><i class="fas fa-user mr-1"></i> Funcionario Habilitado</th>
+                                            <th style="min-width: 130px;"><i class="fas fa-id-card-alt mr-1"></i> Estamento / Grado</th>
+                                            <th style="min-width: 320px;"><i class="fas fa-user-shield mr-1"></i> Controles Jurídicos DGDP (Etapa 4)</th>
+                                            <th style="min-width: 260px;"><i class="fas fa-coins mr-1"></i> Visación Financiera (Etapa 5 y 7)</th>
+                                            <th style="min-width: 170px;" class="text-center"><i class="fas fa-percentage mr-1"></i> Tope DU09 (Etapa 6)</th>
+                                            <th style="min-width: 120px;" class="text-center"><i class="fas fa-check-circle mr-1"></i> Estado Final</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="row-accent-sea">
+                                            <td>
+                                                <div class="font-weight-bold text-dark text-uppercase mb-1" style="font-size: 0.82rem; letter-spacing: 0.3px;">Soto Figueroa María Elena</div>
+                                                <div class="text-muted small font-weight-bold mb-1" style="font-size: 0.7rem;">RUT: 15.987.654-3</div>
+                                                <span class="badge badge-light border text-primary" style="font-size: 0.6rem;"><i class="fas fa-tag mr-1"></i> ID PDS: #PDS-2026-001-01</span>
+                                            </td>
+                                            <td>
+                                                <div class="font-weight-bold text-dark mb-1" style="font-size: 0.76rem;">Administrativo</div>
+                                                <div class="text-muted small mb-1" style="font-size: 0.7rem;">Grado 16</div>
+                                                <div class="text-muted small font-italic" style="font-size: 0.65rem;">Inst. Agroindustria</div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column" style="gap: 5px;">
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-ban mr-1 text-success"></i> Inhabilidades Generales:</span>
+                                                        <span class="badge-success-soft">✓ SIN RESTRICCIÓN</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
+                                                        <span class="badge-success-soft">✓ SIN CONFLICTO</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-file-invoice-dollar mr-1 text-success"></i> Morosidad / Viáticos:</span>
+                                                        <span class="badge-success-soft">✓ AL DÍA</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column" style="gap: 5px;">
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-wallet mr-1 text-primary"></i> Saldo C.C. 4050.21:</span>
+                                                        <span class="badge-success-soft">✓ DISPONIBLE</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-clock mr-1 text-primary"></i> SEA (Sábado 8h):</span>
+                                                        <span class="badge-success-soft">✓ VALIDADO</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark font-weight-bold small">Asignación Bruta:</span>
+                                                        <span class="font-weight-bold text-primary" style="font-size: 0.75rem;">$280.000 / mes</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <div class="bg-white p-2 rounded border inline-block" style="display: inline-block;">
+                                                    <div class="data-label text-muted mb-1" style="font-size: 0.58rem;">Límite Renta 50%</div>
+                                                    <div class="font-weight-bold text-dark small mb-1">$280.000 / $553.079</div>
+                                                    <span class="badge badge-success px-2 py-0.5 font-weight-bold" style="font-size: 0.62rem;" title="Base Ref: $1.106.158 | Tope 50%: $553.079">CUMPLE (39%)</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <span class="badge badge-success px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px;"><i class="fas fa-check-circle mr-1"></i> VALIDADO</span>
+                                                    <span class="text-muted small mt-1 font-italic" style="font-size: 0.52rem;">Apto para Decreto</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- SECCIÓN 4: CONTROL DE DEUDAS -->
-                    <div class="audit-section mb-0 border-bottom-0 pb-3">
-                        <h6 class="section-title-audit">
-                            <span><i class="fas fa-file-invoice-dollar"></i> Control de Deudas e Incumplimientos</span>
-                        </h6>
-                        <div class="p-2 bg-light rounded d-flex align-items-center">
-                            <i class="fas fa-check-circle text-success mr-2"></i> 
-                            <span class="small text-muted">Funcionario sin obligaciones pendientes con Biblioteca, Viáticos o Finanzas.</span>
+                    <!-- TABLA CONSOLIDADA DE PERSONAL EXCLUIDO CON MATRIZ HISTÓRICA COMPLETA DE ETAPAS -->
+                    <div class="card-minimal border border-danger p-0 bg-white mb-4" style="border-radius: 12px; overflow: hidden; opacity: 0.95;">
+                        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-danger text-uppercase small" style="letter-spacing: 0.5px;">
+                                <i class="fas fa-user-times mr-1"></i> Personal Excluido del Proceso - Resumen de Rechazo Técnico
+                            </h6>
+                            <span class="badge badge-danger px-2 py-1" style="font-size: 0.6rem;"><i class="fas fa-ban mr-1"></i> EXCLUIDO PREVIO</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table-premium mb-0">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            <th style="min-width: 210px;"><i class="fas fa-user-slash mr-1"></i> Funcionario Excluido</th>
+                                            <th style="min-width: 130px;"><i class="fas fa-id-card-alt mr-1"></i> Estamento / Grado</th>
+                                            <th style="min-width: 320px;"><i class="fas fa-exclamation-triangle mr-1"></i> Controles Fallidos (Etapa 4 - DGDP)</th>
+                                            <th style="min-width: 260px;"><i class="fas fa-comment-slash mr-1"></i> Detalle de la Exclusión Técnica</th>
+                                            <th style="min-width: 170px;" class="text-right"><i class="fas fa-dollar-sign mr-1"></i> Monto Original</th>
+                                            <th style="min-width: 120px;" class="text-center"><i class="fas fa-ban mr-1"></i> Estado Final</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-light" style="opacity: 0.95;">
+                                            <td>
+                                                <div class="font-weight-bold text-muted text-uppercase mb-1" style="font-size: 0.8rem; text-decoration: line-through;">LIZAMA AILLAPAN ESTEBAN ANDRÉS</div>
+                                                <div class="text-muted small font-weight-bold" style="font-size: 0.7rem;">RUT: 15.890.342-K</div>
+                                            </td>
+                                            <td>
+                                                <div class="font-weight-bold text-muted" style="font-size: 0.75rem;">Académico</div>
+                                                <div class="text-muted small" style="font-size: 0.68rem;">Planta Vigente</div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex flex-column" style="gap: 5px;">
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-times-circle mr-1 text-danger"></i> Inhabilidades Generales:</span>
+                                                        <span class="badge-danger-soft">✗ RESTRICCIÓN</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
+                                                        <span class="badge-success-soft">✓ SIN CONFLICTOS</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                                        <span class="text-dark small"><i class="fas fa-times-circle mr-1 text-danger"></i> Morosidad / Viáticos:</span>
+                                                        <span class="badge-danger-soft">✗ PENDIENTE</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="text-muted small" style="font-size: 0.72rem; line-height: 1.4;">
+                                                    <strong>Causa de Exclusión:</strong> Duplicidad horaria al 100% (176 hrs vigentes en Planta) y Rendición de Viáticos Pendiente desde el periodo fiscal 2025.
+                                                </div>
+                                            </td>
+                                            <td class="text-right font-weight-bold text-muted align-middle" style="font-size: 0.78rem; text-decoration: line-through;">
+                                                $900.000
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <span class="badge badge-danger px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px;"><i class="fas fa-times-circle mr-1"></i> EXCLUIDO</span>
+                                                    <span class="text-muted small mt-1 font-italic" style="font-size: 0.52rem;">No Elegible</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECCIÓN DE EXCLUIDOS (Paridad con 06/07) -->
-            <div class="mb-5">
-                <h5 class="font-weight-bold text-danger mb-3">
-                    <i class="fas fa-user-times mr-2"></i> Personal Excluido de la Resolución
-                </h5>
-                <div class="alert alert-soft-danger border-danger small mb-3">
-                    <i class="fas fa-info-circle mr-1"></i> El siguiente personal ha sido filtrado por no cumplimiento normativo (Topes/SEA/Deudas) y no figurará en el acto administrativo final.
-                </div>
-                <div class="audit-sheet" style="opacity: 0.6; filter: grayscale(1);">
-                    <div class="sheet-header-premium" style="background: #f1f5f9;">
-                        <div class="d-flex align-items-center">
-                            <div class="icon-box bg-secondary text-white mr-3 shadow-sm" style="width: 32px; height: 32px; font-size: 0.8rem;">
-                                <i class="fas fa-ban"></i>
-                            </div>
-                            <h6 class="m-0 font-weight-bold text-muted">LIZAMA AILLAPAN ESTEBAN ANDRÉS</h6>
-                        </div>
-                        <span class="badge badge-danger x-small">PARENTESCO / DEUDAS</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Vistos Buenos & Distribución -->
-            <div class="row mb-5">
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
-                        <div class="card-body">
-                            <h6 class="editor-label mb-3">Vistos Buenos Digitales</h6>
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="vb1" checked disabled>
-                                <label class="custom-control-label small" for="vb1">VICERRECTOR DE ADM. Y FINANZAS <span class="text-success">(Validado)</span></label>
-                            </div>
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="vb2" checked disabled>
-                                <label class="custom-control-label small" for="vb2">SECRETARIO GENERAL <span class="text-success">(Validado)</span></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm h-100" style="border-radius: 12px;">
-                        <div class="card-body">
-                            <h6 class="editor-label mb-3">Distribución Oficial (Flujo Posterior)</h6>
-                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded border-left" style="border-left-color: var(--ufro-blue) !important; border-left-width: 3px !important;">
-                                <span><i class="fas fa-signature mr-2 text-primary"></i> Secretaría General</span>
-                                <i class="fas fa-clock text-warning"></i>
-                            </div>
-                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
-                                <span><i class="fas fa-university mr-2"></i> Rectoría</span>
-                                <i class="fas fa-clock text-muted"></i>
-                            </div>
-                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
-                                <span><i class="fas fa-stamp mr-2 text-secondary"></i> Contraloría Interna (Toma de Razón)</span>
-                                <i class="fas fa-clock text-muted"></i>
-                            </div>
-                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
-                                <span><i class="fas fa-folder-open mr-2 text-info"></i> Archivo Universitario (Oficina de Partes)</span>
-                                <i class="fas fa-clock text-muted"></i>
-                            </div>
-                            <div class="dist-item d-flex justify-content-between align-items-center mb-1 x-small bg-light p-2 rounded">
-                                <span><i class="fas fa-envelope mr-2 text-success"></i> Beneficiario / Unidad de Origen</span>
-                                <i class="fas fa-clock text-muted"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sticky Actions -->
-            <div class="sticky-actions text-right">
+            <!-- STICKY ACTIONS BAR (P08-B15 & P08-B13) -->
+            <div class="sticky-actions">
                 <div class="container-fluid px-lg-5">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button class="btn btn-outline-info font-weight-bold px-4" style="border-radius: 8px;">
-                            <i class="fas fa-file-pdf mr-2"></i> PREVISUALIZAR DECRETO
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <button type="button" class="btn-ufro btn-ufro-outline font-weight-bold" onclick="abrirPrevisualizacion()">
+                            <i class="fas fa-file-pdf mr-1 text-danger" style="font-size: 1.1rem;"></i> PREVISUALIZAR DECRETO
                         </button>
-                        <div>
-                            <button class="btn btn-warning text-white font-weight-bold px-4 mr-2" style="border-radius: 8px;" onclick="location.href='01_vista_formulario_solicitud.html'">
-                                <i class="fas fa-reply mr-2"></i> DEVOLVER
+                        <div class="d-flex gap-2 flex-wrap justify-content-end">
+                            <button type="button" class="btn-ufro btn-ufro-outline" onclick="guardarBorrador(true)">
+                                <i class="fas fa-save mr-1 text-primary"></i> GUARDAR BORRADOR
                             </button>
-                            <button class="btn btn-success font-weight-bold px-5" style="border-radius: 8px; background-color: var(--ufro-green);" onclick="location.href='11_vista_visacion_secretario_general.html'">
-                                <i class="fas fa-paper-plane mr-2"></i> FIRMAR Y ENVIAR A SECRETARÍA GENERAL
+                            <button type="button" class="btn-ufro btn-ufro-warning text-white" onclick="prepararVisacion('devolver')">
+                                <i class="fas fa-reply mr-1"></i> DEVOLVER CON CORRECCIÓN
+                            </button>
+                            <button type="button" class="btn-ufro btn-ufro-danger text-white font-weight-bold" onclick="prepararVisacion('rechazar')">
+                                <i class="fas fa-ban mr-1"></i> RECHAZAR SOLICITUD
+                            </button>
+                            <button type="button" class="btn-ufro btn-ufro-success" onclick="confirmarEnvio()">
+                                <i class="fas fa-paper-plane mr-1"></i> ENVIAR A FIRMA LEGAL
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+        </div>
+    </div>
+</div>
+
+<!-- ==================== MODALS & ALERTS ==================== -->
+
+<!-- 1. TOAST NOTIFICATION DE ACCIONES -->
+<div id="toast-notificacion" class="ufro-alert-toast p-3">
+    <div class="d-flex align-items-center">
+        <div id="toast-icon-box" class="icon-box text-white mr-3" style="width: 32px; height: 32px; background-color: var(--ufro-green);">
+            <i id="toast-icon" class="fas fa-check"></i>
+        </div>
+        <div>
+            <h6 id="toast-titulo" class="font-weight-bold m-0 text-dark small" style="font-family: 'Outfit', sans-serif;">Éxito</h6>
+            <span id="toast-mensaje" class="text-muted small" style="font-size: 0.72rem;">El borrador documental ha sido guardado exitosamente.</span>
+        </div>
+    </div>
+</div>
+
+<!-- 2. MODAL DE PREVISUALIZACIÓN DE ACTO ADMINISTRATIVO (P08-B14) -->
+<div class="modal fade" id="modalPDF" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none;">
+            <div class="modal-header bg-dark text-white py-3">
+                <h5 class="modal-title font-weight-bold" style="font-family: 'Outfit', sans-serif;"><i class="fas fa-file-pdf text-danger mr-2"></i> Previsualización del Acto Administrativo Generado</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="pdf-page-container">
+                    <!-- CONTENIDO DE HOJA TIPO PDF DE RESOLUCIÓN EXENTA -->
+                    <div class="pdf-sheet shadow-lg">
+                        <div class="pdf-header">
+                            <div>
+                                <div class="pdf-logo-text">Universidad de La Frontera</div>
+                                <div class="pdf-logo-subtext">VICERRECTORÍA DE ADMINISTRACIÓN Y FINANZAS</div>
+                            </div>
+                            <div class="pdf-resolution-id">
+                                RESOLUCIÓN EXENTA Nº <span style="border-bottom: 1px dotted #000; width: 120px; display: inline-block;"></span><br>
+                                <span class="text-muted" style="font-size: 0.7rem; font-family: 'Inter'; font-weight: normal;">TEMUCO, 18 de Mayo de 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="pdf-body-title">
+                            RESOLUCIÓN DE ASIGNACIÓN POR PRESTACIÓN DE SERVICIOS EXPEDIENTE #PDS-2026-001
+                        </div>
+
+                        <div class="pdf-text-block">
+                            <span class="pdf-label-word">VISTO:</span><span id="pdf-visto-content"></span>
+                        </div>
+
+                        <div class="pdf-text-block">
+                            <span class="pdf-label-word">CONSIDERANDO:</span><span id="pdf-considerando-content"></span>
+                        </div>
+
+                        <div class="pdf-text-block">
+                            <span class="pdf-label-word">RESUELVO:</span><span id="pdf-resuelvo-content"></span>
+                        </div>
+
+                        <!-- TABLA DE PRESTACIONES INTEGRADA (P08-B10) -->
+                        <div class="font-weight-bold my-2" style="font-family: 'Times New Roman'; text-decoration: underline;">TABLA DETALLADA DE PRESTACIONES AUTORIZADAS:</div>
+                        <table class="pdf-prestaciones-table">
+                            <thead>
+                                <tr>
+                                    <th>RUT</th>
+                                    <th>Nombre del Funcionario</th>
+                                    <th>Estamento</th>
+                                    <th>Cargo / Función</th>
+                                    <th>C. Costo</th>
+                                    <th>Ítem</th>
+                                    <th>Vigencia</th>
+                                    <th>Meses</th>
+                                    <th>Bruto Mensual</th>
+                                    <th>Total Bruto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15.987.654-3</td>
+                                    <td class="text-left font-weight-bold">Soto Figueroa María Elena</td>
+                                    <td>Administrativo</td>
+                                    <td>Apoyo Técnico y Foliación</td>
+                                    <td>4050.21</td>
+                                    <td>21.03.004</td>
+                                    <td>01/05/26 - 31/12/26</td>
+                                    <td>8</td>
+                                    <td>$280.000</td>
+                                    <td class="font-weight-bold">$2.240.000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- FIRMAS DIGITALES SELECCIONADAS -->
+                        <div class="pdf-signature-section">
+                            <div class="pdf-signature-box">
+                                <div class="pdf-signature-line" id="pdf-sig-vr">
+                                    Dra. Gloria Gómez Martínez<br>
+                                    Vicerrectora de Administración y Finanzas
+                                </div>
+                            </div>
+                            <div class="pdf-signature-box">
+                                <div class="pdf-signature-line" id="pdf-sig-sg">
+                                    Dra. Sandra Oyarzún Valenzuela<br>
+                                    Secretaria General
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CIRCUTO DE DISTRIBUCIÓN INTEGRADO -->
+                        <div class="pdf-distribution-box">
+                            <div class="font-weight-bold mb-1">DISTRIBUCIÓN OFICIAL:</div>
+                            <ol class="pl-3 mb-0" id="pdf-distribution-list" style="line-height: 1.3;">
+                                <!-- Se llena dinámicamente -->
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-2">
+                <span class="text-muted mr-auto small font-italic"><i class="fas fa-info-circle mr-1"></i> Esta es una previsualización de fidelidad del acto legal conforme a la base BDD.</span>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar Vista</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. MODAL GLOBAL DE DEVOLUCIÓN Y RECHAZO (P08-B16) -->
+<div class="modal fade" id="modalVisacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 15px 30px rgba(0,0,0,0.15);">
+            <div id="modal-header-color" class="modal-header text-white py-3">
+                <h5 class="modal-title font-weight-bold" id="modal-titulo-visacion" style="font-family: 'Outfit', sans-serif;"></h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="modal-alert-error" class="alert alert-danger p-2 small mb-3" style="display: none; border-radius: 6px;">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> <span id="modal-error-text"></span>
+                </div>
+                
+                <p id="modal-mensaje-cuerpo" class="small text-muted" style="line-height: 1.4;"></p>
+                
+                <div class="form-group mb-0">
+                    <label class="editor-label font-weight-bold text-dark mb-1" for="modal-comentarios">Comentarios y Observaciones (Mínimo 10 caracteres):</label>
+                    <textarea id="modal-comentarios" class="form-control" rows="4" placeholder="Escriba aquí los fundamentos detallados de su devolución o rechazo..." style="font-size: 0.8rem; border-radius: 6px;"></textarea>
+                    <div class="text-right mt-1">
+                        <span id="char-count" class="badge badge-light text-muted small" style="font-size: 0.65rem;">0 / 10 caracteres mín.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar Acción</button>
+                <button type="button" id="modal-btn-confirmar" class="btn btn-sm px-4 text-white font-weight-bold" onclick="ejecutarAccionDestructiva()"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. MODAL DE CONFIRMACIÓN DE ENVÍO A FIRMA (P08-B17) -->
+<div class="modal fade" id="modalConfirmarEnvio" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none;">
+            <div class="modal-header bg-success text-white py-3">
+                <h5 class="modal-title font-weight-bold" style="font-family: 'Outfit', sans-serif;"><i class="fas fa-paper-plane mr-2"></i> Confirmar Despacho a Circuito de Firma</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <i class="fas fa-file-signature text-success mb-3" style="font-size: 3rem;"></i>
+                <h6 class="font-weight-bold text-dark">¿Está seguro de enviar a firma el acto administrativo?</h6>
+                <p class="small text-muted mb-0" style="line-height: 1.4;">
+                    Al confirmar, se congelarán los textos redactados (VISTO, CONSIDERANDO, RESUELVO), se asociarán las firmas de <strong><span id="label-vr-sig"></span></strong> y <strong><span id="label-sg-sig"></span></strong>, y se derivará formalmente a la etapa de firma en Secretaría General.
+                </p>
+            </div>
+            <div class="modal-footer bg-light py-2">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success btn-sm px-4 font-weight-bold" style="background-color: var(--ufro-green);" onclick="ejecutarEnvioAFirma()">ENVIAR A FIRMA</button>
+            </div>
         </div>
     </div>
 </div>
@@ -536,10 +1380,378 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Variables globales
+    let activeAction = '';
+    let customDestinatarios = [];
+
+    // Cargar borrador inicial si existe o pre-cargar plantilla estándar
+    window.addEventListener('DOMContentLoaded', () => {
+        const visto = localStorage.getItem("pds_08_visto");
+        const considerando = localStorage.getItem("pds_08_considerando");
+        const resuelvo = localStorage.getItem("pds_08_resuelvo");
+        const vr = localStorage.getItem("pds_08_vr");
+        const sg = localStorage.getItem("pds_08_sg");
+        const dist = localStorage.getItem("pds_08_dist");
+
+        if (visto) {
+            document.getElementById("editor-visto").innerHTML = visto;
+        }
+        if (considerando) {
+            document.getElementById("editor-considerando").innerHTML = considerando;
+        }
+        if (resuelvo) {
+            document.getElementById("editor-resuelvo").innerHTML = resuelvo;
+        }
+        if (vr) {
+            document.getElementById("select-firmante-vr").value = vr;
+        }
+        if (sg) {
+            document.getElementById("select-firmante-sg").value = sg;
+        }
+        
+        if (dist) {
+            customDestinatarios = JSON.parse(dist);
+            // Evitar duplicar los iniciales en la vista
+            customDestinatarios.forEach(d => {
+                const tbody = document.getElementById("tbody-distribution");
+                // Verificar si ya existe en el DOM
+                if (!document.getElementById(d.id)) {
+                    const tr = document.createElement("tr");
+                    tr.id = d.id;
+                    tr.innerHTML = `
+                        <td class="font-weight-bold text-dark">${d.nombre}</td>
+                        <td class="text-center"><span class="dist-manual-badge">AGREGADO</span></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="eliminarDestinatario('${d.id}')">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+        
+        agregarTraza("Plantilla estándar D9 de prestación de servicios precargada correctamente desde la base de datos.");
+    });
+
+    // Trazabilidad de la etapa
+    function agregarTraza(mensaje) {
+        const container = document.getElementById("container-trace-logs");
+        const ahora = new Date();
+        const horaStr = ahora.toTimeString().split(' ')[0];
+        
+        const div = document.createElement("div");
+        div.className = "trace-log-item active-log";
+        div.innerHTML = `<span class="font-weight-bold">${horaStr}</span> &bull; ${mensaje}`;
+        
+        // Remover clase active-log a los anteriores
+        const logsAnteriores = container.querySelectorAll(".trace-log-item");
+        logsAnteriores.forEach(log => log.classList.remove("active-log"));
+        
+        container.insertBefore(div, container.firstChild);
+    }
+
+    // Toggle del Sidebar
     document.getElementById("menu-toggle").onclick = function(e) {
         e.preventDefault();
         document.getElementById("wrapper").classList.toggle("toggled");
     };
+
+    // Formato enriquecido básico del editor
+    function formatDoc(command) {
+        document.execCommand(command, false, null);
+    }
+
+    // Cargar Plantilla Base (P08-F10)
+    function cargarPlantilla() {
+        const plantilla = document.getElementById("select-plantilla").value;
+        const editorVisto = document.getElementById("editor-visto");
+        const editorConsiderando = document.getElementById("editor-considerando");
+        const editorResuelvo = document.getElementById("editor-resuelvo");
+
+        if (plantilla === "estandar") {
+            editorVisto.innerHTML = "Ley Nº 19.886, Ley de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES; Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación; Decreto Universitario Nº 09 de 2022.";
+            editorConsiderando.innerHTML = "1. Que la Institución requiere contar con servicios especializados para el proyecto de Modernización Tecnológica y levantamiento de procesos en el Instituto de Agroindustria.<br>2. Que se ha verificado la disponibilidad presupuestaria correspondiente en el Centro de Costos 4050.21.<br>3. Que la Dirección de Gestión de Personas ha emitido informe de conformidad normativo en cumplimiento de las directrices de la resolución DU09/DU288.";
+            editorResuelvo.innerHTML = "<strong>DISPÓNESE</strong> el pago de la asignación por Prestación de Servicios, por el monto bruto que se señala, a contar del 01 de mayo de 2026 y hasta el 31 de diciembre de 2026, para ser pagado con la remuneración del mes correspondiente, a los funcionarios/as que se detallan en la presente resolución.";
+            agregarTraza("Se ha cargado exitosamente la Plantilla Estándar D9 desde la base de datos.");
+            mostrarToast("Plantilla Cargada", "Se cargó la plantilla estándar D9 de prestación de servicios exitosamente.", "var(--ufro-green)", "fa-check");
+        } else {
+            editorVisto.innerHTML = "D.F.L. Nº 156 de 1981 de Educación; Convenio de Cooperación Específico entre la Universidad de La Frontera y el Ministerio de Agricultura; Resolución Exenta Nº 288 de la Vicerrectoría Académica.";
+            editorConsiderando.innerHTML = "1. Que con fecha 15 de marzo de 2026 se ratificó el Convenio Específico de desarrollo agroalimentario.<br>2. Que en mérito de dicho convenio, es necesario formalizar las prestaciones de apoyo profesional calificado para la ejecución técnica.<br>3. Que la profesional designada cumple con todos los controles de compatibilidad establecidos.";
+            editorResuelvo.innerHTML = "<strong>APRUÉBESE</strong> la contratación por Prestación de Servicios de apoyo técnico, en el marco del Convenio UFRO-MINAGRI 2026, por el monto y vigencia que se detalla en la tabla anexa.";
+            agregarTraza("Se ha cargado la Plantilla Especial DU288 desde la base de datos.");
+            mostrarToast("Plantilla Cargada", "Se cargó la plantilla especial de convenios DU288 exitosamente.", "var(--ufro-green)", "fa-check");
+        }
+    }
+
+    // Mostrar Notificación Toast
+    function mostrarToast(titulo, mensaje, colorIcono, icono) {
+        const toast = document.getElementById("toast-notificacion");
+        document.getElementById("toast-titulo").innerText = titulo;
+        document.getElementById("toast-mensaje").innerText = mensaje;
+        document.getElementById("toast-icon-box").style.backgroundColor = colorIcono;
+        document.getElementById("toast-icon").className = `fas ${icono}`;
+
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 4000);
+    }
+
+    // Guardar Borrador (P08-B13 / P08-F20)
+    function guardarBorrador(mostrarAlerta = true) {
+        const visto = document.getElementById("editor-visto").innerHTML;
+        const considerando = document.getElementById("editor-considerando").innerHTML;
+        const resuelvo = document.getElementById("editor-resuelvo").innerHTML;
+        const vr = document.getElementById("select-firmante-vr").value;
+        const sg = document.getElementById("select-firmante-sg").value;
+
+        // Persistencia simulada
+        localStorage.setItem("pds_08_visto", visto);
+        localStorage.setItem("pds_08_considerando", considerando);
+        localStorage.setItem("pds_08_resuelvo", resuelvo);
+        localStorage.setItem("pds_08_vr", vr);
+        localStorage.setItem("pds_08_sg", sg);
+        localStorage.setItem("pds_08_dist", JSON.stringify(customDestinatarios));
+
+        // Actualizar Badge Status
+        const badge = document.getElementById("badge-status-doc");
+        badge.className = "badge badge-success px-3 py-2 font-weight-bold text-white";
+        badge.style.backgroundColor = "var(--ufro-green)";
+        badge.innerHTML = '<i class="fas fa-check-double mr-1"></i> BORRADOR GUARDADO';
+
+        agregarTraza("El borrador documental ha sido guardado de forma persistente.");
+
+        if (mostrarAlerta) {
+            mostrarToast("Borrador Guardado", "El contenido de la resolución y sus firmantes han sido guardados.", "var(--ufro-green)", "fa-save");
+        }
+    }
+
+    // Agregar Distribución Dinámica (P08-B12 / P08-F19)
+    function abrirAgregarDistribucion() {
+        const panel = document.getElementById("panel-add-dist");
+        panel.style.display = panel.style.display === "none" ? "block" : "none";
+        document.getElementById("input-new-dist").focus();
+    }
+
+    function guardarNuevoDestinatario() {
+        const input = document.getElementById("input-new-dist");
+        const nombre = input.value.trim();
+
+        if (nombre === "") {
+            alert("Debe escribir un nombre de destinatario.");
+            return;
+        }
+
+        const id = "custom-dist-" + Date.now();
+        customDestinatarios.push({ id: id, nombre: nombre });
+
+        // Insertar en la tabla
+        const tbody = document.getElementById("tbody-distribution");
+        const tr = document.createElement("tr");
+        tr.id = id;
+        tr.innerHTML = `
+            <td class="font-weight-bold text-dark">${nombre}</td>
+            <td class="text-center"><span class="dist-manual-badge">AGREGADO</span></td>
+            <td class="text-center">
+                <button type="button" class="btn btn-sm btn-link text-danger p-0" onclick="eliminarDestinatario('${id}')">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+
+        // Reset panel
+        input.value = "";
+        document.getElementById("panel-add-dist").style.display = "none";
+
+        agregarTraza(`Se agregó manualmente a "${nombre}" al circuito de distribución.`);
+        mostrarToast("Distribución Actualizada", `Se agregó "${nombre}" a la distribución.`, "var(--ufro-orange)", "fa-envelope");
+        
+        // Auto guardar borrador en segundo plano
+        guardarBorrador(false);
+    }
+
+    function eliminarDestinatario(id) {
+        const item = customDestinatarios.find(d => d.id === id);
+        const nombre = item ? item.nombre : "Destinatario";
+
+        customDestinatarios = customDestinatarios.filter(d => d.id !== id);
+        
+        const tr = document.getElementById(id);
+        if (tr) {
+            tr.remove();
+        }
+
+        agregarTraza(`Se eliminó a "${nombre}" de la distribución.`);
+        mostrarToast("Distribución Actualizada", `Se removió el destinatario.`, "var(--ufro-orange)", "fa-trash");
+        
+        // Auto guardar
+        guardarBorrador(false);
+    }
+
+    // Previsualizar Decreto (P08-B14 / P08-F21)
+    function abrirPrevisualizacion() {
+        const visto = document.getElementById("editor-visto").innerHTML;
+        const considerando = document.getElementById("editor-considerando").innerHTML;
+        const resuelvo = document.getElementById("editor-resuelvo").innerHTML;
+        const vr = document.getElementById("select-firmante-vr").value;
+        const sg = document.getElementById("select-firmante-sg").value;
+
+        // Cargar contenidos en el modal de hoja formal
+        document.getElementById("pdf-visto-content").innerHTML = visto;
+        document.getElementById("pdf-considerando-content").innerHTML = considerando;
+        document.getElementById("pdf-resuelvo-content").innerHTML = resuelvo;
+
+        // Firmantes
+        document.getElementById("pdf-sig-vr").innerHTML = `${vr}<br><span style="font-weight:normal; font-family:'Inter'; font-size:0.7rem; color:#475569;">Vicerrector/a de Administración y Finanzas</span>`;
+        document.getElementById("pdf-sig-sg").innerHTML = `${sg}<br><span style="font-weight:normal; font-family:'Inter'; font-size:0.7rem; color:#475569;">Secretario/a General</span>`;
+
+        // Generar lista de distribución
+        const list = document.getElementById("pdf-distribution-list");
+        list.innerHTML = "";
+
+        // Bases obligatorias
+        const bases = [
+            "Vicerrectoría de Administración y Finanzas",
+            "Secretaría General",
+            "Dirección de Gestión de Personas (DGDP)",
+            "Dirección de Finanzas",
+            "Instituto de Agroindustria (Unidad de Origen)",
+            "Interesado / Registro Personal"
+        ];
+
+        bases.forEach(b => {
+            const li = document.createElement("li");
+            li.innerText = b;
+            list.appendChild(li);
+        });
+
+        // Manuales
+        customDestinatarios.forEach(d => {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${d.nombre}</strong> (Agregado)`;
+            list.appendChild(li);
+        });
+
+        agregarTraza("Se abrió el módulo de previsualización formal de la resolución.");
+
+        // Show Modal
+        $('#modalPDF').modal('show');
+    }
+
+    // Preparar Modal Único de Devolución/Rechazar (P08-B16 / P08-F25)
+    function prepararVisacion(accion) {
+        activeAction = accion;
+        
+        const header = document.getElementById("modal-header-color");
+        const titulo = document.getElementById("modal-titulo-visacion");
+        const mensaje = document.getElementById("modal-mensaje-cuerpo");
+        const btn = document.getElementById("modal-btn-confirmar");
+        const alertError = document.getElementById("modal-alert-error");
+        
+        alertError.style.display = "none";
+        document.getElementById("modal-comentarios").value = "";
+        document.getElementById("char-count").innerText = "0 / 10 caracteres mín.";
+        document.getElementById("modal-comentarios").style.borderColor = "#cbd5e1";
+
+        if (accion === "devolver") {
+            header.className = "modal-header text-white py-3";
+            header.style.backgroundColor = "var(--ufro-orange)";
+            titulo.innerHTML = '<i class="fas fa-reply mr-2"></i> Devolución con Corrección del Expediente';
+            mensaje.innerText = "ATENCIÓN: La devolución retornará el expediente para su subsanación por parte de las unidades correspondientes. Para proceder, debe ingresar el motivo y comentarios con el detalle técnico de la corrección requerida.";
+            btn.className = "btn btn-sm btn-warning px-4 text-white font-weight-bold";
+            btn.innerText = "CONFIRMAR DEVOLUCIÓN";
+        } else {
+            header.className = "modal-header bg-danger text-white py-3";
+            titulo.innerHTML = '<i class="fas fa-ban mr-2"></i> Rechazo Definitivo de la Solicitud';
+            mensaje.innerText = "PRECAUCIÓN CRÍTICA: Esta acción rechazará permanentemente la solicitud #PDS-2026-001, impidiendo la formalización y generación del acto administrativo. Esta acción es definitiva e irreversible.";
+            btn.className = "btn btn-sm btn-danger px-4 text-white font-weight-bold";
+            btn.innerText = "RECHAZAR SOLICITUD";
+        }
+
+        $('#modalVisacion').modal('show');
+    }
+
+    // Evento de escritura para conteo de caracteres en modal
+    document.getElementById("modal-comentarios").addEventListener("input", function() {
+        const len = this.value.trim().length;
+        const indicator = document.getElementById("char-count");
+        indicator.innerText = `${len} / 10 caracteres mín.`;
+        
+        if (len >= 10) {
+            indicator.className = "badge badge-success text-white small";
+            this.style.borderColor = "var(--ufro-green)";
+        } else {
+            indicator.className = "badge badge-light text-muted small";
+        }
+    });
+
+    // Ejecutar Acción destructiva (P08-F23 / P08-F24 / P08-F25)
+    function ejecutarAccionDestructiva() {
+        const comments = document.getElementById("modal-comentarios").value.trim();
+        const alertError = document.getElementById("modal-alert-error");
+        const errorText = document.getElementById("modal-error-text");
+
+        if (comments.length < 10) {
+            alertError.style.display = "block";
+            errorText.innerText = "El campo de comentarios y observaciones es obligatorio y debe contener al menos 10 caracteres descriptivos.";
+            document.getElementById("modal-comentarios").style.borderColor = "red";
+            return;
+        }
+
+        // Simular envío de trazabilidad
+        agregarTraza(`Expediente marcado como ${activeAction === 'devolver' ? 'DEVUELTO CON CORRECCIÓN' : 'RECHAZADO DEFINITIVAMENTE'}. Comentarios: "${comments}".`);
+        
+        $('#modalVisacion').modal('hide');
+
+        // Redirecciones estipuladas por flujo
+        if (activeAction === "devolver") {
+            mostrarToast("Redireccionando", "Redirigiendo a Formulario Solicitante con estatus devuelto...", "var(--ufro-orange)", "fa-spinner");
+            setTimeout(() => {
+                location.href = "01_vista_formulario_solicitud.html?status=devuelto&solicitud=PDS-2026-001";
+            }, 1500);
+        } else {
+            mostrarToast("Redireccionando", "Redirigiendo a Formulario Solicitante con estatus rechazado...", "red", "fa-spinner");
+            setTimeout(() => {
+                location.href = "01_vista_formulario_solicitud.html?status=rechazado&solicitud=PDS-2026-001";
+            }, 1500);
+        }
+    }
+
+    // Confirmar Envío a Firma (P08-B17 / P08-F26 / P08-F27)
+    function confirmarEnvio() {
+        const vr = document.getElementById("select-firmante-vr").value;
+        const sg = document.getElementById("select-firmante-sg").value;
+
+        document.getElementById("label-vr-sig").innerText = vr;
+        document.getElementById("label-sg-sig").innerText = sg;
+
+        $('#modalConfirmarEnvio').modal('show');
+    }
+
+    // Ejecutar Envío a Firma Legal
+    function ejecutarEnvioAFirma() {
+        $('#modalConfirmarEnvio').modal('hide');
+        agregarTraza("El acto administrativo ha sido congelado y enviado formalmente al flujo de firma en Secretaría General.");
+        
+        // Auto guardar borrador
+        guardarBorrador(false);
+
+        // Actualizar Badge Status
+        const badge = document.getElementById("badge-status-doc");
+        badge.className = "badge badge-success px-3 py-2 font-weight-bold text-white";
+        badge.style.backgroundColor = "var(--ufro-green)";
+        badge.innerHTML = '<i class="fas fa-paper-plane mr-1"></i> ENVIADO A FIRMA';
+
+        mostrarToast("Envío Exitoso", "El documento ha sido despachado a Secretaría General.", "var(--ufro-green)", "fa-paper-plane");
+        
+        // Redirigir a la firma del Secretario General
+        setTimeout(() => {
+            location.href = "11_vista_visacion_secretario_general.html?status=enviado&solicitud=PDS-2026-001";
+        }, 1500);
+    }
 </script>
 </body>
 </html>
