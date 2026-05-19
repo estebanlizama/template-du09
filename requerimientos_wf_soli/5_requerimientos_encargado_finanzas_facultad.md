@@ -289,8 +289,8 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-001:** El sistema debe mostrar el código único de la solicitud.
-- **RF-P05-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo.
+- **RF-PP05-001:** El sistema debe mostrar el código único de la solicitud.
+- **RF-PP05-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo.
 
 ---
 
@@ -321,8 +321,8 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-003:** El sistema debe mostrar el estado actual de revisión financiera.
-- **RF-P05-004:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
+- **RF-PP05-003:** El sistema debe mostrar el estado actual de revisión financiera.
+- **RF-PP05-004:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
 
 ---
 
@@ -364,9 +364,9 @@ Por cada etapa previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-005:** El sistema debe mostrar cronológicamente las decisiones registradas antes de Finanzas de Facultad.
-- **RF-P05-006:** El sistema debe mostrar usuario, rol, acción, fecha, hora y comentario cuando corresponda.
-- **RF-P05-007:** El sistema debe incorporar en la trazabilidad las exclusiones de funcionarios realizadas por DGDP.
+- **RF-PP05-005:** El sistema debe mostrar cronológicamente las decisiones registradas antes de Finanzas de Facultad.
+- **RF-PP05-006:** El sistema debe mostrar usuario, rol, acción, fecha, hora y comentario cuando corresponda.
+- **RF-PP05-007:** El sistema debe incorporar en la trazabilidad las exclusiones de funcionarios realizadas por DGDP.
 
 ---
 
@@ -395,8 +395,8 @@ Finanzas de Facultad.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P05-008:** El sistema debe mostrar una línea de avance del expediente.
-- **RF-P05-009:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
+- **RF-PP05-008:** El sistema debe mostrar una línea de avance del expediente.
+- **RF-PP05-009:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
 
 ---
 
@@ -438,11 +438,11 @@ Por cada funcionario excluido:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-010:** El sistema debe mostrar los funcionarios excluidos por DGDP.
-- **RF-P05-011:** El sistema debe mostrar el motivo resumido de cada exclusión.
-- **RF-P05-012:** El sistema debe excluir a estos funcionarios de los montos vigentes de la solicitud.
-- **RF-P05-013:** El sistema no debe permitir modificar las exclusiones previas desde esta pantalla.
-- **RF-P05-014:** El sistema debe informar explícitamente cuando no existan funcionarios excluidos por DGDP en la solicitud.
+- **RF-PP05-010:** El sistema debe mostrar los funcionarios excluidos por DGDP.
+- **RF-PP05-011:** El sistema debe mostrar el motivo resumido de cada exclusión.
+- **RF-PP05-012:** El sistema debe excluir a estos funcionarios de los montos vigentes de la solicitud.
+- **RF-PP05-013:** El sistema no debe permitir modificar las exclusiones previas desde esta pantalla.
+- **RF-PP05-014:** El sistema debe informar explícitamente cuando no existan funcionarios excluidos por DGDP en la solicitud.
 
 ---
 
@@ -485,11 +485,11 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-014:** El sistema debe mostrar el monto original de la solicitud.
-- **RF-P05-015:** El sistema debe mostrar el monto vigente posterior a exclusiones previas.
-- **RF-P05-016:** El sistema debe mostrar la cantidad de funcionarios originales, excluidos y vigentes.
-- **RF-P05-017:** El sistema debe mostrar el saldo disponible general del Centro de Costo.
-- **RF-P05-018:** El sistema debe mostrar el saldo proyectado posterior a aprobación cuando la información esté disponible.
+- **RF-PP05-014:** El sistema debe mostrar el monto original de la solicitud.
+- **RF-PP05-015:** El sistema debe mostrar el monto vigente posterior a exclusiones previas.
+- **RF-PP05-016:** El sistema debe mostrar la cantidad de funcionarios originales, excluidos y vigentes.
+- **RF-PP05-017:** El sistema debe mostrar el saldo disponible general del Centro de Costo.
+- **RF-PP05-018:** El sistema debe mostrar el saldo proyectado posterior a aprobación cuando la información esté disponible.
 
 ---
 
@@ -527,9 +527,9 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-019:** El sistema debe mostrar un estado consolidado de revisión financiera.
-- **RF-P05-020:** El sistema debe indicar funcionarios aprobados, rechazados y pendientes.
-- **RF-P05-021:** El sistema debe mostrar si la aprobación global se encuentra habilitada o bloqueada.
+- **RF-PP05-019:** El sistema debe mostrar un estado consolidado de revisión financiera.
+- **RF-PP05-020:** El sistema debe indicar funcionarios aprobados, rechazados y pendientes.
+- **RF-PP05-021:** El sistema debe mostrar si la aprobación global se encuentra habilitada o bloqueada.
 
 ---
 
@@ -574,10 +574,10 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-022:** El sistema debe mostrar los datos financieros y administrativos del Centro de Costo.
-- **RF-P05-023:** El sistema debe mostrar el saldo disponible general y el monto comprometido por la solicitud.
-- **RF-P05-024:** El sistema debe mostrar alertas presupuestarias existentes, cuando corresponda.
-- **RF-P05-025:** El sistema debe vincular la información del Centro de Costo con sus ítems presupuestarios asociados.
+- **RF-PP05-022:** El sistema debe mostrar los datos financieros y administrativos del Centro de Costo.
+- **RF-PP05-023:** El sistema debe mostrar el saldo disponible general y el monto comprometido por la solicitud.
+- **RF-PP05-024:** El sistema debe mostrar alertas presupuestarias existentes, cuando corresponda.
+- **RF-PP05-025:** El sistema debe vincular la información del Centro de Costo con sus ítems presupuestarios asociados.
 
 ---
 
@@ -630,11 +630,11 @@ Por cada ítem presupuestario:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-026:** El sistema debe mostrar una tabla de ítems presupuestarios asociados al Centro de Costo.
-- **RF-P05-027:** El sistema debe mostrar el cargo, estamento o categoría relacionada con cada ítem.
-- **RF-P05-028:** El sistema debe mostrar presupuesto asignado, monto comprometido, saldo disponible, monto solicitado y saldo proyectado por ítem.
-- **RF-P05-029:** El sistema debe calcular el monto solicitado acumulado por ítem cuando existan varios funcionarios asociados.
-- **RF-P05-030:** El sistema debe indicar visualmente si el saldo del ítem es suficiente, insuficiente o requiere revisión.
+- **RF-PP05-026:** El sistema debe mostrar una tabla de ítems presupuestarios asociados al Centro de Costo.
+- **RF-PP05-027:** El sistema debe mostrar el cargo, estamento o categoría relacionada con cada ítem.
+- **RF-PP05-028:** El sistema debe mostrar presupuesto asignado, monto comprometido, saldo disponible, monto solicitado y saldo proyectado por ítem.
+- **RF-PP05-029:** El sistema debe calcular el monto solicitado acumulado por ítem cuando existan varios funcionarios asociados.
+- **RF-PP05-030:** El sistema debe indicar visualmente si el saldo del ítem es suficiente, insuficiente o requiere revisión.
 
 ---
 
@@ -676,11 +676,11 @@ Finanzas de Facultad / Sistema.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P05-031:** El sistema debe identificar el ítem presupuestario asociado al cargo, estamento o categoría del funcionario.
-- **RF-P05-032:** El sistema debe comparar el monto solicitado del funcionario con el saldo disponible del ítem correspondiente.
-- **RF-P05-033:** El sistema debe considerar el consumo acumulado del mismo ítem cuando existan varios funcionarios asociados.
-- **RF-P05-034:** El sistema debe mostrar el resultado de suficiencia presupuestaria por funcionario e ítem.
-- **RF-P05-035:** El sistema debe advertir cuando el Centro de Costo tenga saldo general, pero el ítem específico no posea saldo suficiente.
+- **RF-PP05-031:** El sistema debe identificar el ítem presupuestario asociado al cargo, estamento o categoría del funcionario.
+- **RF-PP05-032:** El sistema debe comparar el monto solicitado del funcionario con el saldo disponible del ítem correspondiente.
+- **RF-PP05-033:** El sistema debe considerar el consumo acumulado del mismo ítem cuando existan varios funcionarios asociados.
+- **RF-PP05-034:** El sistema debe mostrar el resultado de suficiencia presupuestaria por funcionario e ítem.
+- **RF-PP05-035:** El sistema debe advertir cuando el Centro de Costo tenga saldo general, pero el ítem específico no posea saldo suficiente.
 
 ---
 
@@ -717,9 +717,9 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-036:** El sistema debe mostrar la descripción general de la actividad.
-- **RF-P05-037:** El sistema debe mostrar los tipos de prestación seleccionados.
-- **RF-P05-038:** El sistema debe mostrar las evidencias comprometidas y sus fechas estimadas.
+- **RF-PP05-036:** El sistema debe mostrar la descripción general de la actividad.
+- **RF-PP05-037:** El sistema debe mostrar los tipos de prestación seleccionados.
+- **RF-PP05-038:** El sistema debe mostrar las evidencias comprometidas y sus fechas estimadas.
 
 ---
 
@@ -768,10 +768,10 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-039:** El sistema debe mostrar la nómina de funcionarios vigentes posterior a DGDP.
-- **RF-P05-040:** El sistema debe mostrar el estado financiero de revisión por funcionario.
-- **RF-P05-041:** El sistema debe diferenciar visualmente funcionarios vigentes y funcionarios excluidos previamente.
-- **RF-P05-042:** El sistema debe mostrar el ítem presupuestario asociado y el estado de suficiencia presupuestaria por funcionario.
+- **RF-PP05-039:** El sistema debe mostrar la nómina de funcionarios vigentes posterior a DGDP.
+- **RF-PP05-040:** El sistema debe mostrar el estado financiero de revisión por funcionario.
+- **RF-PP05-041:** El sistema debe diferenciar visualmente funcionarios vigentes y funcionarios excluidos previamente.
+- **RF-PP05-042:** El sistema debe mostrar el ítem presupuestario asociado y el estado de suficiencia presupuestaria por funcionario.
 
 ---
 
@@ -816,10 +816,10 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-043:** El sistema debe permitir seleccionar o cambiar entre funcionarios vigentes de la solicitud.
-- **RF-P05-044:** El sistema debe actualizar la información visible según el funcionario seleccionado.
-- **RF-P05-045:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
-- **RF-P05-046:** El sistema debe presentar el detalle individual del funcionario mediante bloques estructurados, preferentemente en formato tabular o equivalente.
+- **RF-PP05-043:** El sistema debe permitir seleccionar o cambiar entre funcionarios vigentes de la solicitud.
+- **RF-PP05-044:** El sistema debe actualizar la información visible según el funcionario seleccionado.
+- **RF-PP05-045:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
+- **RF-PP05-046:** El sistema debe presentar el detalle individual del funcionario mediante bloques estructurados, preferentemente en formato tabular o equivalente.
 
 ---
 
@@ -863,11 +863,11 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-046:** El sistema debe mostrar la ficha laboral resumida de cada funcionario vigente.
-- **RF-P05-047:** El sistema debe identificar el contrato seleccionado para la PDS.
-- **RF-P05-048:** El sistema debe mostrar la cantidad de contratos vigentes cuando esta información esté disponible.
-- **RF-P05-049:** El sistema debe mostrar el ítem presupuestario asociado al funcionario.
-- **RF-P05-050:** El sistema debe mostrar el estado de suficiencia del ítem presupuestario correspondiente.
+- **RF-PP05-046:** El sistema debe mostrar la ficha laboral resumida de cada funcionario vigente.
+- **RF-PP05-047:** El sistema debe identificar el contrato seleccionado para la PDS.
+- **RF-PP05-048:** El sistema debe mostrar la cantidad de contratos vigentes cuando esta información esté disponible.
+- **RF-PP05-049:** El sistema debe mostrar el ítem presupuestario asociado al funcionario.
+- **RF-PP05-050:** El sistema debe mostrar el estado de suficiencia del ítem presupuestario correspondiente.
 
 ---
 
@@ -910,12 +910,12 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-051:** El sistema debe mostrar las prestaciones solicitadas por funcionario.
-- **RF-P05-052:** El sistema debe mostrar actividad específica y descripción de actividad asociadas a cada prestación.
-- **RF-P05-053:** El sistema debe mostrar meses de pago y total comprometido por prestación.
-- **RF-P05-054:** El sistema debe mostrar total en jornada, total fuera de jornada y total de compensación horaria por prestación.
-- **RF-P05-055:** El sistema debe mostrar el ítem presupuestario asociado a cada prestación.
-- **RF-P05-056:** El sistema debe mostrar el estado de respaldo presupuestario correspondiente.
+- **RF-PP05-051:** El sistema debe mostrar las prestaciones solicitadas por funcionario.
+- **RF-PP05-052:** El sistema debe mostrar actividad específica y descripción de actividad asociadas a cada prestación.
+- **RF-PP05-053:** El sistema debe mostrar meses de pago y total comprometido por prestación.
+- **RF-PP05-054:** El sistema debe mostrar total en jornada, total fuera de jornada y total de compensación horaria por prestación.
+- **RF-PP05-055:** El sistema debe mostrar el ítem presupuestario asociado a cada prestación.
+- **RF-PP05-056:** El sistema debe mostrar el estado de respaldo presupuestario correspondiente.
 
 ---
 
@@ -955,9 +955,9 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-057:** El sistema debe mostrar la lista de contratos vigentes del funcionario.
-- **RF-P05-058:** El sistema debe distinguir el contrato seleccionado para la PDS.
-- **RF-P05-059:** El sistema debe mostrar, por contrato, descripción de actividad, meses de pago, total comprometido, total en jornada, total fuera de jornada, total compensación horaria y SEA.
+- **RF-PP05-057:** El sistema debe mostrar la lista de contratos vigentes del funcionario.
+- **RF-PP05-058:** El sistema debe distinguir el contrato seleccionado para la PDS.
+- **RF-PP05-059:** El sistema debe mostrar, por contrato, descripción de actividad, meses de pago, total comprometido, total en jornada, total fuera de jornada, total compensación horaria y SEA.
 
 ---
 
@@ -998,9 +998,9 @@ Por cada prestación previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-060:** El sistema debe mostrar el historial de PDS previas por funcionario.
-- **RF-P05-061:** El sistema debe informar cuando no existan PDS previas registradas.
-- **RF-P05-062:** El sistema debe permitir identificar la relación entre las PDS previas y la solicitud actual cuando corresponda.
+- **RF-PP05-060:** El sistema debe mostrar el historial de PDS previas por funcionario.
+- **RF-PP05-061:** El sistema debe informar cuando no existan PDS previas registradas.
+- **RF-PP05-062:** El sistema debe permitir identificar la relación entre las PDS previas y la solicitud actual cuando corresponda.
 
 ---
 
@@ -1030,9 +1030,9 @@ Finanzas de Facultad.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P05-063:** El sistema debe mostrar un resumen consolidado del historial financiero por funcionario.
-- **RF-P05-064:** El sistema debe mostrar acumulados y cantidades relevantes para la revisión financiera.
-- **RF-P05-065:** El sistema debe mostrar el total comprometido actual dentro de la solicitud.
+- **RF-PP05-063:** El sistema debe mostrar un resumen consolidado del historial financiero por funcionario.
+- **RF-PP05-064:** El sistema debe mostrar acumulados y cantidades relevantes para la revisión financiera.
+- **RF-PP05-065:** El sistema debe mostrar el total comprometido actual dentro de la solicitud.
 
 ---
 
@@ -1065,9 +1065,9 @@ Finanzas de Facultad.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P05-066:** El sistema debe mostrar el historial de pagos por funcionario.
-- **RF-P05-067:** El sistema debe mostrar montos brutos, netos y acumulados cuando se encuentren disponibles.
-- **RF-P05-068:** El sistema debe indicar el estado de cada pago registrado.
+- **RF-PP05-066:** El sistema debe mostrar el historial de pagos por funcionario.
+- **RF-PP05-067:** El sistema debe mostrar montos brutos, netos y acumulados cuando se encuentren disponibles.
+- **RF-PP05-068:** El sistema debe indicar el estado de cada pago registrado.
 
 ---
 
@@ -1106,9 +1106,9 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-069:** El sistema debe mostrar el estado DGDP de cada funcionario.
-- **RF-P05-070:** El sistema debe mostrar de forma resumida los resultados normativos relevantes previamente registrados.
-- **RF-P05-071:** El sistema no debe permitir modificar las validaciones heredadas desde DGDP.
+- **RF-PP05-069:** El sistema debe mostrar el estado DGDP de cada funcionario.
+- **RF-PP05-070:** El sistema debe mostrar de forma resumida los resultados normativos relevantes previamente registrados.
+- **RF-PP05-071:** El sistema no debe permitir modificar las validaciones heredadas desde DGDP.
 
 ---
 
@@ -1151,10 +1151,10 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-072:** El sistema debe mostrar la validación presupuestaria por funcionario e ítem.
-- **RF-P05-073:** El sistema debe mostrar saldo disponible, monto solicitado y saldo proyectado del ítem correspondiente.
-- **RF-P05-074:** El sistema debe indicar si la asignación del funcionario cumple o no con la disponibilidad del ítem.
-- **RF-P05-075:** El sistema debe mostrar el consumo acumulado del ítem cuando existan varios funcionarios asociados.
+- **RF-PP05-072:** El sistema debe mostrar la validación presupuestaria por funcionario e ítem.
+- **RF-PP05-073:** El sistema debe mostrar saldo disponible, monto solicitado y saldo proyectado del ítem correspondiente.
+- **RF-PP05-074:** El sistema debe indicar si la asignación del funcionario cumple o no con la disponibilidad del ítem.
+- **RF-PP05-075:** El sistema debe mostrar el consumo acumulado del ítem cuando existan varios funcionarios asociados.
 
 ---
 
@@ -1200,12 +1200,12 @@ Finanzas de Facultad.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P05-076:** El sistema debe permitir registrar un estado de revisión financiera por funcionario.
-- **RF-P05-077:** El sistema debe permitir aprobar o rechazar financieramente a un funcionario.
-- **RF-P05-078:** El sistema debe exigir comentario obligatorio cuando un funcionario sea rechazado financieramente.
-- **RF-P05-079:** El sistema debe registrar la decisión financiera individual en la trazabilidad del expediente.
-- **RF-P05-080:** El sistema debe bloquear la aprobación global mientras existan funcionarios pendientes de revisión financiera.
-- **RF-P05-081:** El sistema debe bloquear la aprobación global cuando no existan funcionarios aprobados financieramente o habilitados para continuar.
+- **RF-PP05-076:** El sistema debe permitir registrar un estado de revisión financiera por funcionario.
+- **RF-PP05-077:** El sistema debe permitir aprobar o rechazar financieramente a un funcionario.
+- **RF-PP05-078:** El sistema debe exigir comentario obligatorio cuando un funcionario sea rechazado financieramente.
+- **RF-PP05-079:** El sistema debe registrar la decisión financiera individual en la trazabilidad del expediente.
+- **RF-PP05-080:** El sistema debe bloquear la aprobación global mientras existan funcionarios pendientes de revisión financiera.
+- **RF-PP05-081:** El sistema debe bloquear la aprobación global cuando no existan funcionarios aprobados financieramente o habilitados para continuar.
 
 ---
 
@@ -1235,8 +1235,8 @@ Finanzas de Facultad.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P05-082:** El sistema debe mostrar un resumen de estados financieros individuales por funcionario.
-- **RF-P05-083:** El sistema debe mostrar montos asociados a cada estado de revisión individual cuando corresponda.
+- **RF-PP05-082:** El sistema debe mostrar un resumen de estados financieros individuales por funcionario.
+- **RF-PP05-083:** El sistema debe mostrar montos asociados a cada estado de revisión individual cuando corresponda.
 
 ---
 
@@ -1276,11 +1276,11 @@ Finanzas de Facultad.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P05-084:** El sistema debe mostrar un resumen global de la revisión financiera.
-- **RF-P05-085:** El sistema debe integrar en el resumen los montos, saldos, funcionarios vigentes y excluidos.
-- **RF-P05-086:** El sistema debe mostrar el estado de aprobación o rechazo financiero individual de los funcionarios.
-- **RF-P05-087:** El sistema debe mostrar alertas presupuestarias relevantes para la decisión final.
-- **RF-P05-088:** El sistema debe mostrar un resumen de suficiencia presupuestaria por ítem.
+- **RF-PP05-084:** El sistema debe mostrar un resumen global de la revisión financiera.
+- **RF-PP05-085:** El sistema debe integrar en el resumen los montos, saldos, funcionarios vigentes y excluidos.
+- **RF-PP05-086:** El sistema debe mostrar el estado de aprobación o rechazo financiero individual de los funcionarios.
+- **RF-PP05-087:** El sistema debe mostrar alertas presupuestarias relevantes para la decisión final.
+- **RF-PP05-088:** El sistema debe mostrar un resumen de suficiencia presupuestaria por ítem.
 
 ---
 
@@ -1325,12 +1325,12 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-089:** El sistema debe permitir aprobar la solicitud desde la vista de Finanzas de Facultad.
-- **RF-P05-090:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
-- **RF-P05-091:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo.
-- **RF-P05-092:** El sistema debe validar las condiciones previas de aprobación global que se definan para esta etapa.
-- **RF-P05-093:** El sistema debe bloquear la aprobación mientras existan funcionarios pendientes de revisión financiera.
-- **RF-P05-094:** El sistema debe bloquear la aprobación cuando no existan funcionarios aprobados financieramente o habilitados para continuar.
+- **RF-PP05-089:** El sistema debe permitir aprobar la solicitud desde la vista de Finanzas de Facultad.
+- **RF-PP05-090:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
+- **RF-PP05-091:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo.
+- **RF-PP05-092:** El sistema debe validar las condiciones previas de aprobación global que se definan para esta etapa.
+- **RF-PP05-093:** El sistema debe bloquear la aprobación mientras existan funcionarios pendientes de revisión financiera.
+- **RF-PP05-094:** El sistema debe bloquear la aprobación cuando no existan funcionarios aprobados financieramente o habilitados para continuar.
 
 ---
 
@@ -1360,6 +1360,9 @@ Finanzas de Facultad.
 - Los comentarios deben quedar visibles en la trazabilidad.
 - Si la observación corresponde a funcionarios específicos, debe permitir referenciar esos registros en el comentario o motivo.
 - La devolución debe gestionarse mediante un **modal global único**.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Encargado de Finanzas de Facultad), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1367,11 +1370,13 @@ Finanzas de Facultad.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P05-095:** El sistema debe permitir devolver con corrección la solicitud al Solicitante.
-- **RF-P05-096:** El sistema debe exigir comentario obligatorio para ejecutar esta acción.
-- **RF-P05-097:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
-- **RF-P05-098:** El sistema debe dejar visible la observación al Solicitante.
-- **RF-P05-099:** El sistema debe ejecutar la devolución mediante un modal global único.
+- **RF-PP05-095:** El sistema debe permitir devolver con corrección la solicitud al Solicitante.
+- **RF-PP05-096:** El sistema debe exigir comentario obligatorio para ejecutar esta acción.
+- **RF-PP05-097:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
+- **RF-PP05-098:** El sistema debe dejar visible la observación al Solicitante.
+- **RF-PP05-099:** El sistema debe ejecutar la devolución mediante un modal global único.
+* **RF-PP05-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de financiamiento o disponibilidad presupuestaria de la facultad y comentarios correspondientes.
+* **RF-PP05-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -1401,6 +1406,9 @@ Finanzas de Facultad.
 - Los comentarios deben quedar visibles en la trazabilidad.
 - Si el rechazo se relaciona con funcionarios específicos, debe poder referenciarse en el comentario.
 - El rechazo debe gestionarse mediante un **modal global único**.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Encargado de Finanzas de Facultad), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones de financiamiento o disponibilidad presupuestaria de la facultad), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1408,11 +1416,12 @@ Finanzas de Facultad.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P05-100:** El sistema debe permitir rechazar la solicitud desde la pantalla de Finanzas de Facultad.
-- **RF-P05-101:** El sistema debe exigir comentario obligatorio para ejecutar el rechazo.
-- **RF-P05-102:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
-- **RF-P05-103:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
-- **RF-P05-104:** El sistema debe ejecutar el rechazo mediante un modal global único.
+- **RF-PP05-100:** El sistema debe permitir rechazar la solicitud desde la pantalla de Finanzas de Facultad.
+- **RF-PP05-101:** El sistema debe exigir comentario obligatorio para ejecutar el rechazo.
+- **RF-PP05-102:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
+- **RF-PP05-103:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
+- **RF-PP05-104:** El sistema debe ejecutar el rechazo mediante un modal global único.
+* **RF-PP05-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -1452,10 +1461,10 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-105:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
-- **RF-P05-106:** El sistema debe exigir comentario obligatorio dentro del modal.
-- **RF-P05-107:** El sistema debe permitir cancelar la acción sin modificar el estado.
-- **RF-P05-108:** El sistema debe registrar la acción confirmada en trazabilidad.
+- **RF-PP05-105:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
+- **RF-PP05-106:** El sistema debe exigir comentario obligatorio dentro del modal.
+- **RF-PP05-107:** El sistema debe permitir cancelar la acción sin modificar el estado.
+- **RF-PP05-108:** El sistema debe registrar la acción confirmada en trazabilidad.
 
 ---
 
@@ -1484,6 +1493,7 @@ Finanzas de Facultad.
 - La aprobación debe verificar que:
   - Existen funcionarios aprobados financieramente o habilitados para continuar.
   - No existen funcionarios pendientes de revisión financiera.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 
@@ -1491,10 +1501,11 @@ Finanzas de Facultad.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P05-109:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
-- **RF-P05-110:** El sistema debe permitir cancelar la decisión antes de aplicarla.
-- **RF-P05-111:** El sistema debe impedir aprobar si no existen funcionarios aprobados financieramente o habilitados para continuar.
-- **RF-P05-112:** El sistema debe impedir aprobar si existen funcionarios pendientes de revisión financiera.
+- **RF-PP05-109:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
+- **RF-PP05-110:** El sistema debe permitir cancelar la decisión antes de aplicarla.
+- **RF-PP05-111:** El sistema debe impedir aprobar si no existen funcionarios aprobados financieramente o habilitados para continuar.
+- **RF-PP05-112:** El sistema debe impedir aprobar si existen funcionarios pendientes de revisión financiera.
+* **RF-PP05-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1545,11 +1556,11 @@ Sistema.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P05-113:** El sistema debe registrar toda decisión ejecutada por Finanzas de Facultad.
-- **RF-P05-114:** El sistema debe distinguir decisiones globales de decisiones individuales por funcionario.
-- **RF-P05-115:** El sistema debe almacenar comentario y motivo cuando corresponda.
-- **RF-P05-116:** El sistema debe dejar disponible la trazabilidad de esta etapa para los revisores posteriores.
-- **RF-P05-117:** El sistema debe registrar el ítem presupuestario relacionado con la decisión financiera cuando corresponda.
+- **RF-PP05-113:** El sistema debe registrar toda decisión ejecutada por Finanzas de Facultad.
+- **RF-PP05-114:** El sistema debe distinguir decisiones globales de decisiones individuales por funcionario.
+- **RF-PP05-115:** El sistema debe almacenar comentario y motivo cuando corresponda.
+- **RF-PP05-116:** El sistema debe dejar disponible la trazabilidad de esta etapa para los revisores posteriores.
+- **RF-PP05-117:** El sistema debe registrar el ítem presupuestario relacionado con la decisión financiera cuando corresponda.
 
 ---
 
@@ -1620,6 +1631,7 @@ Sistema.
 | **RG-P05-028** | La pantalla no debe incorporar la acción **Salir sin guardar**. |
 | **RG-P05-029** | El sistema debe permitir cambiar entre funcionarios para revisar su detalle financiero individual. |
 | **RG-P05-030** | El resumen de la solicitud debe mostrar un estado consolidado de revisión financiera. |
+| **RG-PP05-031** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

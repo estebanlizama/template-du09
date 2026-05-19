@@ -216,9 +216,10 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-001:** El sistema debe mostrar el código único de la solicitud.
-- **RF-P04-002:** El sistema debe indicar que el expediente corresponde al flujo PDS Normativo.
-
+* **RF-PP04-001**: El sistema debe generar y enviar de forma automática un correo electrónico de notificación tanto al Solicitante como al Funcionario excluido por cada funcionario removido.
+* **RF-PP04-002**: El correo debe incluir la causal o motivo normativo detallado y el comentario técnico de la exclusión.
+* **RF-PP04-003**: El sistema debe registrar en la bitácora de trazabilidad el envío de la notificación al Solicitante y al Funcionario.
+* **RF-PP04-004**: La interfaz debe representar esta acción mediante un aviso o confirmación visible (Toast/modal de éxito) de notificación generada, sin necesidad de desplegar el cuerpo completo del correo en pantalla.
 ---
 
 ## Funcionalidad P04-F02 — Visualizar estado actual del expediente
@@ -248,8 +249,8 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-003:** El sistema debe mostrar el estado actual de revisión DGDP.
-- **RF-P04-004:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
+- **RF-PP04-005:** El sistema debe mostrar el estado actual de revisión DGDP.
+- **RF-PP04-006:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
 
 ---
 
@@ -289,8 +290,8 @@ Por cada visación previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-005:** El sistema debe mostrar cronológicamente las acciones previas del expediente.
-- **RF-P04-006:** El sistema debe mostrar usuario, rol, fecha, hora y comentario cuando corresponda.
+- **RF-PP04-007:** El sistema debe mostrar cronológicamente las acciones previas del expediente.
+- **RF-PP04-008:** El sistema debe mostrar usuario, rol, fecha, hora y comentario cuando corresponda.
 
 ---
 
@@ -319,8 +320,8 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-007:** El sistema debe mostrar una línea de trazabilidad del flujo.
-- **RF-P04-008:** El sistema debe diferenciar visualmente etapas cumplidas, etapa actual y etapas pendientes.
+- **RF-PP04-009:** El sistema debe mostrar una línea de trazabilidad del flujo.
+- **RF-PP04-010:** El sistema debe diferenciar visualmente etapas cumplidas, etapa actual y etapas pendientes.
 
 ---
 
@@ -363,9 +364,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-009:** El sistema debe mostrar los datos clave de la solicitud.
-- **RF-P04-010:** El sistema debe mostrar el monto total original y el monto actualizado cuando existan exclusiones.
-- **RF-P04-011:** El sistema debe mostrar el número de funcionarios iniciales, habilitados, excluidos y pendientes de revisión.
+- **RF-PP04-011:** El sistema debe mostrar los datos clave de la solicitud.
+- **RF-PP04-012:** El sistema debe mostrar el monto total original y el monto actualizado cuando existan exclusiones.
+- **RF-PP04-013:** El sistema debe mostrar el número de funcionarios iniciales, habilitados, excluidos y pendientes de revisión.
 
 ---
 
@@ -402,9 +403,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-012:** El sistema debe mostrar el estado consolidado de revisión DGDP.
-- **RF-P04-013:** El sistema debe indicar si existen funcionarios habilitados, excluidos o pendientes.
-- **RF-P04-014:** El sistema debe mostrar si la aprobación está habilitada o bloqueada según el estado consolidado.
+- **RF-PP04-014:** El sistema debe mostrar el estado consolidado de revisión DGDP.
+- **RF-PP04-015:** El sistema debe indicar si existen funcionarios habilitados, excluidos o pendientes.
+- **RF-PP04-016:** El sistema debe mostrar si la aprobación está habilitada o bloqueada según el estado consolidado.
 
 ---
 
@@ -452,10 +453,10 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-015:** El sistema debe mostrar todos los datos disponibles del Centro de Costo y proyecto asociado.
-- **RF-P04-016:** El sistema debe mostrar las validaciones previas aplicadas al Centro de Costo.
-- **RF-P04-017:** El sistema debe conservar visibles las alertas informativas detectadas en etapas anteriores.
-- **RF-P04-018:** El sistema debe permitir visualizar una tabla informativa de ítems presupuestarios asociados al expediente cuando dicha información esté disponible.
+- **RF-PP04-017:** El sistema debe mostrar todos los datos disponibles del Centro de Costo y proyecto asociado.
+- **RF-PP04-018:** El sistema debe mostrar las validaciones previas aplicadas al Centro de Costo.
+- **RF-PP04-019:** El sistema debe conservar visibles las alertas informativas detectadas en etapas anteriores.
+- **RF-PP04-020:** El sistema debe permitir visualizar una tabla informativa de ítems presupuestarios asociados al expediente cuando dicha información esté disponible.
 
 ---
 
@@ -484,8 +485,8 @@ DGDP / Sistema.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-018:** El sistema debe mostrar el resultado vigente de las validaciones críticas del Centro de Costo.
-- **RF-P04-019:** El sistema debe distinguir entre validación previa y validación revisada en DGDP cuando corresponda.
+- **RF-PP04-020:** El sistema debe mostrar el resultado vigente de las validaciones críticas del Centro de Costo.
+- **RF-PP04-021:** El sistema debe distinguir entre validación previa y validación revisada en DGDP cuando corresponda.
 
 ---
 
@@ -518,9 +519,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-020:** El sistema debe mostrar que la validación ANID / DIUFRO / DITT no está incorporada operativamente en esta versión.
-- **RF-P04-021:** El sistema no debe mostrar esta validación como cumplida, rechazada o evaluada.
-- **RF-P04-022:** El sistema debe permitir mantener este bloque como referencia funcional pendiente para futuras versiones.
+- **RF-PP04-022:** El sistema debe mostrar que la validación ANID / DIUFRO / DITT no está incorporada operativamente en esta versión.
+- **RF-PP04-023:** El sistema no debe mostrar esta validación como cumplida, rechazada o evaluada.
+- **RF-PP04-024:** El sistema debe permitir mantener este bloque como referencia funcional pendiente para futuras versiones.
 
 ---
 
@@ -550,9 +551,9 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-023:** El sistema debe mostrar la descripción general de la prestación.
-- **RF-P04-024:** El sistema debe mostrar los tipos de prestación seleccionados.
-- **RF-P04-025:** El sistema debe mostrar el periodo de inicio y término de la solicitud.
+- **RF-PP04-025:** El sistema debe mostrar la descripción general de la prestación.
+- **RF-PP04-026:** El sistema debe mostrar los tipos de prestación seleccionados.
+- **RF-PP04-027:** El sistema debe mostrar el periodo de inicio y término de la solicitud.
 
 ---
 
@@ -580,9 +581,9 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-026:** El sistema debe mostrar las evidencias comprometidas.
-- **RF-P04-027:** El sistema debe mostrar la fecha estimada de entrega de cada evidencia.
-- **RF-P04-028:** El sistema debe mostrar el detalle de evidencias de tipo “Otra”.
+- **RF-PP04-028:** El sistema debe mostrar las evidencias comprometidas.
+- **RF-PP04-029:** El sistema debe mostrar la fecha estimada de entrega de cada evidencia.
+- **RF-PP04-030:** El sistema debe mostrar el detalle de evidencias de tipo “Otra”.
 
 ---
 
@@ -627,10 +628,10 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-029:** El sistema debe mostrar la nómina completa de funcionarios enviados a DGDP.
-- **RF-P04-030:** El sistema debe mostrar el estado de revisión normativa por funcionario.
-- **RF-P04-031:** El sistema debe mantener visibles los funcionarios excluidos con su motivo asociado.
-- **RF-P04-032:** El sistema debe asegurar consistencia de RUT entre los datos internos y la representación visual.
+- **RF-PP04-031:** El sistema debe mostrar la nómina completa de funcionarios enviados a DGDP.
+- **RF-PP04-032:** El sistema debe mostrar el estado de revisión normativa por funcionario.
+- **RF-PP04-033:** El sistema debe mantener visibles los funcionarios excluidos con su motivo asociado.
+- **RF-PP04-034:** El sistema debe asegurar consistencia de RUT entre los datos internos y la representación visual.
 
 ---
 
@@ -664,9 +665,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-033:** El sistema debe permitir seleccionar o cambiar entre funcionarios de la solicitud.
-- **RF-P04-034:** El sistema debe actualizar la ficha visible según el funcionario seleccionado.
-- **RF-P04-035:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
+- **RF-PP04-035:** El sistema debe permitir seleccionar o cambiar entre funcionarios de la solicitud.
+- **RF-PP04-036:** El sistema debe actualizar la ficha visible según el funcionario seleccionado.
+- **RF-PP04-037:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
 
 ---
 
@@ -702,8 +703,8 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-036:** El sistema debe mostrar los datos identificatorios y laborales completos por funcionario.
-- **RF-P04-037:** El sistema debe mostrar los datos salariales que se utilicen en cálculos normativos.
+- **RF-PP04-038:** El sistema debe mostrar los datos identificatorios y laborales completos por funcionario.
+- **RF-PP04-039:** El sistema debe mostrar los datos salariales que se utilicen en cálculos normativos.
 
 ---
 
@@ -744,9 +745,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-038:** El sistema debe mostrar la cantidad de contratos vigentes del funcionario.
-- **RF-P04-039:** El sistema debe listar el detalle de todos los contratos vigentes.
-- **RF-P04-040:** El sistema debe identificar visualmente el contrato seleccionado para la solicitud.
+- **RF-PP04-040:** El sistema debe mostrar la cantidad de contratos vigentes del funcionario.
+- **RF-PP04-041:** El sistema debe listar el detalle de todos los contratos vigentes.
+- **RF-PP04-042:** El sistema debe identificar visualmente el contrato seleccionado para la solicitud.
 
 ---
 
@@ -785,8 +786,8 @@ DGDP / Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-041:** El sistema debe mostrar el resultado actualizado de la validación de inhabilidades.
-- **RF-P04-042:** El sistema debe distinguir cargos habilitados, restringidos e inhabilitados.
+- **RF-PP04-043:** El sistema debe mostrar el resultado actualizado de la validación de inhabilidades.
+- **RF-PP04-044:** El sistema debe distinguir cargos habilitados, restringidos e inhabilitados.
 
 ---
 
@@ -824,9 +825,9 @@ DGDP / Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-043:** El sistema debe mostrar el estado de deuda por funcionario.
-- **RF-P04-044:** El sistema debe mostrar el detalle y motivo asociado a una deuda detectada.
-- **RF-P04-045:** El sistema debe permitir utilizar la deuda como causal de exclusión individual cuando aplique.
+- **RF-PP04-045:** El sistema debe mostrar el estado de deuda por funcionario.
+- **RF-PP04-046:** El sistema debe mostrar el detalle y motivo asociado a una deuda detectada.
+- **RF-PP04-047:** El sistema debe permitir utilizar la deuda como causal de exclusión individual cuando aplique.
 
 ---
 
@@ -857,8 +858,8 @@ DGDP / Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-046:** El sistema debe disponer de un espacio de revisión para restricciones administrativas complementarias.
-- **RF-P04-047:** El sistema debe mostrar el efecto de cada restricción cuando la regla de negocio sea definida.
+- **RF-PP04-048:** El sistema debe disponer de un espacio de revisión para restricciones administrativas complementarias.
+- **RF-PP04-049:** El sistema debe mostrar el efecto de cada restricción cuando la regla de negocio sea definida.
 
 ---
 
@@ -901,9 +902,9 @@ Por cada PDS previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-048:** El sistema debe mostrar el historial de PDS previas por funcionario.
-- **RF-P04-049:** El sistema debe identificar las PDS del año calendario actual.
-- **RF-P04-050:** El sistema debe indicar cuando el historial influye en una validación normativa.
+- **RF-PP04-050:** El sistema debe mostrar el historial de PDS previas por funcionario.
+- **RF-PP04-051:** El sistema debe identificar las PDS del año calendario actual.
+- **RF-PP04-052:** El sistema debe indicar cuando el historial influye en una validación normativa.
 
 ---
 
@@ -933,9 +934,9 @@ DGDP / Sistema.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-051:** El sistema debe calcular la cantidad de meses de PDS acumulados por funcionario.
-- **RF-P04-052:** El sistema debe contrastar los meses previos con los meses solicitados actualmente.
-- **RF-P04-053:** El sistema debe indicar si la regla de periodicidad se cumple o se excede.
+- **RF-PP04-053:** El sistema debe calcular la cantidad de meses de PDS acumulados por funcionario.
+- **RF-PP04-054:** El sistema debe contrastar los meses previos con los meses solicitados actualmente.
+- **RF-PP04-055:** El sistema debe indicar si la regla de periodicidad se cumple o se excede.
 
 ---
 
@@ -968,9 +969,9 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-054:** El sistema debe mostrar el historial de pagos asociados a PDS previas.
-- **RF-P04-055:** El sistema debe mostrar montos brutos, netos y acumulados cuando estén disponibles.
-- **RF-P04-056:** El sistema debe vincular el historial financiero con las validaciones económicas actuales.
+- **RF-PP04-056:** El sistema debe mostrar el historial de pagos asociados a PDS previas.
+- **RF-PP04-057:** El sistema debe mostrar montos brutos, netos y acumulados cuando estén disponibles.
+- **RF-PP04-058:** El sistema debe vincular el historial financiero con las validaciones económicas actuales.
 
 ---
 
@@ -999,8 +1000,8 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-057:** El sistema debe mostrar los montos actuales de la PDS por funcionario.
-- **RF-P04-058:** El sistema debe mostrar la suma de montos previos y actuales cuando intervengan en el cálculo normativo.
+- **RF-PP04-059:** El sistema debe mostrar los montos actuales de la PDS por funcionario.
+- **RF-PP04-060:** El sistema debe mostrar la suma de montos previos y actuales cuando intervengan en el cálculo normativo.
 
 ---
 
@@ -1046,10 +1047,10 @@ DGDP / Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-059:** El sistema debe calcular y mostrar el tope económico aplicable por funcionario.
-- **RF-P04-060:** El sistema debe mostrar la base de cálculo utilizada.
-- **RF-P04-061:** El sistema debe mostrar el margen disponible y el porcentaje de utilización.
-- **RF-P04-062:** El sistema debe indicar si el funcionario cumple o excede el tope.
+- **RF-PP04-061:** El sistema debe calcular y mostrar el tope económico aplicable por funcionario.
+- **RF-PP04-062:** El sistema debe mostrar la base de cálculo utilizada.
+- **RF-PP04-063:** El sistema debe mostrar el margen disponible y el porcentaje de utilización.
+- **RF-PP04-064:** El sistema debe indicar si el funcionario cumple o excede el tope.
 
 ---
 
@@ -1078,8 +1079,8 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-063:** El sistema debe mostrar la modalidad de ejecución por funcionario.
-- **RF-P04-064:** El sistema debe mostrar la validación asociada a dicha modalidad.
+- **RF-PP04-065:** El sistema debe mostrar la modalidad de ejecución por funcionario.
+- **RF-PP04-066:** El sistema debe mostrar la validación asociada a dicha modalidad.
 
 ---
 
@@ -1112,9 +1113,9 @@ DGDP / Sistema.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-065:** El sistema debe mostrar el resultado SEA por funcionario académico.
-- **RF-P04-066:** El sistema debe mostrar las variables utilizadas en la evaluación SEA.
-- **RF-P04-067:** El sistema debe mostrar su efecto sobre la compensación horaria.
+- **RF-PP04-067:** El sistema debe mostrar el resultado SEA por funcionario académico.
+- **RF-PP04-068:** El sistema debe mostrar las variables utilizadas en la evaluación SEA.
+- **RF-PP04-069:** El sistema debe mostrar su efecto sobre la compensación horaria.
 
 ---
 
@@ -1142,9 +1143,9 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-068:** El sistema debe mostrar la compensación horaria registrada por funcionario.
-- **RF-P04-069:** El sistema debe mostrar el resultado de la validación del límite de 12 horas diarias.
-- **RF-P04-070:** El sistema debe permitir usar un incumplimiento de compensación como causal de exclusión individual cuando corresponda.
+- **RF-PP04-070:** El sistema debe mostrar la compensación horaria registrada por funcionario.
+- **RF-PP04-071:** El sistema debe mostrar el resultado de la validación del límite de 12 horas diarias.
+- **RF-PP04-072:** El sistema debe permitir usar un incumplimiento de compensación como causal de exclusión individual cuando corresponda.
 
 ---
 
@@ -1187,9 +1188,9 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-071:** El sistema debe disponer de una sección para mostrar vínculos familiares o incompatibilidades cuando exista información disponible.
-- **RF-P04-072:** El sistema debe mostrar el estado de revisión del vínculo familiar.
-- **RF-P04-073:** El sistema debe permitir configurar posteriormente el efecto normativo de esta validación.
+- **RF-PP04-073:** El sistema debe disponer de una sección para mostrar vínculos familiares o incompatibilidades cuando exista información disponible.
+- **RF-PP04-074:** El sistema debe mostrar el estado de revisión del vínculo familiar.
+- **RF-PP04-075:** El sistema debe permitir configurar posteriormente el efecto normativo de esta validación.
 
 ---
 
@@ -1242,11 +1243,11 @@ DGDP.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P04-074:** El sistema debe permitir excluir uno o más funcionarios desde la vista DGDP.
-- **RF-P04-075:** El sistema debe exigir motivo y comentario obligatorio para cada exclusión.
-- **RF-P04-076:** El sistema debe conservar visible al funcionario excluido con su estado y motivo.
-- **RF-P04-077:** El sistema debe recalcular el monto total del expediente al excluir funcionarios.
-- **RF-P04-078:** El sistema debe impedir aprobar la solicitud si no queda ningún funcionario habilitado.
+- **RF-PP04-076:** El sistema debe permitir excluir uno o más funcionarios desde la vista DGDP.
+- **RF-PP04-077:** El sistema debe exigir motivo y comentario obligatorio para cada exclusión.
+- **RF-PP04-078:** El sistema debe conservar visible al funcionario excluido con su estado y motivo.
+- **RF-PP04-079:** El sistema debe recalcular el monto total del expediente al excluir funcionarios.
+- **RF-PP04-080:** El sistema debe impedir aprobar la solicitud si no queda ningún funcionario habilitado.
 
 ---
 
@@ -1277,15 +1278,15 @@ DGDP.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P04-079:** El sistema debe solicitar confirmación antes de excluir a un funcionario.
-- **RF-P04-080:** El sistema debe mostrar el impacto de la exclusión antes de confirmar.
-- **RF-P04-081:** El sistema debe permitir cancelar la exclusión sin modificar el expediente.
+- **RF-PP04-081:** El sistema debe solicitar confirmación antes de excluir a un funcionario.
+- **RF-PP04-082:** El sistema debe mostrar el impacto de la exclusión antes de confirmar.
+- **RF-PP04-083:** El sistema debe permitir cancelar la exclusión sin modificar el expediente.
 
 ---
 
 # P04-B16 — Notificación por exclusión
 
-## Funcionalidad P04-F30 — Generar correo al Solicitante por exclusión de funcionario
+## Funcionalidad P04-F30 — Generar correo al Solicitante y Funcionario por exclusión de funcionario
 
 ### A. Descripción funcional
 
@@ -1295,23 +1296,24 @@ Cuando DGDP excluya a un funcionario de la solicitud, el sistema debe generar un
 
 Sistema.
 
-### C. Destinatario mínimo
+### C. Destinatarios mínimos
 
-- Solicitante de la PDS.
+* Solicitante de la PDS.
+* Funcionario excluido de la PDS.
 
 > **TODO:** Definir si el correo debe copiar también al Jefe de Proyecto, Jefatura Directa / Dirección de Departamento u otros actores.
 
 ### D. Contenido mínimo del correo
 
-- Código de solicitud.
-- Nombre del proyecto o prestación.
-- Nombre y RUT del funcionario excluido.
-- Etapa en que ocurrió la exclusión: DGDP.
-- Motivo de exclusión.
-- Comentario técnico ingresado.
-- Fecha y hora de la decisión.
-- Indicación de que la solicitud podrá continuar con los demás funcionarios, si corresponde.
-
+* Código de solicitud.
+* Nombre del proyecto o prestación.
+* Nombre y RUT del funcionario excluido.
+* Etapa en que ocurrió la exclusión: DGDP.
+* Causal o motivo normativo detallado de la exclusión.
+* Comentario técnico ingresado.
+* Fecha y hora de la decisión.
+* Instrucción de revisión y corrección para el Solicitante (para que evalúe su reemplazo o corrección).
+* Notificación de los motivos formales al Funcionario excluido.
 ### E. Representación visual en pantalla
 
 La pantalla no debe desplegar el contenido completo del correo de notificación generado por la exclusión del funcionario.
@@ -1323,10 +1325,10 @@ Como confirmación operativa para DGDP, basta con mostrar un aviso, mensaje o es
 **HU-P04-30:** Como **sistema**, debo notificar al Solicitante cuando DGDP excluya a un funcionario y mostrar a DGDP una confirmación visible de que la notificación fue generada, para dejar constancia del motivo y del impacto de la decisión sin desplegar el contenido completo del correo en pantalla.
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-082:** El sistema debe generar un correo automático al Solicitante por cada funcionario excluido.
-- **RF-P04-083:** El correo debe incluir el motivo y comentario técnico de exclusión.
-- **RF-P04-084:** El sistema debe registrar que la notificación fue generada.
-- **RF-P04-085:** La interfaz puede representar esta acción mediante un aviso visible de notificación generada, sin necesidad de desplegar el cuerpo completo del correo en pantalla.
+- **RF-PP04-001:** El sistema debe generar un correo automático al Solicitante por cada funcionario excluido.
+- **RF-PP04-002:** El correo debe incluir el motivo y comentario técnico de exclusión.
+- **RF-PP04-003:** El sistema debe registrar que la notificación fue generada.
+- **RF-PP04-004:** La interfaz puede representar esta acción mediante un aviso visible de notificación generada, sin necesidad de desplegar el cuerpo completo del correo en pantalla.
 
 
 ---
@@ -1362,11 +1364,11 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-085:** El sistema debe permitir aprobar la solicitud cuando exista al menos un funcionario habilitado y no existan funcionarios pendientes.
-- **RF-P04-086:** El sistema debe derivar el expediente aprobado a la siguiente etapa del flujo.
-- **RF-P04-087:** El sistema debe mantener registro de las exclusiones realizadas antes de la aprobación.
-- **RF-P04-088:** El sistema debe bloquear la aprobación cuando no existan funcionarios habilitados.
-- **RF-P04-089:** El sistema debe bloquear la aprobación cuando existan funcionarios pendientes de revisión.
+- **RF-PP04-004:** El sistema debe permitir aprobar la solicitud cuando exista al menos un funcionario habilitado y no existan funcionarios pendientes.
+- **RF-PP04-084:** El sistema debe derivar el expediente aprobado a la siguiente etapa del flujo.
+- **RF-PP04-085:** El sistema debe mantener registro de las exclusiones realizadas antes de la aprobación.
+- **RF-PP04-086:** El sistema debe bloquear la aprobación cuando no existan funcionarios habilitados.
+- **RF-PP04-087:** El sistema debe bloquear la aprobación cuando existan funcionarios pendientes de revisión.
 
 ---
 
@@ -1396,6 +1398,9 @@ DGDP.
 - El Solicitante debe poder volver a editar lo que corresponda.
 - Los comentarios deben quedar visibles y trazables.
 - La devolución debe gestionarse mediante un **modal global único**.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (DGDP), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1403,10 +1408,12 @@ DGDP.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P04-090:** El sistema debe permitir devolver con corrección la solicitud completa al Solicitante.
-- **RF-P04-091:** El sistema debe exigir comentario obligatorio para devolver.
-- **RF-P04-092:** El sistema debe registrar la devolución y habilitar la corrección por parte del Solicitante.
-- **RF-P04-093:** El sistema debe gestionar la devolución mediante un modal global único.
+- **RF-PP04-088:** El sistema debe permitir devolver con corrección la solicitud completa al Solicitante.
+- **RF-PP04-089:** El sistema debe exigir comentario obligatorio para devolver.
+- **RF-PP04-090:** El sistema debe registrar la devolución y habilitar la corrección por parte del Solicitante.
+- **RF-PP04-091:** El sistema debe gestionar la devolución mediante un modal global único.
+* **RF-PP04-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de cumplimiento normativo o previsional y comentarios correspondientes.
+* **RF-PP04-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -1436,6 +1443,9 @@ DGDP.
 - Los funcionarios incluidos o excluidos hasta ese momento deben conservarse en trazabilidad.
 - El motivo de rechazo debe quedar disponible para consulta posterior.
 - El rechazo debe gestionarse mediante un **modal global único**.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (DGDP), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones de cumplimiento normativo o previsional), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1443,10 +1453,11 @@ DGDP.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P04-094:** El sistema debe permitir rechazar definitivamente la solicitud completa.
-- **RF-P04-095:** El sistema debe exigir comentario obligatorio para rechazar.
-- **RF-P04-096:** El sistema debe cerrar la continuidad del expediente rechazado.
-- **RF-P04-097:** El sistema debe gestionar el rechazo mediante un modal global único.
+- **RF-PP04-092:** El sistema debe permitir rechazar definitivamente la solicitud completa.
+- **RF-PP04-093:** El sistema debe exigir comentario obligatorio para rechazar.
+- **RF-PP04-094:** El sistema debe cerrar la continuidad del expediente rechazado.
+- **RF-PP04-095:** El sistema debe gestionar el rechazo mediante un modal global único.
+* **RF-PP04-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -1486,10 +1497,10 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-098:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
-- **RF-P04-099:** El sistema debe exigir comentario obligatorio dentro del modal.
-- **RF-P04-100:** El sistema debe permitir cancelar la acción sin modificar el estado.
-- **RF-P04-101:** El sistema debe registrar la acción confirmada en trazabilidad.
+- **RF-PP04-096:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
+- **RF-PP04-097:** El sistema debe exigir comentario obligatorio dentro del modal.
+- **RF-PP04-098:** El sistema debe permitir cancelar la acción sin modificar el estado.
+- **RF-PP04-099:** El sistema debe registrar la acción confirmada en trazabilidad.
 
 ---
 
@@ -1525,10 +1536,10 @@ DGDP.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P04-102:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
-- **RF-P04-103:** El sistema debe permitir cancelar la decisión antes de ejecutarla.
-- **RF-P04-104:** El sistema debe impedir aprobar si no existe al menos un funcionario habilitado.
-- **RF-P04-105:** El sistema debe impedir aprobar si existe uno o más funcionarios pendientes de revisión.
+- **RF-PP04-100:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
+- **RF-PP04-101:** El sistema debe permitir cancelar la decisión antes de ejecutarla.
+- **RF-PP04-102:** El sistema debe impedir aprobar si no existe al menos un funcionario habilitado.
+- **RF-PP04-103:** El sistema debe impedir aprobar si existe uno o más funcionarios pendientes de revisión.
 
 ---
 
@@ -1578,10 +1589,11 @@ Sistema.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P04-106:** El sistema debe registrar toda acción ejecutada por DGDP.
-- **RF-P04-107:** El sistema debe distinguir eventos globales del expediente y eventos individuales por funcionario.
-- **RF-P04-108:** El sistema debe registrar el motivo y comentario asociado a exclusiones, devoluciones y rechazos.
-- **RF-P04-109:** El sistema debe registrar la generación de correos de notificación por exclusión.
+- **RF-PP04-104:** El sistema debe registrar toda acción ejecutada por DGDP.
+- **RF-PP04-105:** El sistema debe distinguir eventos globales del expediente y eventos individuales por funcionario.
+- **RF-PP04-106:** El sistema debe registrar el motivo y comentario asociado a exclusiones, devoluciones y rechazos.
+- **RF-PP04-107:** El sistema debe registrar la generación de correos de notificación por exclusión.
+* **RF-PP04-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1617,7 +1629,7 @@ Sistema.
 | **RG-P04-004** | Un funcionario excluido por DGDP no debe continuar a etapas posteriores. |
 | **RG-P04-005** | La exclusión de un funcionario debe registrar motivo, comentario, usuario, fecha y hora. |
 | **RG-P04-006** | La exclusión de un funcionario debe solicitar confirmación antes de ejecutarse. |
-| **RG-P04-007** | La exclusión de un funcionario debe generar notificación por correo al Solicitante. |
+| **RG-P04-007** | La exclusión de un funcionario debe generar notificación por correo automático al Solicitante y al Funcionario excluido, indicando el motivo normativo. |
 | **RG-P04-008** | El monto total de la solicitud debe recalcularse si uno o más funcionarios son excluidos. |
 | **RG-P04-009** | Si no quedan funcionarios habilitados, la solicitud no puede ser aprobada por DGDP. |
 | **RG-P04-010** | Si existen funcionarios pendientes de revisión, la solicitud no puede ser aprobada por DGDP. |
@@ -1633,6 +1645,7 @@ Sistema.
 | **RG-P04-020** | El sistema debe permitir cambiar entre funcionarios para revisar su detalle individual. |
 | **RG-P04-021** | Los RUT de los funcionarios deben mantenerse alineados entre la información visualizada y la estructura de datos que respalda la pantalla. |
 | **RG-P04-022** | El resumen de la solicitud debe mostrar un estado consolidado de revisión DGDP. |
+| **RG-PP04-023** | Toda acción de devolución, rechazo o exclusión individual de funcionario debe gatillar la notificación por correo automático a los destinatarios definidos y dejar registro en la trazabilidad. |
 
 ---
 

@@ -703,3 +703,52 @@ body {
     padding: 1rem 1.5rem !important;
 }
 
+/* Responsive Overrides and Enhancements */
+@media (max-width: 992px) {
+    #dna-topbar .user-details {
+        display: none !important;
+    }
+    #dna-topbar {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #dna-topbar .topbar-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+    #dna-topbar .topbar-logo {
+        height: 35px;
+    }
+    .container-fluid.py-4.px-lg-5 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 1rem !important;
+    }
+    .card-body {
+        padding: 1rem !important;
+    }
+    .section-title {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #dna-topbar .topbar-title {
+        font-size: 0.75rem;
+    }
+    .btn-toggle-menu {
+        font-size: 1.2rem;
+        margin-right: 0.5rem !important;
+    }
+    .card-header {
+        padding: 0.75rem 1rem !important;
+    }
+    .badge-status {
+        padding: 0.3rem 0.75rem;
+        font-size: 0.65rem;
+    }
+}
+

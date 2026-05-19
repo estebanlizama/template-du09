@@ -170,8 +170,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-001:** El sistema debe mostrar el código único de la solicitud.
-* **RF-P03-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo cuando aplique.
+* **RF-PP03-001:** El sistema debe mostrar el código único de la solicitud.
+* **RF-PP03-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo cuando aplique.
 
 ---
 
@@ -201,8 +201,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-003:** El sistema debe mostrar el estado actual de la solicitud.
-* **RF-P03-004:** El sistema debe identificar que la solicitud se encuentra en revisión por la Jefatura Directa / Dirección de Departamento.
+* **RF-PP03-003:** El sistema debe mostrar el estado actual de la solicitud.
+* **RF-PP03-004:** El sistema debe identificar que la solicitud se encuentra en revisión por la Jefatura Directa / Dirección de Departamento.
 
 ---
 
@@ -233,9 +233,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-005:** El sistema debe mostrar el nombre del Solicitante.
-* **RF-P03-006:** El sistema debe mostrar la fecha de creación de la solicitud.
-* **RF-P03-007:** El sistema debe mostrar la fecha de envío a revisión cuando esté disponible.
+* **RF-PP03-005:** El sistema debe mostrar el nombre del Solicitante.
+* **RF-PP03-006:** El sistema debe mostrar la fecha de creación de la solicitud.
+* **RF-PP03-007:** El sistema debe mostrar la fecha de envío a revisión cuando esté disponible.
 
 ---
 
@@ -269,8 +269,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-008:** El sistema debe mostrar que la solicitud fue aprobada por el Jefe de Proyecto.
-* **RF-P03-009:** El sistema debe mostrar fecha, hora y usuario responsable de la visación previa.
+* **RF-PP03-008:** El sistema debe mostrar que la solicitud fue aprobada por el Jefe de Proyecto.
+* **RF-PP03-009:** El sistema debe mostrar fecha, hora y usuario responsable de la visación previa.
 
 ---
 
@@ -303,8 +303,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-010:** El sistema debe mostrar una línea de trazabilidad del expediente.
-* **RF-P03-011:** El sistema debe diferenciar hitos cumplidos, etapa actual e hitos pendientes.
+* **RF-PP03-010:** El sistema debe mostrar una línea de trazabilidad del expediente.
+* **RF-PP03-011:** El sistema debe diferenciar hitos cumplidos, etapa actual e hitos pendientes.
 
 ---
 
@@ -339,11 +339,11 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-012:** El sistema debe mostrar el Centro de Costo asociado.
-* **RF-P03-013:** El sistema debe mostrar el tipo de fondo o financiamiento.
-* **RF-P03-014:** El sistema debe mostrar el periodo general de la prestación.
-* **RF-P03-015:** El sistema debe mostrar el monto total de la solicitud.
-* **RF-P03-016:** El sistema debe mostrar la cantidad de funcionarios incorporados.
+* **RF-PP03-012:** El sistema debe mostrar el Centro de Costo asociado.
+* **RF-PP03-013:** El sistema debe mostrar el tipo de fondo o financiamiento.
+* **RF-PP03-014:** El sistema debe mostrar el periodo general de la prestación.
+* **RF-PP03-015:** El sistema debe mostrar el monto total de la solicitud.
+* **RF-PP03-016:** El sistema debe mostrar la cantidad de funcionarios incorporados.
 
 ---
 
@@ -382,9 +382,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-017:** El sistema debe mostrar los datos del Centro de Costo seleccionados en la solicitud.
-* **RF-P03-018:** El sistema debe mostrar el estado de las validaciones aplicadas al Centro de Costo.
-* **RF-P03-019:** El sistema debe mostrar alertas informativas no bloqueantes registradas previamente.
+* **RF-PP03-017:** El sistema debe mostrar los datos del Centro de Costo seleccionados en la solicitud.
+* **RF-PP03-018:** El sistema debe mostrar el estado de las validaciones aplicadas al Centro de Costo.
+* **RF-PP03-019:** El sistema debe mostrar alertas informativas no bloqueantes registradas previamente.
 
 ---
 
@@ -418,10 +418,10 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-020:** El sistema debe mostrar el nombre del proyecto.
-* **RF-P03-021:** El sistema debe mostrar la unidad ejecutora.
-* **RF-P03-022:** El sistema debe mostrar RUT y nombre del Jefe de Proyecto.
-* **RF-P03-023:** El sistema debe mostrar decreto afecto y tipo de financiamiento.
+* **RF-PP03-020:** El sistema debe mostrar el nombre del proyecto.
+* **RF-PP03-021:** El sistema debe mostrar la unidad ejecutora.
+* **RF-PP03-022:** El sistema debe mostrar RUT y nombre del Jefe de Proyecto.
+* **RF-PP03-023:** El sistema debe mostrar decreto afecto y tipo de financiamiento.
 
 ---
 
@@ -452,7 +452,7 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-024:** El sistema debe mostrar la descripción general de la actividad de la PDS.
+* **RF-PP03-024:** El sistema debe mostrar la descripción general de la actividad de la PDS.
 
 ---
 
@@ -483,8 +483,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-025:** El sistema debe mostrar los tipos de prestación seleccionados.
-* **RF-P03-026:** El sistema debe mostrar el texto descriptivo cuando se haya seleccionado “Otro”.
+* **RF-PP03-025:** El sistema debe mostrar los tipos de prestación seleccionados.
+* **RF-PP03-026:** El sistema debe mostrar el texto descriptivo cuando se haya seleccionado “Otro”.
 
 ---
 
@@ -520,9 +520,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-027:** El sistema debe mostrar las evidencias seleccionadas.
-* **RF-P03-028:** El sistema debe mostrar la fecha estimada asociada a cada evidencia.
-* **RF-P03-029:** El sistema debe mostrar el detalle de evidencias de tipo “Otra”.
+* **RF-PP03-027:** El sistema debe mostrar las evidencias seleccionadas.
+* **RF-PP03-028:** El sistema debe mostrar la fecha estimada asociada a cada evidencia.
+* **RF-PP03-029:** El sistema debe mostrar el detalle de evidencias de tipo “Otra”.
 
 ---
 
@@ -560,9 +560,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-030:** El sistema debe mostrar la nómina de funcionarios asociados.
-* **RF-P03-031:** El sistema debe mostrar sus datos principales de identificación, temporalidad y montos.
-* **RF-P03-032:** El sistema no debe permitir modificar la nómina desde esta pantalla.
+* **RF-PP03-030:** El sistema debe mostrar la nómina de funcionarios asociados.
+* **RF-PP03-031:** El sistema debe mostrar sus datos principales de identificación, temporalidad y montos.
+* **RF-PP03-032:** El sistema no debe permitir modificar la nómina desde esta pantalla.
 
 ---
 
@@ -602,9 +602,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-033:** El sistema debe mostrar antecedentes identificatorios y laborales del funcionario.
-* **RF-P03-034:** El sistema debe mostrar el contrato vigente seleccionado para la solicitud.
-* **RF-P03-035:** El sistema debe mostrar los datos contractuales utilizados en validaciones normativas y económicas.
+* **RF-PP03-033:** El sistema debe mostrar antecedentes identificatorios y laborales del funcionario.
+* **RF-PP03-034:** El sistema debe mostrar el contrato vigente seleccionado para la solicitud.
+* **RF-PP03-035:** El sistema debe mostrar los datos contractuales utilizados en validaciones normativas y económicas.
 
 ---
 
@@ -632,7 +632,7 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-036:** El sistema debe mostrar la actividad específica registrada para cada funcionario.
+* **RF-PP03-036:** El sistema debe mostrar la actividad específica registrada para cada funcionario.
 
 ---
 
@@ -671,9 +671,9 @@ Cada validación debería mostrar:
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-037:** El sistema debe mostrar las validaciones normativas ejecutadas por funcionario.
-* **RF-P03-038:** El sistema debe distinguir visualmente validaciones cumplidas, alertas e incumplimientos.
-* **RF-P03-039:** El sistema debe mostrar detalle de cada validación cuando esté disponible.
+* **RF-PP03-037:** El sistema debe mostrar las validaciones normativas ejecutadas por funcionario.
+* **RF-PP03-038:** El sistema debe distinguir visualmente validaciones cumplidas, alertas e incumplimientos.
+* **RF-PP03-039:** El sistema debe mostrar detalle de cada validación cuando esté disponible.
 
 ---
 
@@ -717,10 +717,10 @@ Debe soportar la lógica definida para:
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-040:** El sistema debe mostrar monto mensual y total por funcionario.
-* **RF-P03-041:** El sistema debe mostrar tope aplicable y regla utilizada.
-* **RF-P03-042:** El sistema debe mostrar porcentaje de uso del tope.
-* **RF-P03-043:** El sistema debe mostrar antecedentes acumulados o prestaciones previas cuando hayan sido utilizados en el cálculo.
+* **RF-PP03-040:** El sistema debe mostrar monto mensual y total por funcionario.
+* **RF-PP03-041:** El sistema debe mostrar tope aplicable y regla utilizada.
+* **RF-PP03-042:** El sistema debe mostrar porcentaje de uso del tope.
+* **RF-PP03-043:** El sistema debe mostrar antecedentes acumulados o prestaciones previas cuando hayan sido utilizados en el cálculo.
 
 ---
 
@@ -751,7 +751,7 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-044:** El sistema debe mostrar si la prestación se ejecutará dentro o fuera de jornada.
+* **RF-PP03-044:** El sistema debe mostrar si la prestación se ejecutará dentro o fuera de jornada.
 
 ---
 
@@ -780,8 +780,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-045:** El sistema debe mostrar la condición SEA cuando corresponda.
-* **RF-P03-046:** El sistema debe mostrar si la condición SEA implicó o no la exigencia de compensación.
+* **RF-PP03-045:** El sistema debe mostrar la condición SEA cuando corresponda.
+* **RF-PP03-046:** El sistema debe mostrar si la condición SEA implicó o no la exigencia de compensación.
 
 ---
 
@@ -808,8 +808,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### E. Requerimientos funcionales preliminares
 
-* **RF-P03-047:** El sistema debe mostrar la compensación horaria registrada cuando corresponda.
-* **RF-P03-048:** El sistema debe mostrar el resultado de la validación del límite diario de horas.
+* **RF-PP03-047:** El sistema debe mostrar la compensación horaria registrada cuando corresponda.
+* **RF-PP03-048:** El sistema debe mostrar el resultado de la validación del límite diario de horas.
 
 ---
 
@@ -850,9 +850,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-049:** El sistema debe mostrar historial de PDS previas cuando exista.
-* **RF-P03-050:** El sistema debe informar cuando no existan prestaciones previas.
-* **RF-P03-051:** El sistema debe identificar si el historial influyó en los cálculos o validaciones actuales.
+* **RF-PP03-049:** El sistema debe mostrar historial de PDS previas cuando exista.
+* **RF-PP03-050:** El sistema debe informar cuando no existan prestaciones previas.
+* **RF-PP03-051:** El sistema debe identificar si el historial influyó en los cálculos o validaciones actuales.
 
 ---
 
@@ -897,9 +897,9 @@ Se recomienda una matriz o checklist con:
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-052:** El sistema debe mostrar un resumen consolidado de validaciones previas.
-* **RF-P03-053:** El sistema debe distinguir validaciones cumplidas, no aplicables y alertas informativas.
-* **RF-P03-054:** El sistema debe incorporar la visación previa del Jefe de Proyecto dentro del resumen de cumplimiento.
+* **RF-PP03-052:** El sistema debe mostrar un resumen consolidado de validaciones previas.
+* **RF-PP03-053:** El sistema debe distinguir validaciones cumplidas, no aplicables y alertas informativas.
+* **RF-PP03-054:** El sistema debe incorporar la visación previa del Jefe de Proyecto dentro del resumen de cumplimiento.
 
 ---
 
@@ -935,9 +935,9 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-055:** El sistema debe permitir aprobar la solicitud desde esta pantalla.
-* **RF-P03-056:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
-* **RF-P03-057:** El sistema debe derivar la solicitud aprobada a DGDP.
+* **RF-PP03-055:** El sistema debe permitir aprobar la solicitud desde esta pantalla.
+* **RF-PP03-056:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
+* **RF-PP03-057:** El sistema debe derivar la solicitud aprobada a DGDP.
 
 ---
 
@@ -965,6 +965,9 @@ Jefatura Directa / Dirección de Departamento.
 * La solicitud debe cambiar a un estado equivalente a **Devuelta al Solicitante para corrección**.
 * El flujo debe retornar a la Pantalla 01 con edición habilitada.
 * Los comentarios deben quedar visibles para el Solicitante y registrados en la trazabilidad.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefatura Directa / Dirección de Departamento), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -972,11 +975,13 @@ Jefatura Directa / Dirección de Departamento.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P03-058:** El sistema debe permitir devolver la solicitud al Solicitante.
-* **RF-P03-059:** El sistema debe exigir comentario obligatorio al devolver.
-* **RF-P03-060:** El sistema debe registrar la devolución con usuario, rol, fecha, hora y comentario.
-* **RF-P03-061:** El sistema debe cambiar el estado a devuelta para corrección.
-* **RF-P03-062:** El sistema debe habilitar nuevamente la edición al Solicitante.
+* **RF-PP03-058:** El sistema debe permitir devolver la solicitud al Solicitante.
+* **RF-PP03-059:** El sistema debe exigir comentario obligatorio al devolver.
+* **RF-PP03-060:** El sistema debe registrar la devolución con usuario, rol, fecha, hora y comentario.
+* **RF-PP03-061:** El sistema debe cambiar el estado a devuelta para corrección.
+* **RF-PP03-062:** El sistema debe habilitar nuevamente la edición al Solicitante.
+* **RF-PP03-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones jerárquicas y comentarios correspondientes.
+* **RF-PP03-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -1004,6 +1009,9 @@ Jefatura Directa / Dirección de Departamento.
 * La solicitud debe quedar en estado **Rechazada por Jefatura Directa / Dirección de Departamento** o equivalente.
 * La solicitud no debe continuar a etapas posteriores.
 * El motivo de rechazo debe quedar registrado en la trazabilidad.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefatura Directa / Dirección de Departamento), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones jerárquicas), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1011,10 +1019,11 @@ Jefatura Directa / Dirección de Departamento.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P03-063:** El sistema debe permitir rechazar definitivamente la solicitud.
-* **RF-P03-064:** El sistema debe exigir comentario obligatorio al rechazar.
-* **RF-P03-065:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
-* **RF-P03-066:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP03-063:** El sistema debe permitir rechazar definitivamente la solicitud.
+* **RF-PP03-064:** El sistema debe exigir comentario obligatorio al rechazar.
+* **RF-PP03-065:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
+* **RF-PP03-066:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP03-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -1047,8 +1056,8 @@ Jefatura Directa / Dirección de Departamento.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P03-067:** El sistema debe solicitar confirmación antes de ejecutar una decisión de visación.
-* **RF-P03-068:** El sistema debe permitir cancelar la acción antes de confirmar.
+* **RF-PP03-067:** El sistema debe solicitar confirmación antes de ejecutar una decisión de visación.
+* **RF-PP03-068:** El sistema debe permitir cancelar la acción antes de confirmar.
 
 ---
 
@@ -1068,18 +1077,21 @@ Sistema.
 *   **Temporalidad**: Fecha y hora exacta del servidor.
 *   **Comentario**: Observación técnica ingresada (obligatoria en Devolución/Rechazo).
 *   **Transición**: Estado anterior y Estado resultante del expediente.
+*   **Envío de Correo**: Confirmación del envío del correo electrónico de notificación (devolución o rechazo) con fecha, hora y destinatario.
 
 ### D. Reglas de negocio
 *   **Integridad del PDS**: La información técnica y económica de la prestación (montos, meses, funcionarios) guardada en la Pantalla 01 **no debe ser modificada** por este proceso; solo se actualiza el estado del flujo.
 *   **Expediente Digital**: El registro debe ser persistente y quedar disponible para la consulta de todos los aprobadores posteriores (Etapas 03 a 15).
 *   **Obligatoriedad**: No se puede cambiar el estado de la solicitud en la base de datos sin generar simultáneamente el registro de trazabilidad.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 **HU-P03-26**: Como **Sistema**, debo registrar la decisión de la Jefatura Directa / Dirección de Departamento en el historial de estados, para garantizar la transparencia y auditabilidad de la tramitación sin alterar los datos de origen de la prestación.
 
 ### F. Requerimientos funcionales preliminares
-*   **RF-P03-069**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
-*   **RF-P03-070**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+*   **RF-PP03-069**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
+*   **RF-PP03-070**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+* **RF-PP03-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1109,6 +1121,7 @@ Sistema.
 | RG-P03-008 | La solicitud devuelta debe reabrirse para edición del Solicitante.                          |
 | RG-P03-009 | La solicitud rechazada no debe avanzar a etapas posteriores.                                |
 | RG-P03-010 | La pantalla no debe incorporar opción de Aprobación con Alcance.                            |
+| **RG-PP03-011** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

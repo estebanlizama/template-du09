@@ -311,9 +311,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-001:** El sistema debe mostrar el código único de la solicitud.
-- **RF-P08-002:** El sistema debe mostrar el estado documental de la resolución o decreto en preparación.
-- **RF-P08-003:** El sistema debe mostrar el identificador del acto administrativo cuando este exista.
+- **RF-PP08-001:** El sistema debe mostrar el código único de la solicitud.
+- **RF-PP08-002:** El sistema debe mostrar el estado documental de la resolución o decreto en preparación.
+- **RF-PP08-003:** El sistema debe mostrar el identificador del acto administrativo cuando este exista.
 
 ---
 
@@ -345,9 +345,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-004:** El sistema debe mostrar el estado actual del expediente en Decretación.
-- **RF-P08-005:** El sistema debe mostrar la fecha de ingreso a la etapa.
-- **RF-P08-006:** El sistema debe indicar que la solicitud fue aprobada previamente por Dirección de Finanzas.
+- **RF-PP08-004:** El sistema debe mostrar el estado actual del expediente en Decretación.
+- **RF-PP08-005:** El sistema debe mostrar la fecha de ingreso a la etapa.
+- **RF-PP08-006:** El sistema debe indicar que la solicitud fue aprobada previamente por Dirección de Finanzas.
 
 ---
 
@@ -393,9 +393,9 @@ Por cada etapa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-007:** El sistema debe mostrar cronológicamente la trazabilidad de las etapas previas.
-- **RF-P08-008:** El sistema debe mostrar usuario, rol, fecha, hora, acción y comentario cuando corresponda.
-- **RF-P08-009:** El sistema debe mostrar las exclusiones de funcionarios registradas en DGDP como parte de la historia del expediente.
+- **RF-PP08-007:** El sistema debe mostrar cronológicamente la trazabilidad de las etapas previas.
+- **RF-PP08-008:** El sistema debe mostrar usuario, rol, fecha, hora, acción y comentario cuando corresponda.
+- **RF-PP08-009:** El sistema debe mostrar las exclusiones de funcionarios registradas en DGDP como parte de la historia del expediente.
 
 ---
 
@@ -427,8 +427,8 @@ Decretación.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P08-010:** El sistema debe mostrar una línea visual de avance del expediente.
-- **RF-P08-011:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
+- **RF-PP08-010:** El sistema debe mostrar una línea visual de avance del expediente.
+- **RF-PP08-011:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
 
 ---
 
@@ -470,9 +470,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-012:** El sistema debe mostrar los datos generales de la solicitud aprobada.
-- **RF-P08-013:** El sistema debe mostrar el monto total vigente que será formalizado.
-- **RF-P08-014:** El sistema debe mostrar la cantidad de funcionarios vigentes y excluidos.
+- **RF-PP08-012:** El sistema debe mostrar los datos generales de la solicitud aprobada.
+- **RF-PP08-013:** El sistema debe mostrar el monto total vigente que será formalizado.
+- **RF-PP08-014:** El sistema debe mostrar la cantidad de funcionarios vigentes y excluidos.
 
 ---
 
@@ -525,10 +525,10 @@ La tabla debe mostrar:
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-015:** El sistema debe mostrar la información financiera aprobada del Centro de Costo.
-- **RF-P08-016:** El sistema debe mostrar la tabla de ítems presupuestarios asociados al expediente.
-- **RF-P08-017:** La tabla debe mostrar presupuesto asignado, monto comprometido, monto vigente de la solicitud, saldo proyectado y estado.
-- **RF-P08-018:** El sistema no debe permitir editar los datos presupuestarios desde esta pantalla.
+- **RF-PP08-015:** El sistema debe mostrar la información financiera aprobada del Centro de Costo.
+- **RF-PP08-016:** El sistema debe mostrar la tabla de ítems presupuestarios asociados al expediente.
+- **RF-PP08-017:** La tabla debe mostrar presupuesto asignado, monto comprometido, monto vigente de la solicitud, saldo proyectado y estado.
+- **RF-PP08-018:** El sistema no debe permitir editar los datos presupuestarios desde esta pantalla.
 
 ---
 
@@ -572,9 +572,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-019:** El sistema debe mostrar la nómina de funcionarios vigentes del expediente.
-- **RF-P08-020:** El sistema debe mostrar sus datos identificatorios, laborales y financieros esenciales.
-- **RF-P08-021:** El sistema debe incluir únicamente funcionarios habilitados para formalización.
+- **RF-PP08-019:** El sistema debe mostrar la nómina de funcionarios vigentes del expediente.
+- **RF-PP08-020:** El sistema debe mostrar sus datos identificatorios, laborales y financieros esenciales.
+- **RF-PP08-021:** El sistema debe incluir únicamente funcionarios habilitados para formalización.
 
 ---
 
@@ -612,10 +612,10 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-022:** El sistema debe mostrar los funcionarios excluidos previamente.
-- **RF-P08-023:** El sistema debe mostrar el motivo de exclusión registrado.
-- **RF-P08-024:** El sistema debe impedir que los funcionarios excluidos se incorporen al documento final.
-- **RF-P08-025:** Si no existen funcionarios excluidos, el sistema debe mostrar un mensaje informativo que lo indique.
+- **RF-PP08-022:** El sistema debe mostrar los funcionarios excluidos previamente.
+- **RF-PP08-023:** El sistema debe mostrar el motivo de exclusión registrado.
+- **RF-PP08-024:** El sistema debe impedir que los funcionarios excluidos se incorporen al documento final.
+- **RF-PP08-025:** Si no existen funcionarios excluidos, el sistema debe mostrar un mensaje informativo que lo indique.
 
 ---
 
@@ -658,9 +658,9 @@ Decretación.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-026:** El sistema debe mostrar los estados consolidados de las revisiones previas.
-- **RF-P08-027:** El sistema debe diferenciar las etapas aprobadas y registrar si existieron exclusiones.
-- **RF-P08-028:** El sistema no debe permitir modificar estas validaciones desde Decretación.
+- **RF-PP08-026:** El sistema debe mostrar los estados consolidados de las revisiones previas.
+- **RF-PP08-027:** El sistema debe diferenciar las etapas aprobadas y registrar si existieron exclusiones.
+- **RF-PP08-028:** El sistema no debe permitir modificar estas validaciones desde Decretación.
 
 ---
 
@@ -703,9 +703,9 @@ Decretación / Sistema.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-029:** El sistema debe recuperar una plantilla base desde la base de datos.
-- **RF-P08-030:** El sistema debe cargar los textos iniciales en los editores documentales.
-- **RF-P08-031:** El sistema debe asociar el borrador documental al expediente PDS correspondiente.
+- **RF-PP08-029:** El sistema debe recuperar una plantilla base desde la base de datos.
+- **RF-PP08-030:** El sistema debe cargar los textos iniciales en los editores documentales.
+- **RF-PP08-031:** El sistema debe asociar el borrador documental al expediente PDS correspondiente.
 
 ---
 
@@ -740,9 +740,9 @@ Decretación / Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-032:** El sistema debe permitir generar un borrador documental asociado a la solicitud.
-- **RF-P08-033:** El borrador debe contener la estructura base definida para el tipo de resolución.
-- **RF-P08-034:** El sistema debe mantener consistencia entre el borrador y los datos vigentes del expediente.
+- **RF-PP08-032:** El sistema debe permitir generar un borrador documental asociado a la solicitud.
+- **RF-PP08-033:** El borrador debe contener la estructura base definida para el tipo de resolución.
+- **RF-PP08-034:** El sistema debe mantener consistencia entre el borrador y los datos vigentes del expediente.
 
 ---
 
@@ -774,9 +774,9 @@ Decretación.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P08-035:** El sistema debe mostrar el texto base de la sección VISTO.
-- **RF-P08-036:** El sistema debe permitir editar el contenido de la sección VISTO.
-- **RF-P08-037:** El sistema debe permitir aplicar formato básico dentro del editor.
+- **RF-PP08-035:** El sistema debe mostrar el texto base de la sección VISTO.
+- **RF-PP08-036:** El sistema debe permitir editar el contenido de la sección VISTO.
+- **RF-PP08-037:** El sistema debe permitir aplicar formato básico dentro del editor.
 
 ---
 
@@ -809,9 +809,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-038:** El sistema debe mostrar los considerandos cargados desde la plantilla.
-- **RF-P08-039:** El sistema debe permitir editar el texto de cada considerando.
-- **RF-P08-040:** El sistema debe permitir gestionar bloques de considerandos cuando la plantilla lo habilite.
+- **RF-PP08-038:** El sistema debe mostrar los considerandos cargados desde la plantilla.
+- **RF-PP08-039:** El sistema debe permitir editar el texto de cada considerando.
+- **RF-PP08-040:** El sistema debe permitir gestionar bloques de considerandos cuando la plantilla lo habilite.
 
 ---
 
@@ -838,9 +838,9 @@ Decretación.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P08-041:** El sistema debe mostrar el texto base de la sección RESUELVO / DISPÓNESE.
-- **RF-P08-042:** El sistema debe permitir editar el contenido de dicha sección.
-- **RF-P08-043:** El sistema debe guardar los cambios realizados en la sección resolutiva.
+- **RF-PP08-041:** El sistema debe mostrar el texto base de la sección RESUELVO / DISPÓNESE.
+- **RF-PP08-042:** El sistema debe permitir editar el contenido de dicha sección.
+- **RF-PP08-043:** El sistema debe guardar los cambios realizados en la sección resolutiva.
 
 ---
 
@@ -870,9 +870,9 @@ Decretación.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P08-044:** El sistema debe mostrar los textos complementarios configurados en la plantilla.
-- **RF-P08-045:** El sistema debe permitir editarlos.
-- **RF-P08-046:** El sistema debe persistir estos cambios en el borrador del acto administrativo.
+- **RF-PP08-044:** El sistema debe mostrar los textos complementarios configurados en la plantilla.
+- **RF-PP08-045:** El sistema debe permitir editarlos.
+- **RF-PP08-046:** El sistema debe persistir estos cambios en el borrador del acto administrativo.
 
 ---
 
@@ -932,10 +932,10 @@ Por cada funcionario vigente:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-047:** El sistema debe generar una tabla documental con las prestaciones vigentes del expediente.
-- **RF-P08-048:** La tabla debe incluir datos identificatorios, laborales, financieros y normativos de cada prestación.
-- **RF-P08-049:** La tabla debe excluir a funcionarios previamente rechazados o excluidos.
-- **RF-P08-050:** La tabla debe formar parte de la previsualización y del documento enviado a firma.
+- **RF-PP08-047:** El sistema debe generar una tabla documental con las prestaciones vigentes del expediente.
+- **RF-PP08-048:** La tabla debe incluir datos identificatorios, laborales, financieros y normativos de cada prestación.
+- **RF-PP08-049:** La tabla debe excluir a funcionarios previamente rechazados o excluidos.
+- **RF-PP08-050:** La tabla debe formar parte de la previsualización y del documento enviado a firma.
 
 ---
 
@@ -980,10 +980,10 @@ Decretación.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-051:** El sistema debe mostrar listas desplegables para seleccionar firmantes.
-- **RF-P08-052:** El sistema debe registrar la persona seleccionada para cada rol firmante.
-- **RF-P08-053:** El sistema debe impedir enviar a firma si no se han seleccionado los firmantes obligatorios.
-- **RF-P08-054:** El sistema debe incorporar los firmantes seleccionados en el documento previsualizado y enviado.
+- **RF-PP08-051:** El sistema debe mostrar listas desplegables para seleccionar firmantes.
+- **RF-PP08-052:** El sistema debe registrar la persona seleccionada para cada rol firmante.
+- **RF-PP08-053:** El sistema debe impedir enviar a firma si no se han seleccionado los firmantes obligatorios.
+- **RF-PP08-054:** El sistema debe incorporar los firmantes seleccionados en el documento previsualizado y enviado.
 
 ---
 
@@ -1017,8 +1017,8 @@ Por cada registro de distribución:
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P08-055:** El sistema debe mostrar la distribución inicial asociada al expediente.
-- **RF-P08-056:** El sistema debe distinguir registros provenientes del historial y registros agregados manualmente.
+- **RF-PP08-055:** El sistema debe mostrar la distribución inicial asociada al expediente.
+- **RF-PP08-056:** El sistema debe distinguir registros provenientes del historial y registros agregados manualmente.
 
 ---
 
@@ -1053,11 +1053,11 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-057:** El sistema debe permitir agregar registros de distribución.
-- **RF-P08-058:** El sistema debe permitir editar registros de distribución existentes.
-- **RF-P08-059:** El sistema debe permitir eliminar registros de distribución cuando sea procedente.
-- **RF-P08-060:** El sistema debe guardar los cambios realizados en la distribución.
-- **RF-P08-061:** El sistema debe reflejar la distribución guardada en la previsualización del documento cuando corresponda.
+- **RF-PP08-057:** El sistema debe permitir agregar registros de distribución.
+- **RF-PP08-058:** El sistema debe permitir editar registros de distribución existentes.
+- **RF-PP08-059:** El sistema debe permitir eliminar registros de distribución cuando sea procedente.
+- **RF-PP08-060:** El sistema debe guardar los cambios realizados en la distribución.
+- **RF-PP08-061:** El sistema debe reflejar la distribución guardada en la previsualización del documento cuando corresponda.
 
 ---
 
@@ -1098,10 +1098,10 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-062:** El sistema debe permitir guardar el borrador documental.
-- **RF-P08-063:** El sistema debe persistir textos, firmantes y distribución configurada.
-- **RF-P08-064:** El sistema debe permitir recuperar posteriormente el borrador guardado.
-- **RF-P08-065:** Guardar borrador no debe cambiar el estado del flujo hacia firma.
+- **RF-PP08-062:** El sistema debe permitir guardar el borrador documental.
+- **RF-PP08-063:** El sistema debe persistir textos, firmantes y distribución configurada.
+- **RF-PP08-064:** El sistema debe permitir recuperar posteriormente el borrador guardado.
+- **RF-PP08-065:** Guardar borrador no debe cambiar el estado del flujo hacia firma.
 
 ---
 
@@ -1141,9 +1141,9 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-066:** El sistema debe permitir previsualizar el documento generado.
-- **RF-P08-067:** La previsualización debe incorporar textos, tabla documental, firmantes y distribución.
-- **RF-P08-068:** La previsualización debe advertir si existen datos documentales obligatorios pendientes.
+- **RF-PP08-066:** El sistema debe permitir previsualizar el documento generado.
+- **RF-PP08-067:** La previsualización debe incorporar textos, tabla documental, firmantes y distribución.
+- **RF-PP08-068:** La previsualización debe advertir si existen datos documentales obligatorios pendientes.
 
 ---
 
@@ -1187,11 +1187,11 @@ Decretación.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-069:** El sistema debe permitir enviar a firma el documento generado.
-- **RF-P08-070:** El sistema debe validar que el documento esté completo antes de enviarlo.
-- **RF-P08-071:** El sistema debe impedir el envío si faltan firmantes obligatorios, textos requeridos o tabla documental.
-- **RF-P08-072:** El sistema debe derivar el expediente a la siguiente etapa de firma.
-- **RF-P08-073:** El sistema debe registrar la versión documental enviada a firma.
+- **RF-PP08-069:** El sistema debe permitir enviar a firma el documento generado.
+- **RF-PP08-070:** El sistema debe validar que el documento esté completo antes de enviarlo.
+- **RF-PP08-071:** El sistema debe impedir el envío si faltan firmantes obligatorios, textos requeridos o tabla documental.
+- **RF-PP08-072:** El sistema debe derivar el expediente a la siguiente etapa de firma.
+- **RF-PP08-073:** El sistema debe registrar la versión documental enviada a firma.
 
 ---
 
@@ -1224,6 +1224,9 @@ Decretación.
 > - Solicitante.
 > - Dirección de Finanzas.
 > - Otra etapa correctiva.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Decretación), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1231,10 +1234,12 @@ Decretación.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-074:** El sistema debe permitir devolver con corrección el expediente.
-- **RF-P08-075:** El sistema debe exigir motivo y comentario obligatorio.
-- **RF-P08-076:** El sistema debe registrar la devolución en trazabilidad.
-- **RF-P08-077:** El sistema debe cambiar el estado del expediente según la ruta de devolución definida.
+- **RF-PP08-074:** El sistema debe permitir devolver con corrección el expediente.
+- **RF-PP08-075:** El sistema debe exigir motivo y comentario obligatorio.
+- **RF-PP08-076:** El sistema debe registrar la devolución en trazabilidad.
+- **RF-PP08-077:** El sistema debe cambiar el estado del expediente según la ruta de devolución definida.
+* **RF-PP08-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de legalidad o de redacción del acto administrativo y comentarios correspondientes.
+* **RF-PP08-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -1262,6 +1267,9 @@ Decretación.
 - La solicitud rechazada no debe avanzar a firma.
 - El rechazo debe quedar registrado con fecha, usuario y comentario.
 - El borrador documental asociado debe mantenerse como antecedente, si ya existía.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Decretación), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones de legalidad o de redacción del acto administrativo), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1269,10 +1277,11 @@ Decretación.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P08-078:** El sistema debe permitir rechazar la solicitud desde Decretación.
-- **RF-P08-079:** El sistema debe exigir motivo y comentario obligatorio para rechazar.
-- **RF-P08-080:** El sistema debe impedir que una solicitud rechazada continúe al flujo de firma.
-- **RF-P08-081:** El sistema debe registrar la decisión de rechazo.
+- **RF-PP08-078:** El sistema debe permitir rechazar la solicitud desde Decretación.
+- **RF-PP08-079:** El sistema debe exigir motivo y comentario obligatorio para rechazar.
+- **RF-PP08-080:** El sistema debe impedir que una solicitud rechazada continúe al flujo de firma.
+- **RF-PP08-081:** El sistema debe registrar la decisión de rechazo.
+* **RF-PP08-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -1311,10 +1320,10 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-082:** El sistema debe utilizar un modal global único para devolución y rechazo.
-- **RF-P08-083:** El sistema debe exigir comentario obligatorio dentro del modal.
-- **RF-P08-084:** El sistema debe permitir cancelar la acción sin cambiar el estado.
-- **RF-P08-085:** El sistema debe registrar la acción confirmada en trazabilidad.
+- **RF-PP08-082:** El sistema debe utilizar un modal global único para devolución y rechazo.
+- **RF-PP08-083:** El sistema debe exigir comentario obligatorio dentro del modal.
+- **RF-PP08-084:** El sistema debe permitir cancelar la acción sin cambiar el estado.
+- **RF-PP08-085:** El sistema debe registrar la acción confirmada en trazabilidad.
 
 ---
 
@@ -1341,6 +1350,7 @@ Decretación.
 
 - Debe permitir cancelar sin enviar.
 - Debe validar las condiciones previas antes de confirmar.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 
@@ -1348,9 +1358,10 @@ Decretación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-086:** El sistema debe solicitar confirmación antes de enviar a firma.
-- **RF-P08-087:** El sistema debe permitir cancelar el envío.
-- **RF-P08-088:** El sistema debe ejecutar las validaciones documentales antes de permitir la confirmación.
+- **RF-PP08-086:** El sistema debe solicitar confirmación antes de enviar a firma.
+- **RF-PP08-087:** El sistema debe permitir cancelar el envío.
+- **RF-PP08-088:** El sistema debe ejecutar las validaciones documentales antes de permitir la confirmación.
+* **RF-PP08-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1397,10 +1408,10 @@ Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P08-089:** El sistema debe registrar las acciones documentales relevantes de Decretación.
-- **RF-P08-090:** El sistema debe registrar usuario, fecha, hora y estado asociado.
-- **RF-P08-091:** El sistema debe conservar la versión documental enviada a firma.
-- **RF-P08-092:** El sistema debe mantener trazabilidad de firmantes y distribución seleccionados.
+- **RF-PP08-089:** El sistema debe registrar las acciones documentales relevantes de Decretación.
+- **RF-PP08-090:** El sistema debe registrar usuario, fecha, hora y estado asociado.
+- **RF-PP08-091:** El sistema debe conservar la versión documental enviada a firma.
+- **RF-PP08-092:** El sistema debe mantener trazabilidad de firmantes y distribución seleccionados.
 
 ---
 
@@ -1457,6 +1468,7 @@ Sistema.
 | **RG-P08-022** | La pantalla no debe incorporar nuevamente a funcionarios excluidos por DGDP. |
 | **RG-P08-023** | La pantalla no debe ejecutar firmas legales; solo prepara y envía el documento al circuito de firma. |
 | **RG-P08-024** | La numeración oficial de la resolución/decreto queda pendiente de definición operativa si aún no se ha establecido en el flujo. |
+| **RG-PP08-025** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

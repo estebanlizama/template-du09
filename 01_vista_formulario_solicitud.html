@@ -464,7 +464,7 @@
                                     <div class="col-md-12 mb-3">
                                         <label class="small text-muted font-weight-bold d-block mb-2">Selección de Contrato Vigente (SISPER) - <span class="text-primary">Defina contrato para cálculo de topes</span></label>
                                         <div class="table-responsive rounded shadow-xs border" style="max-height: 200px; overflow-y: auto;">
-                                            <table id="tabla_contratos_sisper" class="table table-sm table-hover mb-0" style="font-size: 0.7rem;">
+                                            <table id="tabla_contratos_sisper" class="table table-sm table-hover mb-0" style="font-size: 0.7rem; min-width: 800px;">
                                                 <thead class="bg-light text-muted sticky-top">
                                                     <tr>
                                                         <th class="pl-3" width="30">Sel.</th>
@@ -488,31 +488,31 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-6 col-md-3 form-group">
                                         <label class="small text-muted font-weight-bold">Estamento</label>
                                         <input type="text" id="estamento_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-6 col-md-3 form-group">
                                         <label class="small text-muted font-weight-bold">Antigüedad (SISPER)</label>
                                         <input type="text" id="antiguedad_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-6 col-md-3 form-group">
                                         <label class="small text-muted font-weight-bold">Jerarquía</label>
                                         <input type="text" id="funcionario_jerarquia" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
-                                    <div class="col-md-3 form-group">
+                                    <div class="col-6 col-md-3 form-group">
                                         <label class="small text-muted font-weight-bold">Jornada</label>
                                         <input type="text" id="tipo_jornada_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
-                                    <div class="col-md-2 form-group">
+                                    <div class="col-4 col-sm-3 col-md-2 form-group">
                                         <label class="small text-muted font-weight-bold">Grado</label>
                                         <input type="text" id="grado_d9" class="form-control form-control-sm bg-light text-center" readonly value="">
                                     </div>
-                                    <div class="col-md-5 form-group">
+                                    <div class="col-8 col-sm-5 col-md-5 form-group">
                                         <label class="small text-muted font-weight-bold">Renta Bruta Base para Tope</label>
                                         <input type="text" id="renta_bruta_d9" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly value="">
                                     </div>
-                                    <div class="col-md-5 form-group">
+                                    <div class="col-12 col-sm-4 col-md-5 form-group">
                                         <label class="small text-muted font-weight-bold">Renta Líquida</label>
                                         <input type="text" id="renta_liquida_d9" class="form-control form-control-sm bg-light" readonly value="">
                                     </div>
@@ -594,7 +594,7 @@
                                             <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
                                             <div class="row mt-3">
                                                 <!-- Fuera o Dentro de la Jornada -->
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-6 col-md-6 mb-3">
                                                     <label class="small font-weight-bold text-muted d-block">¿Fuera o dentro de la jornada?</label>
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="j_fuera" name="tipo_jornada_e" class="custom-control-input" checked onchange="evaluarReglas()">
@@ -607,7 +607,7 @@
                                                 </div>
 
                                                 <!-- ¿Pertenecen a SEA? (Siempre visible) -->
-                                                <div class="col-md-6 mb-3" id="path_acad_sea">
+                                                <div class="col-6 col-md-6 mb-3" id="path_acad_sea">
                                                     <label class="small font-weight-bold text-muted d-block">¿Pertenecen a SEA?</label>
                                                     <div class="custom-control custom-radio custom-control-inline">
                                                         <input type="radio" id="sea_si" name="sea_opt" class="custom-control-input" onchange="evaluarReglas()">
@@ -704,11 +704,11 @@
                                 <div class="text-muted small mb-3 mb-md-0 italic">
                                     <i class="fas fa-info-circle mr-1"></i> Al enviar, la solicitud pasará a revisión por el <strong>Jefe de Proyecto</strong>.
                                 </div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-outline-secondary font-weight-bold px-4 py-2" style="border-radius: 8px; font-size: 0.8rem;">
+                                <div class="d-flex flex-column flex-sm-row gap-2" style="width: 100%; max-width: 400px; justify-content: flex-end;">
+                                    <button class="btn btn-ufro-secondary mb-2 mb-sm-0 mr-sm-2 font-weight-bold px-4 py-2" style="border-radius: 8px; font-size: 0.8rem; flex: 1;">
                                         <i class="fas fa-save mr-1"></i> GUARDAR BORRADOR
                                     </button>
-                                    <button class="btn btn-primary bg-ufro-green border-0 font-weight-bold px-5 py-2 shadow-sm" style="border-radius: 8px; font-size: 0.8rem;" onclick="enviarSolicitud()">
+                                    <button class="btn btn-ufro-success font-weight-bold px-4 py-2 shadow-sm" style="border-radius: 8px; font-size: 0.8rem; flex: 1;" onclick="enviarSolicitud()">
                                         <i class="fas fa-paper-plane mr-1"></i> ENVIAR SOLICITUD
                                     </button>
                                 </div>
@@ -741,39 +741,41 @@
                             <button class="btn btn-primary bg-ufro-dark" type="button"><i class="fas fa-search"></i> Buscar</button>
                         </div>
                     </div>
-                    <table class="table table-sm table-hover border small">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Código CC</th>
-                                <th>Nombre Centro de Costo</th>
-                                <th>Financiamiento</th>
-                                <th>Decreto</th>
-                                <th>Unidad Ejecutora</th>
-                                <th>Jefe de Proyecto</th>
-                                <th width="100">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-weight-bold">4050.21</td>
-                                <td>INSTITUTO DE AGROINDUSTRIA</td>
-                                <td><span class="badge badge-info">21 - Fondos Propios</span></td>
-                                <td><span class="text-primary font-weight-bold">0 - DU 288</span></td>
-                                <td>FACULTAD DE INGENIERÍA</td>
-                                <td>DR. MARIO GODOY RIVERA</td>
-                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('1', '4050.21', 'INSTITUTO DE AGROINDUSTRIA')" data-dismiss="modal">Seleccionar</button></td>
-                            </tr>
-                            <tr>
-                                <td class="font-weight-bold">8120.44</td>
-                                <td>INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE</td>
-                                <td><span class="badge badge-success">44 - Terceros</span></td>
-                                <td><span class="text-primary font-weight-bold">4 - Resol 4129</span></td>
-                                <td>FACULTAD DE INGENIERÍA</td>
-                                <td>DRA. ELENA SALAZAR</td>
-                                <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('2', '8120.44', 'INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE')" data-dismiss="modal">Seleccionar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover border small" style="min-width: 800px;">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Código CC</th>
+                                    <th>Nombre Centro de Costo</th>
+                                    <th>Financiamiento</th>
+                                    <th>Decreto</th>
+                                    <th>Unidad Ejecutora</th>
+                                    <th>Jefe de Proyecto</th>
+                                    <th width="100">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold">4050.21</td>
+                                    <td>INSTITUTO DE AGROINDUSTRIA</td>
+                                    <td><span class="badge badge-info">21 - Fondos Propios</span></td>
+                                    <td><span class="text-primary font-weight-bold">0 - DU 288</span></td>
+                                    <td>FACULTAD DE INGENIERÍA</td>
+                                    <td>DR. MARIO GODOY RIVERA</td>
+                                    <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('1', '4050.21', 'INSTITUTO DE AGROINDUSTRIA')" data-dismiss="modal">Seleccionar</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">8120.44</td>
+                                    <td>INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE</td>
+                                    <td><span class="badge badge-success">44 - Terceros</span></td>
+                                    <td><span class="text-primary font-weight-bold">4 - Resol 4129</span></td>
+                                    <td>FACULTAD DE INGENIERÍA</td>
+                                    <td>DRA. ELENA SALAZAR</td>
+                                    <td><button class="btn btn-xs btn-outline-primary py-0" onclick="selectCC('2', '8120.44', 'INVESTIGACIÓN AVANZADA HIDRÓGENO VERDE')" data-dismiss="modal">Seleccionar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1200,7 +1202,7 @@
         const compIcon = !isDentro && !isAcademic ? 'fa-history' : 'fa-check-circle';
 
         valRow.innerHTML = `
-            <td colspan="7" class="p-3 pl-4">
+            <td colspan="8" class="p-3 pl-4">
                 <div class="p-3 rounded bg-white border shadow-sm">
                     <div class="font-weight-bold text-ufro-blue mb-3 pb-2 border-bottom d-flex justify-content-between align-items-center" style="font-size: 0.8rem; letter-spacing: 0.5px;">
                         <span><i class="fas fa-check-double mr-2 ${isAcademic ? 'text-success' : 'text-warning'}"></i>VALIDACIÓN DE REQUISITOS Y TOPES DE CONTROL</span>
@@ -1211,7 +1213,7 @@
                     </div>
                     <div class="row text-left">
                         <!-- REGLA 1 -->
-                        <div class="col-md-3">
+                        <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
                             <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid var(--ufro-green) !important;">
                                 <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">1. Centro de Costo</div>
                                 <div class="font-weight-bold text-success my-1" style="font-size: 0.72rem;"><i class="fas fa-check-circle mr-1"></i>CUMPLE</div>
@@ -1219,7 +1221,7 @@
                             </div>
                         </div>
                         <!-- REGLA 2 -->
-                        <div class="col-md-3">
+                        <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
                             <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid var(--ufro-green) !important;">
                                 <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">2. Elegibilidad Funcionario</div>
                                 <div class="font-weight-bold text-success my-1" style="font-size: 0.72rem;"><i class="fas fa-check-circle mr-1"></i>CUMPLE</div>
@@ -1227,7 +1229,7 @@
                             </div>
                         </div>
                         <!-- REGLA 3 -->
-                        <div class="col-md-3">
+                        <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
                             <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid ${limitBorderColor} !important;">
                                 <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">3. Control Tope Salarial</div>
                                 <div class="font-weight-bold ${limitColorClass} my-1" style="font-size: 0.72rem;"><i class="fas ${limitIcon} mr-1"></i>${limitText} (${pctText})</div>
@@ -1235,7 +1237,7 @@
                             </div>
                         </div>
                         <!-- REGLA 4 -->
-                        <div class="col-md-3">
+                        <div class="col-12 col-sm-6 col-md-3 mb-2 mb-md-0">
                             <div class="h-100 p-2 rounded bg-light border-left-3" style="border-left: 3px solid ${compBorderColor} !important;">
                                 <div class="font-weight-bold text-dark small text-uppercase" style="font-size: 0.65rem; opacity: 0.85;">4. Jornada y Compensación</div>
                                 <div class="font-weight-bold ${compColorClass} my-1" style="font-size: 0.72rem;"><i class="fas ${compIcon} mr-1"></i>${!isDentro && !isAcademic ? 'COMPENSACIÓN' : 'CUMPLE'}</div>
@@ -1675,7 +1677,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-sm border-top border-bottom small" style="font-size: 0.75rem;">
+                    <table class="table table-sm border-top border-bottom small" style="font-size: 0.75rem; min-width: 400px;">
                         <thead>
                             <tr class="text-primary" style="color: #003366 !important;">
                                 <th class="border-0">Rut</th>

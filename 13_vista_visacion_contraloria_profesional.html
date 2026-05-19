@@ -4,58 +4,331 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revisión Contraloría - UFRO</title>
+    <!-- CSS Dependencies -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
     <style>
-        .audit-sheet {
-            background: #fff;
-            border-radius: 12px;
+        /* CSS Variables */
+        :root {
+            --ufro-blue: #005c9e;
+            --ufro-green: #008f62;
+            --ufro-orange: #f47920;
+            --ufro-red: #d32f2f;
+            --neutral-dark: #1e293b;
+            --neutral-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        /* Minimalist card style matching standard PDS premium aesthetics */
+        .card-minimal {
+            background: #ffffff;
+            border-radius: 8px;
             border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
         }
-        .sheet-header-premium {
-            background: linear-gradient(to right, #f8fafc, #fff);
-            padding: 1rem 1.25rem;
+
+        .card-header-premium {
+            background-color: #ffffff;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
-        .audit-section {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid #f1f5f9;
+
+        /* Tabs styling matching the minimalist image */
+        .nav-tabs-premium {
+            border-bottom: 1px solid #e2e8f0;
+            padding-left: 1rem;
+            background: #f8fafc;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
-        .pdf-viewer-container {
-            background: #e2e8f0;
-            border-radius: 12px;
-            padding: 40px;
+
+        .nav-tabs-premium .nav-link {
+            border: none;
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 0.9rem 1.25rem;
+            background: transparent;
+            margin-bottom: -1px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+
+        .nav-tabs-premium .nav-link:hover {
+            color: var(--ufro-blue);
+            border-bottom-color: #cbd5e1;
+        }
+
+        .nav-tabs-premium .nav-link.active {
+            color: var(--ufro-blue);
+            font-weight: 700;
+            background: #ffffff;
+            border-bottom: 2.5px solid var(--ufro-blue);
+        }
+
+        /* Central Document Container */
+        .document-wrapper {
+            background-color: #ffffff;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            min-height: 700px;
+            padding: 1.5rem;
+        }
+
+        /* Mock A4 PDF Sheet */
+        .pdf-canvas {
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            padding: 2.5rem 1.5rem;
             display: flex;
             justify-content: center;
-            min-height: 800px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+            max-height: 75vh;
+            overflow-y: auto;
         }
-        .pdf-page {
-            background: white;
+
+        .pdf-page-sheet {
+            background: #ffffff;
             width: 100%;
-            max-width: 800px;
-            height: auto;
-            min-height: 1000px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            padding: 60px 80px;
+            max-width: 760px;
+            padding: 3rem 3.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 2px;
             font-family: 'Times New Roman', Times, serif;
             color: #000;
-            line-height: 1.6;
+            line-height: 1.5;
+            position: relative;
         }
-        .action-sidebar {
-            background: #fff;
-            border-radius: 12px;
-            padding: 1.5rem;
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2.5px solid #000;
+            padding-bottom: 6px;
+            margin-bottom: 18px;
+        }
+
+        .pdf-header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--ufro-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-header-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .pdf-res-number {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .pdf-body-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 18px 0;
+        }
+
+        .pdf-section-text {
+            text-align: justify;
+            text-indent: 40px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        .pdf-bold-tag {
+            font-weight: bold;
+            text-transform: uppercase;
+            display: inline-block;
+            text-indent: 0;
+            margin-right: 10px;
+        }
+
+        .pdf-annex-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            margin: 12px 0;
+        }
+
+        .pdf-annex-table th, .pdf-annex-table td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            text-align: center;
+        }
+
+        .pdf-annex-table th {
+            background-color: #f8fafc;
+            font-weight: bold;
+        }
+
+        .pdf-signatures {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .pdf-signature-box {
+            width: 45%;
+        }
+
+        .pdf-signature-line {
+            border-top: 1px solid #000;
+            margin-top: 35px;
+            padding-top: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .pdf-distrib {
+            margin-top: 30px;
+            font-size: 0.6rem;
+            border-top: 1px solid #ddd;
+            padding-top: 6px;
+            color: #555;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Right Sidebar Panel Style */
+        .sidebar-actions-panel {
+            background: #ffffff;
+            border-radius: 8px;
             border: 1px solid #e2e8f0;
-            position: sticky;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .instruction-step {
+            margin-bottom: 1.5rem;
+        }
+
+        .instruction-number-text {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        /* Signature visual status box */
+        .signature-status-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.85rem;
+            margin-top: 1.25rem;
+        }
+
+        .signature-status-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        /* Generic premium styled buttons */
+        .btn-ufro {
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 0.55rem 1rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+            letter-spacing: 0.1px;
+        }
+
+        .btn-ufro-primary {
+            background: var(--ufro-blue);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-primary:hover {
+            background: #004b82;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-ufro-outline {
+            background: transparent;
+            color: #475569;
+            border: 1.5px solid #cbd5e1;
+        }
+
+        .btn-ufro-outline:hover {
+            background: #f1f5f9;
+            color: var(--neutral-dark);
+            border-color: #94a3b8;
+        }
+
+        .btn-ufro-success {
+            background: var(--ufro-green);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-success:hover:not(:disabled) {
+            background: #00704e;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .btn-ufro-danger {
+            background: var(--ufro-red);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-ufro-danger:hover {
+            background: #b52020;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Premium Alert Toast */
+        .ufro-alert-toast {
+            position: fixed;
             top: 20px;
+            right: 20px;
+            z-index: 1060;
+            background: #ffffff;
+            border-radius: 6px;
+            border-left: 4px solid var(--ufro-green);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            min-width: 280px;
+            max-width: 340px;
+            transform: translateX(120%);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ufro-alert-toast.show {
+            transform: translateX(0);
         }
 
         /* Trace logs style (standardized across screens) */
@@ -67,7 +340,6 @@
             position: relative;
             line-height: 1.5;
             color: #475569;
-            text-align: left;
         }
 
         .trace-log-item::before {
@@ -82,7 +354,7 @@
         }
 
         .trace-log-item.active-log::before {
-            background: var(--ufro-green, #008f62);
+            background: var(--ufro-green);
         }
     </style>
 </head>
@@ -106,7 +378,7 @@
         </div>
     </div>
 
-    <!-- Page Content -->
+    <!-- Page Content Wrapper -->
     <div id="page-content-wrapper">
         <!-- Topbar -->
         <nav id="dna-topbar">
@@ -119,7 +391,7 @@
             </div>
             
             <div class="d-flex align-items-center ml-auto">
-                <div class="user-details text-right mr-3">
+                <div class="user-details text-right mr-3 d-none d-sm-block">
                     <span class="user-name d-block font-weight-bold">ANDRÉS MARTÍNEZ</span>
                     <span class="user-role small text-muted text-uppercase">PROFESIONAL CONTRALORÍA</span>
                 </div>
@@ -134,31 +406,248 @@
         </nav>
 
         <div class="container-fluid py-4 px-lg-5">
-            <div class="row">
-                <!-- Visor de Documento -->
-                <div class="col-lg-9">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="font-weight-bold text-dark m-0">Análisis para Toma de Razón <span class="text-primary">#RES-2026-001</span></h4>
+            
+            <!-- TRAZABILIDAD CRONOLÓGICA DE ETAPAS (PDS 15-STAGES SIMPLIFIED) -->
+            <div class="card-minimal mb-4 p-3 border shadow-sm" style="border-radius: 12px; background-color: #fcfdfe;">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 py-1 w-100" style="overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+                    <!-- 1 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">1. Creación</span>
                     </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 2 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">2. Jefe Proy.</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 3 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">3. Dirección</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 4 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">4. DGDP</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 5 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">5. Finanzas Fac.</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 6 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">6. Decanato</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 7 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">7. Finanzas Ctrl.</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 8 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">8. Decretación</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 9 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">9. Abogado DGDP</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 10 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">10. Firma Dir. DGDP</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 11 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">11. Firma Sec. Gral</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 12 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-3 m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">12. Firma Rector</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.6;"></i>
+                    
+                    <!-- 13 -->
+                    <div class="d-flex align-items-center mr-1">
+                        <span class="state-dot dot-2 badge-pulse m-0" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-dark font-weight-bold ml-1" style="font-size: 0.65rem;">13. Toma Razón</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.4;"></i>
+                    
+                    <!-- 14 -->
+                    <div class="d-flex align-items-center mr-1" style="opacity: 0.5;">
+                        <span class="state-dot m-0" style="background-color: #cbd5e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">14. Registro</span>
+                    </div>
+                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.55rem; opacity: 0.4;"></i>
+                    
+                    <!-- 15 -->
+                    <div class="d-flex align-items-center mr-1" style="opacity: 0.5;">
+                        <span class="state-dot m-0" style="background-color: #cbd5e1; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+                        <span class="text-muted ml-1" style="font-size: 0.62rem;">15. Cierre</span>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="pdf-viewer-container">
-                        <div class="pdf-page">
-                            <div class="text-center mb-5">
-                                <h6 class="m-0">UNIVERSIDAD DE LA FRONTERA</h6>
-                                <small>CONTRALORÍA INTERNA</small>
+            <!-- LAYOUT MINIMALISTA -->
+            <div class="row">
+                
+                <!-- COLUMNA IZQUIERDA: VISOR DE DOCUMENTO CON TABS (Focal Point) -->
+                <div class="col-lg-8 col-xl-9 mb-4">
+                    <div class="card-minimal">
+                        
+                        <!-- Header with tabs (Matching exactly: Formato de resolución, Anexo) -->
+                        <ul class="nav nav-tabs nav-tabs-premium" id="documentTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="formato-tab" data-toggle="tab" data-target="#formato" type="button" role="tab" aria-controls="formato" aria-selected="true">
+                                    <i class="far fa-file-pdf text-danger mr-1"></i> Borrador de Resolución Decretada
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="anexo-tab" data-toggle="tab" data-target="#anexo" type="button" role="tab" aria-controls="anexo" aria-selected="false">
+                                    <i class="fas fa-users-cog text-primary mr-1"></i> Nómina de Personal y Actividades
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab contents -->
+                        <div class="tab-content document-wrapper" id="documentTabsContent">
+                            
+                            <!-- TAB 1: Formato de Resolución (PDF Canvas) -->
+                            <div class="tab-pane fade show active" id="formato" role="tabpanel" aria-labelledby="formato-tab">
+                                <h6 class="font-weight-bold text-dark text-center mb-3 text-uppercase small" style="letter-spacing: 0.5px;">Documento de Resolución en Proceso de Toma de Razón</h6>
+                                
+                                <div class="pdf-canvas">
+                                    <div class="pdf-page-sheet">
+                                        <!-- Header PDF -->
+                                        <div class="pdf-header">
+                                            <div>
+                                                <span class="pdf-header-title">Universidad de La Frontera</span>
+                                                <div class="pdf-header-subtitle">Contraloría Interna / Secretaría General</div>
+                                            </div>
+                                            <div class="pdf-res-number">
+                                                RESOLUCIÓN EXENTA Nº 102/2026
+                                            </div>
+                                        </div>
+
+                                        <div class="pdf-body-title">
+                                            TEMUCO, 15 de Mayo de 2026
+                                        </div>
+
+                                        <!-- Vistos -->
+                                        <div class="pdf-section-text">
+                                            <span class="pdf-bold-tag">VISTO:</span> La Ley Nº 19.886 de Bases sobre Contratos Administrativos de Suministro y Prestación de Servicios; el D.F.L. Nº 1/20.000 de 2005 de MINSEGPRES; el Estatuto de la Universidad de La Frontera, aprobado por D.F.L. Nº 156 de 1981 de Educación; el Decreto Universitario Nº 09 de 2022 y sus modificaciones.
+                                        </div>
+
+                                        <!-- Considerandos -->
+                                        <div class="pdf-section-text">
+                                            <span class="pdf-bold-tag">CONSIDERANDO:</span>
+                                            1. Que se requiere contar con la prestación de servicios profesionales de personal calificado para apoyar el desarrollo de las actividades del proyecto "Modernización Tecnológica de la Gestión Académica UFRO-2026".
+                                            2. Que los antecedentes y capacidades de los prestadores propuestos han sido validados por la Dirección de Gestión de Personas en concordancia con la normativa vigente.
+                                            3. Que existe disponibilidad presupuestaria suficiente en el Centro de Costos "4050.21" según certificado emitido por Finanzas Central.
+                                        </div>
+
+                                        <!-- Resuelvo -->
+                                        <div class="pdf-section-text" style="text-indent: 0;">
+                                            <span class="pdf-bold-tag">RESUELVO:</span>
+                                        </div>
+                                        <div class="pdf-section-text">
+                                            1. APRUÉBESE la contratación de servicios de los profesionales indicados en el anexo de la presente resolución en los términos y condiciones financieras que se señalan.
+                                        </div>
+                                        <div class="pdf-section-text">
+                                            2. DISPÓNESE que los pagos asociados se imputen al Centro de Costos 4050.21, Subtítulo 21 de Prestaciones de Servicios.
+                                        </div>
+
+                                        <!-- Signatures -->
+                                        <div class="pdf-signatures">
+                                            <div class="pdf-signature-box">
+                                                <div class="pdf-signature-line" style="color: #005c9e; border-top: 1px dashed #005c9e;">
+                                                    <i class="fas fa-check-circle text-success mr-1"></i> FIRMADO DIGITALMENTE<br>
+                                                    GONZALO OPORTO VENEGAS<br>
+                                                    Secretario General
+                                                </div>
+                                            </div>
+                                            <div class="pdf-signature-box">
+                                                <div class="pdf-signature-line" style="color: #005c9e; border-top: 1px dashed #005c9e;">
+                                                    <i class="fas fa-check-circle text-success mr-1"></i> FIRMADO DIGITALMENTE<br>
+                                                    EDUARDO HEBEL WEISS<br>
+                                                    Rector
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Distribution -->
+                                        <div class="pdf-distrib">
+                                            <strong>DISTRIBUCIÓN:</strong> Solicitante, Dirección de Finanzas, DGDP, Oficina de Partes, Contraloría Interna.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-right mb-4">
-                                <h5 class="font-weight-bold">RESOLUCIÓN EXENTA Nº 102/2026</h5>
+
+                            <!-- TAB 2: Anexo (Dossier Detallado) -->
+                            <div class="tab-pane fade" id="anexo" role="tabpanel" aria-labelledby="anexo-tab">
+                                <h6 class="font-weight-bold text-dark text-center mb-3 text-uppercase small" style="letter-spacing: 0.5px;">Anexo de Personal y Prestaciones</h6>
+                                
+                                <div class="p-3 bg-light rounded border mb-3 small">
+                                    <i class="fas fa-info-circle text-primary mr-1"></i> Este anexo contiene los detalles de contratación aprobados en la solicitud de origen y respaldados técnicamente por la DGDP.
+                                </div>
+
+                                <table class="pdf-annex-table" style="font-size: 0.8rem;">
+                                    <thead>
+                                        <tr>
+                                            <th>RUT</th>
+                                            <th>Nombre Completo</th>
+                                            <th>Función / Cargo</th>
+                                            <th>Período</th>
+                                            <th>Centro de Costos</th>
+                                            <th>Monto Mensual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="font-weight-bold">15.845.221-K</td>
+                                            <td>Dr. Carlos Fuentes R.</td>
+                                            <td>Asesor Científico Principal</td>
+                                            <td>18/05/2026 a 18/07/2026</td>
+                                            <td>4050.21</td>
+                                            <td class="font-weight-bold text-dark">$1.850.000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <p><strong>TÓMESE RAZÓN:</strong> La presente resolución cumple con la legalidad vigente...</p>
-                            <div class="mt-5 pt-5 text-right">
-                                <div class="small font-weight-bold">Sello de Toma de Razón Electrónico</div>
-                            </div>
+
                         </div>
                     </div>
 
                     <!-- TRAZABILIDAD DOCUMENTAL DE LA SOLICITUD (Standardized) -->
-                    <div class="card p-4 mt-4" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: #fff;">
+                    <div class="card-minimal p-4 mt-4">
                         <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3">
                             <i class="fas fa-history mr-2 text-primary"></i> Historial y Trazabilidad Documental de la Solicitud
                         </h6>
@@ -181,7 +670,7 @@
                             <div class="trace-log-item">
                                 <span class="font-weight-bold">14/05/2026 15:30:22</span> &bull; Control presupuestario y visación de Finanzas Central aprobada con éxito.
                             </div>
-                            <div class="trace-log-item">
+                            <div class="trace-log-item font-weight-normal">
                                 <span class="font-weight-bold">15/05/2026 17:15:30</span> &bull; Borrador de la resolución formalizado y decretado en Decretación Jurídica por <strong class="text-dark">Claudia Alvarez</strong>.
                             </div>
                             <div class="trace-log-item">
@@ -197,51 +686,260 @@
                     </div>
                 </div>
 
-                <!-- Panel de Acciones -->
-                <div class="col-lg-3">
-                    <div class="action-sidebar shadow-sm">
+                <!-- COLUMNA DERECHA: SIDEBAR DE ACCIONES SEQUENCIALES -->
+                <div class="col-lg-4 col-xl-3">
+                    <div class="sidebar-actions-panel">
+                        
                         <div class="text-center mb-4">
-                            <i class="fas fa-stamp fa-2x text-primary mb-2"></i>
-                            <h6 class="font-weight-bold small m-0 text-uppercase">Visación Contralora</h6>
+                            <h6 class="font-weight-bold text-uppercase text-dark m-0" style="letter-spacing: 0.5px;">Control Contralor</h6>
+                            <hr class="my-2">
                         </div>
 
-                        <hr>
-
-                        <div class="mb-4">
-                            <button class="btn btn-primary btn-block font-weight-bold mb-2 shadow-sm py-2" onclick="confirmarAccion('aprobar')">
-                                <i class="fas fa-check-circle mr-2"></i> VISAR Y ENVIAR A CONTRALOR
+                        <!-- 1. Descargar borrador y anexo -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">1. Descargar expediente digital completo</div>
+                            <button type="button" class="btn-ufro btn-ufro-primary btn-block shadow-sm" onclick="descargarBorrador()">
+                                <i class="fas fa-download mr-1"></i> Descargar Borrador
                             </button>
+                        </div>
+
+                        <!-- 2. Revisar antecedentes -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">2. Revisar la conformidad jurídica del acto administrativo decretado.</div>
                             
-                            <button class="btn btn-outline-warning btn-block font-weight-bold mb-4 py-2" onclick="confirmarAccion('rechazar')">
-                                <i class="fas fa-undo mr-2"></i> DEVOLVER CON REPAROS
+                            <div class="p-2 bg-light rounded border mb-2 small text-left" style="font-size: 0.72rem;">
+                                <strong>Estado Firmas:</strong>
+                                <div class="text-success mt-1"><i class="fas fa-check-circle"></i> Sec. General (Firmado)</div>
+                                <div class="text-success mt-1"><i class="fas fa-check-circle"></i> Rector (Firmado)</div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Visar y Enviar a Contralor Final -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">3. Proceder a visar favorablemente para la firma del Contralor Universitario:</div>
+                            
+                            <button type="button" id="btn-approve" class="btn-ufro btn-ufro-success btn-block shadow-sm py-2 font-weight-bold" onclick="abrirModalAprobacion()">
+                                <i class="fas fa-check-circle mr-1"></i> Visar y Enviar a Contralor
                             </button>
                         </div>
 
-                        <div class="p-3 bg-light rounded border text-center">
-                            <div class="x-small text-muted mb-1 text-uppercase font-weight-bold">Estado Actual</div>
-                            <span class="badge badge-soft-primary px-3 py-1">REVISIÓN PROFESIONAL</span>
+                        <!-- 4. Devolver con Reparos -->
+                        <div class="instruction-step">
+                            <div class="instruction-number-text">4. En caso de discrepancias o reparos jurídicos:</div>
+                            
+                            <button type="button" class="btn-ufro btn-ufro-danger btn-block py-2 font-weight-bold" onclick="abrirModalDevolucion()">
+                                <i class="fas fa-reply mr-1"></i> Devolver con Reparos
+                            </button>
                         </div>
+
+                        <!-- Aprobado por: Section -->
+                        <div class="signature-status-card">
+                            <div class="signature-status-title">Analista Asignado:</div>
+                            <div id="approver-box-content" class="small text-muted">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-clock mr-2 text-warning" id="approver-icon"></i>
+                                    <div>
+                                        <span class="font-weight-bold text-dark d-block" id="approver-name">Andrés Martínez</span>
+                                        <span class="x-small" id="approver-status">Revisión Jurídica Pendiente</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById("menu-toggle").onclick = function(e) {
-        e.preventDefault();
-        document.getElementById("wrapper").classList.toggle("toggled");
-    };
+<!-- MODAL DE CONFIRMACIÓN DE APROBACIÓN -->
+<div class="modal fade" id="modalAprobacion" tabindex="-1" role="dialog" aria-labelledby="modalAprobacionTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 8px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header text-white" style="background-color: var(--ufro-blue); border: none;">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-check-circle mr-2"></i> Confirmar Visación Contralora</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <i class="fas fa-stamp fa-3x text-success mb-3 animate-pulse"></i>
+                <h6 class="font-weight-bold text-dark mb-2">¿Está seguro de visar este borrador y enviarlo al Contralor Universitario?</h6>
+                <p class="text-muted small">
+                    Su visación favorable quedará registrada y el expediente pasará de inmediato a la bandeja del Contralor Universitario para la Toma de Razón final.
+                </p>
+            </div>
+            <div class="modal-footer bg-light border-0 justify-content-center">
+                <button type="button" class="btn-ufro btn-ufro-outline" data-dismiss="modal">CANCELAR</button>
+                <button type="button" class="btn-ufro btn-ufro-success" onclick="ejecutarAprobacion()">SÍ, VISAR Y ENVIAR</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    function confirmarAccion(accion) {
-        if(accion === 'aprobar') {
+<!-- MODAL GLOBAL DE DEVOLUCIÓN O RECHAZO -->
+<div class="modal fade" id="modalDevolucion" tabindex="-1" role="dialog" aria-labelledby="modalDevolucionTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 8px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="modal-header text-white" style="background-color: var(--ufro-orange); border: none;">
+                <h5 class="modal-title font-weight-bold"><i class="fas fa-reply mr-2"></i> Registrar Reparos y Devolver</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="form-devolucion" onsubmit="event.preventDefault();">
+                    <div class="form-group mb-3">
+                        <label for="decision-type" class="font-weight-bold text-dark small">Destino de la Devolución:</label>
+                        <select class="form-control form-control-sm" id="decision-type" style="border-radius: 6px;" required>
+                            <option value="devolver">Devolver a Decretación (Para subsanar borrador)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="modal-motivo" class="font-weight-bold text-dark small">Motivo Principal del Reparo:</label>
+                        <select class="form-control form-control-sm" id="modal-motivo" style="border-radius: 6px;" required>
+                            <option value="">-- Seleccione un Motivo --</option>
+                            <option value="error_legal">Inconsistencia con Ley 19.886 / Normativa Interna</option>
+                            <option value="error_tabla">Discrepancias en anexo de personal o montos</option>
+                            <option value="falta_antecedente">Falta documento fundante obligatorio</option>
+                            <option value="otro">Otro motivo (Especificar abajo)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modal-comentarios" class="font-weight-bold text-dark small">Observaciones y Comentarios Detallados (Obligatorio):</label>
+                        <textarea class="form-control" id="modal-comentarios" rows="4" style="border-radius: 6px; font-size: 0.8rem;" placeholder="Escriba los fundamentos jurídicos o técnicos..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light border-0">
+                <button type="button" class="btn-ufro btn-ufro-outline" data-dismiss="modal">CANCELAR</button>
+                <button type="button" id="btn-modal-confirm" class="btn-ufro btn-ufro-warning text-white" onclick="ejecutarModalDevolucion()">CONFIRMAR REPAROS</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST ALERT SYSTEM -->
+<div id="toast-alert" class="ufro-alert-toast shadow border" role="alert">
+    <div class="p-3 d-flex align-items-center">
+        <div class="mr-3 text-success" id="toast-icon-wrap">
+            <i class="fas fa-check-circle fa-2x" id="toast-icon"></i>
+        </div>
+        <div>
+            <h6 class="font-weight-bold text-dark m-0 small" id="toast-title">Carga de Documento</h6>
+            <span class="text-muted x-small" id="toast-msg">Se cargó el archivo correctamente.</span>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS DEPENDENCIES -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Toggle menu sidebar
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    });
+
+    // Click Download original document
+    function descargarBorrador() {
+        mostrarToast("Descarga de PDF", "Descargando borrador de la resolución y anexo técnico...", "info");
+    }
+
+    // Approve dialog opener
+    function abrirModalAprobacion() {
+        $('#modalAprobacion').modal('show');
+    }
+
+    // Execute approval and proceed
+    function ejecutarAprobacion() {
+        $('#modalAprobacion').modal('hide');
+        mostrarToast("Visación Registrada", "Visación grabada con éxito. Enviando a Contralor Universitario...", "success");
+
+        // Dynamically update the Aprobado Por: card
+        let content = document.getElementById('approver-box-content');
+        let d = new Date();
+        let formattedDate = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        content.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle mr-2 text-success" style="font-size: 1.2rem;"></i>
+                <div>
+                    <span class="font-weight-bold text-dark d-block">Andrés Martínez</span>
+                    <span class="x-small text-success font-weight-bold">Visado favorable registrado el ${formattedDate}</span>
+                </div>
+            </div>
+        `;
+
+        setTimeout(function() {
             window.location.href = "14_vista_visacion_contralor_final.html";
-        } else {
-            window.location.href = "08_vista_decretacion.html";
+        }, 1500);
+    }
+
+    // Devolución / Rechazo opener
+    function abrirModalDevolucion() {
+        // Reset modal form
+        document.getElementById('modal-motivo').value = "";
+        document.getElementById('modal-comentarios').value = "";
+        $('#modalDevolucion').modal('show');
+    }
+
+    // Process modal submission
+    function ejecutarModalDevolucion() {
+        const motivo = document.getElementById('modal-motivo').value;
+        const comentarios = document.getElementById('modal-comentarios').value;
+
+        if(!motivo) {
+            mostrarToast("Campos Faltantes", "Seleccione el motivo principal del reparo.", "error");
+            return;
         }
+        if(!comentarios.trim()) {
+            mostrarToast("Campos Faltantes", "Debe agregar una justificación.", "error");
+            return;
+        }
+
+        $('#modalDevolucion').modal('hide');
+        mostrarToast("Expediente Devuelto", "Retornando a Decretación con observaciones de Contraloría...", "info");
+        setTimeout(function() {
+            window.location.href = "08_vista_decretacion.html";
+        }, 1200);
+    }
+
+    // Toast builder
+    function mostrarToast(titulo, mensaje, tipo) {
+        let toast = document.getElementById('toast-alert');
+        let icon = document.getElementById('toast-icon');
+        let iconWrap = document.getElementById('toast-icon-wrap');
+        
+        document.getElementById('toast-title').innerText = titulo;
+        document.getElementById('toast-msg').innerText = mensaje;
+
+        if (tipo === 'success') {
+            toast.style.borderLeft = "4px solid var(--ufro-green)";
+            icon.className = "fas fa-check-circle fa-2x";
+            iconWrap.className = "mr-3 text-success";
+        } else if (tipo === 'error') {
+            toast.style.borderLeft = "4px solid var(--ufro-red)";
+            icon.className = "fas fa-exclamation-circle fa-2x";
+            iconWrap.className = "mr-3 text-danger";
+        } else if (tipo === 'info') {
+            toast.style.borderLeft = "4px solid var(--ufro-blue)";
+            icon.className = "fas fa-info-circle fa-2x";
+            iconWrap.className = "mr-3 text-primary";
+        }
+
+        toast.classList.add('show');
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 3500);
     }
 </script>
 </body>

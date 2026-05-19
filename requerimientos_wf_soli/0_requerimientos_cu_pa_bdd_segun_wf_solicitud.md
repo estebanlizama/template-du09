@@ -2126,6 +2126,9 @@ Jefe de Proyecto.
 * La solicitud debe cambiar a un estado equivalente a **Devuelta al Solicitante para corrección**.
 * El flujo debe retornar a la Pantalla y estado de solicitud, permitiendo al Solicitante editar la solicitud.
 * Los comentarios deben quedar visibles para el Solicitante y almacenados en la trazabilidad.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefe de Proyecto), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -2138,6 +2141,8 @@ Jefe de Proyecto.
 * **RF-P02-055:** El sistema debe registrar la devolución con datos adicionales definido en el proyecto.
 * **RF-P02-056:** El sistema debe cambiar el estado de la solicitud a devuelta para corrección.
 * **RF-P02-057:** El sistema debe habilitar nuevamente la edición al Solicitante una vez devuelta.
+* **RF-PP02-001**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones técnicas y comentarios correspondientes.
+* **RF-PP02-002**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -2166,6 +2171,9 @@ Jefe de Proyecto.
 * La solicitud no debe continuar a etapas posteriores del flujo.
 * El motivo de rechazo debe quedar registrado en la trazabilidad.
 * Debe definirse si el Solicitante solo visualiza el rechazo o si puede clonar la solicitud en un nuevo expediente; esta definición corresponde a una decisión funcional posterior.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefe de Proyecto), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones técnicas), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -2177,6 +2185,7 @@ Jefe de Proyecto.
 * **RF-P02-059:** El sistema debe exigir comentario obligatorio al rechazar.
 * **RF-P02-060:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
 * **RF-P02-061:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP02-003**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -2229,11 +2238,13 @@ Sistema.
 *   **Temporalidad**: Fecha y hora exacta del servidor.
 *   **Comentario**: Observación técnica ingresada (obligatoria en Devolución/Rechazo).
 *   **Transición**: Estado anterior y Estado resultante del expediente.
+*   **Envío de Correo**: Confirmación del envío del correo electrónico de notificación (devolución o rechazo) con fecha, hora y destinatario.
 
 ### D. Reglas de negocio
 *   **Integridad del PDS**: La información técnica y económica de la prestación (montos, meses, funcionarios) guardada en la Pantalla 01 **no debe ser modificada** por este proceso; solo se actualiza el estado del flujo.
 *   **Expediente Digital**: El registro debe ser persistente y quedar disponible para la consulta de todos los aprobadores posteriores (Etapas 03 a 15).
 *   **Obligatoriedad**: No se puede cambiar el estado de la solicitud en la base de datos sin generar simultáneamente el registro de trazabilidad.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 **HU-P02-24**: Como **Sistema**, debo registrar la decisión del Jefe de Proyecto en el historial de estados, para garantizar la transparencia y auditabilidad de la tramitación sin alterar los datos de origen de la prestación.
@@ -2241,6 +2252,7 @@ Sistema.
 ### F. Requerimientos funcionales preliminares
 *   **RF-P02-064**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
 *   **RF-P02-065**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+* **RF-PP02-004**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -3284,6 +3296,9 @@ Jefatura Directa / Dirección de Departamento.
 * La solicitud debe cambiar a un estado equivalente a **Devuelta al Solicitante para corrección**.
 * El flujo debe retornar a la Pantalla 01 con edición habilitada.
 * Los comentarios deben quedar visibles para el Solicitante y registrados en la trazabilidad.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefatura Directa / Dirección de Departamento), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -3296,6 +3311,8 @@ Jefatura Directa / Dirección de Departamento.
 * **RF-P03-060:** El sistema debe registrar la devolución con usuario, rol, fecha, hora y comentario.
 * **RF-P03-061:** El sistema debe cambiar el estado a devuelta para corrección.
 * **RF-P03-062:** El sistema debe habilitar nuevamente la edición al Solicitante.
+* **RF-PP03-001**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones jerárquicas y comentarios correspondientes.
+* **RF-PP03-002**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -3323,6 +3340,9 @@ Jefatura Directa / Dirección de Departamento.
 * La solicitud debe quedar en estado **Rechazada por Jefatura Directa / Dirección de Departamento** o equivalente.
 * La solicitud no debe continuar a etapas posteriores.
 * El motivo de rechazo debe quedar registrado en la trazabilidad.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefatura Directa / Dirección de Departamento), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones jerárquicas), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -3334,6 +3354,7 @@ Jefatura Directa / Dirección de Departamento.
 * **RF-P03-064:** El sistema debe exigir comentario obligatorio al rechazar.
 * **RF-P03-065:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
 * **RF-P03-066:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP03-003**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -3387,11 +3408,13 @@ Sistema.
 *   **Temporalidad**: Fecha y hora exacta del servidor.
 *   **Comentario**: Observación técnica ingresada (obligatoria en Devolución/Rechazo).
 *   **Transición**: Estado anterior y Estado resultante del expediente.
+*   **Envío de Correo**: Confirmación del envío del correo electrónico de notificación (devolución o rechazo) con fecha, hora y destinatario.
 
 ### D. Reglas de negocio
 *   **Integridad del PDS**: La información técnica y económica de la prestación (montos, meses, funcionarios) guardada en la Pantalla 01 **no debe ser modificada** por este proceso; solo se actualiza el estado del flujo.
 *   **Expediente Digital**: El registro debe ser persistente y quedar disponible para la consulta de todos los aprobadores posteriores (Etapas 03 a 15).
 *   **Obligatoriedad**: No se puede cambiar el estado de la solicitud en la base de datos sin generar simultáneamente el registro de trazabilidad.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 **HU-P03-26**: Como **Sistema**, debo registrar la decisión de la Jefatura Directa / Dirección de Departamento en el historial de estados, para garantizar la transparencia y auditabilidad de la tramitación sin alterar los datos de origen de la prestación.
@@ -3399,6 +3422,7 @@ Sistema.
 ### F. Requerimientos funcionales preliminares
 *   **RF-P03-069**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
 *   **RF-P03-070**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+* **RF-PP03-004**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -4688,23 +4712,24 @@ Cuando DGDP excluya a un funcionario de la solicitud, el sistema debe generar un
 
 Sistema.
 
-### C. Destinatario mínimo
+### C. Destinatarios mínimos
 
-- Solicitante de la PDS.
+* Solicitante de la PDS.
+* Funcionario excluido de la PDS.
 
 > **TODO:** Definir si el correo debe copiar también al Jefe de Proyecto, Jefatura Directa / Dirección de Departamento u otros actores.
 
 ### D. Contenido mínimo del correo
 
-- Código de solicitud.
-- Nombre del proyecto o prestación.
-- Nombre y RUT del funcionario excluido.
-- Etapa en que ocurrió la exclusión: DGDP.
-- Motivo de exclusión.
-- Comentario técnico ingresado.
-- Fecha y hora de la decisión.
-- Indicación de que la solicitud podrá continuar con los demás funcionarios, si corresponde.
-
+* Código de solicitud.
+* Nombre del proyecto o prestación.
+* Nombre y RUT del funcionario excluido.
+* Etapa en que ocurrió la exclusión: DGDP.
+* Causal o motivo normativo detallado de la exclusión.
+* Comentario técnico ingresado.
+* Fecha y hora de la decisión.
+* Instrucción de revisión y corrección para el Solicitante (para que evalúe su reemplazo o corrección).
+* Notificación de los motivos formales al Funcionario excluido.
 ### E. Historia de usuario preliminar
 
 **HU-P04-28:** Como **sistema**, debo notificar al Solicitante cuando DGDP excluya a un funcionario, para dejar constancia del motivo y del impacto de la decisión.
@@ -4843,6 +4868,9 @@ DGDP.
 - La solicitud no debe continuar a etapas posteriores.
 - Los funcionarios incluidos o excluidos hasta ese momento deben conservarse en trazabilidad.
 - El motivo de rechazo debe quedar disponible para consulta posterior.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (DGDP), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### E. Historia de usuario preliminar
 
@@ -4853,6 +4881,8 @@ DGDP.
 - **RF-P04-087:** El sistema debe permitir rechazar definitivamente la solicitud completa.
 - **RF-P04-088:** El sistema debe exigir comentario obligatorio para rechazar.
 - **RF-P04-089:** El sistema debe cerrar la continuidad del expediente rechazado.
+* **RF-PP04-001**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de cumplimiento normativo o previsional y comentarios correspondientes.
+* **RF-PP04-002**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -4879,6 +4909,9 @@ DGDP.
 - La confirmación debe permitir cancelar la acción sin modificar el expediente.
 - Devolución y rechazo requieren comentario ingresado antes de confirmar.
 - La aprobación debe verificar que existe al menos un funcionario habilitado.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (DGDP), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones de cumplimiento normativo o previsional), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### E. Historia de usuario preliminar
 
@@ -4889,6 +4922,7 @@ DGDP.
 - **RF-P04-090:** El sistema debe solicitar confirmación antes de aprobar, devolver o rechazar.
 - **RF-P04-091:** El sistema debe permitir cancelar la decisión antes de ejecutarla.
 - **RF-P04-092:** El sistema debe impedir aprobar si no existe al menos un funcionario habilitado.
+* **RF-PP04-003**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -4976,7 +5010,7 @@ Sistema.
 | **RG-P04-004** | Un funcionario excluido por DGDP no debe continuar a etapas posteriores. |
 | **RG-P04-005** | La exclusión de un funcionario debe registrar motivo, comentario, usuario, fecha y hora. |
 | **RG-P04-006** | La exclusión de un funcionario debe solicitar confirmación antes de ejecutarse. |
-| **RG-P04-007** | La exclusión de un funcionario debe generar notificación por correo al Solicitante. |
+| **RG-P04-007** | La exclusión de un funcionario debe generar notificación por correo automático al Solicitante y al Funcionario excluido, indicando el motivo normativo. |
 | **RG-P04-008** | El monto total de la solicitud debe recalcularse si uno o más funcionarios son excluidos. |
 | **RG-P04-009** | Si no quedan funcionarios habilitados, la solicitud no puede ser aprobada por DGDP. |
 | **RG-P04-010** | La devolución de la solicitud completa requiere comentario obligatorio. |

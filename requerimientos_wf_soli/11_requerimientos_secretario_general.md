@@ -214,9 +214,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-001:** El sistema debe mostrar el código único de la solicitud.
-- **RF-P11-002:** El sistema debe mostrar el tipo de acto administrativo asociado.
-- **RF-P11-003:** El sistema debe mostrar el identificador documental cuando exista.
+- **RF-PP11-001:** El sistema debe mostrar el código único de la solicitud.
+- **RF-PP11-002:** El sistema debe mostrar el tipo de acto administrativo asociado.
+- **RF-PP11-003:** El sistema debe mostrar el identificador documental cuando exista.
 
 ---
 
@@ -252,9 +252,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-004:** El sistema debe mostrar el estado actual de la firma física.
-- **RF-P11-005:** El sistema debe distinguir si el documento firmado se encuentra pendiente o cargado.
-- **RF-P11-006:** El sistema debe condicionar la aprobación a la existencia de un documento firmado cargado.
+- **RF-PP11-004:** El sistema debe mostrar el estado actual de la firma física.
+- **RF-PP11-005:** El sistema debe distinguir si el documento firmado se encuentra pendiente o cargado.
+- **RF-PP11-006:** El sistema debe condicionar la aprobación a la existencia de un documento firmado cargado.
 
 ---
 
@@ -298,9 +298,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-007:** El sistema debe mostrar cronológicamente las etapas previas del expediente.
-- **RF-P11-008:** El sistema debe mostrar usuario, rol, acción, fecha y hora por etapa.
-- **RF-P11-009:** El sistema debe registrar y mostrar el envío desde Decretación hacia Secretario General.
+- **RF-PP11-007:** El sistema debe mostrar cronológicamente las etapas previas del expediente.
+- **RF-PP11-008:** El sistema debe mostrar usuario, rol, acción, fecha y hora por etapa.
+- **RF-PP11-009:** El sistema debe registrar y mostrar el envío desde Decretación hacia Secretario General.
 
 ---
 
@@ -341,9 +341,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-010:** El sistema debe mostrar los metadatos del acto administrativo enviado desde Decretación.
-- **RF-P11-011:** El sistema debe mostrar la versión documental vigente.
-- **RF-P11-012:** El sistema debe mostrar los firmantes definidos y la distribución configurada como antecedentes informativos.
+- **RF-PP11-010:** El sistema debe mostrar los metadatos del acto administrativo enviado desde Decretación.
+- **RF-PP11-011:** El sistema debe mostrar la versión documental vigente.
+- **RF-PP11-012:** El sistema debe mostrar los firmantes definidos y la distribución configurada como antecedentes informativos.
 
 ---
 
@@ -385,10 +385,10 @@ El visor debe permitir revisar el documento completo, incluyendo:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-013:** El sistema debe mostrar el documento generado en Decretación mediante un visor PDF.
-- **RF-P11-014:** El visor debe permitir revisar el documento completo.
-- **RF-P11-015:** El documento visualizado debe corresponder a la versión vigente enviada a firma.
-- **RF-P11-016:** El sistema no debe permitir editar el contenido del PDF desde esta pantalla.
+- **RF-PP11-013:** El sistema debe mostrar el documento generado en Decretación mediante un visor PDF.
+- **RF-PP11-014:** El visor debe permitir revisar el documento completo.
+- **RF-PP11-015:** El documento visualizado debe corresponder a la versión vigente enviada a firma.
+- **RF-PP11-016:** El sistema no debe permitir editar el contenido del PDF desde esta pantalla.
 
 ---
 
@@ -420,9 +420,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-017:** El sistema debe permitir descargar el PDF recibido desde Decretación.
-- **RF-P11-018:** El archivo descargado debe coincidir con la versión visualizada en pantalla.
-- **RF-P11-019:** El sistema debe poder registrar el evento de descarga cuando esta trazabilidad se habilite.
+- **RF-PP11-017:** El sistema debe permitir descargar el PDF recibido desde Decretación.
+- **RF-PP11-018:** El archivo descargado debe coincidir con la versión visualizada en pantalla.
+- **RF-PP11-019:** El sistema debe poder registrar el evento de descarga cuando esta trazabilidad se habilite.
 
 ---
 
@@ -464,11 +464,11 @@ Secretario General.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P11-020:** El sistema debe permitir cargar el documento firmado.
-- **RF-P11-021:** El sistema debe asociar el archivo cargado al expediente correspondiente.
-- **RF-P11-022:** El sistema debe registrar fecha, hora y usuario de carga.
-- **RF-P11-023:** El sistema debe mostrar confirmación visible de carga exitosa.
-- **RF-P11-024:** El sistema debe impedir aprobar y continuar si no existe documento firmado cargado.
+- **RF-PP11-020:** El sistema debe permitir cargar el documento firmado.
+- **RF-PP11-021:** El sistema debe asociar el archivo cargado al expediente correspondiente.
+- **RF-PP11-022:** El sistema debe registrar fecha, hora y usuario de carga.
+- **RF-PP11-023:** El sistema debe mostrar confirmación visible de carga exitosa.
+- **RF-PP11-024:** El sistema debe impedir aprobar y continuar si no existe documento firmado cargado.
 
 ---
 
@@ -509,9 +509,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-025:** El sistema debe mostrar el estado de carga del documento firmado.
-- **RF-P11-026:** El sistema debe mostrar nombre del archivo, fecha, hora y usuario de carga.
-- **RF-P11-027:** El sistema debe distinguir visualmente el documento original enviado desde Decretación del documento firmado cargado.
+- **RF-PP11-025:** El sistema debe mostrar el estado de carga del documento firmado.
+- **RF-PP11-026:** El sistema debe mostrar nombre del archivo, fecha, hora y usuario de carga.
+- **RF-PP11-027:** El sistema debe distinguir visualmente el documento original enviado desde Decretación del documento firmado cargado.
 
 ---
 
@@ -551,10 +551,10 @@ Secretario General.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P11-028:** El sistema debe permitir aprobar y continuar cuando exista documento firmado cargado.
-- **RF-P11-029:** El sistema debe bloquear la aprobación cuando no exista documento firmado cargado.
-- **RF-P11-030:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
-- **RF-P11-031:** El sistema debe derivar el expediente a la etapa siguiente definida en el flujo.
+- **RF-PP11-028:** El sistema debe permitir aprobar y continuar cuando exista documento firmado cargado.
+- **RF-PP11-029:** El sistema debe bloquear la aprobación cuando no exista documento firmado cargado.
+- **RF-PP11-030:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
+- **RF-PP11-031:** El sistema debe derivar el expediente a la etapa siguiente definida en el flujo.
 
 ---
 
@@ -583,6 +583,9 @@ Secretario General.
 - El comentario debe quedar visible para el rol de Decretación.
 - La devolución debe mantener trazabilidad del motivo y usuario.
 - La devolución puede ejecutarse sin necesidad de cargar previamente un documento firmado.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Secretario General), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -590,11 +593,13 @@ Secretario General.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P11-032:** El sistema debe permitir devolver con corrección el expediente a Decretación.
-- **RF-P11-033:** El sistema debe exigir motivo y comentario obligatorio.
-- **RF-P11-034:** El sistema debe registrar la devolución con usuario, rol, fecha y hora.
-- **RF-P11-035:** El sistema debe dejar visible la observación para Decretación.
-- **RF-P11-036:** El sistema debe permitir devolver con corrección aun cuando no se haya cargado un documento firmado.
+- **RF-PP11-032:** El sistema debe permitir devolver con corrección el expediente a Decretación.
+- **RF-PP11-033:** El sistema debe exigir motivo y comentario obligatorio.
+- **RF-PP11-034:** El sistema debe registrar la devolución con usuario, rol, fecha y hora.
+- **RF-PP11-035:** El sistema debe dejar visible la observación para Decretación.
+- **RF-PP11-036:** El sistema debe permitir devolver con corrección aun cuando no se haya cargado un documento firmado.
+* **RF-PP11-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de legalidad formal o reparos del acto y comentarios correspondientes.
+* **RF-PP11-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -622,6 +627,9 @@ Secretario General.
 - El rechazo debe cerrar la continuidad del expediente.
 - El rechazo debe quedar registrado en trazabilidad.
 - El rechazo puede ejecutarse antes o después de la carga del documento firmado.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe generar la notificación automática por correo electrónico al Solicitante y al rol Archivo Universitario de forma simultánea.
+* **Contenido mínimo del correo**: Código de la solicitud, etapa origen (Secretario General), acción ejecutada (Rechazo definitivo), causal o reparo formal (observaciones de legalidad formal o reparos del acto), comentarios detallados, fecha/hora y la instrucción correspondiente.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -629,10 +637,11 @@ Secretario General.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P11-037:** El sistema debe permitir rechazar la solicitud.
-- **RF-P11-038:** El sistema debe exigir motivo y comentario obligatorio.
-- **RF-P11-039:** El sistema debe registrar usuario, rol, fecha, hora y motivo del rechazo.
-- **RF-P11-040:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
+- **RF-PP11-037:** El sistema debe permitir rechazar la solicitud.
+- **RF-PP11-038:** El sistema debe exigir motivo y comentario obligatorio.
+- **RF-PP11-039:** El sistema debe registrar usuario, rol, fecha, hora y motivo del rechazo.
+- **RF-PP11-040:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
+* **RF-PP11-TEMP_REJ1**: El sistema debe enviar de forma automática un correo electrónico de notificación tanto al Solicitante como al rol de Archivo Universitario al registrar el rechazo definitivo de la solicitud.
 
 ---
 
@@ -673,10 +682,10 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-041:** El sistema debe usar un modal global único para devolución con corrección y rechazo.
-- **RF-P11-042:** El sistema debe exigir comentario obligatorio.
-- **RF-P11-043:** El sistema debe permitir cancelar la acción sin modificar el expediente.
-- **RF-P11-044:** El sistema debe mostrar que la devolución con corrección retorna a Decretación.
+- **RF-PP11-041:** El sistema debe usar un modal global único para devolución con corrección y rechazo.
+- **RF-PP11-042:** El sistema debe exigir comentario obligatorio.
+- **RF-PP11-043:** El sistema debe permitir cancelar la acción sin modificar el expediente.
+- **RF-PP11-044:** El sistema debe mostrar que la devolución con corrección retorna a Decretación.
 
 ---
 
@@ -710,9 +719,9 @@ Secretario General.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-045:** El sistema debe solicitar confirmación antes de aprobar y continuar.
-- **RF-P11-046:** El sistema debe validar la existencia de documento firmado cargado antes de confirmar.
-- **RF-P11-047:** El sistema debe permitir cancelar la aprobación antes de aplicarla.
+- **RF-PP11-045:** El sistema debe solicitar confirmación antes de aprobar y continuar.
+- **RF-PP11-046:** El sistema debe validar la existencia de documento firmado cargado antes de confirmar.
+- **RF-PP11-047:** El sistema debe permitir cancelar la aprobación antes de aplicarla.
 
 ---
 
@@ -755,10 +764,11 @@ Sistema.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P11-048:** El sistema debe registrar las acciones relevantes de la etapa.
-- **RF-P11-049:** El sistema debe registrar la carga del documento firmado con fecha, hora y usuario.
-- **RF-P11-050:** El sistema debe registrar las decisiones de aprobación, devolución y rechazo.
-- **RF-P11-051:** El sistema debe conservar la relación entre el expediente y el archivo firmado cargado.
+- **RF-PP11-048:** El sistema debe registrar las acciones relevantes de la etapa.
+- **RF-PP11-049:** El sistema debe registrar la carga del documento firmado con fecha, hora y usuario.
+- **RF-PP11-050:** El sistema debe registrar las decisiones de aprobación, devolución y rechazo.
+- **RF-PP11-051:** El sistema debe conservar la relación entre el expediente y el archivo firmado cargado.
+* **RF-PP11-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -811,6 +821,7 @@ Sistema.
 | **RG-P11-017** | La pantalla debe diferenciar entre el PDF original enviado desde Decretación y el archivo firmado cargado. |
 | **RG-P11-018** | La pantalla no debe modificar firmantes, distribución ni contenido documental definido en Decretación. |
 | **RG-P11-019** | La pantalla no debe incorporar la acción Salir sin guardar. |
+| **RG-PP11-020** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

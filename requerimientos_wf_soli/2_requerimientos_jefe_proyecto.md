@@ -155,8 +155,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-001:** El sistema debe mostrar el código único de la solicitud.
-* **RF-P02-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo cuando aplique.
+* **RF-PP02-001:** El sistema debe mostrar el código único de la solicitud.
+* **RF-PP02-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo cuando aplique.
 
 ---
 
@@ -186,8 +186,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-003:** El sistema debe mostrar el estado actual de la solicitud.
-* **RF-P02-004:** El sistema debe identificar que la solicitud se encuentra en revisión del Jefe de Proyecto.
+* **RF-PP02-003:** El sistema debe mostrar el estado actual de la solicitud.
+* **RF-PP02-004:** El sistema debe identificar que la solicitud se encuentra en revisión del Jefe de Proyecto.
 
 ---
 
@@ -218,9 +218,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-005:** El sistema debe mostrar el nombre del Solicitante que generó la solicitud.
-* **RF-P02-006:** El sistema debe mostrar la fecha de creación de la solicitud.
-* **RF-P02-007:** El sistema debe mostrar la fecha de envío a revisión cuando esté disponible.
+* **RF-PP02-005:** El sistema debe mostrar el nombre del Solicitante que generó la solicitud.
+* **RF-PP02-006:** El sistema debe mostrar la fecha de creación de la solicitud.
+* **RF-PP02-007:** El sistema debe mostrar la fecha de envío a revisión cuando esté disponible.
 
 ---
 
@@ -256,11 +256,11 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-008:** El sistema debe mostrar el Centro de Costo asociado.
-* **RF-P02-009:** El sistema debe mostrar el tipo de fondo o financiamiento.
-* **RF-P02-010:** El sistema debe mostrar el periodo general de la prestación.
-* **RF-P02-011:** El sistema debe mostrar el monto total de la solicitud.
-* **RF-P02-012:** El sistema debe mostrar la cantidad de funcionarios incorporados.
+* **RF-PP02-008:** El sistema debe mostrar el Centro de Costo asociado.
+* **RF-PP02-009:** El sistema debe mostrar el tipo de fondo o financiamiento.
+* **RF-PP02-010:** El sistema debe mostrar el periodo general de la prestación.
+* **RF-PP02-011:** El sistema debe mostrar el monto total de la solicitud.
+* **RF-PP02-012:** El sistema debe mostrar la cantidad de funcionarios incorporados.
 
 ---
 
@@ -299,9 +299,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-013:** El sistema debe mostrar todos los datos del Centro de Costo seleccionados en la solicitud.
-* **RF-P02-014:** El sistema debe mostrar el estado de las validaciones aplicadas al Centro de Costo.
-* **RF-P02-015:** El sistema debe mostrar las alertas informativas no bloqueantes registradas durante la creación de la solicitud.
+* **RF-PP02-013:** El sistema debe mostrar todos los datos del Centro de Costo seleccionados en la solicitud.
+* **RF-PP02-014:** El sistema debe mostrar el estado de las validaciones aplicadas al Centro de Costo.
+* **RF-PP02-015:** El sistema debe mostrar las alertas informativas no bloqueantes registradas durante la creación de la solicitud.
 
 ---
 
@@ -335,10 +335,10 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-016:** El sistema debe mostrar el nombre del proyecto.
-* **RF-P02-017:** El sistema debe mostrar la unidad ejecutora asociada.
-* **RF-P02-018:** El sistema debe mostrar el RUT y nombre del Jefe de Proyecto registrado.
-* **RF-P02-019:** El sistema debe mostrar el decreto afecto y tipo de financiamiento.
+* **RF-PP02-016:** El sistema debe mostrar el nombre del proyecto.
+* **RF-PP02-017:** El sistema debe mostrar la unidad ejecutora asociada.
+* **RF-PP02-018:** El sistema debe mostrar el RUT y nombre del Jefe de Proyecto registrado.
+* **RF-PP02-019:** El sistema debe mostrar el decreto afecto y tipo de financiamiento.
 
 ---
 
@@ -369,7 +369,7 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-020:** El sistema debe mostrar la descripción general de la actividad de la PDS.
+* **RF-PP02-020:** El sistema debe mostrar la descripción general de la actividad de la PDS.
 
 ---
 
@@ -401,8 +401,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-021:** El sistema debe mostrar todos los tipos de prestación seleccionados.
-* **RF-P02-022:** El sistema debe mostrar la descripción complementaria cuando se haya seleccionado la opción “Otro”.
+* **RF-PP02-021:** El sistema debe mostrar todos los tipos de prestación seleccionados.
+* **RF-PP02-022:** El sistema debe mostrar la descripción complementaria cuando se haya seleccionado la opción “Otro”.
 
 ---
 
@@ -439,9 +439,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-023:** El sistema debe mostrar las evidencias seleccionadas en la solicitud.
-* **RF-P02-024:** El sistema debe mostrar la fecha estimada de entrega asociada a cada evidencia.
-* **RF-P02-025:** El sistema debe mostrar el detalle ingresado para evidencias de tipo “Otra”.
+* **RF-PP02-023:** El sistema debe mostrar las evidencias seleccionadas en la solicitud.
+* **RF-PP02-024:** El sistema debe mostrar la fecha estimada de entrega asociada a cada evidencia.
+* **RF-PP02-025:** El sistema debe mostrar el detalle ingresado para evidencias de tipo “Otra”.
 
 ---
 
@@ -480,9 +480,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-026:** El sistema debe mostrar la nómina de funcionarios asociados a la solicitud.
-* **RF-P02-027:** El sistema debe mostrar para cada funcionario su identificación, perfil general, temporalidad y montos principales.
-* **RF-P02-028:** El sistema no debe permitir modificar la nómina desde esta pantalla.
+* **RF-PP02-026:** El sistema debe mostrar la nómina de funcionarios asociados a la solicitud.
+* **RF-PP02-027:** El sistema debe mostrar para cada funcionario su identificación, perfil general, temporalidad y montos principales.
+* **RF-PP02-028:** El sistema no debe permitir modificar la nómina desde esta pantalla.
 
 ---
 
@@ -523,9 +523,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-029:** El sistema debe mostrar los antecedentes identificatorios y laborales del funcionario.
-* **RF-P02-030:** El sistema debe mostrar el contrato vigente seleccionado para la solicitud.
-* **RF-P02-031:** El sistema debe mostrar los datos contractuales utilizados en validaciones normativas y económicas.
+* **RF-PP02-029:** El sistema debe mostrar los antecedentes identificatorios y laborales del funcionario.
+* **RF-PP02-030:** El sistema debe mostrar el contrato vigente seleccionado para la solicitud.
+* **RF-PP02-031:** El sistema debe mostrar los datos contractuales utilizados en validaciones normativas y económicas.
 
 ---
 
@@ -553,7 +553,7 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-032:** El sistema debe mostrar la actividad específica registrada para cada funcionario.
+* **RF-PP02-032:** El sistema debe mostrar la actividad específica registrada para cada funcionario.
 
 ---
 
@@ -592,9 +592,9 @@ Cada validación debería mostrar:
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-033:** El sistema debe mostrar el resultado de las validaciones normativas ejecutadas por funcionario.
-* **RF-P02-034:** El sistema debe distinguir visualmente validaciones cumplidas, alertas e incumplimientos.
-* **RF-P02-035:** El sistema debe mostrar el detalle asociado a cada validación cuando esté disponible.
+* **RF-PP02-033:** El sistema debe mostrar el resultado de las validaciones normativas ejecutadas por funcionario.
+* **RF-PP02-034:** El sistema debe distinguir visualmente validaciones cumplidas, alertas e incumplimientos.
+* **RF-PP02-035:** El sistema debe mostrar el detalle asociado a cada validación cuando esté disponible.
 
 ---
 
@@ -638,10 +638,10 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-036:** El sistema debe mostrar el monto bruto mensual y total de cada funcionario.
-* **RF-P02-037:** El sistema debe mostrar el tope económico aplicable y la regla utilizada.
-* **RF-P02-038:** El sistema debe mostrar el porcentaje de uso del tope.
-* **RF-P02-039:** El sistema debe mostrar los antecedentes acumulados o prestaciones previas utilizados en el cálculo, cuando corresponda.
+* **RF-PP02-036:** El sistema debe mostrar el monto bruto mensual y total de cada funcionario.
+* **RF-PP02-037:** El sistema debe mostrar el tope económico aplicable y la regla utilizada.
+* **RF-PP02-038:** El sistema debe mostrar el porcentaje de uso del tope.
+* **RF-PP02-039:** El sistema debe mostrar los antecedentes acumulados o prestaciones previas utilizados en el cálculo, cuando corresponda.
 
 ---
 
@@ -673,7 +673,7 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-040:** El sistema debe mostrar si la actividad se realizará dentro o fuera de jornada.
+* **RF-PP02-040:** El sistema debe mostrar si la actividad se realizará dentro o fuera de jornada.
 
 ---
 
@@ -704,8 +704,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-041:** El sistema debe mostrar la condición SEA asociada al funcionario académico cuando corresponda.
-* **RF-P02-042:** El sistema debe mostrar si la condición SEA eliminó o mantuvo la exigencia de compensación horaria.
+* **RF-PP02-041:** El sistema debe mostrar la condición SEA asociada al funcionario académico cuando corresponda.
+* **RF-PP02-042:** El sistema debe mostrar si la condición SEA eliminó o mantuvo la exigencia de compensación horaria.
 
 ---
 
@@ -737,8 +737,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-043:** El sistema debe mostrar la tabla de compensación horaria por funcionario cuando corresponda.
-* **RF-P02-044:** El sistema debe mostrar el resultado de la validación de límite diario de horas.
+* **RF-PP02-043:** El sistema debe mostrar la tabla de compensación horaria por funcionario cuando corresponda.
+* **RF-PP02-044:** El sistema debe mostrar el resultado de la validación de límite diario de horas.
 
 ---
 
@@ -779,9 +779,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-045:** El sistema debe mostrar el historial de prestaciones previas del funcionario cuando exista.
-* **RF-P02-046:** El sistema debe informar cuando no existan prestaciones previas.
-* **RF-P02-047:** El sistema debe identificar si el historial fue utilizado para cálculos o validaciones de la solicitud actual.
+* **RF-PP02-045:** El sistema debe mostrar el historial de prestaciones previas del funcionario cuando exista.
+* **RF-PP02-046:** El sistema debe informar cuando no existan prestaciones previas.
+* **RF-PP02-047:** El sistema debe identificar si el historial fue utilizado para cálculos o validaciones de la solicitud actual.
 
 ---
 
@@ -825,8 +825,8 @@ Se recomienda una matriz o checklist de cumplimiento con:
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-048:** El sistema debe mostrar un resumen consolidado de validaciones ejecutadas en la etapa anterior.
-* **RF-P02-049:** El sistema debe distinguir validaciones cumplidas, no aplicables y alertas informativas.
+* **RF-PP02-048:** El sistema debe mostrar un resumen consolidado de validaciones ejecutadas en la etapa anterior.
+* **RF-PP02-049:** El sistema debe distinguir validaciones cumplidas, no aplicables y alertas informativas.
 
 ---
 
@@ -862,9 +862,9 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-050:** El sistema debe permitir aprobar la solicitud desde la pantalla del Jefe de Proyecto.
-* **RF-P02-051:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora/ acorde alo definido en el proyecto.
-* **RF-P02-052:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo que es Jefatura Directa o Direccion de Departamento.
+* **RF-PP02-050:** El sistema debe permitir aprobar la solicitud desde la pantalla del Jefe de Proyecto.
+* **RF-PP02-051:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora/ acorde alo definido en el proyecto.
+* **RF-PP02-052:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo que es Jefatura Directa o Direccion de Departamento.
 
 ---
 
@@ -892,6 +892,9 @@ Jefe de Proyecto.
 * La solicitud debe cambiar a un estado equivalente a **Devuelta al Solicitante para corrección**.
 * El flujo debe retornar a la Pantalla y estado de solicitud, permitiendo al Solicitante editar la solicitud.
 * Los comentarios deben quedar visibles para el Solicitante y almacenados en la trazabilidad.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefe de Proyecto), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -899,11 +902,13 @@ Jefe de Proyecto.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P02-053:** El sistema debe permitir devolver la solicitud al Solicitante.
-* **RF-P02-054:** El sistema debe exigir comentario obligatorio al devolver.
-* **RF-P02-055:** El sistema debe registrar la devolución con datos adicionales definido en el proyecto.
-* **RF-P02-056:** El sistema debe cambiar el estado de la solicitud a devuelta para corrección.
-* **RF-P02-057:** El sistema debe habilitar nuevamente la edición al Solicitante una vez devuelta.
+* **RF-PP02-053:** El sistema debe permitir devolver la solicitud al Solicitante.
+* **RF-PP02-054:** El sistema debe exigir comentario obligatorio al devolver.
+* **RF-PP02-055:** El sistema debe registrar la devolución con datos adicionales definido en el proyecto.
+* **RF-PP02-056:** El sistema debe cambiar el estado de la solicitud a devuelta para corrección.
+* **RF-PP02-057:** El sistema debe habilitar nuevamente la edición al Solicitante una vez devuelta.
+* **RF-PP02-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones técnicas y comentarios correspondientes.
+* **RF-PP02-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -932,6 +937,9 @@ Jefe de Proyecto.
 * La solicitud no debe continuar a etapas posteriores del flujo.
 * El motivo de rechazo debe quedar registrado en la trazabilidad.
 * Debe definirse si el Solicitante solo visualiza el rechazo o si puede clonar la solicitud en un nuevo expediente; esta definición corresponde a una decisión funcional posterior.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Jefe de Proyecto), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones técnicas), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -939,10 +947,11 @@ Jefe de Proyecto.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P02-058:** El sistema debe permitir rechazar definitivamente la solicitud.
-* **RF-P02-059:** El sistema debe exigir comentario obligatorio al rechazar.
-* **RF-P02-060:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
-* **RF-P02-061:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP02-058:** El sistema debe permitir rechazar definitivamente la solicitud.
+* **RF-PP02-059:** El sistema debe exigir comentario obligatorio al rechazar.
+* **RF-PP02-060:** El sistema debe registrar el rechazo con usuario, rol, fecha, hora y comentario.
+* **RF-PP02-061:** El sistema debe cerrar la continuidad del flujo para solicitudes rechazadas en esta etapa.
+* **RF-PP02-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -975,8 +984,8 @@ Jefe de Proyecto.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P02-062:** El sistema debe solicitar confirmación antes de ejecutar una decisión de visación.
-* **RF-P02-063:** El sistema debe permitir cancelar la acción antes de confirmar.
+* **RF-PP02-062:** El sistema debe solicitar confirmación antes de ejecutar una decisión de visación.
+* **RF-PP02-063:** El sistema debe permitir cancelar la acción antes de confirmar.
 
 ---
 
@@ -995,18 +1004,21 @@ Sistema.
 *   **Temporalidad**: Fecha y hora exacta del servidor.
 *   **Comentario**: Observación técnica ingresada (obligatoria en Devolución/Rechazo).
 *   **Transición**: Estado anterior y Estado resultante del expediente.
+*   **Envío de Correo**: Confirmación del envío del correo electrónico de notificación (devolución o rechazo) con fecha, hora y destinatario.
 
 ### D. Reglas de negocio
 *   **Integridad del PDS**: La información técnica y económica de la prestación (montos, meses, funcionarios) guardada en la Pantalla 01 **no debe ser modificada** por este proceso; solo se actualiza el estado del flujo.
 *   **Expediente Digital**: El registro debe ser persistente y quedar disponible para la consulta de todos los aprobadores posteriores (Etapas 03 a 15).
 *   **Obligatoriedad**: No se puede cambiar el estado de la solicitud en la base de datos sin generar simultáneamente el registro de trazabilidad.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 **HU-P02-24**: Como **Sistema**, debo registrar la decisión del Jefe de Proyecto en el historial de estados, para garantizar la transparencia y auditabilidad de la tramitación sin alterar los datos de origen de la prestación.
 
 ### F. Requerimientos funcionales preliminares
-*   **RF-P02-064**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
-*   **RF-P02-065**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+*   **RF-PP02-064**: El sistema debe insertar un registro en la tabla de historial cada vez que se modifique el estado de la solicitud en esta etapa.
+*   **RF-PP02-065**: El registro de trazabilidad debe capturar el estado anterior, el nuevo estado, el usuario, la fecha, la hora y el comentario asociado, manteniendo la integridad de los datos de la PDS.
+* **RF-PP02-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1033,6 +1045,7 @@ Sistema.
 | RG-P02-007 | La solicitud devuelta debe reabrirse para edición del Solicitante.                                      |
 | RG-P02-008 | La solicitud rechazada no debe avanzar a etapas posteriores.                                            |
 | RG-P02-009 | La solicitud aprobada debe pasar a la etapa siguiente de visación.                                      |
+| **RG-PP02-010** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

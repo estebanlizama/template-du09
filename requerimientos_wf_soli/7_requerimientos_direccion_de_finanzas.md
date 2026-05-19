@@ -305,8 +305,8 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-001:** El sistema debe mostrar el código único de la solicitud.
-- **RF-P07-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo.
+- **RF-PP07-001:** El sistema debe mostrar el código único de la solicitud.
+- **RF-PP07-002:** El sistema debe indicar que la solicitud corresponde al flujo PDS Normativo.
 
 ---
 
@@ -337,8 +337,8 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-003:** El sistema debe mostrar el estado actual de revisión por Dirección de Finanzas.
-- **RF-P07-004:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
+- **RF-PP07-003:** El sistema debe mostrar el estado actual de revisión por Dirección de Finanzas.
+- **RF-PP07-004:** El sistema debe mostrar la fecha de ingreso de la solicitud a esta etapa.
 
 ---
 
@@ -382,9 +382,9 @@ Por cada etapa previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-005:** El sistema debe mostrar cronológicamente las decisiones registradas antes de Dirección de Finanzas.
-- **RF-P07-006:** El sistema debe mostrar usuario, rol, acción, fecha, hora y comentario cuando corresponda.
-- **RF-P07-007:** El sistema debe incorporar en la trazabilidad las exclusiones realizadas por DGDP, la revisión de Finanzas de Facultad y la decisión de Decanato.
+- **RF-PP07-005:** El sistema debe mostrar cronológicamente las decisiones registradas antes de Dirección de Finanzas.
+- **RF-PP07-006:** El sistema debe mostrar usuario, rol, acción, fecha, hora y comentario cuando corresponda.
+- **RF-PP07-007:** El sistema debe incorporar en la trazabilidad las exclusiones realizadas por DGDP, la revisión de Finanzas de Facultad y la decisión de Decanato.
 
 ---
 
@@ -415,8 +415,8 @@ Dirección de Finanzas.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P07-008:** El sistema debe mostrar una línea de avance del expediente.
-- **RF-P07-009:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
+- **RF-PP07-008:** El sistema debe mostrar una línea de avance del expediente.
+- **RF-PP07-009:** El sistema debe diferenciar etapas cumplidas, etapa actual y etapas pendientes.
 
 ---
 
@@ -459,10 +459,10 @@ Por cada funcionario excluido:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-010:** El sistema debe mostrar los funcionarios excluidos por DGDP.
-- **RF-P07-011:** El sistema debe mostrar el motivo resumido de cada exclusión.
-- **RF-P07-012:** El sistema debe mostrar el monto excluido asociado a cada funcionario, cuando corresponda.
-- **RF-P07-013:** El sistema no debe permitir modificar las exclusiones previas desde esta pantalla.
+- **RF-PP07-010:** El sistema debe mostrar los funcionarios excluidos por DGDP.
+- **RF-PP07-011:** El sistema debe mostrar el motivo resumido de cada exclusión.
+- **RF-PP07-012:** El sistema debe mostrar el monto excluido asociado a cada funcionario, cuando corresponda.
+- **RF-PP07-013:** El sistema no debe permitir modificar las exclusiones previas desde esta pantalla.
 
 ---
 
@@ -509,11 +509,11 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-014:** El sistema debe mostrar el monto original de la solicitud.
-- **RF-P07-015:** El sistema debe mostrar el monto vigente posterior a exclusiones previas.
-- **RF-P07-016:** El sistema debe mostrar la cantidad de funcionarios originales, excluidos y vigentes.
-- **RF-P07-017:** El sistema debe mostrar el saldo disponible general del Centro de Costo.
-- **RF-P07-018:** El sistema debe mostrar el resultado consolidado de DGDP, Finanzas de Facultad y Decanato.
+- **RF-PP07-014:** El sistema debe mostrar el monto original de la solicitud.
+- **RF-PP07-015:** El sistema debe mostrar el monto vigente posterior a exclusiones previas.
+- **RF-PP07-016:** El sistema debe mostrar la cantidad de funcionarios originales, excluidos y vigentes.
+- **RF-PP07-017:** El sistema debe mostrar el saldo disponible general del Centro de Costo.
+- **RF-PP07-018:** El sistema debe mostrar el resultado consolidado de DGDP, Finanzas de Facultad y Decanato.
 
 ---
 
@@ -557,9 +557,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-019:** El sistema debe mostrar los datos financieros y administrativos del Centro de Costo.
-- **RF-P07-020:** El sistema debe mostrar el saldo disponible general y el monto comprometido por la solicitud.
-- **RF-P07-021:** El sistema debe vincular la información del Centro de Costo con sus ítems presupuestarios asociados.
+- **RF-PP07-019:** El sistema debe mostrar los datos financieros y administrativos del Centro de Costo.
+- **RF-PP07-020:** El sistema debe mostrar el saldo disponible general y el monto comprometido por la solicitud.
+- **RF-PP07-021:** El sistema debe vincular la información del Centro de Costo con sus ítems presupuestarios asociados.
 
 ---
 
@@ -610,11 +610,11 @@ Por cada ítem presupuestario:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-022:** El sistema debe mostrar una tabla de ítems presupuestarios asociados al Centro de Costo.
-- **RF-P07-023:** El sistema debe mostrar el cargo, estamento o categoría relacionada con cada ítem.
-- **RF-P07-024:** El sistema debe mostrar presupuesto asignado, monto comprometido, saldo disponible, monto solicitado y saldo proyectado por ítem.
-- **RF-P07-025:** El sistema debe mostrar el estado de suficiencia presupuestaria por ítem.
-- **RF-P07-026:** El sistema no debe permitir modificar los datos presupuestarios desde la vista de Dirección de Finanzas.
+- **RF-PP07-022:** El sistema debe mostrar una tabla de ítems presupuestarios asociados al Centro de Costo.
+- **RF-PP07-023:** El sistema debe mostrar el cargo, estamento o categoría relacionada con cada ítem.
+- **RF-PP07-024:** El sistema debe mostrar presupuesto asignado, monto comprometido, saldo disponible, monto solicitado y saldo proyectado por ítem.
+- **RF-PP07-025:** El sistema debe mostrar el estado de suficiencia presupuestaria por ítem.
+- **RF-PP07-026:** El sistema no debe permitir modificar los datos presupuestarios desde la vista de Dirección de Finanzas.
 
 ---
 
@@ -653,10 +653,10 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-027:** El sistema debe mostrar la descripción general de la actividad.
-- **RF-P07-028:** El sistema debe mostrar la justificación técnica de la necesidad.
-- **RF-P07-029:** El sistema debe mostrar los tipos de prestación seleccionados.
-- **RF-P07-030:** El sistema debe mostrar las evidencias comprometidas y sus fechas estimadas.
+- **RF-PP07-027:** El sistema debe mostrar la descripción general de la actividad.
+- **RF-PP07-028:** El sistema debe mostrar la justificación técnica de la necesidad.
+- **RF-PP07-029:** El sistema debe mostrar los tipos de prestación seleccionados.
+- **RF-PP07-030:** El sistema debe mostrar las evidencias comprometidas y sus fechas estimadas.
 
 ---
 
@@ -699,10 +699,10 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-031:** El sistema debe mostrar la nómina de funcionarios vigentes posterior a las etapas previas.
-- **RF-P07-032:** El sistema debe mostrar el estado DGDP de cada funcionario.
-- **RF-P07-033:** El sistema debe mostrar el estado financiero registrado por Finanzas de Facultad cuando corresponda.
-- **RF-P07-034:** El sistema debe mostrar el ítem presupuestario asociado y el estado de suficiencia presupuestaria por funcionario.
+- **RF-PP07-031:** El sistema debe mostrar la nómina de funcionarios vigentes posterior a las etapas previas.
+- **RF-PP07-032:** El sistema debe mostrar el estado DGDP de cada funcionario.
+- **RF-PP07-033:** El sistema debe mostrar el estado financiero registrado por Finanzas de Facultad cuando corresponda.
+- **RF-PP07-034:** El sistema debe mostrar el ítem presupuestario asociado y el estado de suficiencia presupuestaria por funcionario.
 
 ---
 
@@ -744,9 +744,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-035:** El sistema debe permitir seleccionar o cambiar entre funcionarios vigentes de la solicitud.
-- **RF-P07-036:** El sistema debe actualizar la información visible según el funcionario seleccionado.
-- **RF-P07-037:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
+- **RF-PP07-035:** El sistema debe permitir seleccionar o cambiar entre funcionarios vigentes de la solicitud.
+- **RF-PP07-036:** El sistema debe actualizar la información visible según el funcionario seleccionado.
+- **RF-PP07-037:** El sistema debe mantener visible la identidad del funcionario actualmente revisado.
 
 ---
 
@@ -790,11 +790,11 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-038:** El sistema debe mostrar la ficha laboral resumida de cada funcionario vigente.
-- **RF-P07-039:** El sistema debe identificar el contrato seleccionado para la PDS.
-- **RF-P07-040:** El sistema debe mostrar la cantidad de contratos vigentes cuando esta información esté disponible.
-- **RF-P07-041:** El sistema debe mostrar el ítem presupuestario asociado al funcionario.
-- **RF-P07-042:** El sistema debe mostrar los estados DGDP y Finanzas de Facultad como antecedentes de solo lectura.
+- **RF-PP07-038:** El sistema debe mostrar la ficha laboral resumida de cada funcionario vigente.
+- **RF-PP07-039:** El sistema debe identificar el contrato seleccionado para la PDS.
+- **RF-PP07-040:** El sistema debe mostrar la cantidad de contratos vigentes cuando esta información esté disponible.
+- **RF-PP07-041:** El sistema debe mostrar el ítem presupuestario asociado al funcionario.
+- **RF-PP07-042:** El sistema debe mostrar los estados DGDP y Finanzas de Facultad como antecedentes de solo lectura.
 
 ---
 
@@ -836,11 +836,11 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-043:** El sistema debe mostrar las prestaciones solicitadas por funcionario.
-- **RF-P07-044:** El sistema debe mostrar actividad específica y descripción de actividad asociadas a cada prestación.
-- **RF-P07-045:** El sistema debe mostrar meses de pago y total comprometido por prestación.
-- **RF-P07-046:** El sistema debe mostrar total en jornada, total fuera de jornada y total de compensación horaria por prestación.
-- **RF-P07-047:** El sistema debe mostrar el ítem presupuestario asociado a cada prestación.
+- **RF-PP07-043:** El sistema debe mostrar las prestaciones solicitadas por funcionario.
+- **RF-PP07-044:** El sistema debe mostrar actividad específica y descripción de actividad asociadas a cada prestación.
+- **RF-PP07-045:** El sistema debe mostrar meses de pago y total comprometido por prestación.
+- **RF-PP07-046:** El sistema debe mostrar total en jornada, total fuera de jornada y total de compensación horaria por prestación.
+- **RF-PP07-047:** El sistema debe mostrar el ítem presupuestario asociado a cada prestación.
 
 ---
 
@@ -880,9 +880,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-048:** El sistema debe mostrar la lista de contratos vigentes del funcionario.
-- **RF-P07-049:** El sistema debe distinguir el contrato seleccionado para la PDS.
-- **RF-P07-050:** El sistema debe mostrar, por contrato, descripción de actividad, meses de pago, total comprometido, total en jornada, total fuera de jornada, total compensación horaria y SEA.
+- **RF-PP07-048:** El sistema debe mostrar la lista de contratos vigentes del funcionario.
+- **RF-PP07-049:** El sistema debe distinguir el contrato seleccionado para la PDS.
+- **RF-PP07-050:** El sistema debe mostrar, por contrato, descripción de actividad, meses de pago, total comprometido, total en jornada, total fuera de jornada, total compensación horaria y SEA.
 
 ---
 
@@ -923,9 +923,9 @@ Por cada prestación previa:
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-051:** El sistema debe mostrar el historial de PDS previas por funcionario.
-- **RF-P07-052:** El sistema debe informar cuando no existan PDS previas registradas.
-- **RF-P07-053:** El sistema debe permitir identificar la relación entre las PDS previas y la solicitud actual cuando corresponda.
+- **RF-PP07-051:** El sistema debe mostrar el historial de PDS previas por funcionario.
+- **RF-PP07-052:** El sistema debe informar cuando no existan PDS previas registradas.
+- **RF-PP07-053:** El sistema debe permitir identificar la relación entre las PDS previas y la solicitud actual cuando corresponda.
 
 ---
 
@@ -955,9 +955,9 @@ Dirección de Finanzas.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P07-054:** El sistema debe mostrar un resumen consolidado del historial financiero por funcionario.
-- **RF-P07-055:** El sistema debe mostrar acumulados y cantidades relevantes para la revisión central.
-- **RF-P07-056:** El sistema debe mostrar el total comprometido actual dentro de la solicitud.
+- **RF-PP07-054:** El sistema debe mostrar un resumen consolidado del historial financiero por funcionario.
+- **RF-PP07-055:** El sistema debe mostrar acumulados y cantidades relevantes para la revisión central.
+- **RF-PP07-056:** El sistema debe mostrar el total comprometido actual dentro de la solicitud.
 
 ---
 
@@ -990,9 +990,9 @@ Dirección de Finanzas.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P07-057:** El sistema debe mostrar el historial de pagos por funcionario.
-- **RF-P07-058:** El sistema debe mostrar montos brutos, netos y acumulados cuando se encuentren disponibles.
-- **RF-P07-059:** El sistema debe indicar el estado de cada pago registrado.
+- **RF-PP07-057:** El sistema debe mostrar el historial de pagos por funcionario.
+- **RF-PP07-058:** El sistema debe mostrar montos brutos, netos y acumulados cuando se encuentren disponibles.
+- **RF-PP07-059:** El sistema debe indicar el estado de cada pago registrado.
 
 ---
 
@@ -1031,9 +1031,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-060:** El sistema debe mostrar el estado DGDP de cada funcionario.
-- **RF-P07-061:** El sistema debe mostrar de forma resumida los resultados normativos relevantes previamente registrados.
-- **RF-P07-062:** El sistema no debe permitir modificar las validaciones heredadas desde DGDP.
+- **RF-PP07-060:** El sistema debe mostrar el estado DGDP de cada funcionario.
+- **RF-PP07-061:** El sistema debe mostrar de forma resumida los resultados normativos relevantes previamente registrados.
+- **RF-PP07-062:** El sistema no debe permitir modificar las validaciones heredadas desde DGDP.
 
 ---
 
@@ -1072,9 +1072,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-063:** El sistema debe mostrar el resultado financiero registrado por Finanzas de Facultad para cada funcionario, cuando corresponda.
-- **RF-P07-064:** El sistema debe mostrar comentarios u observaciones financieras asociadas, cuando existan.
-- **RF-P07-065:** El sistema no debe permitir modificar las decisiones financieras emitidas por Finanzas de Facultad.
+- **RF-PP07-063:** El sistema debe mostrar el resultado financiero registrado por Finanzas de Facultad para cada funcionario, cuando corresponda.
+- **RF-PP07-064:** El sistema debe mostrar comentarios u observaciones financieras asociadas, cuando existan.
+- **RF-PP07-065:** El sistema no debe permitir modificar las decisiones financieras emitidas por Finanzas de Facultad.
 
 ---
 
@@ -1110,10 +1110,10 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-066:** El sistema debe mostrar el estado de visación de Decanato.
-- **RF-P07-067:** El sistema debe mostrar usuario, fecha y hora de la decisión del Decano/a.
-- **RF-P07-068:** El sistema debe mostrar comentarios asociados a la decisión de Decanato cuando existan.
-- **RF-P07-069:** El sistema no debe permitir modificar la decisión de Decanato desde la vista de Dirección de Finanzas.
+- **RF-PP07-066:** El sistema debe mostrar el estado de visación de Decanato.
+- **RF-PP07-067:** El sistema debe mostrar usuario, fecha y hora de la decisión del Decano/a.
+- **RF-PP07-068:** El sistema debe mostrar comentarios asociados a la decisión de Decanato cuando existan.
+- **RF-PP07-069:** El sistema no debe permitir modificar la decisión de Decanato desde la vista de Dirección de Finanzas.
 
 ---
 
@@ -1155,9 +1155,9 @@ Dirección de Finanzas.
 
 ### E. Requerimientos funcionales preliminares
 
-- **RF-P07-070:** El sistema debe mostrar un resumen global del expediente previo a la decisión de Dirección de Finanzas.
-- **RF-P07-071:** El sistema debe integrar montos, funcionarios, estados DGDP, resultados de Finanzas de Facultad, decisión de Decanato e ítems presupuestarios.
-- **RF-P07-072:** El sistema debe mostrar alertas u observaciones previas relevantes para la decisión.
+- **RF-PP07-070:** El sistema debe mostrar un resumen global del expediente previo a la decisión de Dirección de Finanzas.
+- **RF-PP07-071:** El sistema debe integrar montos, funcionarios, estados DGDP, resultados de Finanzas de Facultad, decisión de Decanato e ítems presupuestarios.
+- **RF-PP07-072:** El sistema debe mostrar alertas u observaciones previas relevantes para la decisión.
 
 ---
 
@@ -1193,9 +1193,9 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-073:** El sistema debe permitir aprobar la solicitud desde la vista de Dirección de Finanzas.
-- **RF-P07-074:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
-- **RF-P07-075:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo.
+- **RF-PP07-073:** El sistema debe permitir aprobar la solicitud desde la vista de Dirección de Finanzas.
+- **RF-PP07-074:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora.
+- **RF-PP07-075:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo.
 
 ---
 
@@ -1224,6 +1224,9 @@ Dirección de Finanzas.
 - La solicitud debe volver al Solicitante para revisión o corrección.
 - Los comentarios deben quedar visibles en la trazabilidad.
 - La devolución debe gestionarse mediante un **modal global único**.
+* **Notificación de Devolución**: Toda devolución con comentario por observaciones debe generar el envío automático de un correo electrónico al Solicitante para avisar que se generaron observaciones que requieren revisión y corrección.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Dirección de Finanzas), acción ejecutada (Devolución con comentarios), observaciones ingresadas, fecha/hora y la instrucción correspondiente de corrección.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1231,11 +1234,13 @@ Dirección de Finanzas.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P07-076:** El sistema debe permitir devolver con corrección la solicitud al Solicitante.
-- **RF-P07-077:** El sistema debe exigir comentario obligatorio para ejecutar esta acción.
-- **RF-P07-078:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
-- **RF-P07-079:** El sistema debe dejar visible la observación al Solicitante.
-- **RF-P07-080:** El sistema debe ejecutar la devolución mediante un modal global único.
+- **RF-PP07-076:** El sistema debe permitir devolver con corrección la solicitud al Solicitante.
+- **RF-PP07-077:** El sistema debe exigir comentario obligatorio para ejecutar esta acción.
+- **RF-PP07-078:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
+- **RF-PP07-079:** El sistema debe dejar visible la observación al Solicitante.
+- **RF-PP07-080:** El sistema debe ejecutar la devolución mediante un modal global único.
+* **RF-PP07-TEMP_DEV1**: El sistema debe generar y enviar de forma automática un correo electrónico al Solicitante al registrar la devolución de la solicitud, incluyendo las causales o observaciones de imputación contable o disponibilidad presupuestaria central y comentarios correspondientes.
+* **RF-PP07-TEMP_DEV2**: El sistema debe desplegar un aviso visible (Toast o modal de éxito) confirmando la generación y envío del correo de notificación.
 
 ---
 
@@ -1264,6 +1269,9 @@ Dirección de Finanzas.
 - La solicitud no debe continuar a etapas posteriores.
 - Los comentarios deben quedar visibles en la trazabilidad.
 - El rechazo debe gestionarse mediante un **modal global único**.
+* **Notificación de Rechazo**: Todo rechazo definitivo debe notificar por correo automático al Solicitante.
+* **Contenido mínimo del correo**: Código de solicitud, etapa origen (Dirección de Finanzas), acción ejecutada (Rechazo definitivo), motivo de rechazo (observaciones de imputación contable o disponibilidad presupuestaria central), comentarios detallados, y fecha y hora de la acción.
+* **Aviso visible**: La pantalla no debe desplegar el cuerpo completo del correo, bastando con mostrar un aviso de confirmación de envío exitoso (Toast/modal).
 
 ### F. Historia de usuario preliminar
 
@@ -1271,11 +1279,12 @@ Dirección de Finanzas.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P07-081:** El sistema debe permitir rechazar la solicitud desde la pantalla de Dirección de Finanzas.
-- **RF-P07-082:** El sistema debe exigir comentario obligatorio para ejecutar el rechazo.
-- **RF-P07-083:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
-- **RF-P07-084:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
-- **RF-P07-085:** El sistema debe ejecutar el rechazo mediante un modal global único.
+- **RF-PP07-081:** El sistema debe permitir rechazar la solicitud desde la pantalla de Dirección de Finanzas.
+- **RF-PP07-082:** El sistema debe exigir comentario obligatorio para ejecutar el rechazo.
+- **RF-PP07-083:** El sistema debe registrar la decisión con usuario, rol, fecha, hora y comentario.
+- **RF-PP07-084:** El sistema debe impedir que una solicitud rechazada continúe a etapas posteriores.
+- **RF-PP07-085:** El sistema debe ejecutar el rechazo mediante un modal global único.
+* **RF-PP07-TEMP_REJ1**: El sistema debe enviar un correo automático al Solicitante al registrar el rechazo definitivo de la solicitud, informando el motivo y cierre de la misma.
 
 ---
 
@@ -1315,10 +1324,10 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-086:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
-- **RF-P07-087:** El sistema debe exigir comentario obligatorio dentro del modal.
-- **RF-P07-088:** El sistema debe permitir cancelar la acción sin modificar el estado.
-- **RF-P07-089:** El sistema debe registrar la acción confirmada en trazabilidad.
+- **RF-PP07-086:** El sistema debe utilizar un modal global único para devolución con corrección y rechazo.
+- **RF-PP07-087:** El sistema debe exigir comentario obligatorio dentro del modal.
+- **RF-PP07-088:** El sistema debe permitir cancelar la acción sin modificar el estado.
+- **RF-PP07-089:** El sistema debe registrar la acción confirmada en trazabilidad.
 
 ---
 
@@ -1344,6 +1353,7 @@ Dirección de Finanzas.
 
 - La confirmación debe permitir cancelar la acción sin modificar el estado del expediente.
 - El comentario obligatorio debe estar registrado antes de confirmar una devolución o rechazo.
+*   **Registro de Envío**: El sistema debe dejar registro del envío del correo electrónico en la trazabilidad del expediente.
 
 ### E. Historia de usuario preliminar
 
@@ -1351,9 +1361,10 @@ Dirección de Finanzas.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-P07-090:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
-- **RF-P07-091:** El sistema debe permitir cancelar la decisión antes de aplicarla.
-- **RF-P07-092:** El sistema debe validar que las condiciones de comentario obligatorio se cumplan antes de confirmar devolución o rechazo.
+- **RF-PP07-090:** El sistema debe solicitar confirmación antes de aprobar, devolver con corrección o rechazar.
+- **RF-PP07-091:** El sistema debe permitir cancelar la decisión antes de aplicarla.
+- **RF-PP07-092:** El sistema debe validar que las condiciones de comentario obligatorio se cumplan antes de confirmar devolución o rechazo.
+* **RF-PP07-TEMP_TRA1**: El sistema debe registrar en la bitácora de trazabilidad el hito de generación y envío del correo de notificación correspondiente.
 
 ---
 
@@ -1397,9 +1408,9 @@ Sistema.
 
 ### G. Requerimientos funcionales preliminares
 
-- **RF-P07-093:** El sistema debe registrar toda decisión ejecutada por Dirección de Finanzas.
-- **RF-P07-094:** El sistema debe almacenar comentario y motivo cuando corresponda.
-- **RF-P07-095:** El sistema debe dejar disponible la trazabilidad de esta etapa para los revisores posteriores.
+- **RF-PP07-093:** El sistema debe registrar toda decisión ejecutada por Dirección de Finanzas.
+- **RF-PP07-094:** El sistema debe almacenar comentario y motivo cuando corresponda.
+- **RF-PP07-095:** El sistema debe dejar disponible la trazabilidad de esta etapa para los revisores posteriores.
 
 ---
 
@@ -1446,6 +1457,7 @@ Sistema.
 | **RG-P07-027** | La devolución con corrección y el rechazo deben gestionarse mediante un **modal global único**. |
 | **RG-P07-028** | La pantalla no debe incorporar la acción **Salir sin guardar**. |
 | **RG-P07-029** | El sistema debe permitir cambiar entre funcionarios para revisar su detalle individual. |
+| **RG-PP07-030** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 
