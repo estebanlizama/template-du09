@@ -41,13 +41,13 @@ La pantalla debe permitir que el solicitante:
 1. Defina el flujo de tramitación de la solicitud.
 2. Seleccione un Centro de Costo compatible con el flujo normativo.
 3. Visualice los antecedentes asociados al proyecto y su origen presupuestario.
-4. Declare el tipo de prestación y la planificación de evidencias verificables.
+4. Declare la modalidad de prestación y la planificación de evidencias verificables.
 5. Registre la descripción general y periodo de ejecución de la actividad.
 6. Busque y seleccione al funcionario que recibirá la prestación.
 7. Visualice y valide sus antecedentes contractuales, normativos y financieros.
 8. Declare la modalidad de ejecución dentro o fuera de jornada.
 9. Registre compensación horaria cuando corresponda.
-10. Defina meses de ejecución y monto bruto mensual.
+10. Defina meses de ejecución y monto bruto total.
 11. Verifique el tope aplicable y el total de la PDS.
 12. Agregue al funcionario a la tabla de resumen de personal.
 13. Guarde la solicitud como borrador o la envíe a validación.
@@ -63,12 +63,12 @@ La Pantalla 01 debe organizarse en los siguientes bloques funcionales:
 | **P01-B01** | Selección de flujo de tramitación          | Definir si la solicitud corresponde al flujo tradicional o al flujo normativo D9.               |
 | **P01-B02** | Información de elegibilidad D9             | Informar quiénes pueden o no pueden participar en solicitudes D9.                               |
 | **P01-B03** | Contexto y origen de fondos                | Seleccionar Centro de Costo y cargar datos asociados al proyecto.                               |
-| **P01-B04** | Tipo de prestación y evidencias            | Registrar clasificación de la prestación y entregables exigibles.                               |
+| P01-B04 | Evidencias verificables                    | Registrar entregables exigibles para la etapa de pago.                                          |
 | **P01-B05** | Descripción y periodo de ejecución         | Registrar actividad general y fechas de inicio/término.                                         |
 | **P01-B06** | Búsqueda y selección de funcionario        | Localizar al funcionario que será incorporado a la PDS.                                         |
 | **P01-B07** | Validaciones preventivas del funcionario   | Revisar formación continua, inhabilidades, deudas, elegibilidad y antecedentes complementarios. |
 | **P01-B08** | Datos contractuales y actividad específica | Mostrar perfil laboral y registrar la actividad individual del funcionario.                     |
-| **P01-B09** | Modalidad de ejecución y montos            | Definir meses, monto bruto, total PDS y visualizar control de topes.                            |
+| P01-B09 | Modalidad de ejecución y montos            | Definir meses, monto bruto total, total PDS y visualizar control de topes.                      |
 | **P01-B10** | Jornada y compensación horaria             | Definir trabajo dentro/fuera de jornada y compensación si aplica.                               |
 | **P01-B11** | Agregar funcionario                        | Incorporar al funcionario validado a la solicitud.                                              |
 | **P01-B12** | Tabla resumen de funcionarios              | Visualizar los funcionarios incorporados y sus datos principales.                               |
@@ -100,6 +100,8 @@ Solicitante.
 ### C. Datos de entrada
 
 * Opción de flujo seleccionada.
+* Modalidad de prestación asociada al flujo seleccionado.
+* Identificador de modalidad de prestación (`id_modprse`), cuando corresponda.
 
 ### D. Datos o cambios que debe mostrar el sistema
 
@@ -111,6 +113,8 @@ Solicitante.
 ### E. Reglas de negocio
 
 * La solicitud debe quedar asociada a un único flujo.
+* La modalidad de prestación debe quedar registrada en la solicitud mediante el identificador vigente definido para PDS (`id_modprse`).
+* Para el flujo D9, la modalidad registrada debe corresponder al maestro vigente de modalidades de prestación (`sg_tmod`).
 * Si se selecciona D9, se deben activar exclusivamente las reglas normativas asociadas a ese flujo.
 
 ### F. Validaciones
@@ -129,6 +133,7 @@ Solicitante.
 * **RF-P01-001:** El sistema debe permitir seleccionar entre flujo Tradicional y flujo Normativo D9.
 * **RF-P01-002:** El sistema debe mostrar dinámicamente los campos y secciones del flujo seleccionado.
 * **RF-P01-003:** El sistema debe modificar la acción final de envío según el flujo activo.
+* **RF-P01-003A:** El sistema debe persistir la modalidad de prestación asociada a la solicitud.
 
 ---
 
@@ -271,6 +276,9 @@ Sistema, visible para el Solicitante.
 * Indicador de habilitación del Centro de Costo.
 * Indicador de vigencia.
 * Control presupuestario y saldo disponible.
+* Saldo disponible por ítem presupuestario asociado al cargo o clasificación del funcionario.
+* Indicador visual (Check) si corresponde a Formación Continua.
+* Tabla informativa de distribución de Ítems Directivos asociados al Centro de Costo.
 
 ### E. Reglas de negocio levantadas
 
@@ -278,11 +286,15 @@ Sistema, visible para el Solicitante.
 * Debe verificarse su vigencia.
 * Debe verificarse su habilitación.
 * Debe obtenerse el saldo disponible.
+* Debe obtenerse el saldo disponible por ítem presupuestario cuando la validación dependa del cargo, contrato o asignación del funcionario.
 * El tipo de financiamiento debe corresponder a **21 - Fondos Propios** o **44 - Terceros**, según lo definido para el flujo.
 * Debe identificarse el decreto afecto.
+* Debe identificarse si el Centro de Costo posee decreto afecto y peaje regularizado cuando corresponda.
 * Debe identificarse si corresponde a Formación Continua.
+* Los Centros de Costo deben obtenerse desde fuentes institucionales vigentes e integradas con la información financiera/resolutiva correspondiente.
 * Si el monto solicitado supera el saldo disponible, debe generarse una alerta informativa, pero esa condición no necesariamente bloquea el envío según lo previamente definido.
 * **Solo para flujo D9**: La actividad no debe corresponder a Formación Continua.
+* **TODO: pendiente ANID.** La identificación de Centros de Costo ANID queda pendiente hasta que Finanzas entregue la información normalizada que deberá consumir el sistema.
 
 ### F. Validaciones
 
@@ -295,6 +307,8 @@ Sistema, visible para el Solicitante.
 | VAL-P01-CC-05 | Tipo de financiamiento compatible             | Mostrar cumplimiento o alerta.              |
 | VAL-P01-CC-06 | Decreto afecto identificado                   | Cargar dato en formulario.                  |
 | VAL-P01-CC-07 | Formación Continua identificada               | Registrar resultado para control posterior. |
+| VAL-P01-CC-08 | Saldo por ítem presupuestario consultado      | Mostrar saldo disponible del ítem aplicable. |
+| VAL-P01-CC-09 | Decreto afecto y peaje identificado           | Mostrar dato normalizado cuando aplique.    |
 
 ### G. Historia de usuario preliminar
 
@@ -307,6 +321,8 @@ Sistema, visible para el Solicitante.
 * **RF-P01-011:** El sistema debe validar la habilitación del Centro de Costo.
 * **RF-P01-012:** El sistema debe consultar y mostrar el saldo disponible.
 * **RF-P01-013:** El sistema debe mostrar alertas cuando el Centro de Costo no cumpla reglas aplicables.
+* **RF-P01-013A:** El sistema debe consultar y mostrar el saldo disponible por ítem presupuestario cuando corresponda.
+* **RF-P01-013B:** El sistema debe consumir la información normalizada de decreto afecto, peaje y condición ANID cuando dichas fuentes estén disponibles.
 
 ---
 
@@ -332,11 +348,14 @@ Sistema, visible para el Solicitante.
 * Unidad Ejecutora.
 * Tipo de Financiamiento.
 * Decreto Afecto.
+* Condición de peaje, cuando aplique.
+* Condición ANID normalizada, cuando exista fuente oficial disponible.
 
 ### E. Reglas de negocio
 
 * Los datos deben obtenerse automáticamente desde la fuente institucional correspondiente.
 * Estos campos deben ser de solo lectura para el solicitante, salvo que el negocio defina excepciones posteriores.
+* **TODO: pendiente ANID.** La condición ANID no debe inferirse desde texto libre; debe cargarse desde la fuente normalizada que defina Finanzas.
 
 ### F. Validaciones
 
@@ -355,57 +374,46 @@ Sistema, visible para el Solicitante.
 * **RF-P01-016:** El sistema debe cargar la Unidad Ejecutora.
 * **RF-P01-017:** El sistema debe cargar el Tipo de Financiamiento.
 * **RF-P01-018:** El sistema debe cargar el Decreto Afecto.
+* **RF-P01-018A:** El sistema debe cargar la condición de peaje asociada al Centro de Costo cuando exista.
+* **RF-P01-018B:** El sistema debe cargar la condición ANID solo cuando Finanzas disponga la fuente normalizada correspondiente.
 
 ---
 
-# P01-B04 — Tipo de prestación y evidencias
-
-## Funcionalidad P01-F06 — Registrar tipo de prestación
+## Funcionalidad P01-F05b — Resolución Automática de Delegación (Backend)
 
 ### A. Descripción funcional
 
-El solicitante debe indicar el tipo de prestación asociada al proyecto.
+El sistema resuelve en el backend (Sybase/API) de manera automática si existe una delegación de responsables vigente asociada al Centro de Costo, sin requerir intervención ni visualización manual por parte del solicitante.
 
 ### B. Actor principal
 
-Solicitante.
+Sistema (Backend).
 
-### C. Datos de entrada
+### C. Datos gestionados por el sistema
 
-* Asistencia Técnica.
-* Investigación.
-* Otro, con texto descriptivo.
+* RUT de quien delega.
+* RUT del delegado.
+* RUT del usuario solicitante.
+* Centros de Costo habilitados por delegación.
+* Vigencia de la delegación.
 
 ### D. Reglas de negocio
 
-* La opción “Otro” debe habilitar un texto explicativo obligatorio.
-* Debe definirse si el modelo permite seleccionar uno o más tipos de prestación; la maqueta muestra selección múltiple.
-
-### E. Validaciones
-
-| Validación                                               | Efecto                                            |
-| -------------------------------------------------------- | ------------------------------------------------- |
-| Debe existir al menos un tipo de prestación seleccionado | Error bloqueante al agregar funcionario o enviar. |
-| Puede existir más de un tipo de prestación seleccionado  | Checkbox, permitir mas de uno                     |
-| Si se selecciona “Otro”, debe ingresarse detalle         | Error bloqueante si queda vacío.                  |
-
-### F. Historia de usuario preliminar
-
-**HU-P01-06:** Como **Solicitante**, quiero seleccionar el tipo de prestación y especificar una alternativa distinta cuando corresponda, para clasificar adecuadamente la solicitud.
-
-### G. Requerimientos funcionales preliminares
-
-* **RF-P01-019:** El sistema debe permitir una o más de seleccionar el tipo de prestación.
-* **RF-P01-020:** El sistema debe permitir registrar una prestación de tipo “Otro”.
-* **RF-P01-021:** El sistema debe exigir texto descriptivo cuando se seleccione “Otro”.
+* **No se muestra visualmente en el formulario del solicitante.**
+* El backend inyectará los datos transaccionales de la delegación automáticamente al guardar la solicitud, para dirigir las aprobaciones correspondientes en las etapas posteriores del flujo.
+* La resolución de delegación debe utilizar el RUT del usuario solicitante para determinar responsable, delegante y Centros de Costo disponibles.
+* Al guardar la solicitud debe persistirse la trazabilidad de quién recibió la delegación y de quién derivó la función.
 
 ---
+
+# P01-B04 — Evidencias verificables
+
 
 ## Funcionalidad P01-F07 — Registrar evidencias verificables
 
 ### A. Descripción funcional
 
-El solicitante debe planificar desde el inicio las evidencias que respaldarán la prestación, asociando cada evidencia seleccionada a una fecha estimada de entrega.
+El solicitante debe planificar desde el inicio las evidencias que respaldarán la prestación, asociando el tipo de evidencia requerida para la etapa de pago. Las evidencias se definen para la solicitud y deben poder quedar asociadas al funcionario incorporado a la PDS cuando corresponda. (No se requiere ingresar fecha estimada).
 
 ### B. Actor principal
 
@@ -417,33 +425,33 @@ Solicitante.
 * Informe con evidencias.
 * Base de datos entregada.
 * Otra, con descripción.
-* Fecha estimada de entrega para cada evidencia seleccionada.
 
 ### D. Reglas de negocio
 
 * Debe seleccionarse al menos una evidencia.
-* Cada evidencia seleccionada debe contar con una fecha estimada de entrega.
 * Si se selecciona “Otra”, debe ingresarse su descripción.
 * Las evidencias deben quedar asociadas a la solicitud desde su creación para ser utilizadas en etapas posteriores de control y pago.
+* En la etapa de pago, la carga documental debe habilitarse por cada tipo de evidencia solicitada al funcionario.
+* El registro de evidencia debe considerar el documento cargado, fecha/hora de creación y RUT del usuario o funcionario que sube la evidencia.
 
 ### E. Validaciones
 
 | Código         | Validación                                  | Efecto                      |
 | -------------- | ------------------------------------------- | --------------------------- |
 | VAL-P01-EVI-01 | Al menos una evidencia seleccionada         | Bloquea envío si no cumple. |
-| VAL-P01-EVI-02 | Fecha de entrega por evidencia seleccionada | Bloquea envío si falta.     |
 | VAL-P01-EVI-03 | Descripción de evidencia “Otra”             | Bloquea envío si falta.     |
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-07:** Como **Solicitante**, quiero registrar las evidencias que respaldarán la prestación y su fecha de entrega, para dejar planificado el cumplimiento documental exigido.
+**HU-P01-07:** Como **Solicitante**, quiero registrar las evidencias que respaldarán la prestación, para dejar planificado el cumplimiento documental exigido en la etapa de pago.
 
 ### G. Requerimientos funcionales preliminares
 
 * **RF-P01-022:** El sistema debe permitir seleccionar tipos de evidencia.
-* **RF-P01-023:** El sistema debe permitir ingresar fecha estimada de entrega por evidencia seleccionada.
 * **RF-P01-024:** El sistema debe exigir al menos una evidencia para el flujo D9.
 * **RF-P01-025:** El sistema debe exigir detalle cuando se seleccione la opción “Otra”.
+* **RF-P01-025A:** El sistema debe conservar la relación entre evidencias solicitadas y funcionario asociado a la PDS cuando corresponda.
+* **RF-P01-025B:** El sistema debe dejar disponible la planificación de evidencias para la etapa de pago, incluyendo referencia al documento, fecha/hora de carga y RUT de quien sube la evidencia.
 
 ---
 
@@ -491,6 +499,8 @@ Solicitante.
 
 El solicitante debe definir el periodo de ejecución de la prestación a nivel general del proyecto.
 
+Este periodo general puede representar la vigencia completa de la PDS, actividad, proyecto o convenio, incluso cuando abarque varios meses del año. No debe confundirse con los meses efectivos que se asignan a cada funcionario para pago.
+
 ### B. Actor principal
 
 Solicitante.
@@ -504,6 +514,7 @@ Solicitante.
 
 * La fecha de término no puede ser anterior a la fecha de inicio.
 * Los meses seleccionados para el pago del funcionario deben estar contenidos dentro del rango de ejecución.
+* El periodo general de la prestación no habilita por sí solo el pago de todos los meses; el límite normativo se controla a nivel de funcionario, actividad y año calendario.
 
 ### E. Validaciones
 
@@ -588,22 +599,24 @@ Sistema, visible para el Solicitante.
 
 ### C. Validaciones visibles en la maqueta
 
-* Formación Continua.
+* Parentesco (Informativo).
+* Cargos no habilitados por modalidad.
 * Inhabilidad por cargo.
 * Deudas pendientes.
 
 ### D. Reglas de negocio previamente levantadas
 
 * Si el funcionario mantiene deudas no regularizadas, no debe poder avanzar.
-* Si pertenece a un cargo inhabilitado, no debe poder incorporarse.
+* Si pertenece a un cargo inhabilitado registrado en `caex`, no debe poder incorporarse.
+* La verificación de parentesco es únicamente informativa y no determina por sí sola si se puede generar la solicitud.
 * Deben considerarse restricciones especiales para Decanos, Directores de Instituto Independiente y Académicos con funciones directivas.
 
 ### E. Validaciones requeridas
 
-| Código         | Validación                                   | Efecto esperado                                               |
+| Código         | Validación                                   | Efecto                                                        |
 | -------------- | -------------------------------------------- | ------------------------------------------------------------- |
-| VAL-P01-FUN-01 | Verificación de Formación Continua           | Bloquear o alertar según regla normativa definida.            |
-| VAL-P01-FUN-02 | Verificación de inhabilidad por cargo        | Bloquea incorporación si no cumple.                           |
+| VAL-P01-FUN-01 | Verificación de Parentesco                   | Informativo. Mostrar relaciones familiares si existen, no bloquea envío. |
+| VAL-P01-FUN-02 | Verificación de Cargos no habilitados        | Bloquea incorporación si el cargo está en `caex` para la modalidad aplicable. |
 | VAL-P01-FUN-03 | Verificación de deudas pendientes            | Bloquea incorporación y envío si no cumple.                   |
 | VAL-P01-FUN-04 | Verificación de situación de licencia médica | Debe incorporarse si forma parte de la regla normativa final. |
 | VAL-P01-FUN-05 | Verificación de permiso sin goce de sueldo   | Debe incorporarse si forma parte de la regla normativa final. |
@@ -616,13 +629,69 @@ Sistema, visible para el Solicitante.
 ### G. Requerimientos funcionales preliminares
 
 * **RF-P01-034:** El sistema debe validar si la prestación se encuentra asociada a Formación Continua.
-* **RF-P01-035:** El sistema debe validar si el funcionario presenta inhabilidad por cargo.
+* **RF-P01-035:** El sistema debe validar si el funcionario presenta inhabilidad por cargo según `caex`.
 * **RF-P01-036:** El sistema debe validar si el funcionario presenta deudas pendientes.
 * **RF-P01-037:** El sistema debe mostrar el resultado de cada validación preventiva al solicitante.
+* **RF-P01-037A:** El sistema debe mostrar parentescos detectados como antecedente informativo, sin bloquear la solicitud por este solo resultado.
 
 ---
 
-# P01-B08 — Datos contractuales y actividad específica
+# P01-B07b — Asignaciones de rol vigentes del funcionario
+
+## Funcionalidad P01-F11b — Consultar y visualizar asignaciones de rol activas
+
+### A. Descripción funcional
+
+Junto con la carga de sus contratos vigentes, el sistema debe obtener y mostrar las **asignaciones de rol vigentes** del funcionario. Una asignación de rol es una designación formal (no contractual) que le otorga al funcionario un cargo o función especial dentro de la institución, por ejemplo: Director de Departamento, Decano (s), Encargado de Unidad, etc.
+
+Esta información es relevante porque un funcionario puede tener un contrato base de tipo académico, pero estar ejerciendo actualmente un cargo directivo por asignación. En ese caso, dicha asignación directiva **invalida** su participación en la PDS, independientemente de su contrato base.
+
+### B. Actor principal
+
+Sistema, visible para el Solicitante.
+
+### C. Datos que debe mostrar el sistema
+
+| Campo | Descripción |
+| :--- | :--- |
+| Código de asignación | Identificador interno de la asignación. |
+| Tipo / Rol asignado | Descripción del cargo o función asignada (ej: Director de Departamento). |
+| Unidad / Centro | Unidad organizacional donde ejerce el rol. |
+| Vigencia desde | Fecha de inicio de la asignación. |
+| Vigencia hasta | Fecha de término (o "Indefinida"). |
+| Tipo de ítem directivo | Clasificación presupuestaria asociada al rol (30000 Directivos, 30300 Académicos, 30600 No Académicos). |
+| Estado de inhabilitación | Indicador visual: si la asignación bloquea la PDS (Inhabilitado) o no (Permitido). |
+
+### D. Reglas de negocio
+
+- Si el funcionario tiene **al menos una asignación de rol vigente de tipo directivo** (ítem 30000), queda **inhabilitado** para ser incorporado a la PDS.
+- La asignación de rol tiene precedencia sobre el contrato base: aunque el contrato sea de académico, si la asignación es directiva, el funcionario no puede participar.
+- Si el funcionario no tiene asignaciones de rol vigentes, el contrato base es el único criterio para determinar el ítem directivo.
+- Las asignaciones de tipo académico (30300) o no académico (30600) no bloquean la PDS por sí solas; se evalúan junto al resto de validaciones normativas.
+
+### E. Validaciones
+
+| Código | Validación | Efecto esperado |
+| :--- | :--- | :--- |
+| **VAL-P01-ASIG-01** | Funcionario tiene asignación de rol directivo (ítem 30000) vigente. | Bloquea la incorporación a la PDS. Muestra alerta roja con el nombre del cargo asignado. |
+| **VAL-P01-ASIG-02** | Funcionario no tiene asignaciones vigentes. | Sin efecto bloqueante; se continúa con el contrato base. |
+| **VAL-P01-ASIG-03** | Asignación directiva vence dentro de los próximos 30 días. | Muestra advertencia amarilla (no bloquea): "La asignación directiva está próxima a vencer". |
+
+### F. Historia de usuario preliminar
+
+**HU-P01-11b:** Como **Solicitante**, quiero visualizar las asignaciones de rol vigentes del funcionario, para conocer si tiene alguna función directiva activa que le impida participar en la PDS antes de intentar incorporarlo.
+
+### G. Requerimientos funcionales preliminares
+
+- **RF-P01-034b:** El sistema debe consultar las asignaciones de rol vigentes del funcionario al momento de su selección.
+- **RF-P01-035b:** El sistema debe mostrar la lista de asignaciones vigentes en una tabla de solo lectura.
+- **RF-P01-036b:** El sistema debe identificar si alguna asignación es de tipo directivo (ítem 30000).
+- **RF-P01-037b:** El sistema debe bloquear la incorporación del funcionario si existe una asignación directiva vigente.
+- **RF-P01-038b:** El sistema debe mostrar una alerta clara indicando el motivo de inhabilitación (nombre del cargo directivo asignado).
+- **RF-P01-039b:** El sistema debe advertir si una asignación directiva vence en los próximos 30 días, sin bloquear.
+
+---
+
 
 ## Funcionalidad P01-F12 — Mostrar datos laborales del funcionario
 
@@ -644,6 +713,7 @@ Sistema, visible para el Solicitante.
 
 * Contratos vigentes.
 * Selección de un contrato vigente.
+* Tipo de Ítem Directivo del contrato (ej. 30000, 30300, 30600).
 * Renta bruta.
 * Renta neta.
 * Horas de jornada.
@@ -655,6 +725,7 @@ Sistema, visible para el Solicitante.
 ### E. Reglas de negocio
 
 * Debe seleccionarse un único contrato vigente para asociar la PDS.
+* El contrato seleccionado debe quedar asociado al funcionario de la solicitud para cálculo de tope, clasificación presupuestaria y trazabilidad posterior.
 * La condición SEA debe calcularse cuando corresponda.
 
 ### F. Historia de usuario preliminar
@@ -667,6 +738,7 @@ Sistema, visible para el Solicitante.
 * **RF-P01-039:** El sistema debe consultar los contratos vigentes del funcionario.
 * **RF-P01-040:** El sistema debe permitir seleccionar un único contrato vigente para la PDS.
 * **RF-P01-041:** El sistema debe calcular y mostrar la condición SEA cuando corresponda.
+* **RF-P01-041A:** El sistema debe persistir el contrato seleccionado como contrato afecto del funcionario incorporado a la PDS.
 
 ---
 
@@ -711,7 +783,9 @@ Solicitante.
 
 ### A. Descripción funcional
 
-El solicitante debe seleccionar los meses del año en que se ejecutará y pagará la prestación del funcionario.
+El solicitante debe seleccionar los meses del año en que se ejecutará la prestación del funcionario (máximo 2). En esta etapa de Solicitud no se requiere asignar cuotas por mes, eso ocurrirá en la etapa de Pago.
+
+La selección de meses se realiza por funcionario y por actividad asociada a la PDS. Aunque la prestación tenga un periodo general mayor, el funcionario solo puede quedar asociado a los meses permitidos por la normativa.
 
 ### B. Actor principal
 
@@ -723,8 +797,12 @@ Solicitante.
 
 ### D. Reglas de negocio
 
-* Se permite seleccionar como máximo dos meses por año calendario para una misma actividad o proyecto, según lo previamente definido.
+* Se permite seleccionar como máximo dos meses por año calendario para una misma actividad por funcionario, según lo previamente definido.
+* Los meses de ejecución pueden ser distintos entre funcionarios dentro de una misma solicitud.
 * Los meses deben encontrarse dentro del rango entre la fecha de inicio y término de la prestación.
+* El sistema debe considerar los meses ya aprobados o en trámite para el mismo funcionario y actividad dentro del año calendario, no solo los meses seleccionados en la solicitud actual.
+* Si la actividad del funcionario requiere más de dos meses, la solicitud debe bloquear esa asignación e informar que corresponde evaluar otra modalidad contractual según normativa.
+* La etapa de solicitud solo registra los meses de ejecución asociados al funcionario; la definición de cuotas y pagos proporcionales corresponde a la etapa de pago cuando sea definida.
 
 ### E. Validaciones
 
@@ -733,7 +811,8 @@ Solicitante.
 | VAL-P01-MES-01 | Al menos un mes seleccionado        | Bloquea agregar funcionario.            |
 | VAL-P01-MES-02 | Máximo dos meses                    | Bloquea una tercera selección.          |
 | VAL-P01-MES-03 | Mes dentro del periodo de ejecución | Bloquea selección o envío si no cumple. |
-| VAL-P01-MES-04 | Se valida que no tenga otras prestaciones activas en el mismo periodo  | Bloquea selección o envío si no cumple el limite de 2 meses por año. |
+| VAL-P01-MES-04 | Otras prestaciones activas o en trámite para el mismo periodo | Bloquea selección o envío si se supera el límite de 2 meses por año. |
+| VAL-P01-MES-05 | Acumulado anual por funcionario y actividad | Bloquea si el funcionario ya alcanza el máximo anual permitido. |
 
 ### F. Historia de usuario preliminar
 
@@ -744,14 +823,16 @@ Solicitante.
 * **RF-P01-044:** El sistema debe permitir seleccionar meses de ejecución.
 * **RF-P01-045:** El sistema debe impedir seleccionar más de dos meses cuando aplique la regla general.
 * **RF-P01-046:** El sistema debe validar que los meses seleccionados estén dentro del periodo de ejecución.
+* **RF-P01-046A:** El sistema debe validar el acumulado anual de meses por funcionario y actividad considerando solicitudes previas, vigentes o en trámite.
+* **RF-P01-046B:** El sistema debe permitir que cada funcionario de la solicitud tenga meses de ejecución propios.
 
 ---
 
-## Funcionalidad P01-F15 — Registrar monto bruto mensual y calcular total PDS
+## Funcionalidad P01-F15 — Asignar monto bruto total y calcular total PDS
 
 ### A. Descripción funcional
 
-El solicitante debe ingresar el monto bruto mensual de la prestación. El sistema debe calcular automáticamente el total de la PDS conforme a la cantidad de meses seleccionados.
+El solicitante debe ingresar el **Monto Bruto Total a Pagar** por la prestación completa del funcionario. En la etapa de Solicitud no se dividen cuotas mensuales, solo se registra el costo global que se ejecutará en los meses seleccionados.
 
 ### B. Actor principal
 
@@ -759,27 +840,26 @@ Solicitante y Sistema.
 
 ### C. Datos de entrada
 
-* Monto bruto mensual.
-* Meses seleccionados.
+* Monto Bruto Total de la prestación para el funcionario.
 
 ### D. Datos calculados
 
-* Total PDS = Monto bruto mensual × cantidad de meses seleccionados.
+* Total PDS del funcionario.
+* Total PDS de la solicitud como sumatoria de los montos brutos totales de los funcionarios incorporados.
 
 ### E. Reglas de negocio
 
-* El monto debe ser numérico y mayor o igual a cero, según definición final del negocio.
-* El total debe actualizarse cada vez que cambie el monto o la cantidad de meses.
+* El Monto Bruto Total debe ser numérico y mayor a cero.
+* El monto corresponde al total a pagar al funcionario por la actividad, sin importar si los pagos se proporcionarán distinto por mes en la etapa posterior.
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-15:** Como **Solicitante**, quiero ingresar el monto bruto mensual y visualizar el total calculado de la prestación, para conocer el valor económico completo antes de agregar al funcionario.
+**HU-P01-15:** Como **Solicitante**, quiero ingresar el monto bruto total de la prestación del funcionario y visualizar el total calculado, para revisar correctamente el costo de la PDS antes de enviarla.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P01-047:** El sistema debe permitir ingresar el monto bruto mensual.
-* **RF-P01-048:** El sistema debe calcular automáticamente el total de la PDS.
-* **RF-P01-049:** El sistema debe actualizar el total cuando cambien el monto o los meses seleccionados.
+* **RF-P01-047:** El sistema debe permitir ingresar el Monto Bruto Total de la prestación.
+* **RF-P01-048:** El sistema debe bloquear el ingreso de montos por mes o cuotas en la etapa de Solicitud.
 
 ---
 
@@ -805,14 +885,13 @@ Sistema, visible para el Solicitante.
 
 ### D. Reglas de negocio previamente levantadas
 
-* Personal académico: tope del 50% de la remuneración bruta.
-* Planta técnica: tope fijo definido.
-* Planta administrativa: tope fijo definido.
-* Planta auxiliar: tope fijo definido.
+* El sistema debe consultar la tabla de topes fijos (`sg_trca`) y la tabla de cargos excluidos (`caex`).
+* Si el cargo tiene un tope fijo mensual (ej. Planta técnica, administrativa, auxiliar), se aplica ese límite exacto.
+* Si el cargo NO tiene un tope fijo asignado o si corresponde a un académico, el sistema debe calcular su límite basándose en el 50% de su sueldo posible (Renta Bruta del contrato seleccionado).
 * Directores de Institutos Independientes: regla especial según resolución anual.
 * Jornadas parciales: tope proyectado a jornada completa según regla institucional.
 * Múltiples contratos: debe utilizarse la regla definida para el contrato de mayor grado o renta/se debe seleccionar contrato por el usuario dando pie al solicitante seleccionar uno de sus contratos para tope.
-* Proyectos ANID //TODO: Por definir como indentificar si pertenece o no a un proyecto ANID, una vez identificado debe aplicarse las reglas definidas.
+* **TODO: pendiente ANID.** Queda pendiente definir cómo se identificará oficialmente si el Centro de Costo pertenece a ANID y qué regla específica se aplicará.
 
 ### E. Validaciones
 
@@ -821,8 +900,7 @@ Sistema, visible para el Solicitante.
 | VAL-P01-TOPE-01 | Tope aplicable calculado           | Debe mostrarse al usuario.             |
 | VAL-P01-TOPE-02 | Monto mensual dentro del límite    | Permite seguir.                        |
 | VAL-P01-TOPE-03 | Monto mensual sobre límite         | Bloquea incorporación del funcionario. |
-//TODO: Deben definirse 
-| VAL-P01-TOPE-04 | Excepción ANID / DITT identificada | Aplica regla especial o exención.      |
+| VAL-P01-TOPE-04 | Excepción ANID / DITT identificada | **TODO: pendiente ANID.** Aplica regla especial o exención cuando exista definición formal. |
 
 ### F. Historia de usuario preliminar
 
@@ -858,6 +936,7 @@ Solicitante.
 * Si la actividad se realiza fuera de jornada, no se activa la compensación horaria en el mismo sentido regulado para trabajo dentro de jornada.
 * Si la actividad se realiza dentro de jornada, el sistema debe evaluar si corresponde compensación o imputación directa por SEA.
 * Segun la jornada obtenida de la información del funcionario en la ficha del funcionario se debe validar automaticamente el llenado de este campo.
+* La definición dentro/fuera de jornada debe persistirse por funcionario asociado a la PDS.
 
 ### E. Historia de usuario preliminar
 
@@ -867,6 +946,7 @@ Solicitante.
 
 * **RF-P01-053:** El sistema debe permitir indicar si la actividad se ejecutará dentro o fuera de jornada.
 * **RF-P01-054:** El sistema debe activar validaciones adicionales cuando se seleccione trabajo dentro de jornada.
+* **RF-P01-054A:** El sistema debe persistir la condición dentro/fuera de jornada por funcionario incorporado a la PDS.
 
 
 
@@ -926,6 +1006,7 @@ Solicitante.
 * Académico dentro de jornada sin SEA: compensa.
 * Académico dentro de jornada con SEA: no requiere compensar.
 * La suma de horas de jornada base y compensación no puede superar 12 horas de trabajo diario.
+* La compensación horaria debe registrarse por funcionario y conservar el detalle de día, horas y observación cuando corresponda.
 
 ### E. Validaciones
 
@@ -946,6 +1027,7 @@ Solicitante.
 * **RF-P01-058:** El sistema debe permitir eliminar filas de compensación horaria.
 * **RF-P01-059:** El sistema debe exigir compensación cuando la regla normativa lo determine.
 * **RF-P01-060:** El sistema debe validar que no se superen 12 horas totales de trabajo diario.
+* **RF-P01-060A:** El sistema debe conservar el detalle de compensación horaria asociado al funcionario de la PDS.
 
 ---
 
@@ -971,8 +1053,8 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 
 * Centro de Costo seleccionado y validado.
 * Datos de proyecto cargados.
-* Tipo de prestación definido.
-* Evidencia seleccionada y fechada.
+* Modalidad de prestación definida.
+* Evidencia seleccionada.
 * Descripción general de actividad.
 * Fechas de ejecución.
 * Funcionario seleccionado.
@@ -980,7 +1062,7 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 * Validaciones de deudas, inhabilidades y restricciones cumplidas.
 * Actividad específica del funcionario registrada.
 * Meses de ejecución seleccionados.
-* Monto bruto mensual ingresado.
+* Monto bruto total ingresado.
 * Tope aplicable cumplido.
 * Modalidad de jornada declarada.
 * SEA evaluado cuando corresponda.
@@ -989,6 +1071,7 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 ### E. Resultado esperado
 
 * El funcionario se incorpora a la tabla resumen de la solicitud.
+* El funcionario queda asociado a la modalidad de prestación, contrato seleccionado, condición dentro/fuera de jornada, meses de ejecución, monto bruto total, evidencias y compensaciones cuando correspondan.
 * El formulario de funcionario puede limpiarse para permitir agregar otro funcionario, si el flujo lo permite.
 
 ### F. Historia de usuario preliminar
@@ -1000,6 +1083,7 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 * **RF-P01-061:** El sistema debe permitir agregar un funcionario validado a la solicitud.
 * **RF-P01-062:** El sistema debe impedir agregar funcionarios con validaciones pendientes o incumplidas.
 * **RF-P01-063:** El sistema debe mostrar mensajes detallados de incumplimiento cuando no sea posible agregar al funcionario.
+* **RF-P01-063A:** El sistema debe persistir los datos normativos y financieros asociados al funcionario incorporado a la PDS.
 
 ---
 
@@ -1041,11 +1125,11 @@ Solicitante.
 * Horas de compensación.
 * Decreto afecto.
 * Vigencias.
-* Tipo de prestación.
+* Modalidad de prestación.
 * Monto bruto.
 * Tipo de jornada.
 * Tipo de evidencia.
-* Fecha de entrega de evidencia.
+* Fecha/hora de carga de evidencia en etapa de pago, cuando corresponda.
 * Evidencia seleccionada.
 * Validaciones aplicadas.
 
@@ -1211,7 +1295,6 @@ Solicitante.
 | P01-F03 | Buscar y seleccionar Centro de Costo.                    |
 | P01-F04 | Validar Centro de Costo seleccionado.                    |
 | P01-F05 | Cargar datos del proyecto asociados al Centro de Costo.  |
-| P01-F06 | Registrar tipo de prestación.                            |
 | P01-F07 | Registrar evidencias verificables.                       |
 | P01-F08 | Registrar descripción general de la actividad.           |
 | P01-F09 | Registrar fechas de inicio y término de ejecución.       |
@@ -1220,7 +1303,7 @@ Solicitante.
 | P01-F12 | Mostrar datos laborales y contractuales del funcionario. |
 | P01-F13 | Registrar actividad específica del funcionario.          |
 | P01-F14 | Seleccionar meses de ejecución.                          |
-| P01-F15 | Registrar monto bruto mensual y calcular total PDS.      |
+| P01-F15 | Asignar monto bruto total y calcular total PDS.          |
 | P01-F16 | Visualizar y validar tope aplicable.                     |
 | P01-F17 | Definir modalidad dentro o fuera de jornada.             |
 | P01-F18 | Evaluar condición SEA para académicos.                   |

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,258 +10,184 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div id="wrapper">
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <div class="logo-cont">
-            <img src="https://intranet.ufro.cl/estilo/img/logo_bl.png" class="logo" alt="UFRO">
-        </div>
-        <div class="list-group list-group-flush">
-            <h6 class="sidebar-heading">SOLICITUDES</h6>
-            <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
-            <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de servicios</a>
-            <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de costos</a>
-            <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
-            <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
-            <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
-        </div>
-    </div>
-
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-        <!-- Topbar (Sincronizado con 01 y 02) -->
-        <nav id="dna-topbar">
-            <div class="d-flex align-items-center">
-                <img class="topbar-logo mr-3" src="https://intranet.ufro.cl/estilo/img/logo_bl.png" alt="UFRO">
-                <button class="btn-toggle-menu mr-3" id="menu-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <h5 class="topbar-title m-0 text-uppercase">Visación Jefatura Superior</h5>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="logo-cont">
+                <img src="https://intranet.ufro.cl/estilo/img/logo_bl.png" class="logo" alt="UFRO">
             </div>
-            
-            <div class="d-flex align-items-center ml-auto">
-                <div class="user-details text-right mr-3 d-none d-sm-block">
-                    <span class="user-name d-block font-weight-bold">Dr. Rodrigo Navia Diez</span>
-                    <span class="user-role small text-muted text-uppercase">Director de Departamento</span>
-                </div>
-                <div class="topbar-icon-circle mr-2">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="topbar-icon-circle">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge badge-danger badge-pill counter">3</span>
-                </div>
+            <div class="list-group list-group-flush">
+                <h6 class="sidebar-heading">SOLICITUDES</h6>
+                <a href="#" class="list-group-item"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#" class="list-group-item active"><i class="fas fa-hand-holding-usd"></i> Prestación de
+                    servicios</a>
+                <a href="#" class="list-group-item"><i class="fas fa-exchange-alt"></i> Devolución de recursos</a>
+                <a href="#" class="list-group-item"><i class="fas fa-external-link-square-alt"></i> Apertura centros de
+                    costos</a>
+                <a href="#" class="list-group-item"><i class="fas fa-window-close"></i> Cierre centros de costo</a>
+                <a href="#" class="list-group-item"><i class="fas fa-flask"></i> Incentivos producción científica</a>
+                <a href="#" class="list-group-item"><i class="fas fa-star"></i> Base de concursos</a>
             </div>
-            <div class="topbar-rainbow-bar"></div>
-        </nav>
+        </div>
 
-        <div class="container-fluid py-4 px-lg-5">
-       
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <!-- Topbar -->
+            <nav id="dna-topbar">
+                <div class="d-flex align-items-center">
+                    <img class="topbar-logo mr-3" src="https://intranet.ufro.cl/estilo/img/logo_bl.png" alt="UFRO">
+                    <button class="btn-toggle-menu mr-3" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h5 class="topbar-title m-0 text-uppercase">Visación Jefatura Superior</h5>
+                </div>
 
-            <!-- HEADER Y RESUMEN EJECUTIVO -->
-            <div class="d-flex justify-content-between align-items-end mb-4 px-1">
-                <div>
-                    <h4 class="font-weight-bold text-dark mb-1">Revisión de Solicitud <span class="text-primary">#PDS-2026-001</span></h4>
-                    <div class="d-flex align-items-center">
-                        <p class="text-muted small mb-0 mr-3"><i class="far fa-calendar-alt mr-1"></i> Creada por Dr. Mario Godoy Rivera el 05/05/2026</p>
-                        <span class="badge badge-light border text-success px-2 py-0" style="font-size: 0.6rem;">
-                            <i class="fas fa-check-circle mr-1"></i> VISADA POR JEFE PROYECTO
+                <div class="d-flex align-items-center ml-auto">
+                    <div class="user-details text-right mr-3">
+                        <span class="user-name d-block">Dr. Rodrigo Navia Diez</span>
+                        <span class="user-role small">DIRECTOR DE DEPARTAMENTO</span>
+                    </div>
+                    <div class="topbar-icon-circle mr-2">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="topbar-icon-circle">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                </div>
+                <div class="topbar-rainbow-bar"></div>
+            </nav>
+
+            <div class="container-fluid py-4 px-lg-5">
+
+
+                <!-- HEADER Y RESUMEN EJECUTIVO -->
+                <div class="d-flex justify-content-between align-items-end mb-4 px-1">
+                    <div>
+                        <h4 class="font-weight-bold text-dark mb-1">Revisión de Solicitud <span class="text-primary"
+                                id="pds_id_solicitud">#PDS-2026-0001</span></h4>
+                        <p class="text-muted small mb-0" id="pds_creador_fecha"><i class="far fa-calendar-alt mr-1"></i>
+                            Creada por Dr. Mario Godoy Rivera el <strong>Lunes 05 de Mayo, 2026</strong></p>
+                    </div>
+                    <div class="text-right">
+                        <span class="badge-status status-2" id="pds_estado_badge">
+                            <i class="fas fa-clock"></i> EN REVISIÓN (JEFATURA SUPERIOR)
                         </span>
                     </div>
                 </div>
-                <div class="text-right">
-                    <span class="badge-status status-2">
-                        <i class="fas fa-clock"></i> EN REVISIÓN (JEFATURA SUPERIOR)
-                    </span>
-                </div>
-            </div>
 
-            <!-- TARJETA DE DATOS CLAVE -->
-            <div class="card-minimal mb-4">
-                <div class="summary-grid">
-                    <div class="summary-item">
-                        <div class="data-label">Centro de Costos</div>
-                        <div class="data-value">4050.21 - INST. AGROINDUSTRIA</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="data-label">Tipo de Fondo</div>
-                        <div class="data-value"><span class="badge badge-outline text-primary">21 - FONDOS PROPIOS</span></div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="data-label">Periodo Prestación</div>
-                        <div class="data-value">01 Mayo 2026 - 30 Junio 2026</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="data-label">Monto Total</div>
-                        <div class="data-value text-success" style="font-size: 1.2rem;">$1.460.000</div>
+                <!-- TARJETA DE DATOS CLAVE -->
+                <div class="card-minimal mb-4">
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="data-label">Centro de Costos</div>
+                            <div class="data-value" id="pds_cc_info">4050.21 - INST. AGROINDUSTRIA</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="data-label">Tipo de Fondo</div>
+                            <div class="data-value" id="pds_tipo_fondo"><span
+                                    class="badge badge-outline text-primary">21 - FONDOS PROPIOS</span></div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="data-label">Periodo Prestación</div>
+                            <div class="data-value" id="pds_periodo">01 Mayo 2026 - 30 Junio 2026</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="data-label">Monto Total</div>
+                            <div class="data-value text-success" id="pds_monto_total" style="font-size: 1.2rem;">$0
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- ACTIVIDAD PRINCIPAL (JERARQUIZADA) -->
-                        <div class="card-minimal mb-4 p-4" style="border-left: 5px solid var(--ufro-blue); background-color: #fcfdfe;">
-                            <h6 class="font-weight-bold text-ufro-dark mb-2 text-uppercase small" style="letter-spacing: 1px;">
-                                <i class="fas fa-file-alt mr-2 text-primary"></i> Actividad de Prestación de Servicios
-                            </h6>
-                            <p class="text-dark mb-0" style="font-size: 1.05rem; line-height: 1.6; font-weight: 500;">
-                                "Modernización de procesos para el Instituto de Agroindustria mediante la implementación de nuevos flujos de trabajo en entorno D9/2026, asegurando la trazabilidad y el cumplimiento normativo de las prestaciones de servicio."
-                            </p>
-                        </div>
 
-                    <!-- DETALLE DE PERSONAL (TABLA DE ALTA FIDELIDAD) -->
-                    <div class="card-minimal mb-4 overflow-hidden">
-                        <div class="card-header border-0 bg-white py-3 px-4 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-dark">Detalle de Personal y Actividades Específicas</h6>
-                            <span class="badge badge-outline text-primary small">NORMATIVA DU 009/2026</span>
+                <!-- ACTIVIDAD PRINCIPAL (JERARQUIZADA) -->
+                <div class="card-minimal mb-4 p-4"
+                    style="border-left: 5px solid var(--ufro-blue); background-color: #fcfdfe;">
+                    <h6 class="font-weight-bold text-ufro-dark mb-2 text-uppercase small" style="letter-spacing: 1px;">
+                        <i class="fas fa-file-alt mr-2 text-primary"></i> Actividad de Prestación de Servicios
+                    </h6>
+                    <p class="text-dark mb-0" id="pds_actividad"
+                        style="font-size: 1.05rem; line-height: 1.6; font-weight: 500;">
+                        Cargando descripción...
+                    </p>
+                </div>
+
+                <!-- CONTROL PRESUPUESTARIO Y ESTADOS CONTABLES (ITEMS) -->
+                <div class="card-minimal mb-4 overflow-hidden">
+                    <div
+                        class="card-header border-0 bg-white py-3 px-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                        <h6 class="m-0 font-weight-bold text-dark"><i class="fas fa-wallet mr-2 text-primary"></i>
+                            Control Presupuestario del Centro de Costos <span id="cc_nombre_titulo"
+                                class="text-primary small font-weight-bold ml-2"></span></h6>
+                        <div class="d-flex flex-wrap gap-2" id="cc_checks_container">
+                            <!-- Inyectado dinámicamente -->
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-premium mb-0" style="table-layout: auto; min-width: 100%; width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th class="pl-4" style="width: 28%;">FUNCIONARIO / CONTRATO / ACTIVIDAD</th>
-                                        <th style="width: 17%;">PRESTACIÓN Y EVIDENCIAS (CHECKS)</th>
-                                        <th style="width: 18%;">VALIDACIONES D9 (CHECKS)</th>
-                                        <th style="width: 18%;">MODALIDAD / COMPENSACIÓN</th>
-                                        <th style="width: 10%;">TEMPORALIDAD</th>
-                                        <th class="text-right pr-4" style="width: 9%;">FINANZAS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- FUNCIONARIO 1 -->
-                                    <tr class="row-accent-sea" style="background-color: #fafbfc;">
-                                        <td class="pl-4">
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">LIZAMA AILLAPAN ESTEBAN NICOLAS</div>
-                                            <div class="text-muted small mb-1" style="font-size: 0.72rem;">RUT: 15.890.342-K <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">Académico</span></div>
-                                            <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">Profesor Asociado <span class="mx-1 text-light">|</span> Regular Contrata <span class="mx-1 text-light">|</span> Grado 4 <span class="mx-1 text-light">|</span> Antigüedad: 10 Años</div>
-                                            <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.7rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="Diseño de arquitectura de microservicios y validación de reglas de negocio para el proyecto D9.">
-                                                <i class="fas fa-tasks mr-1 text-primary"></i>"Diseño de arquitectura de microservicios y..."
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="mb-1 text-dark" style="font-size: 0.7rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase;">Prestaciones</span>Asistencia Técnica, Investigación</div>
-                                            <div class="text-muted" style="font-size: 0.68rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase; margin-top: 4px;">Evidencias</span><i class="fas fa-check-square text-success mr-1"></i>Informe Técnico mensual<br><i class="fas fa-check-square text-success mr-1"></i>Acta de Conformidad</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-column" style="gap: 3px !important;">
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Formación OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Límite 50% OK</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center mb-1">
-                                                <span class="badge badge-success mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
-                                                <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">Fuera de jornada</span>
-                                            </div>
-                                            <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-success">Sí</span></div>
-                                            <div class="alert alert-success p-1 mb-0" style="font-size: 0.6rem; border-radius: 4px; border-left: 2px solid var(--ufro-green) !important; margin-top: 5px;">
-                                                <i class="fas fa-check-circle mr-1"></i> No requiere compensación.
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">2 Mes(es)</div>
-                                            <div class="text-muted" style="font-size: 0.7rem;">Mayo, Junio 2026</div>
-                                        </td>
-                                        <td class="text-right pr-4">
-                                            <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">$900.000</div>
-                                            <div class="small text-muted" style="font-size: 0.72rem;">$450.000 / mes</div>
-                                        </td>
-                                    </tr>
-                                    <!-- FUNCIONARIO 2 -->
-                                    <tr class="row-accent-warning" style="background-color: #fafbfc;">
-                                        <td class="pl-4">
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">MARÍA ELENA SOTO FIGUEROA</div>
-                                            <div class="text-muted small mb-1" style="font-size: 0.72rem;">RUT: 16.452.891-2 <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">Administrativo</span></div>
-                                            <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">Jefa de Sección <span class="mx-1 text-light">|</span> Planta Estamento <span class="mx-1 text-light">|</span> Grado 12 <span class="mx-1 text-light">|</span> Antigüedad: 8 Años</div>
-                                            <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.7rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="Apoyo administrativo en levantamiento de procesos y gestión de documentación técnica.">
-                                                <i class="fas fa-tasks mr-1 text-primary"></i>"Apoyo administrativo en levantamiento de..."
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="mb-1 text-dark" style="font-size: 0.7rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase;">Prestaciones</span>Asistencia Técnica</div>
-                                            <div class="text-muted" style="font-size: 0.68rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase; margin-top: 4px;">Evidencias</span><i class="fas fa-check-square text-success mr-1"></i>Informe mensual de avance</div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex flex-column" style="gap: 3px !important;">
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Formación OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>
-                                                <div style="font-size: 0.68rem;" class="text-warning font-weight-bold"><i class="fas fa-exclamation-triangle mr-1"></i> Límite 50% (48%)</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center mb-1">
-                                                <span class="badge badge-warning mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
-                                                <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">Fuera de jornada</span>
-                                            </div>
-                                            <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-danger">No</span></div>
-                                            <!-- COMPENSACIÓN -->
-                                            <div class="bg-light p-2 rounded border" style="font-size: 0.65rem; margin-top: 5px;">
-                                                <div class="font-weight-bold text-ufro-blue mb-1" style="font-size: 0.62rem;"><i class="fas fa-history mr-1"></i> Compensación Horaria:</div>
-                                                <div class="row no-gutters text-dark">
-                                                    <div class="col-6 pr-1">
-                                                        <div class="d-flex justify-content-between border-bottom pb-1 mb-1" style="font-size: 0.6rem;">
-                                                            <span style="opacity: 0.85;">Lunes:</span>
-                                                            <span class="font-weight-bold">2 Hrs</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 pl-1">
-                                                        <div class="d-flex justify-content-between border-bottom pb-1 mb-1" style="font-size: 0.6rem;">
-                                                            <span style="opacity: 0.85;">Miércoles:</span>
-                                                            <span class="font-weight-bold">2 Hrs</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="text-muted text-right font-weight-bold" style="font-size: 0.58rem;">Total: 4 Hrs / Semanal</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">2 Mes(es)</div>
-                                            <div class="text-muted" style="font-size: 0.7rem;">Junio, Julio 2026</div>
-                                        </td>
-                                        <td class="text-right pr-4">
-                                            <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">$560.000</div>
-                                            <div class="small text-muted" style="font-size: 0.72rem;">$280.000 / mes</div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> <!-- Cierre table-responsive -->
-                    </div> <!-- Cierre card-minimal -->
-                    </div> <!-- Cierre col-md-12 -->
-                </div> <!-- Cierre row principal -->
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-premium mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="pl-4" style="width: 25%;">ÍTEM PRESUPUESTARIO</th>
+                                    <th style="width: 15%;">PRESUPUESTO ASIGNADO</th>
+                                    <th style="width: 15%;">EJECUTADO AL MES</th>
+                                    <th style="width: 15%;">SALDO DISPONIBLE</th>
+                                    <th style="width: 15%;" class="text-primary">COMPROMETIDO PDS</th>
+                                    <th style="width: 15%;" class="text-right pr-4">NUEVO SALDO PROYECTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_items_presupuestarios">
+                                <!-- Inyección dinámica desde JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DETALLE DE PERSONAL (TABLA DE ALTA FIDELIDAD) -->
+                <div class="card-minimal mb-4 overflow-hidden">
+                    <div
+                        class="card-header border-0 bg-white py-3 px-4 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-dark">Detalle de Personal y Actividades Específicas</h6>
+                        <span class="badge badge-outline text-primary small">NORMATIVA DU 009/2026</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-premium mb-0"
+                            style="table-layout: auto; min-width: 100%; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="pl-4" style="width: 28%;">FUNCIONARIO / CONTRATO / ACTIVIDAD</th>
+                                    <th style="width: 17%;">PRESTACIÓN Y EVIDENCIAS (CHECKS)</th>
+                                    <th style="width: 18%;">VALIDACIONES D9 (CHECKS)</th>
+                                    <th style="width: 18%;">MODALIDAD / COMPENSACIÓN</th>
+                                    <th style="width: 10%;">TEMPORALIDAD</th>
+                                    <th class="text-right pr-4" style="width: 9%;">FINANZAS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla_personal_visacion">
+                                <!-- Inyección dinámica desde JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 <!-- SECCIÓN FINAL: EVIDENCIAS Y TRAZABILIDAD (HORIZONTAL) -->
                 <div class="row mt-3">
                     <div class="col-md-7">
-                        <div class="card-minimal p-3 d-flex align-items-center shadow-none border" style="background-color: #fcfdfe;">
-                            <h6 class="m-0 font-weight-bold text-muted small text-uppercase mr-4" style="letter-spacing: 0.5px; min-width: 180px;">
+                        <div class="card-minimal p-3 d-flex align-items-center shadow-none border"
+                            style="background-color: #fcfdfe;">
+                            <h6 class="m-0 font-weight-bold text-muted small text-uppercase mr-4"
+                                style="letter-spacing: 0.5px; min-width: 180px;">
                                 <i class="fas fa-clipboard-check mr-2"></i> Evidencias Requeridas
                             </h6>
-                            <div class="d-flex flex-wrap">
-                                <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;">
-                                    <i class="fas fa-check mr-1"></i> ACTA FIRMADA
-                                </div>
-                                <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;">
-                                    <i class="fas fa-check mr-1"></i> INFORME CON EVIDENCIAS
-                                </div>
-                                <div class="badge badge-light border text-success py-1 px-3 mr-2 mb-1" style="font-size: 0.65rem;">
-                                    <i class="fas fa-check mr-1"></i> BASE DE DATOS ENTREGADA
-                                </div>
-                                <div class="badge badge-light border text-success py-1 px-3 mb-1" style="font-size: 0.65rem;">
-                                    <i class="fas fa-check mr-1"></i> OTROS
-                                </div>
+                            <div class="d-flex flex-wrap" id="evidencias_requeridas_container">
+                                <!-- Inyección dinámica desde JS -->
                             </div>
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="card-minimal p-3 d-flex align-items-center justify-content-around shadow-none border" style="background-color: #fcfdfe;">
+                        <div class="card-minimal p-3 d-flex align-items-center justify-content-around shadow-none border"
+                            style="background-color: #fcfdfe;">
                             <div class="d-flex align-items-center mr-2">
                                 <span class="state-dot dot-1"></span>
                                 <span class="text-muted" style="font-size: 0.6rem;">05/05 - Creada (JP)</span>
@@ -271,7 +198,8 @@
                             </div>
                             <div class="d-flex align-items-center mr-2">
                                 <span class="state-dot dot-2"></span>
-                                <span class="text-dark font-weight-bold" style="font-size: 0.6rem;">Hoy - Visación Jefatura</span>
+                                <span class="text-dark font-weight-bold" style="font-size: 0.6rem;">Hoy - Visación
+                                    Jefatura</span>
                             </div>
                             <div class="d-flex align-items-center op-5">
                                 <i class="fas fa-arrow-right mx-1 text-muted" style="font-size: 0.6rem;"></i>
@@ -281,153 +209,679 @@
                         </div>
                     </div>
 
-            <!-- ESPACIO PARA FOOTER -->
-            <div style="height: 100px;"></div>
 
-            <!-- BOTONES DE ACCIÓN NORMALIZADOS -->
-            <div class="sticky-actions">
-                <div class="container-fluid px-lg-5">
-                    <div class="d-flex flex-column flex-md-row justify-content-end align-items-center">
-                        <div class="text-muted small mb-3 mb-md-0 mr-md-4 italic text-center text-md-left">
-                            <i class="fas fa-info-circle mr-1"></i> Selección de acción para el expediente <strong>#PDS-2026-001</strong>
+
+                    <!-- ESPACIO PARA FOOTER -->
+                    <div style="height: 100px;"></div>
+
+                    <!-- BOTONES DE ACCIÓN NORMALIZADOS -->
+                    <div class="sticky-actions">
+                        <div class="container-fluid px-lg-5">
+                            <div class="d-flex flex-column flex-md-row justify-content-end align-items-center">
+                                <div class="text-muted small mb-3 mb-md-0 mr-md-4 italic text-center text-md-left">
+                                    <i class="fas fa-info-circle mr-1"></i> Selección de acción para el expediente
+                                    <strong id="pds_sticky_id">#PDS-2026-0001</strong>
+                                </div>
+                                <div class="d-flex w-100 w-md-auto gap-2">
+                                    <button class="btn btn-warning text-white font-weight-bold px-3 py-2"
+                                        style="background-color: var(--ufro-orange); border-radius: 8px; font-size: 0.75rem;"
+                                        onclick="prepararVisacion('devolver')">
+                                        <i class="fas fa-reply mr-1"></i> DEVOLVER CON CORRECCION
+                                    </button>
+                                    <button class="btn btn-danger font-weight-bold px-3 py-2 mx-1"
+                                        style="border-radius: 8px; font-size: 0.75rem;"
+                                        onclick="prepararVisacion('rechazar')">
+                                        <i class="fas fa-times-circle mr-1"></i> RECHAZAR SOLICITUD
+                                    </button>
+                                    <button class="btn btn-success font-weight-bold px-4 py-2"
+                                        style="background-color: var(--ufro-green); border-radius: 8px; font-size: 0.75rem;"
+                                        onclick="prepararVisacion('aprobar')">
+                                        <i class="fas fa-check-shield mr-1"></i> APROBAR Y CONTINUAR
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="d-flex w-100 w-md-auto gap-2">
-                            <button class="btn btn-warning text-white font-weight-bold px-3 py-2" style="background-color: var(--ufro-orange); border-radius: 8px; font-size: 0.75rem;" onclick="prepararVisacion('devolver')">
-                                <i class="fas fa-reply mr-1"></i> DEVOLVER CON CORRECCION
-                            </button>
-                            <button class="btn btn-danger font-weight-bold px-3 py-2 mx-1" style="border-radius: 8px; font-size: 0.75rem;" onclick="prepararVisacion('rechazar')">
-                                <i class="fas fa-times-circle mr-1"></i> RECHAZAR SOLICITUD
-                            </button>
-                            <button class="btn btn-success font-weight-bold px-4 py-2" style="background-color: var(--ufro-green); border-radius: 8px; font-size: 0.75rem;" onclick="prepararVisacion('aprobar')">
-                                <i class="fas fa-check-shield mr-1"></i> APROBAR Y CONTINUAR
-                            </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL DE CONFIRMACIÓN Y COMENTARIOS DINÁMICOS (P03-B14) -->
+        <div class="modal fade" id="modalVisacion" tabindex="-1" role="dialog" aria-labelledby="modalVisacionTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content"
+                    style="border-radius: 12px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                    <div class="modal-header border-0 text-white" id="modalVisacionHeader"
+                        style="background-color: var(--ufro-blue); padding: 1.2rem 1.5rem;">
+                        <h5 class="modal-title font-weight-bold" id="modalVisacionTitle"
+                            style="font-size: 1rem; letter-spacing: 0.5px;">
+                            <i class="fas fa-shield-alt mr-2"></i> Confirmar Acción
+                        </h5>
+                        <button type="button" class="close text-white border-0 bg-transparent font-weight-bold"
+                            data-dismiss="modal" aria-label="Close"
+                            style="opacity: 0.8; outline: none; font-size: 1.2rem; cursor: pointer;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body p-4 text-left">
+                        <p class="font-weight-bold text-dark mb-3" id="modalVisacionMessage"
+                            style="font-size: 0.95rem; line-height: 1.5;"></p>
+
+                        <div id="modalCommentContainer" class="mt-3">
+                            <label class="font-weight-bold text-secondary small text-uppercase"
+                                style="letter-spacing: 0.5px;">
+                                <i class="fas fa-comment-dots mr-1 text-primary"></i> Comentarios de Visación /
+                                Observaciones técnicas
+                            </label>
+                            <textarea id="modal_comentario_visacion" class="form-control border-primary" rows="3"
+                                placeholder="Ingrese las razones o alcances técnicos..."
+                                style="font-size: 0.88rem; border-radius: 8px; border: 1px solid #cbd5e1;"></textarea>
+                            <div id="modal_comment_error" class="text-danger small mt-1 hidden"
+                                style="font-size: 0.78rem; font-weight: 600;">
+                                <i class="fas fa-exclamation-circle mr-1"></i> Debe ingresar el motivo para continuar
+                                con esta accion.
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2 mr-2"
+                            data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">
+                            CANCELAR
+                        </button>
+                        <button type="button" class="btn text-white font-weight-bold px-4 py-2"
+                            id="modalVisacionSubmitBtn" onclick="submitVisacionForm()"
+                            style="border-radius: 6px; font-size: 0.75rem; background-color: var(--ufro-green); border: none;">
+                            CONFIRMAR
+                        </button>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
-</div>
 
-<!-- MODAL DE CONFIRMACIÓN Y COMENTARIOS DINÁMICOS (P03-B14) -->
-<div class="modal fade" id="modalVisacion" tabindex="-1" role="dialog" aria-labelledby="modalVisacionTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="border-radius: 12px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-            <div class="modal-header border-0 text-white" id="modalVisacionHeader" style="background-color: var(--ufro-blue); padding: 1.2rem 1.5rem;">
-                <h5 class="modal-title font-weight-bold" id="modalVisacionTitle" style="font-size: 1rem; letter-spacing: 0.5px;">
-                    <i class="fas fa-shield-alt mr-2"></i> Confirmar Acción
-                </h5>
-                <button type="button" class="close text-white border-0 bg-transparent font-weight-bold" data-dismiss="modal" aria-label="Close" style="opacity: 0.8; outline: none; font-size: 1.2rem; cursor: pointer;">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            
-            <div class="modal-body p-4 text-left">
-                <p class="font-weight-bold text-dark mb-3" id="modalVisacionMessage" style="font-size: 0.95rem; line-height: 1.5;"></p>
-                
-                <div id="modalCommentContainer" class="mt-3">
-                    <label class="font-weight-bold text-secondary small text-uppercase" style="letter-spacing: 0.5px;">
-                        <i class="fas fa-comment-dots mr-1 text-primary"></i> Comentarios de Visación / Observaciones técnicas
-                    </label>
-                    <textarea id="modal_comentario_visacion" class="form-control border-primary" rows="3" placeholder="Ingrese las razones o alcances técnicos..." style="font-size: 0.88rem; border-radius: 8px; border: 1px solid #cbd5e1;"></textarea>
-                    <div id="modal_comment_error" class="text-danger small mt-1 hidden" style="font-size: 0.78rem; font-weight: 600;">
-                        <i class="fas fa-exclamation-circle mr-1"></i> Debe ingresar el motivo para continuar con esta accion.
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="mock_data_d9.js"></script>
+        <script>
+            let accionGlobal = '';
+
+            function formatMonto(val) {
+                return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(val);
+            }
+
+            function renderVisacionData() {
+                const solicitud = DB_MOCK.prestaciones_de_servicio[0];
+                if (!solicitud) return;
+
+                // 1. Llenar Datos Generales de la Solicitud
+                document.getElementById('pds_id_solicitud').innerText = '#' + solicitud.id_solicitud;
+                document.getElementById('pds_sticky_id').innerText = '#' + solicitud.id_solicitud;
+
+                const dateObj = new Date(solicitud.fecha_creacion);
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const formattedDate = dateObj.toLocaleDateString('es-CL', options);
+                document.getElementById('pds_creador_fecha').innerHTML = `<i class="far fa-calendar-alt mr-1"></i> Creada por ${solicitud.jefe_proyecto.nombre} el <strong>${formattedDate}</strong>`;
+
+                document.getElementById('pds_estado_badge').innerHTML = `<i class="fas fa-clock"></i> EN REVISIÓN (JEFATURA SUPERIOR)`;
+                document.getElementById('pds_cc_info').innerText = `${solicitud.centro_costo.codigo} - ${solicitud.centro_costo.nombre}`;
+                document.getElementById('pds_tipo_fondo').innerHTML = `<span class="badge badge-outline text-primary">${solicitud.detalles.tipo_financiamiento}</span>`;
+                document.getElementById('pds_periodo').innerText = `${solicitud.detalles.fecha_inicio} al ${solicitud.detalles.fecha_fin}`;
+                document.getElementById('pds_actividad').innerText = `"${solicitud.detalles.descripcion}"`;
+
+                // Calcular Monto Total dinámicamente
+                let totalSolicitud = 0;
+                solicitud.funcionarios.forEach(f => {
+                    totalSolicitud += f.total_pds;
+                });
+                document.getElementById('pds_monto_total').innerText = formatMonto(totalSolicitud);
+
+                // 1.5. Renderizar Tabla de Ítems Presupuestarios del Centro de Costo
+                const tbodyItems = document.getElementById('tabla_items_presupuestarios');
+                tbodyItems.innerHTML = '';
+
+                const cc = DB_MOCK.centros_costo.find(c => c.codigo === solicitud.centro_costo.codigo);
+                if (cc) {
+                    document.getElementById('cc_nombre_titulo').innerText = `— ${cc.nombre}`;
+
+                    // Renderizar los 4 checks a nivel de Centro de Costo
+                    const ccContainer = document.getElementById('cc_checks_container');
+                    ccContainer.innerHTML = '';
+
+                    // Habilitado Check
+                    const badgeHab = document.createElement('span');
+                    badgeHab.className = cc.habilitado ? 'badge badge-success border py-1 px-2 text-uppercase' : 'badge badge-danger border py-1 px-2 text-uppercase';
+                    badgeHab.style.fontSize = '0.62rem';
+                    badgeHab.innerHTML = `<i class="fas ${cc.habilitado ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> Habilitado`;
+                    ccContainer.appendChild(badgeHab);
+
+                    // Vigente Check
+                    const badgeVig = document.createElement('span');
+                    badgeVig.className = cc.vigente ? 'badge badge-success border py-1 px-2 text-uppercase' : 'badge badge-danger border py-1 px-2 text-uppercase';
+                    badgeVig.style.fontSize = '0.62rem';
+                    badgeVig.innerHTML = `<i class="fas ${cc.vigente ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> Vigente`;
+                    ccContainer.appendChild(badgeVig);
+
+                    // No Estructural Check
+                    const badgeEst = document.createElement('span');
+                    badgeEst.className = !cc.es_estructural ? 'badge badge-success border py-1 px-2 text-uppercase' : 'badge badge-danger border py-1 px-2 text-uppercase';
+                    badgeEst.style.fontSize = '0.62rem';
+                    badgeEst.innerHTML = `<i class="fas ${!cc.es_estructural ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> No Estructural`;
+                    ccContainer.appendChild(badgeEst);
+
+                    // Formación Continua Check
+                    const badgeForm = document.createElement('span');
+                    badgeForm.className = cc.formacion_continua_ok ? 'badge badge-success border py-1 px-2 text-uppercase' : 'badge badge-danger border py-1 px-2 text-uppercase';
+                    badgeForm.style.fontSize = '0.62rem';
+                    badgeForm.innerHTML = `<i class="fas ${cc.formacion_continua_ok ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> Formación Continua`;
+                    ccContainer.appendChild(badgeForm);
+
+                    cc.items_presupuestarios.forEach(item => {
+                        let comprometidoPds = 0;
+                        solicitud.funcionarios.forEach(f => {
+                            const fItemCod = f.estamento === 'Académico' ? '30300' : '30600';
+                            if (fItemCod === item.cod) {
+                                comprometidoPds += f.total_pds;
+                            }
+                        });
+
+                        const saldo = item.asignado - item.ejecutado;
+                        const nuevoSaldo = saldo - comprometidoPds;
+
+                        const nuevoSaldoHTML = nuevoSaldo >= 0
+                            ? `<span class="font-weight-bold text-success">${formatMonto(nuevoSaldo)}</span>`
+                            : `<span class="font-weight-bold text-danger text-pulse" data-toggle="tooltip" data-html="true" title="Sobregiro presupuestario en ítem de ${formatMonto(Math.abs(nuevoSaldo))}"><i class="fas fa-exclamation-triangle mr-1"></i> ${formatMonto(nuevoSaldo)}</span>`;
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                    <td class="pl-4">
+                        <div class="font-weight-bold text-dark">${item.cod}</div>
+                        <div class="text-muted small">${item.desc}</div>
+                    </td>
+                    <td><div class="font-weight-bold text-secondary">${formatMonto(item.asignado)}</div></td>
+                    <td><div class="font-weight-bold text-secondary">${formatMonto(item.ejecutado)}</div></td>
+                    <td><div class="font-weight-bold text-info">${formatMonto(saldo)}</div></td>
+                    <td><div class="font-weight-bold text-primary">${formatMonto(comprometidoPds)}</div></td>
+                    <td class="text-right pr-4">${nuevoSaldoHTML}</td>
+                `;
+                        tbodyItems.appendChild(tr);
+                    });
+                }
+
+                // 2. Renderizar Tabla de Personal
+                const tbody = document.getElementById('tabla_personal_visacion');
+                tbody.innerHTML = '';
+
+                solicitud.funcionarios.forEach((f, idx) => {
+                    const f_db = DB_MOCK.funcionarios.find(x => x.rut === f.rut);
+                    if (!f_db) return;
+
+                    // Buscamos el contrato específico seleccionado para esta prestación
+                    const contrato = f_db.contratos && f_db.contratos.find(c => c.tipo === f.contrato_seleccionado);
+
+                    // B. Inhabilidades Check (Roles directivos bloqueantes o sumarios)
+                    const hasBlockingRole = f_db.asignaciones_rol && f_db.asignaciones_rol.some(r => r.bloquea);
+                    const hasSumario = f_db.inhabilidades && f_db.inhabilidades.length > 0;
+                    const inhabilidadesOk = !hasBlockingRole && !hasSumario;
+
+                    let inhabilidadesBadge = '';
+                    if (inhabilidadesOk) {
+                        inhabilidadesBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>`;
+                    } else {
+                        let reasons = [];
+                        if (hasBlockingRole) {
+                            const rolBloq = f_db.asignaciones_rol.find(r => r.bloquea);
+                            reasons.push(`Rol Bloqueante: ${rolBloq.rol}`);
+                        }
+                        if (hasSumario) {
+                            reasons.push(`Fiscalía: ${f_db.inhabilidades[0].descripcion}`);
+                        }
+                        const tooltipInhabilidades = reasons.join(' y ');
+                        inhabilidadesBadge = `<div style="font-size: 0.68rem;" class="text-danger font-weight-bold cursor-pointer" data-toggle="tooltip" data-html="true" title="${tooltipInhabilidades}"><i class="fas fa-times-circle mr-1"></i> Inhabilidad Crítica <i class="fas fa-info-circle small ml-1"></i></div>`;
+                    }
+
+                    // C. Sin Deudas Check
+                    const hasDeudas = f_db.deudas && f_db.deudas.length > 0;
+                    const deudasOk = !hasDeudas;
+                    let deudasBadge = '';
+                    if (deudasOk) {
+                        deudasBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>`;
+                    } else {
+                        const detailStr = f_db.deudas.map(d => `${d.tipo}: ${formatMonto(d.monto)} (${d.dias_mora} días mora)`).join('<br>');
+                        deudasBadge = `<div style="font-size: 0.68rem;" class="text-danger font-weight-bold cursor-pointer" data-toggle="tooltip" data-html="true" title="Posee deudas:<br>${detailStr}"><i class="fas fa-times-circle mr-1"></i> Con Deudas <i class="fas fa-info-circle small ml-1"></i></div>`;
+                    }
+
+                    // D. Saldo CC Disp Check
+                    const cc = DB_MOCK.centros_costo.find(c => c.codigo === solicitud.centro_costo.codigo);
+                    const itemCod = f.estamento === 'Académico' ? '30300' : '30600';
+                    const itemPresup = cc ? cc.items_presupuestarios.find(i => i.cod === itemCod) : null;
+                    const saldoDisponible = itemPresup ? (itemPresup.asignado - itemPresup.ejecutado) : 0;
+                    const saldoOk = saldoDisponible >= f.total_pds;
+
+                    const saldoBadge = saldoOk
+                        ? `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>`
+                        : `<div style="font-size: 0.68rem;" class="text-danger font-weight-bold cursor-pointer" data-toggle="tooltip" title="Presupuesto insuficiente en ítem ${itemCod} (Saldo: ${formatMonto(saldoDisponible)})"><i class="fas fa-times-circle mr-1"></i> Sin Saldo CC</div>`;
+
+                    // E. Límite / Tope Financiero Check
+                    let topeMaximo = 0;
+                    let limitLabel = '';
+                    if (f.estamento === 'Académico') {
+                        topeMaximo = contrato ? (contrato.bruto * 0.5) : 0;
+                        limitLabel = `Límite 50% OK`;
+                    } else {
+                        const topeRecord = DB_MOCK.tabla_topes.find(t => t.estamento === 'Administrativo' && t.cargo === f.jerarquia);
+                        topeMaximo = topeRecord ? topeRecord.valor : 553079;
+                        limitLabel = `Límite Tope OK`;
+                    }
+
+                    const pdsMensual = f.total_pds / f.meses;
+                    const topeOk = pdsMensual <= topeMaximo;
+
+                    let topeBadge = '';
+                    if (topeOk) {
+                        const pct = (pdsMensual / topeMaximo) * 100;
+                        if (pct >= 80) {
+                            topeBadge = `<div style="font-size: 0.68rem;" class="text-warning font-weight-bold cursor-pointer" data-toggle="tooltip" title="Cercano al límite del tope (${pct.toFixed(0)}%, Tope: ${formatMonto(topeMaximo)})"><i class="fas fa-exclamation-triangle mr-1"></i> Límite (${pct.toFixed(0)}%) <i class="fas fa-info-circle small ml-1"></i></div>`;
+                        } else {
+                            topeBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold" data-toggle="tooltip" title="Promedio mensual ${formatMonto(pdsMensual)} es menor al tope de ${formatMonto(topeMaximo)}"><i class="fas fa-check-circle mr-1"></i> ${limitLabel}</div>`;
+                        }
+                    } else {
+                        topeBadge = `<div style="font-size: 0.68rem;" class="text-danger font-weight-bold cursor-pointer" data-toggle="tooltip" title="Supera el tope de ${formatMonto(topeMaximo)} (Promedio solicitado: ${formatMonto(pdsMensual)})"><i class="fas fa-times-circle mr-1"></i> Supera Tope <i class="fas fa-info-circle small ml-1"></i></div>`;
+                    }
+
+                    // F. Temporalidad
+                    const mesesOk = f.meses <= 2;
+                    const mesesHTML = mesesOk
+                        ? `<div class="font-weight-bold text-dark" style="font-size: 0.78rem;">${f.meses} Mes(es)</div><div class="text-muted" style="font-size: 0.7rem;">${f.meses_detalle}</div>`
+                        : `<div class="font-weight-bold text-danger" style="font-size: 0.78rem;" data-toggle="tooltip" title="Excede el máximo de 2 meses anuales"><i class="fas fa-exclamation-circle mr-1"></i> ${f.meses} Mes(es)</div><div class="text-muted" style="font-size: 0.7rem;">${f.meses_detalle}</div>`;
+
+                    // G. Modalidad / Compensación
+                    let compensacionHTML = '';
+                    if (f.estamento === 'Administrativo') {
+                        if (f_db.compensacion) {
+                            const comp = f_db.compensacion;
+                            const listItems = comp.detalle.map(d => `
+                        <div class="col-6 pr-1">
+                            <div class="d-flex justify-content-between border-bottom pb-1 mb-1" style="font-size: 0.6rem;">
+                                <span style="opacity: 0.85;">${d.dia}:</span>
+                                <span class="font-weight-bold">${d.horas} Hrs</span>
+                            </div>
+                        </div>
+                    `).join('');
+
+                            compensacionHTML = `
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge badge-warning mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                            <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${f.modalidad}</span>
+                        </div>
+                        <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-danger">No</span></div>
+                        <div class="bg-light p-2 rounded border" style="font-size: 0.65rem; margin-top: 5px;">
+                            <div class="font-weight-bold text-ufro-blue mb-1" style="font-size: 0.62rem;"><i class="fas fa-history mr-1"></i> Compensación Horaria:</div>
+                            <div class="row no-gutters text-dark">
+                                ${listItems}
+                            </div>
+                            <div class="text-muted text-right font-weight-bold" style="font-size: 0.58rem;">Total: ${comp.horas_semanales} Hrs / Semanal</div>
+                        </div>
+                    `;
+                        } else {
+                            compensacionHTML = `
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge badge-warning mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                            <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${f.modalidad}</span>
+                        </div>
+                        <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-danger">No</span></div>
+                        <div class="alert alert-warning p-1 mb-0" style="font-size: 0.6rem; border-radius: 4px; border-left: 2px solid var(--ufro-orange) !important; margin-top: 5px;">
+                            <i class="fas fa-exclamation-triangle mr-1"></i> Requiere compensación.
+                        </div>
+                    `;
+                        }
+                    } else {
+                        if (f.is_sea_vigente) {
+                            compensacionHTML = `
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge badge-success mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                            <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${f.modalidad}</span>
+                        </div>
+                        <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-success">Sí (Vigente)</span></div>
+                        <div class="alert alert-success p-1 mb-0" style="font-size: 0.6rem; border-radius: 4px; border-left: 2px solid var(--ufro-green) !important; margin-top: 5px;">
+                            <i class="fas fa-check-circle mr-1"></i> No requiere compensación.
+                        </div>
+                    `;
+                        } else {
+                            compensacionHTML = `
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge badge-success mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                            <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${f.modalidad}</span>
+                        </div>
+                        <div class="small text-muted mb-1" style="font-size: 0.7rem;">¿Pertenece a SEA? <span class="font-weight-bold text-danger">No</span></div>
+                        <div class="alert alert-success p-1 mb-0" style="font-size: 0.6rem; border-radius: 4px; border-left: 2px solid var(--ufro-green) !important; margin-top: 5px;">
+                            <i class="fas fa-check-circle mr-1"></i> No requiere compensación.
+                        </div>
+                    `;
+                        }
+                    }
+
+                    // H. Clase de Fila de Acuerdo a Validaciones
+                    let rowClass = 'row-accent-sea';
+                    if (!inhabilidadesOk || !deudasOk || !saldoOk || !topeOk || !mesesOk) {
+                        rowClass = 'row-accent-danger';
+                    } else if (f.estamento === 'Administrativo') {
+                        rowClass = 'row-accent-warning';
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = rowClass;
+                    tr.style.backgroundColor = '#fafbfc';
+                    tr.innerHTML = `
+                <td class="pl-4">
+                    <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">${f.nombre}</div>
+                    <div class="text-muted small mb-1" style="font-size: 0.72rem;">RUT: ${f.rut} <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">${f.estamento}</span></div>
+                    <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">${contrato ? contrato.tipo : 'Sin Contrato'} <span class="mx-1 text-light">|</span> Grado ${contrato ? contrato.grado : 'N/A'} <span class="mx-1 text-light">|</span> Antigüedad: ${contrato ? contrato.antiguedad : 'N/A'}</div>
+                    <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.72rem; line-height: 1.4; white-space: normal;">
+                        <i class="fas fa-tasks mr-1 text-primary"></i>"${f.actividad}"
+                    </div>
+                    <button class="btn btn-xs btn-outline-primary font-weight-bold mt-2" onclick="toggleFicha(${idx})" style="font-size: 0.65rem; border-radius: 4px; padding: 2px 6px;">
+                        <i class="fas fa-search-plus mr-1"></i> Detalles
+                    </button>
+                </td>
+                <td>
+                    <div class="mb-1 text-dark" style="font-size: 0.7rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase;">Prestaciones</span>Asistencia Técnica</div>
+                    <div class="text-muted" style="font-size: 0.68rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase; margin-top: 4px;">Evidencias</span>
+                        ${solicitud.detalles.evidencias_requeridas.map(ent => `<i class="fas fa-check-square text-success mr-1"></i>${ent}`).join('<br>')}
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex flex-column" style="gap: 3px !important;">
+                        ${inhabilidadesBadge}
+                        ${deudasBadge}
+                        ${saldoBadge}
+                        ${topeBadge}
+                    </div>
+                </td>
+                <td>
+                    ${compensacionHTML}
+                </td>
+                <td>
+                    ${mesesHTML}
+                </td>
+                <td class="text-right pr-4">
+                    <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">${formatMonto(f.total_pds)}</div>
+                    <div class="text-muted small" style="font-size: 0.68rem;">Promedio: ${formatMonto(pdsMensual)} / mes</div>
+                </td>
+            `;
+
+                    // Creación de Fila Collapsible de Auditoría
+                    const trFicha = document.createElement('tr');
+                    trFicha.id = `collapse_ficha_${idx}`;
+                    trFicha.className = 'collapse';
+                    trFicha.style.backgroundColor = '#f8fafc';
+
+                    // Bloque 1: Contratos y Coste SISPER
+                    let contratosHTML = '';
+                    if (f_db.contratos && f_db.contratos.length > 0) {
+                        f_db.contratos.forEach(c => {
+                            const isSelected = c.tipo === f.contrato_seleccionado;
+                            contratosHTML += `
+                        <div class="p-2 mb-2 rounded border ${isSelected ? 'border-primary bg-white shadow-sm' : 'bg-light'}" style="${isSelected ? 'border-left: 4px solid var(--ufro-blue) !important;' : ''}">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="font-weight-bold text-dark" style="font-size: 0.72rem;">${c.tipo}</span>
+                                ${isSelected ? '<span class="badge badge-primary px-2 py-1" style="font-size: 0.58rem; background-color: var(--ufro-blue);"><i class="fas fa-check-double mr-1"></i> Seleccionado PDS</span>' : ''}
+                            </div>
+                            <div class="row no-gutters small text-muted" style="font-size: 0.68rem; line-height: 1.4;">
+                                <div class="col-6"><strong>Estamento:</strong> ${c.estamento}</div>
+                                <div class="col-6"><strong>Cargo:</strong> ${c.jerarquia}</div>
+                                <div class="col-6"><strong>Grado / Jornada:</strong> ${c.grado} / ${c.jornada}</div>
+                                <div class="col-6"><strong>Antigüedad:</strong> ${c.antiguedad}</div>
+                                <div class="col-12 mt-1 text-primary font-weight-bold" style="font-size: 0.72rem;"><strong>Costo Mensual Bruto:</strong> ${formatMonto(c.bruto)}</div>
+                            </div>
+                        </div>
+                    `;
+                        });
+                    } else {
+                        contratosHTML = `<div class="text-muted small italic">Sin registros contractuales activos en SISPER.</div>`;
+                    }
+
+                    // Bloque 2: Fiscalía y Bloqueos (Deudas / Sumarios)
+                    let fiscaliaHTML = '';
+                    if (hasSumario || hasBlockingRole) {
+                        fiscaliaHTML += `
+                    <div class="alert alert-danger p-2 mb-2 shadow-sm" style="font-size: 0.7rem; border-radius: 6px; border-left: 4px solid #dc3545 !important;">
+                        <div class="font-weight-bold mb-1"><i class="fas fa-gavel mr-1"></i> Inhabilidades e Impugnaciones:</div>
+                        <ul class="pl-3 mb-0" style="line-height: 1.4;">
+                `;
+                        if (hasBlockingRole) {
+                            const rolBloq = f_db.asignaciones_rol.find(r => r.bloquea);
+                            fiscaliaHTML += `<li>Posee cargo directivo incompatible: <strong>${rolBloq.rol}</strong></li>`;
+                        }
+                        if (hasSumario) {
+                            f_db.inhabilidades.forEach(inh => {
+                                fiscaliaHTML += `<li>Registro en Fiscalía: <strong>${inh.descripcion}</strong> (Desde el ${inh.fecha_registro})</li>`;
+                            });
+                        }
+                        fiscaliaHTML += `</ul></div>`;
+                    } else {
+                        fiscaliaHTML += `
+                    <div class="d-flex align-items-center p-2 mb-2 rounded border border-success" style="background-color: #ecfdf5; color: #065f46; font-size: 0.7rem;">
+                        <i class="fas fa-check-shield mr-2" style="font-size: 1rem; color: var(--ufro-green);"></i>
+                        <div>
+                            <span class="font-weight-bold d-block">Fiscalía y Roles OK</span>
+                            El funcionario no posee sumarios en curso ni cargos directivos excluyentes.
+                        </div>
+                    </div>
+                `;
+                    }
+
+                    if (hasDeudas) {
+                        fiscaliaHTML += `
+                    <div class="alert alert-warning p-2 mb-0 shadow-sm" style="font-size: 0.7rem; border-radius: 6px; border-left: 4px solid var(--ufro-orange) !important; color: #7c2d12; background-color: #fff7ed; border-color: #fed7aa;">
+                        <div class="font-weight-bold mb-1 text-dark"><i class="fas fa-wallet mr-1"></i> Deudas Pendientes Campus:</div>
+                        <table class="table table-sm table-borderless mb-0" style="font-size: 0.68rem; line-height: 1.3;">
+                            <tbody>
+                `;
+                        f_db.deudas.forEach(d => {
+                            fiscaliaHTML += `
+                        <tr style="background: transparent;">
+                            <td class="p-0 font-weight-bold text-dark" style="background: transparent;">${d.tipo}</td>
+                            <td class="p-0 text-right font-weight-bold text-danger" style="background: transparent;">${formatMonto(d.monto)}</td>
+                            <td class="p-0 text-right text-muted pl-2" style="background: transparent;">(${d.dias_mora} días mora)</td>
+                        </tr>
+                        <tr style="background: transparent;">
+                            <td colspan="3" class="p-0 pb-1 text-muted italic" style="font-size: 0.6rem; border-bottom: 1px solid rgba(0,0,0,0.05); background: transparent;">${d.descripcion}</td>
+                        </tr>
+                    `;
+                        });
+                        fiscaliaHTML += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                    } else {
+                        fiscaliaHTML += `
+                    <div class="d-flex align-items-center p-2 rounded border border-success" style="background-color: #ecfdf5; color: #065f46; font-size: 0.7rem; margin-top: 5px;">
+                        <i class="fas fa-check-circle mr-2" style="font-size: 1rem; color: var(--ufro-green);"></i>
+                        <div>
+                            <span class="font-weight-bold d-block">Sin Deudas OK</span>
+                            Libre de morosidades por viáticos pendientes o multas de Biblioteca.
+                        </div>
+                    </div>
+                `;
+                    }
+
+                    // Bloque 3: Evaluador de Topes
+                    const baseSalaryText = contrato ? formatMonto(contrato.bruto) : '$0';
+                    const pctVal = f.estamento === 'Académico' ? '50% Acad.' : 'Cargo Fijo';
+                    const explanationText = f.estamento === 'Académico'
+                        ? `Tope Académico de 50%: ${formatMonto(topeMaximo)} (sobre remuneración base de ${baseSalaryText})`
+                        : `Tope Máximo Fijo para cargo ${f.jerarquia}: ${formatMonto(topeMaximo)}`;
+
+                    const topeExceedText = topeOk
+                        ? `<span class="badge badge-success p-1 px-2 font-weight-bold text-uppercase" style="font-size: 0.6rem; border-radius: 4px; background-color: var(--ufro-green);"><i class="fas fa-check-circle mr-1"></i> Cumple Límite</span>`
+                        : `<span class="badge badge-danger p-1 px-2 font-weight-bold text-uppercase badge-pulse" style="font-size: 0.6rem; border-radius: 4px; background-color: #dc3545;"><i class="fas fa-exclamation-triangle mr-1"></i> Excede Límite</span>`;
+
+                    const calculatorHTML = `
+                <div class="bg-white p-3 rounded border shadow-sm" style="font-size: 0.72rem; border-left: 4px solid ${topeOk ? 'var(--ufro-green)' : '#dc3545'} !important;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="font-weight-bold text-dark text-uppercase small" style="letter-spacing: 0.5px;"><i class="fas fa-calculator mr-1 text-primary"></i> Control de Topes D9</span>
+                        ${topeExceedText}
+                    </div>
+                    <table class="table table-sm mb-2" style="font-size: 0.68rem; line-height: 1.4;">
+                        <tbody>
+                            <tr>
+                                <td class="text-muted border-0 p-1">Sueldo Base SISPER:</td>
+                                <td class="text-right font-weight-bold text-dark border-0 p-1">${baseSalaryText}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted p-1">Límite Aplicado (${pctVal}):</td>
+                                <td class="text-right font-weight-bold text-secondary p-1">${formatMonto(topeMaximo)}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted p-1">Monto PDS Total:</td>
+                                <td class="text-right font-weight-bold text-dark p-1">${formatMonto(f.total_pds)} (${f.meses} Meses)</td>
+                            </tr>
+                            <tr style="border-top: 1px dashed #cbd5e1; background-color: #f8fafc;">
+                                <td class="font-weight-bold text-dark p-1">Promedio Mensual PDS:</td>
+                                <td class="text-right font-weight-bold text-primary p-1" style="font-size: 0.75rem;">${formatMonto(pdsMensual)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-muted bg-light p-2 rounded" style="font-size: 0.62rem; line-height: 1.35; border: 1px solid #e2e8f0;">
+                        <i class="fas fa-info-circle mr-1 text-primary"></i> <strong>Cálculo Normativo:</strong><br>
+                        ${f.estamento === 'Académico'
+                            ? `El promedio mensual solicitado de $${pdsMensual.toLocaleString('es-CL')} se encuentra por debajo del 50% de la Remuneración Bruta Base de Académico ($${topeMaximo.toLocaleString('es-CL')}).`
+                            : `El promedio mensual de $${pdsMensual.toLocaleString('es-CL')} no excede el límite máximo fijo legal establecido para Administrativo de cargo ${f.jerarquia} ($${topeMaximo.toLocaleString('es-CL')}).`}
                     </div>
                 </div>
-            </div>
-            
-            <div class="modal-footer border-0 p-3 bg-light d-flex justify-content-end gap-2">
-                <button type="button" class="btn btn-outline-secondary font-weight-bold px-3 py-2 mr-2" data-dismiss="modal" style="border-radius: 6px; font-size: 0.75rem;">
-                    CANCELAR
-                </button>
-                <button type="button" class="btn text-white font-weight-bold px-4 py-2" id="modalVisacionSubmitBtn" onclick="submitVisacionForm()" style="border-radius: 6px; font-size: 0.75rem; background-color: var(--ufro-green); border: none;">
-                    CONFIRMAR
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+            `;
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById("menu-toggle").onclick = function(e) {
-        e.preventDefault();
-        document.getElementById("wrapper").classList.toggle("toggled");
-    };
+                    trFicha.innerHTML = `
+                <td colspan="6" class="p-0 border-0">
+                    <div class="px-4 py-3 border-bottom" style="border-top: 1px solid #eef2f6; background-color: #fafbfc;">
+                        <div class="row">
+                            <div class="col-md-4 border-md-right border-sm-bottom pb-3 pb-md-0">
+                                <h6 class="font-weight-bold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.5px; font-size: 0.65rem;"><i class="fas fa-file-invoice mr-1 text-primary"></i> 1. Contratos y Coste SISPER</h6>
+                                ${contratosHTML}
+                            </div>
+                            <div class="col-md-4 border-md-right border-sm-bottom pb-3 pb-md-0 pt-3 pt-md-0">
+                                <h6 class="font-weight-bold text-secondary small text-uppercase mb-2" style="letter-spacing: 0.5px; font-size: 0.65rem;"><i class="fas fa-shield-alt mr-1 text-primary"></i> 2. Fiscalía y Bloqueos</h6>
+                                ${fiscaliaHTML}
+                            </div>
+                            <div class="col-md-4 pt-3 pt-md-0">
+                                ${calculatorHTML}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            `;
 
-    let accionGlobal = '';
-    
-    function prepararVisacion(accion) {
-        accionGlobal = accion;
-        
-        const modal = $('#modalVisacion');
-        const header = $('#modalVisacionHeader');
-        const title = $('#modalVisacionTitle');
-        const msg = $('#modalVisacionMessage');
-        const commentContainer = $('#modalCommentContainer');
-        const submitBtn = $('#modalVisacionSubmitBtn');
-        const errorMsg = $('#modal_comment_error');
-        const textarea = $('#modal_comentario_visacion');
-        
-        // Reset modal fields
-        textarea.val('');
-        errorMsg.addClass('hidden');
-        textarea.removeClass('border-danger');
-        
-        if (accion === 'aprobar') {
-            header.css('background-color', 'var(--ufro-green)');
-            title.html('<i class="fas fa-check-shield mr-2"></i> Aprobar y Visar Solicitud');
-            msg.html('¿Está seguro de visar esta solicitud y derivar el expediente a la siguiente etapa de revisión?');
-            commentContainer.hide();
-            submitBtn.text('APROBAR Y CONTINUAR').css('background-color', 'var(--ufro-green)');
-        } else if (accion === 'devolver') {
-            header.css('background-color', 'var(--ufro-orange)');
-            title.html('<i class="fas fa-reply mr-2"></i> Devolver con Correccion');
-            msg.html('Esta solicitud sera devuelta al creador del expediente para que realice las correcciones necesarias. Debe ingresar el motivo tecnico de la devolucion.');
-            commentContainer.show();
-            textarea.attr('placeholder', 'Indique detalladamente los puntos a corregir o alcances requeridos por la normativa DU09...');
-            submitBtn.text('CONFIRMAR DEVOLUCIÓN').css('background-color', 'var(--ufro-orange)');
-        } else if (accion === 'rechazar') {
-            header.css('background-color', '#dc3545');
-            title.html('<i class="fas fa-times-circle mr-2"></i> Rechazar Solicitud');
-            msg.html('Esta accion rechazara definitivamente la solicitud y cerrara el expediente. Debe ingresar el fundamento tecnico del rechazo.');
-            commentContainer.show();
-            textarea.attr('placeholder', 'Indique detalladamente los fundamentos tecnicos y normativos del rechazo...');
-            submitBtn.text('RECHAZAR DEFINITIVAMENTE').css('background-color', '#dc3545');
-        }
-        
-        modal.modal('show');
-    }
-    
-    function submitVisacionForm() {
-        const textarea = $('#modal_comentario_visacion');
-        const errorMsg = $('#modal_comment_error');
-        const comentario = textarea.val().trim();
-        
-        if ((accionGlobal === 'devolver' || accionGlobal === 'rechazar') && !comentario) {
-            errorMsg.removeClass('hidden');
-            textarea.addClass('border-danger');
-            textarea.focus();
-            return;
-        }
-        
-        $('#modalVisacion').modal('hide');
-        ejecutarVisacion(comentario);
-    }
-    
-    function ejecutarVisacion(comentario) {
-        console.log("Registrando trazabilidad en sg_esol...");
-        console.log("Acción:", accionGlobal);
-        console.log("Comentario:", comentario);
-        
-        if(accionGlobal === 'aprobar') {
-            window.location.href = "04_vista_visacion_dgdp.html";
-        } else {
-            window.location.href = "01_vista_formulario_solicitud.html";
-        }
-    }
-</script>
+                    tbody.appendChild(tr);
+                    tbody.appendChild(trFicha);
+                });
+
+                // 3. Renderizar Evidencias Requeridas (Únicas)
+                const evidenciasContainer = document.getElementById('evidencias_requeridas_container');
+                evidenciasContainer.innerHTML = '';
+
+                const uniqueEvidencias = solicitud.detalles.evidencias_requeridas || [];
+                uniqueEvidencias.forEach(ev => {
+                    const badge = document.createElement('div');
+                    badge.className = 'badge badge-light border text-success py-1 px-3 mr-2 mb-1';
+                    badge.style.fontSize = '0.65rem';
+                    badge.innerHTML = `<i class="fas fa-check mr-1"></i> ${ev.toUpperCase()}`;
+                    evidenciasContainer.appendChild(badge);
+                });
+
+                // Habilitar tooltips de bootstrap
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+            }
+
+            function toggleFicha(idx) {
+                $(`#collapse_ficha_${idx}`).collapse('toggle');
+            }
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById("menu-toggle").onclick = function (e) {
+                    e.preventDefault();
+                    document.getElementById("wrapper").classList.toggle("toggled");
+                };
+
+                renderVisacionData();
+            });
+
+            function prepararVisacion(accion) {
+                accionGlobal = accion;
+
+                const modal = $('#modalVisacion');
+                const header = $('#modalVisacionHeader');
+                const title = $('#modalVisacionTitle');
+                const msg = $('#modalVisacionMessage');
+                const commentContainer = $('#modalCommentContainer');
+                const submitBtn = $('#modalVisacionSubmitBtn');
+                const errorMsg = $('#modal_comment_error');
+                const textarea = $('#modal_comentario_visacion');
+
+                // Reset modal fields
+                textarea.val('');
+                errorMsg.addClass('hidden');
+                textarea.removeClass('border-danger');
+
+                if (accion === 'aprobar') {
+                    header.css('background-color', 'var(--ufro-green)');
+                    title.html('<i class="fas fa-check-shield mr-2"></i> Aprobar y Visar Solicitud');
+                    msg.html('¿Está seguro de visar esta solicitud y derivar el expediente a la siguiente etapa de revisión?');
+                    commentContainer.hide();
+                    submitBtn.text('APROBAR Y CONTINUAR').css('background-color', 'var(--ufro-green)');
+                } else if (accion === 'devolver') {
+                    header.css('background-color', 'var(--ufro-orange)');
+                    title.html('<i class="fas fa-reply mr-2"></i> Devolver con Correccion');
+                    msg.html('Esta solicitud sera devuelta al creador del expediente para que realice las correcciones necesarias. Debe ingresar el motivo tecnico de la devolucion.');
+                    commentContainer.show();
+                    textarea.attr('placeholder', 'Indique detalladamente los puntos a corregir o alcances requeridos por la normativa DU09...');
+                    submitBtn.text('CONFIRMAR DEVOLUCIÓN').css('background-color', 'var(--ufro-orange)');
+                } else if (accion === 'rechazar') {
+                    header.css('background-color', '#dc3545');
+                    title.html('<i class="fas fa-times-circle mr-2"></i> Rechazar Solicitud');
+                    msg.html('Esta accion rechazara definitivamente la solicitud y cerrara el expediente. Debe ingresar el fundamento tecnico del rechazo.');
+                    commentContainer.show();
+                    textarea.attr('placeholder', 'Indique detalladamente los fundamentos tecnicos y normativos del rechazo...');
+                    submitBtn.text('RECHAZAR DEFINITIVAMENTE').css('background-color', '#dc3545');
+                }
+
+                modal.modal('show');
+            }
+
+            function submitVisacionForm() {
+                const textarea = $('#modal_comentario_visacion');
+                const errorMsg = $('#modal_comment_error');
+                const comentario = textarea.val().trim();
+
+                if ((accionGlobal === 'devolver' || accionGlobal === 'rechazar') && !comentario) {
+                    errorMsg.removeClass('hidden');
+                    textarea.addClass('border-danger');
+                    textarea.focus();
+                    return;
+                }
+
+                $('#modalVisacion').modal('hide');
+                ejecutarVisacion(comentario);
+            }
+
+            function ejecutarVisacion(comentario) {
+                console.log("Registrando trazabilidad en sg_esol...");
+                console.log("Acción:", accionGlobal);
+                console.log("Comentario:", comentario);
+
+                if (accionGlobal === 'aprobar') {
+                    window.location.href = "04_vista_visacion_dgdp.html";
+                } else {
+                    window.location.href = "01_vista_formulario_solicitud.html";
+                }
+            }
+        </script>
 </body>
+
 </html>

@@ -238,6 +238,7 @@ body {
 
 .row-accent-sea { border-left: 4px solid var(--ufro-green) !important; }
 .row-accent-warning { border-left: 4px solid var(--ufro-orange) !important; }
+.row-accent-danger { border-left: 4px solid #dc2626 !important; }
 
 /* Estilo premium para scrollbars en contenedores responsivos */
 .table-responsive::-webkit-scrollbar {

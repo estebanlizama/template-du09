@@ -1,30 +1,52 @@
-# Documentación de Actualización: sg_fupsSecgen01
+# Documentación de Actualización: sg_fupssSecgen01 y sg_fupssSecgen03
 
-## Cambios Realizados
+## Cambios Realizados (2026/05/20)
 
-### 1. Cambio de Origen de Datos (Mapeo de Grado)
-Se migró la lógica de `sisper_db..sp_carg` a `sisper_db..sp_cont`. 
-- **Razón**: `sp_cont` contiene el historial y estado vigente de los contratos con mayor detalle financiero y estructural, incluyendo el campo `cod_niv_gr` (Grado) y `total` (Renta Bruta consolidada).
-- **Mapeo**: 
-    - `con.cod_niv_gr` -> Grado del funcionario.
-    - `nig.des_niv_gr` -> Descripción del grado (Escala).
+### 1. Implementación Real de `flag_inh_cargo`
 
-### 2. Implementación de la "Regla del 50%" y Topes Estamentarios
-Se añadió una lógica de `CASE` para calcular el `tope_maximo_mensual` según el estamento:
-- **Académicos**: 50% de su renta bruta propia.
-- **Planta Técnica**: Máximo $621.634.
-- **Planta Administrativa**: Máximo $553.079.
-- **Planta Auxiliar**: Máximo $382.519.
-- **Profesional**: $1.411.396 (Referencia Grado 4).
+Se reemplazó el placeholder `'PENDIENTE'` / `'N'` por la lógica real de inhabilidad por cargo según **DU09/2026 (DU288)**.
 
-### 3. Detección de Autoridades (Inhibición)
-Se añadió el campo `es_autoridad_inhabilitada`.
-- **Lógica**: Verifica si el cargo actual del funcionario pertenece a las categorías directivas (`cod_categ` 1, 2, 5 u 8), las cuales están inhabilitadas para tramitar DU09 según la normativa (Rectoría, Decanatos, etc.).
+**Fuente de datos**: `sisper_db..sp_cont.cod_cargo` → `sisper_db..sp_carg.cod_tipcar`
 
-### 4. Sugerencia de Jornada
-- Si el estamento es Académico, sugiere 'D' (Dentro de jornada).
-- Si es No Académico, sugiere 'F' (Fuera de jornada), alineado con la normativa de horas extraordinarias vs. labor ordinaria.
+**Reglas implementadas** (en orden de prioridad):
 
-## Próximos Pasos Recomendados
-1. **Validación en Frontend**: Usar el campo `tope_maximo_mensual` para validar el input del usuario en tiempo real.
-2. **Excepción ANID**: Recordar que si el proyecto es ANID, el backend debe ignorar el tope calculado por este procedimiento.
+| Prioridad | Condición | Resultado |
+|---|---|---|
+| 1 | Permiso Sin Goce de Sueldo vigente (`sp_ause.cod_tipaus = '2'`) | `'S'` |
+| 2 | Unidad de Contraloría (`cod_unidad LIKE '004004%'`) | `'S'` |
+| 3 | Decano (`cod_cargo=3110`) sin ANID (`@ind_anid='N'`) | `'S'` |
+| 4 | Decano (`cod_cargo=3110`) con ANID (`@ind_anid='S'`) | `'N'` (excepción) |
+| 5 | Director Instituto Independiente (`cod_cargo=3120`) | `'N'` (permitido) |
+| 6 | Cualquier Directivo (`cod_tipcar='5'`) | `'S'` |
+| 7 | Resto de cargos | `'N'` |
+
+### 2. Nuevo Parámetro `@ind_anid`
+
+Ambos SPs ahora reciben `@ind_anid char(1) = 'N'`.
+
+- **Origen**: Campo `secgen_db..sg_prse.ind_anid`, leído al seleccionar el Centro de Costo.
+- **El backend** debe pasar este parámetro al llamar el SP.
+
+### 3. Nuevo campo `flag_perm_sin_goce`
+
+Añadido para que el frontend pueda mostrar un indicador diferenciado ("Permiso Sin Goce de Sueldo") separado del indicador genérico de inhabilidad por cargo.
+
+### 4. Nuevo campo `flag_es_dir_inst_indep`
+
+`'S'` cuando `cod_cargo = 3120` (Director Instituto Independiente). El frontend debe mostrar una alerta informativa de que aplica tope de Nivel C calculado anualmente.
+
+### 5. Nuevo JOIN con `sp_carg`
+
+Se añadió `INNER JOIN sisper_db..sp_carg carg ON carg.cod_cargo = con.cod_cargo` para obtener `cod_tipcar` y `nom_cargo` directamente en el resultado.
+
+---
+
+## Próximos Pasos
+
+1. **Validación de licencias médicas**: Confirmar `cod_tipaus` exacto para licencias médicas en `sisper_db..sp_taus` (producción).
+2. **Deudas institucionales**: Integrar con módulo de Cobranzas para `flag_tiene_deudas` (Regla efectiva desde 01/01/2027).
+3. **Frontend P01-B07**: Mostrar indicador visual por cada flag:
+   - `flag_inh_cargo = 'S'` → 🔴 Bloquear botón "Agregar Funcionario".
+   - `flag_es_dir_inst_indep = 'S'` → 🟡 Mostrar alerta de tope Nivel C.
+   - `flag_perm_sin_goce = 'S'` → 🔴 Mostrar mensaje específico de permiso.
+4. **Excepción ANID en topes**: El backend debe ignorar `tope_maximo_mensual` si `ind_anid = 'S'`.
