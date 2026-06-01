@@ -1059,25 +1059,15 @@ Finanzas de Facultad.
 - Tipo de prestación.
 - Observaciones financieras, cuando existan.
 
-### D. Historia de usuario preliminar
-
-**HU-P05-19:** Como **Finanzas de Facultad**, quiero visualizar el historial de pagos del funcionario, para revisar sus antecedentes financieros vinculados a prestaciones previas.
-
-### E. Requerimientos funcionales preliminares
-
-- **RF-PP05-066:** El sistema debe mostrar el historial de pagos por funcionario.
-- **RF-PP05-067:** El sistema debe mostrar montos brutos, netos y acumulados cuando se encuentren disponibles.
-- **RF-PP05-068:** El sistema debe indicar el estado de cada pago registrado.
-
 ---
 
-# P05-B14 — Estado resumido de validaciones previas por funcionario
+# P05-B14 — Estado de validaciones previas y panel de auditoría integrada por funcionario
 
-## Funcionalidad P05-F20 — Visualizar resultado resumido de validaciones DGDP y etapas anteriores
+## Funcionalidad P05-F20 — Visualizar validaciones detalladas de Licencias, Deudas, Inhabilidades y Parentesco
 
 ### A. Descripción funcional
 
-Finanzas de Facultad debe visualizar un resumen de las validaciones previas aplicadas al funcionario, sin reemplazar el análisis normativo realizado por DGDP.
+Finanzas de Facultad debe visualizar el panel de auditoría detallada heredado de DGDP, incorporando la información estructurada de restricciones administrativas, deudas institucionales vigentes y parentescos detectados del funcionario, garantizando que el tomador de decisiones financieras posea toda la información relevante en pantalla.
 
 ### B. Actor principal
 
@@ -1085,30 +1075,35 @@ Finanzas de Facultad.
 
 ### C. Datos que debe mostrar el sistema
 
-- Estado DGDP:
-  - Cumple.
-  - Excluido.
-  - Otro estado definido.
-- Tope normativo: Cumple / No aplica / Observado.
-- Deudas institucionales: Sin deuda / Observado / Según estado registrado.
-- Inhabilidad por cargo: Cumple / No aplica / Observado.
-- SEA y compensación: Validado / No aplica / Observado.
-- Observaciones relevantes heredadas de DGDP, cuando existan.
+El sistema debe presentar tres paneles tabulares y de alertas bien estructurados:
+
+1.  **Licencias y Restricciones Administrativas:**
+    *   Listado de Licencias Médicas vigentes, Permisos sin Goce de Sueldo y suspensiones activas.
+    *   Por cada registro: Tipo de licencia/permiso, Fecha de inicio, Fecha de término, Días totales, Estado de validación.
+2.  **Historial de Deudas UFRO:**
+    *   Deudas financieras pendientes u observaciones vigentes del funcionario con la Universidad.
+    *   Por cada registro: Concepto/Glosa de deuda, Monto adeudado, Fecha de registro, Estado de la deuda (Vigente/Bloqueada).
+3.  **Vínculos de Parentesco y Declaración de Incompatibilidad:**
+    *   Relaciones familiares directas identificadas con otros funcionarios o directivos del Centro de Costo o de la Facultad.
+    *   Por cada registro: Nombre del pariente, Vínculo (cónyuge, hijo/a, etc.), RUN, Cargo/ CC del pariente, Estado de Declaración de Parentesco (Completa, Pendiente, No requerida).
 
 ### D. Reglas de negocio
 
-- Esta sección debe mostrarse como antecedente informativo para Finanzas.
-- No debe permitir modificar el resultado de DGDP desde esta pantalla.
+- Esta sección debe operar en modo solo lectura para este perfil.
+- El sistema debe heredar dinámicamente esta información desde las validaciones de DGDP y la base de datos maestra (`mock_data_d9.js`).
+- Los resultados de parentesco y deudas no deben bloquear de manera automatizada la revisión presupuestaria, operando como alertas informativas críticas.
+- El panel debe conservar la misma estructura que en la etapa DGDP para mantener consistencia visual.
 
 ### E. Historia de usuario preliminar
 
-**HU-P05-20:** Como **Finanzas de Facultad**, quiero visualizar un resumen de las validaciones previas aplicadas a cada funcionario, para revisar el expediente con conocimiento de los controles ya superados.
+**HU-P05-20:** Como **Finanzas de Facultad**, quiero revisar el panel de auditoría de licencias, deudas y parentesco de cada funcionario, para asegurar la integridad de la asignación y evaluar riesgos administrativos asociados a la contratación.
 
 ### F. Requerimientos funcionales preliminares
 
-- **RF-PP05-069:** El sistema debe mostrar el estado DGDP de cada funcionario.
-- **RF-PP05-070:** El sistema debe mostrar de forma resumida los resultados normativos relevantes previamente registrados.
-- **RF-PP05-071:** El sistema no debe permitir modificar las validaciones heredadas desde DGDP.
+- **RF-PP05-069:** El sistema debe mostrar el panel detallado de Licencias y Restricciones Administrativas por funcionario.
+- **RF-PP05-070:** El sistema desplegará la tabla de Historial de Deudas UFRO activas del funcionario.
+- **RF-PP05-071:** El sistema debe mostrar las relaciones de parentesco e incompatibilidad declaradas del funcionario.
+- **RF-PP05-071A:** El sistema debe presentar estas validaciones de forma no modificable (solo lectura) y estandarizada en el panel de auditoría.
 
 ---
 

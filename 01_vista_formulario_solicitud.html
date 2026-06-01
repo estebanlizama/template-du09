@@ -448,543 +448,519 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- PASO 3: DATOS DEL FUNCIONARIO -->
-                                <div class="card shadow-sm border-0 mb-4 rounded-lg">
-                                    <div id="headerPaso2"
-                                        class="card-header bg-ufro-dark text-white d-flex justify-content-between align-items-center py-2 transition-all">
-                                        <span class="h6 mb-0 text-uppercase" style="font-size: 0.8rem;"><i
-                                                class="fas fa-user mr-2"></i> Datos del Funcionario</span>
-                                        <div id="d9_indicators" class="d-flex gap-2 hidden"></div>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- ================================================================================== -->
-                                        <!-- NO MODIFICAR: Este bloque es el flujo legacy DU288 (calcado de la imagen original) -->
-                                        <!-- ================================================================================== -->
-                                        <div id="legacy_staff_container" class="dynamic-section">
-                                            <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar
-                                                Datos de Funcionario</h6>
-                                            <button class="btn btn-sm btn-primary bg-ufro-dark mb-3 px-3"
-                                                data-toggle="modal" data-target="#modalSearchStaff"
-                                                onclick="setSearchTarget('staff_legacy')">
-                                                <i class="fas fa-search mr-1"></i> Buscar datos de funcionario
-                                            </button>
+                            </div> <!-- Cierra card-body de Paso 2 -->
+                        </div> <!-- Cierra tarjeta de Paso 2 -->
 
-                                            <div class="row">
-                                                <div class="col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">RUT</label>
-                                                    <input type="text" id="rut_funcionario_legacy"
-                                                        class="form-control form-control-sm bg-light" readonly>
-                                                </div>
-                                                <div class="col-md-9 form-group">
-                                                    <label class="small text-muted font-weight-bold">Nombre
-                                                        funcionario</label>
-                                                    <input type="text" id="nombre_funcionario_legacy"
-                                                        class="form-control form-control-sm bg-light" readonly>
-                                                </div>
+                        <!-- PASO 3: DATOS DEL FUNCIONARIO -->
+                        <div class="card shadow-sm border-0 mb-4 rounded-lg">
+                            <div id="headerPaso2"
+                                class="card-header bg-ufro-dark text-white d-flex justify-content-between align-items-center py-2 transition-all">
+                                <span class="h6 mb-0 text-uppercase" style="font-size: 0.8rem;"><i
+                                        class="fas fa-user mr-2"></i> Datos del Funcionario</span>
+                                <div id="d9_indicators" class="d-flex gap-2 hidden"></div>
+                            </div>
+                            <div class="card-body">
+                                <!-- ================================================================================== -->
+                                <!-- NO MODIFICAR: Este bloque es el flujo legacy DU288 (calcado de la imagen original) -->
+                                <!-- ================================================================================== -->
+                                <div id="legacy_staff_container" class="dynamic-section">
+                                    <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar
+                                        Datos de Funcionario</h6>
+                                    <button class="btn btn-sm btn-primary bg-ufro-dark mb-3 px-3" data-toggle="modal"
+                                        data-target="#modalSearchStaff" onclick="setSearchTarget('staff_legacy')">
+                                        <i class="fas fa-search mr-1"></i> Buscar datos de funcionario
+                                    </button>
 
-                                                <div class="col-md-6 form-group">
-                                                    <label class="small text-muted font-weight-bold">Ítem
-                                                        presupuestario</label>
-                                                    <select class="form-control form-control-sm">
-                                                        <option>Seleccione una opción</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 form-group">
-                                                    <label class="small text-muted font-weight-bold">Motivo por el que
-                                                        se solicita</label>
-                                                    <input type="text" class="form-control form-control-sm">
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">RUT</label>
+                                            <input type="text" id="rut_funcionario_legacy"
+                                                class="form-control form-control-sm bg-light" readonly>
+                                        </div>
+                                        <div class="col-md-9 form-group">
+                                            <label class="small text-muted font-weight-bold">Nombre
+                                                funcionario</label>
+                                            <input type="text" id="nombre_funcionario_legacy"
+                                                class="form-control form-control-sm bg-light" readonly>
+                                        </div>
 
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Fecha de
-                                                        inicio</label>
-                                                    <div class="input-group input-group-sm">
-                                                        <div class="input-group-prepend"><span
-                                                                class="input-group-text"><i
-                                                                    class="far fa-calendar-alt text-muted"></i></span>
-                                                        </div>
-                                                        <input type="text" class="form-control bg-light"
-                                                            placeholder="Fecha no seleccionada" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Fecha de
-                                                        término</label>
-                                                    <div class="input-group input-group-sm">
-                                                        <div class="input-group-prepend"><span
-                                                                class="input-group-text"><i
-                                                                    class="far fa-calendar-alt text-muted"></i></span>
-                                                        </div>
-                                                        <input type="text" class="form-control bg-light"
-                                                            placeholder="Fecha no seleccionada" readonly>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="small text-muted font-weight-bold">Ítem
+                                                presupuestario</label>
+                                            <select class="form-control form-control-sm">
+                                                <option>Seleccione una opción</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="small text-muted font-weight-bold">Motivo por el que
+                                                se solicita</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
 
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Tipo de
-                                                        Periodo</label>
-                                                    <div class="d-flex mt-1">
-                                                        <div class="custom-control custom-radio mr-3">
-                                                            <input type="radio" id="tp_meses_legacy" name="tp_legacy"
-                                                                class="custom-control-input" checked>
-                                                            <label class="custom-control-label small font-weight-bold"
-                                                                for="tp_meses_legacy">Meses</label>
-                                                        </div>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="tp_horas_legacy" name="tp_legacy"
-                                                                class="custom-control-input">
-                                                            <label class="custom-control-label small font-weight-bold"
-                                                                for="tp_horas_legacy">Horas</label>
-                                                        </div>
-                                                    </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Fecha de
+                                                inicio</label>
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="far fa-calendar-alt text-muted"></i></span>
                                                 </div>
+                                                <input type="text" class="form-control bg-light"
+                                                    placeholder="Fecha no seleccionada" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Fecha de
+                                                término</label>
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend"><span class="input-group-text"><i
+                                                            class="far fa-calendar-alt text-muted"></i></span>
+                                                </div>
+                                                <input type="text" class="form-control bg-light"
+                                                    placeholder="Fecha no seleccionada" readonly>
+                                            </div>
+                                        </div>
 
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Períodos a pagar
-                                                        por Mes</label>
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="number" class="form-control" value="0">
-                                                        <div class="input-group-append"><span
-                                                                class="input-group-text">Mes</span></div>
-                                                    </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Tipo de
+                                                Periodo</label>
+                                            <div class="d-flex mt-1">
+                                                <div class="custom-control custom-radio mr-3">
+                                                    <input type="radio" id="tp_meses_legacy" name="tp_legacy"
+                                                        class="custom-control-input" checked>
+                                                    <label class="custom-control-label small font-weight-bold"
+                                                        for="tp_meses_legacy">Meses</label>
                                                 </div>
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Bruto por
-                                                        Mes</label>
-                                                    <div class="input-group input-group-sm">
-                                                        <div class="input-group-prepend"><span
-                                                                class="input-group-text">$</span></div>
-                                                        <input type="number" class="form-control" value="0">
-                                                        <div class="input-group-append"><span
-                                                                class="input-group-text">Mes</span></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold">Total final</label>
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text"
-                                                            class="form-control bg-light text-center font-weight-bold"
-                                                            readonly value="0">
-                                                        <div class="input-group-append"><span
-                                                                class="input-group-text">Mes</span></div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-12 text-right mt-2">
-                                                    <button class="btn btn-sm btn-outline-primary px-4"><i
-                                                            class="fas fa-plus mr-1"></i> Funcionario</button>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="tp_horas_legacy" name="tp_legacy"
+                                                        class="custom-control-input">
+                                                    <label class="custom-control-label small font-weight-bold"
+                                                        for="tp_horas_legacy">Horas</label>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- ========================================== -->
-                                        <!-- SECCIÓN D9 (DU009) - PREVENTIVO            -->
-                                        <!-- ========================================== -->
-                                        <div id="d9_staff_container" class="hidden dynamic-section">
-                                            <!-- ALERTA COMPATIBILIDAD -->
-
-                                            <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar
-                                                Funcionario</h6>
-                                            <button
-                                                class="btn btn-sm btn-primary bg-ufro-blue border-0 mb-3 px-3 shadow-sm"
-                                                data-toggle="modal" data-target="#modalSearchStaff"
-                                                onclick="setSearchTarget('staff')">
-                                                <i class="fas fa-search mr-1"></i> Seleccionar Funcionario
-                                            </button>
-
-                                            <div class="row">
-                                                <div class="col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">RUT</label>
-                                                    <input type="text" id="rut_funcionario"
-                                                        class="form-control form-control-sm bg-light" readonly>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Períodos a pagar
+                                                por Mes</label>
+                                            <div class="input-group input-group-sm">
+                                                <input type="number" class="form-control" value="0">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">Mes</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Bruto por
+                                                Mes</label>
+                                            <div class="input-group input-group-sm">
+                                                <div class="input-group-prepend"><span class="input-group-text">$</span>
                                                 </div>
-                                                <div class="col-md-9 form-group">
-                                                    <label class="small text-muted font-weight-bold">Nombre
-                                                        funcionario</label>
-                                                    <input type="text" id="nombre_funcionario"
-                                                        class="form-control form-control-sm bg-light" readonly>
-                                                </div>
+                                                <input type="number" class="form-control" value="0">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">Mes</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold">Total final</label>
+                                            <div class="input-group input-group-sm">
+                                                <input type="text"
+                                                    class="form-control bg-light text-center font-weight-bold" readonly
+                                                    value="0">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">Mes</span></div>
+                                            </div>
+                                        </div>
 
-                                                <!-- ESCANEO DE REGLAS -->
-                                                <div class="col-12 mb-3">
-                                                    <div id="d9_staff_validation_box"
-                                                        class="alert alert-warning border-0 p-2 mb-2 hidden"
-                                                        style="font-size: 0.75rem;">
-                                                        <i class="fas fa-shield-alt mr-2"></i> <strong>Escaneo de Reglas
-                                                            de Negocio D9:</strong>
-                                                        <div id="v_inhabilidad" class="mt-1"><i
-                                                                class="fas fa-circle-notch fa-spin mr-1"></i> Validando
-                                                            Inhabilidad por Cargo...</div>
-                                                        <div id="v_deudas" class="mt-1"><i
-                                                                class="fas fa-circle-notch fa-spin mr-1"></i>
-                                                            Verificando Deudas Pendientes...</div>
-                                                        <div id="v_parentesco" class="mt-1"><i
-                                                                class="fas fa-circle-notch fa-spin mr-1"></i>
-                                                            Verificando Relación de Parentesco (Informativo)...</div>
+                                        <div class="col-12 text-right mt-2">
+                                            <button class="btn btn-sm btn-outline-primary px-4"><i
+                                                    class="fas fa-plus mr-1"></i> Funcionario</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ========================================== -->
+                                <!-- SECCIÓN D9 (DU009) - PREVENTIVO            -->
+                                <!-- ========================================== -->
+                                <div id="d9_staff_container" class="hidden dynamic-section">
+                                    <!-- ALERTA COMPATIBILIDAD -->
+
+                                    <h6 class="small font-weight-bold text-uppercase text-muted mb-3">Buscar
+                                        Funcionario</h6>
+                                    <button class="btn btn-sm btn-primary bg-ufro-blue border-0 mb-3 px-3 shadow-sm"
+                                        data-toggle="modal" data-target="#modalSearchStaff"
+                                        onclick="setSearchTarget('staff')">
+                                        <i class="fas fa-search mr-1"></i> Seleccionar Funcionario
+                                    </button>
+
+                                    <div class="row">
+                                        <div class="col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">RUT</label>
+                                            <input type="text" id="rut_funcionario"
+                                                class="form-control form-control-sm bg-light" readonly>
+                                        </div>
+                                        <div class="col-md-9 form-group">
+                                            <label class="small text-muted font-weight-bold">Nombre
+                                                funcionario</label>
+                                            <input type="text" id="nombre_funcionario"
+                                                class="form-control form-control-sm bg-light" readonly>
+                                        </div>
+
+                                        <!-- ESCANEO DE REGLAS -->
+                                        <div class="col-12 mb-3">
+                                            <div id="d9_staff_validation_box"
+                                                class="alert alert-warning border-0 p-2 mb-2 hidden"
+                                                style="font-size: 0.75rem;">
+                                                <i class="fas fa-shield-alt mr-2"></i> <strong>Escaneo de Reglas
+                                                    de Negocio D9:</strong>
+                                                <div id="v_inhabilidad" class="mt-1"><i
+                                                        class="fas fa-circle-notch fa-spin mr-1"></i> Validando
+                                                    Inhabilidad por Cargo...</div>
+                                                <div id="v_deudas" class="mt-1"><i
+                                                        class="fas fa-circle-notch fa-spin mr-1"></i>
+                                                    Verificando Deudas Pendientes...</div>
+                                                <div id="v_parentesco" class="mt-1"><i
+                                                        class="fas fa-circle-notch fa-spin mr-1"></i>
+                                                    Verificando Relación de Parentesco (Informativo)...</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- SELECCIÓN DE CONTRATO VIGENTE (P01-B08) -->
+                                        <div class="col-md-12 mb-3">
+                                            <label class="small text-muted font-weight-bold d-block mb-2">Selección
+                                                de Contrato Vigente (SISPER) - <span class="text-primary">Defina
+                                                    contrato para cálculo de topes</span></label>
+                                            <div class="table-responsive rounded shadow-xs border"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                                <table id="tabla_contratos_sisper"
+                                                    class="table table-sm table-hover mb-0"
+                                                    style="font-size: 0.7rem; min-width: 800px;">
+                                                    <thead class="bg-light text-muted sticky-top">
+                                                        <tr>
+                                                            <th class="pl-3" width="30">Sel.</th>
+                                                            <th>Contrato</th>
+                                                            <th>Estamento</th>
+                                                            <th>Jerarquía / Grado</th>
+                                                            <th class="text-center">Jornada</th>
+                                                            <th class="text-center">Antigüedad</th>
+                                                            <th class="text-right">Renta Bruta</th>
+                                                            <th class="text-right">Renta Líquida</th>
+                                                            <th class="text-center">Ítem Directivo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="contratos_empty_row">
+                                                            <td colspan="9" class="text-center text-muted py-3">
+                                                                <i class="fas fa-info-circle mr-1"></i>
+                                                                Seleccione un funcionario para cargar sus
+                                                                contratos vigentes en SISPER.
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- P01-B07b: Asignaciones de Rol Vigentes del Funcionario -->
+                                        <div class="col-md-12 mb-3" id="asignaciones_rol_container">
+                                            <div class="border rounded overflow-hidden bg-white shadow-xs">
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-light">
+                                                    <span class="small font-weight-bold text-ufro-dark text-uppercase"
+                                                        style="letter-spacing:0.4px; font-size:0.7rem;">
+                                                        <i class="fas fa-id-badge mr-1 text-primary"></i>
+                                                        Asignaciones de Rol Vigentes (SISPER)
+                                                    </span>
+                                                    <span class="badge badge-light text-muted"
+                                                        style="font-size:0.65rem;">Solo lectura &mdash;
+                                                        P01-B07b</span>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm mb-0" id="tabla_asignaciones_rol"
+                                                        style="font-size:0.75rem;">
+                                                        <thead class="bg-light text-muted"
+                                                            style="font-size:0.68rem; letter-spacing:0.3px;">
+                                                            <tr>
+                                                                <th class="pl-3">Rol / Cargo Asignado</th>
+                                                                <th>Unidad / Centro</th>
+                                                                <th class="text-center">Vigencia Desde</th>
+                                                                <th class="text-center">Vigencia Hasta</th>
+                                                                <th class="text-center">Ítem Directivo</th>
+                                                                <th class="text-center pr-3">Estado PDS</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="asignaciones_rol_tbody">
+                                                            <tr id="asig_empty_row">
+                                                                <td colspan="6" class="text-center text-muted py-3">
+                                                                    <i class="fas fa-info-circle mr-1"></i>
+                                                                    Seleccione un funcionario para consultar sus
+                                                                    asignaciones de rol vigentes.
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Alerta bloqueante por asignación directiva -->
+                                                <div id="alerta_asig_directiva" class="hidden px-3 py-2 border-top"
+                                                    style="background:#fff5f5;">
+                                                    <div class="d-flex align-items-center small"
+                                                        style="font-size:0.78rem;">
+                                                        <i class="fas fa-ban text-danger mr-2"
+                                                            style="font-size:1rem;"></i>
+                                                        <span>
+                                                            <strong class="text-danger">Funcionario inhabilitado
+                                                                para PDS:</strong>
+                                                            Tiene una asignación de rol directivo activa
+                                                            (<strong id="lbl_asig_directiva_nombre"></strong>).
+                                                            Según normativa, los directivos no pueden ser
+                                                            incorporados a una Prestación de Servicios.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Input readonly: asignación de rol detectada -->
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <label class="small text-muted font-weight-bold d-block">Asignación
+                                                        de Rol Vigente <span
+                                                            class="text-muted font-weight-normal">(SISPER — solo
+                                                            lectura)</span></label>
+                                                    <input type="text" id="asignacion_rol_vigente_d9"
+                                                        class="form-control form-control-sm bg-light" readonly
+                                                        placeholder="Sin asignaciones de rol vigentes">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Estamento</label>
+                                            <input type="text" id="estamento_d9"
+                                                class="form-control form-control-sm bg-light" readonly value="">
+                                        </div>
+                                        <div class="col-6 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Antigüedad
+                                                (SISPER)</label>
+                                            <input type="text" id="antiguedad_d9"
+                                                class="form-control form-control-sm bg-light" readonly value="">
+                                        </div>
+                                        <div class="col-6 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Jerarquía</label>
+                                            <input type="text" id="funcionario_jerarquia"
+                                                class="form-control form-control-sm bg-light" readonly value="">
+                                        </div>
+                                        <div class="col-6 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Jornada</label>
+                                            <input type="text" id="tipo_jornada_d9"
+                                                class="form-control form-control-sm bg-light" readonly value="">
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-2 form-group">
+                                            <label class="small text-muted font-weight-bold">Grado</label>
+                                            <input type="text" id="grado_d9"
+                                                class="form-control form-control-sm bg-light text-center" readonly
+                                                value="">
+                                        </div>
+                                        <div class="col-8 col-sm-5 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Renta Bruta Base
+                                                para Tope</label>
+                                            <input type="text" id="renta_bruta_d9"
+                                                class="form-control form-control-sm bg-light font-weight-bold text-primary"
+                                                readonly value="">
+                                        </div>
+                                        <div class="col-12 col-sm-4 col-md-3 form-group">
+                                            <label class="small text-muted font-weight-bold">Renta
+                                                Líquida</label>
+                                            <input type="text" id="renta_liquida_d9"
+                                                class="form-control form-control-sm bg-light" readonly value="">
+                                        </div>
+                                        <!-- Ítem Directivo del Contrato (SISPER) -->
+                                        <div class="col-12 col-sm-5 col-md-4 form-group">
+                                            <label class="small text-muted font-weight-bold d-block">Ítem
+                                                Directivo del Contrato <span
+                                                    class="text-muted font-weight-normal">(SISPER)</span></label>
+                                            <input type="text" id="tipo_item_directivo_d9"
+                                                class="form-control form-control-sm bg-light font-weight-bold text-warning"
+                                                readonly value="" placeholder="Sin ítem directivo">
+                                        </div>
+
+                                        <div class="col-md-12 form-group">
+                                            <label class="small text-muted font-weight-bold">Actividad
+                                                específica a realizar por el funcionario</label>
+                                            <textarea id="actividad_funcionario_d9"
+                                                class="form-control form-control-sm shadow-xs border-primary" rows="1"
+                                                placeholder="Describa las tareas técnicas que el funcionario desempeñará..."
+                                                style="border-left: 3px solid var(--ufro-blue);"></textarea>
+                                        </div>
+
+                                        <!-- MODALIDAD DE EJECUCIÓN D9 -->
+                                        <div class="col-12 mb-3">
+                                            <div class="bg-light p-3 rounded border">
+                                                <h6 class="small font-weight-bold text-ufro-dark mb-3"><i
+                                                        class="fas fa-calendar-check mr-1"></i> Período de
+                                                    Ejecución (D9)</h6>
+                                                <div class="row align-items-end">
+
+                                                    <!-- Meses de ejecución (Grid Table) -->
+                                                    <div class="col-md-8 mb-3">
+                                                        <label class="small text-muted font-weight-bold">Selección
+                                                            de meses de ejecución <span
+                                                                class="text-danger small font-weight-bold">(Máximo
+                                                                2 meses por año)</span></label>
+                                                        <div class="month-grid shadow-xs" id="month_picker_grid">
+                                                            <div class="month-item" data-month="ENE">ENE</div>
+                                                            <div class="month-item" data-month="FEB">FEB</div>
+                                                            <div class="month-item" data-month="MAR">MAR</div>
+                                                            <div class="month-item" data-month="ABR">ABR</div>
+                                                            <div class="month-item" data-month="MAY">MAY</div>
+                                                            <div class="month-item" data-month="JUN">JUN</div>
+                                                            <div class="month-item" data-month="JUL">JUL</div>
+                                                            <div class="month-item" data-month="AGO">AGO</div>
+                                                            <div class="month-item" data-month="SEP">SEP</div>
+                                                            <div class="month-item" data-month="OCT">OCT</div>
+                                                            <div class="month-item" data-month="NOV">NOV</div>
+                                                            <div class="month-item" data-month="DIC">DIC</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Monto Bruto de la Prestación -->
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="small text-muted font-weight-bold">Monto
+                                                            Bruto a Pagar</label>
+                                                        <div class="input-group input-group-sm shadow-sm">
+                                                            <div class="input-group-prepend"><span
+                                                                    class="input-group-text">$</span></div>
+                                                            <input type="number" id="monto_bruto_d9"
+                                                                class="form-control font-weight-bold text-primary"
+                                                                placeholder="Ej: 500000"
+                                                                oninput="actualizarCalculoTopes()">
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <!-- SELECCIÓN DE CONTRATO VIGENTE (P01-B08) -->
-                                                <div class="col-md-12 mb-3">
-                                                    <label
-                                                        class="small text-muted font-weight-bold d-block mb-2">Selección
-                                                        de Contrato Vigente (SISPER) - <span class="text-primary">Defina
-                                                            contrato para cálculo de topes</span></label>
-                                                    <div class="table-responsive rounded shadow-xs border"
-                                                        style="max-height: 200px; overflow-y: auto;">
-                                                        <table id="tabla_contratos_sisper"
-                                                            class="table table-sm table-hover mb-0"
-                                                            style="font-size: 0.7rem; min-width: 800px;">
-                                                            <thead class="bg-light text-muted sticky-top">
+                                            </div>
+
+                                            <!-- WIDGET DE TOPES (50% REGLA O TOPE FIJO) -->
+                                            <div class="mt-3 pt-3 border-top">
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center rounded bg-light p-2 border">
+                                                    <div>
+                                                        <span id="label_tipo_tope"
+                                                            class="small font-weight-bold text-muted text-uppercase d-block"
+                                                            style="letter-spacing: 0.5px;">Control de Límite
+                                                            (Máx 50% Remuneración)</span>
+                                                        <small class="text-muted" style="font-size: 0.7rem;">Límite
+                                                            mensual (Art. DU
+                                                            288)</small>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <strong id="label_tope_total" class="text-primary"
+                                                            style="font-size: 1.1rem;">$0</strong>
+                                                        <div class="mt-1">
+                                                            <span id="tope_pct" class="badge badge-secondary px-2">Sin
+                                                                Selección</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- MENSAJE DE BLOQUEO POR TOPE -->
+                                            <div id="tope_block_alert"
+                                                class="alert alert-danger py-1 px-2 mt-2 small hidden">
+                                                <i class="fas fa-times-circle mr-1"></i>
+                                                <strong>Bloqueo:</strong> <span id="tope_block_alert_text">El
+                                                    monto solicitado excede el tope del
+                                                    50% permitido para este funcionario.</span>
+                                            </div>
+
+                                            <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
+                                            <div class="row mt-3">
+                                                <!-- Fuera o Dentro de la Jornada -->
+                                                <div class="col-6 col-md-6 mb-3">
+                                                    <label class="small font-weight-bold text-muted d-block">¿Fuera
+                                                        o dentro de la jornada?</label>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="j_fuera" name="tipo_jornada_e"
+                                                            class="custom-control-input" checked
+                                                            onchange="evaluarReglas()">
+                                                        <label
+                                                            class="custom-control-label small text-dark font-weight-bold"
+                                                            for="j_fuera">Fuera de jornada</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="j_dentro" name="tipo_jornada_e"
+                                                            class="custom-control-input" onchange="evaluarReglas()">
+                                                        <label
+                                                            class="custom-control-label small text-dark font-weight-bold"
+                                                            for="j_dentro">Dentro de jornada</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- ¿Pertenecen a SEA? (Siempre visible) -->
+                                                <div class="col-6 col-md-6 mb-3" id="path_acad_sea">
+                                                    <label class="small font-weight-bold text-muted d-block">¿Pertenecen
+                                                        a SEA?</label>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="sea_si" name="sea_opt"
+                                                            class="custom-control-input" onchange="evaluarReglas()">
+                                                        <label
+                                                            class="custom-control-label small text-dark font-weight-bold"
+                                                            for="sea_si">Sí</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio custom-control-inline">
+                                                        <input type="radio" id="sea_no" name="sea_opt"
+                                                            class="custom-control-input" onchange="evaluarReglas()">
+                                                        <label
+                                                            class="custom-control-label small text-dark font-weight-bold"
+                                                            for="sea_no">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Caso Admin/No SEA: Tabla Compensación (Siempre visible) -->
+                                            <div class="row">
+                                                <div id="path_compensacion" class="col-md-12 mb-3">
+                                                    <div id="compensacion_alert"
+                                                        class="alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center"
+                                                        style="background-color: #fff9e6; transition: all 0.3s ease;">
+                                                        <span id="compensacion_msg"><i
+                                                                class="fas fa-exclamation-triangle mr-1 text-warning"></i>
+                                                            Requiere <strong>Compensación
+                                                                horaria</strong></span>
+                                                        <button type="button" id="btn_agregar_compensacion"
+                                                            class="btn btn-xs btn-primary py-0"
+                                                            onclick="agregarFilaCompensacion()">
+                                                            <i class="fas fa-plus mr-1"></i> Agregar Día
+                                                        </button>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <table id="tabla_compensacion"
+                                                            class="table table-xs table-bordered mb-0 bg-white shadow-xs"
+                                                            style="font-size: 0.7rem;">
+                                                            <thead class="bg-light">
                                                                 <tr>
-                                                                    <th class="pl-3" width="30">Sel.</th>
-                                                                    <th>Contrato</th>
-                                                                    <th>Estamento</th>
-                                                                    <th>Jerarquía / Grado</th>
-                                                                    <th class="text-center">Jornada</th>
-                                                                    <th class="text-center">Antigüedad</th>
-                                                                    <th class="text-right">Renta Bruta</th>
-                                                                    <th class="text-right">Renta Líquida</th>
-                                                                    <th class="text-center">Ítem Directivo</th>
+                                                                    <th>Día</th>
+                                                                    <th width="100">Hrs</th>
+                                                                    <th width="40"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr id="contratos_empty_row">
-                                                                    <td colspan="9" class="text-center text-muted py-3">
-                                                                        <i class="fas fa-info-circle mr-1"></i>
-                                                                        Seleccione un funcionario para cargar sus
-                                                                        contratos vigentes en SISPER.
-                                                                    </td>
+                                                                <tr id="compensacion_empty_row"
+                                                                    class="text-center text-muted">
+                                                                    <td colspan="3" class="py-2">No se han
+                                                                        registrado días de compensación.</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-
-                                                <!-- P01-B07b: Asignaciones de Rol Vigentes del Funcionario -->
-                                                <div class="col-md-12 mb-3" id="asignaciones_rol_container">
-                                                    <div class="border rounded overflow-hidden bg-white shadow-xs">
-                                                        <div
-                                                            class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-light">
-                                                            <span
-                                                                class="small font-weight-bold text-ufro-dark text-uppercase"
-                                                                style="letter-spacing:0.4px; font-size:0.7rem;">
-                                                                <i class="fas fa-id-badge mr-1 text-primary"></i>
-                                                                Asignaciones de Rol Vigentes (SISPER)
-                                                            </span>
-                                                            <span class="badge badge-light text-muted"
-                                                                style="font-size:0.65rem;">Solo lectura &mdash;
-                                                                P01-B07b</span>
-                                                        </div>
-                                                        <div class="table-responsive">
-                                                            <table class="table table-sm mb-0"
-                                                                id="tabla_asignaciones_rol" style="font-size:0.75rem;">
-                                                                <thead class="bg-light text-muted"
-                                                                    style="font-size:0.68rem; letter-spacing:0.3px;">
-                                                                    <tr>
-                                                                        <th class="pl-3">Rol / Cargo Asignado</th>
-                                                                        <th>Unidad / Centro</th>
-                                                                        <th class="text-center">Vigencia Desde</th>
-                                                                        <th class="text-center">Vigencia Hasta</th>
-                                                                        <th class="text-center">Ítem Directivo</th>
-                                                                        <th class="text-center pr-3">Estado PDS</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="asignaciones_rol_tbody">
-                                                                    <tr id="asig_empty_row">
-                                                                        <td colspan="6"
-                                                                            class="text-center text-muted py-3">
-                                                                            <i class="fas fa-info-circle mr-1"></i>
-                                                                            Seleccione un funcionario para consultar sus
-                                                                            asignaciones de rol vigentes.
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <!-- Alerta bloqueante por asignación directiva -->
-                                                        <div id="alerta_asig_directiva"
-                                                            class="hidden px-3 py-2 border-top"
-                                                            style="background:#fff5f5;">
-                                                            <div class="d-flex align-items-center small"
-                                                                style="font-size:0.78rem;">
-                                                                <i class="fas fa-ban text-danger mr-2"
-                                                                    style="font-size:1rem;"></i>
-                                                                <span>
-                                                                    <strong class="text-danger">Funcionario inhabilitado
-                                                                        para PDS:</strong>
-                                                                    Tiene una asignación de rol directivo activa
-                                                                    (<strong id="lbl_asig_directiva_nombre"></strong>).
-                                                                    Según normativa, los directivos no pueden ser
-                                                                    incorporados a una Prestación de Servicios.
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Input readonly: asignación de rol detectada -->
-                                                    <div class="row mt-2">
-                                                        <div class="col-md-12">
-                                                            <label
-                                                                class="small text-muted font-weight-bold d-block">Asignación
-                                                                de Rol Vigente <span
-                                                                    class="text-muted font-weight-normal">(SISPER — solo
-                                                                    lectura)</span></label>
-                                                            <input type="text" id="asignacion_rol_vigente_d9"
-                                                                class="form-control form-control-sm bg-light" readonly
-                                                                placeholder="Sin asignaciones de rol vigentes">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-6 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Estamento</label>
-                                                    <input type="text" id="estamento_d9"
-                                                        class="form-control form-control-sm bg-light" readonly value="">
-                                                </div>
-                                                <div class="col-6 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Antigüedad
-                                                        (SISPER)</label>
-                                                    <input type="text" id="antiguedad_d9"
-                                                        class="form-control form-control-sm bg-light" readonly value="">
-                                                </div>
-                                                <div class="col-6 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Jerarquía</label>
-                                                    <input type="text" id="funcionario_jerarquia"
-                                                        class="form-control form-control-sm bg-light" readonly value="">
-                                                </div>
-                                                <div class="col-6 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Jornada</label>
-                                                    <input type="text" id="tipo_jornada_d9"
-                                                        class="form-control form-control-sm bg-light" readonly value="">
-                                                </div>
-                                                <div class="col-4 col-sm-3 col-md-2 form-group">
-                                                    <label class="small text-muted font-weight-bold">Grado</label>
-                                                    <input type="text" id="grado_d9"
-                                                        class="form-control form-control-sm bg-light text-center"
-                                                        readonly value="">
-                                                </div>
-                                                <div class="col-8 col-sm-5 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Renta Bruta Base
-                                                        para Tope</label>
-                                                    <input type="text" id="renta_bruta_d9"
-                                                        class="form-control form-control-sm bg-light font-weight-bold text-primary"
-                                                        readonly value="">
-                                                </div>
-                                                <div class="col-12 col-sm-4 col-md-3 form-group">
-                                                    <label class="small text-muted font-weight-bold">Renta
-                                                        Líquida</label>
-                                                    <input type="text" id="renta_liquida_d9"
-                                                        class="form-control form-control-sm bg-light" readonly value="">
-                                                </div>
-                                                <!-- Ítem Directivo del Contrato (SISPER) -->
-                                                <div class="col-12 col-sm-5 col-md-4 form-group">
-                                                    <label class="small text-muted font-weight-bold d-block">Ítem
-                                                        Directivo del Contrato <span
-                                                            class="text-muted font-weight-normal">(SISPER)</span></label>
-                                                    <input type="text" id="tipo_item_directivo_d9"
-                                                        class="form-control form-control-sm bg-light font-weight-bold text-warning"
-                                                        readonly value="" placeholder="Sin ítem directivo">
-                                                </div>
-
-                                                <div class="col-md-12 form-group">
-                                                    <label class="small text-muted font-weight-bold">Actividad
-                                                        específica a realizar por el funcionario</label>
-                                                    <textarea id="actividad_funcionario_d9"
-                                                        class="form-control form-control-sm shadow-xs border-primary"
-                                                        rows="1"
-                                                        placeholder="Describa las tareas técnicas que el funcionario desempeñará..."
-                                                        style="border-left: 3px solid var(--ufro-blue);"></textarea>
-                                                </div>
-
-                                                <!-- MODALIDAD DE EJECUCIÓN D9 -->
-                                                <div class="col-12 mb-3">
-                                                    <div class="bg-light p-3 rounded border">
-                                                        <h6 class="small font-weight-bold text-ufro-dark mb-3"><i
-                                                                class="fas fa-calendar-check mr-1"></i> Período de
-                                                            Ejecución (D9)</h6>
-                                                        <div class="row align-items-end">
-
-                                                            <!-- Meses de ejecución (Grid Table) -->
-                                                            <div class="col-md-8 mb-3">
-                                                                <label
-                                                                    class="small text-muted font-weight-bold">Selección
-                                                                    de meses de ejecución <span
-                                                                        class="text-danger small font-weight-bold">(Máximo
-                                                                        2 meses por año)</span></label>
-                                                                <div class="month-grid shadow-xs"
-                                                                    id="month_picker_grid">
-                                                                    <div class="month-item" data-month="ENE">ENE</div>
-                                                                    <div class="month-item" data-month="FEB">FEB</div>
-                                                                    <div class="month-item" data-month="MAR">MAR</div>
-                                                                    <div class="month-item" data-month="ABR">ABR</div>
-                                                                    <div class="month-item" data-month="MAY">MAY</div>
-                                                                    <div class="month-item" data-month="JUN">JUN</div>
-                                                                    <div class="month-item" data-month="JUL">JUL</div>
-                                                                    <div class="month-item" data-month="AGO">AGO</div>
-                                                                    <div class="month-item" data-month="SEP">SEP</div>
-                                                                    <div class="month-item" data-month="OCT">OCT</div>
-                                                                    <div class="month-item" data-month="NOV">NOV</div>
-                                                                    <div class="month-item" data-month="DIC">DIC</div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Monto Bruto de la Prestación -->
-                                                            <div class="col-md-4 mb-3">
-                                                                <label class="small text-muted font-weight-bold">Monto
-                                                                    Bruto a Pagar</label>
-                                                                <div class="input-group input-group-sm shadow-sm">
-                                                                    <div class="input-group-prepend"><span
-                                                                            class="input-group-text">$</span></div>
-                                                                    <input type="number" id="monto_bruto_d9"
-                                                                        class="form-control font-weight-bold text-primary"
-                                                                        placeholder="Ej: 500000"
-                                                                        oninput="actualizarCalculoTopes()">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <!-- WIDGET DE TOPES (50% REGLA O TOPE FIJO) -->
-                                                    <div class="mt-3 pt-3 border-top">
-                                                        <div
-                                                            class="d-flex justify-content-between align-items-center rounded bg-light p-2 border">
-                                                            <div>
-                                                                <span id="label_tipo_tope"
-                                                                    class="small font-weight-bold text-muted text-uppercase d-block"
-                                                                    style="letter-spacing: 0.5px;">Control de Límite
-                                                                    (Máx 50% Remuneración)</span>
-                                                                <small class="text-muted"
-                                                                    style="font-size: 0.7rem;">Límite mensual (Art. DU
-                                                                    288)</small>
-                                                            </div>
-                                                            <div class="text-right">
-                                                                <strong id="label_tope_total" class="text-primary"
-                                                                    style="font-size: 1.1rem;">$0</strong>
-                                                                <div class="mt-1">
-                                                                    <span id="tope_pct"
-                                                                        class="badge badge-secondary px-2">Sin
-                                                                        Selección</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- MENSAJE DE BLOQUEO POR TOPE -->
-                                                    <div id="tope_block_alert"
-                                                        class="alert alert-danger py-1 px-2 mt-2 small hidden">
-                                                        <i class="fas fa-times-circle mr-1"></i>
-                                                        <strong>Bloqueo:</strong> <span id="tope_block_alert_text">El
-                                                            monto solicitado excede el tope del
-                                                            50% permitido para este funcionario.</span>
-                                                    </div>
-
-                                                    <!-- SECCIÓN DE JORNADA Y VALIDACIONES DINÁMICAS -->
-                                                    <div class="row mt-3">
-                                                        <!-- Fuera o Dentro de la Jornada -->
-                                                        <div class="col-6 col-md-6 mb-3">
-                                                            <label
-                                                                class="small font-weight-bold text-muted d-block">¿Fuera
-                                                                o dentro de la jornada?</label>
-                                                            <div
-                                                                class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" id="j_fuera" name="tipo_jornada_e"
-                                                                    class="custom-control-input" checked
-                                                                    onchange="evaluarReglas()">
-                                                                <label
-                                                                    class="custom-control-label small text-dark font-weight-bold"
-                                                                    for="j_fuera">Fuera de jornada</label>
-                                                            </div>
-                                                            <div
-                                                                class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" id="j_dentro" name="tipo_jornada_e"
-                                                                    class="custom-control-input"
-                                                                    onchange="evaluarReglas()">
-                                                                <label
-                                                                    class="custom-control-label small text-dark font-weight-bold"
-                                                                    for="j_dentro">Dentro de jornada</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- ¿Pertenecen a SEA? (Siempre visible) -->
-                                                        <div class="col-6 col-md-6 mb-3" id="path_acad_sea">
-                                                            <label
-                                                                class="small font-weight-bold text-muted d-block">¿Pertenecen
-                                                                a SEA?</label>
-                                                            <div
-                                                                class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" id="sea_si" name="sea_opt"
-                                                                    class="custom-control-input"
-                                                                    onchange="evaluarReglas()">
-                                                                <label
-                                                                    class="custom-control-label small text-dark font-weight-bold"
-                                                                    for="sea_si">Sí</label>
-                                                            </div>
-                                                            <div
-                                                                class="custom-control custom-radio custom-control-inline">
-                                                                <input type="radio" id="sea_no" name="sea_opt"
-                                                                    class="custom-control-input"
-                                                                    onchange="evaluarReglas()">
-                                                                <label
-                                                                    class="custom-control-label small text-dark font-weight-bold"
-                                                                    for="sea_no">No</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Caso Admin/No SEA: Tabla Compensación (Siempre visible) -->
-                                                    <div class="row">
-                                                        <div id="path_compensacion" class="col-md-12 mb-3">
-                                                            <div id="compensacion_alert"
-                                                                class="alert alert-warning py-1 px-2 mb-2 small border-warning d-flex justify-content-between align-items-center"
-                                                                style="background-color: #fff9e6; transition: all 0.3s ease;">
-                                                                <span id="compensacion_msg"><i
-                                                                        class="fas fa-exclamation-triangle mr-1 text-warning"></i>
-                                                                    Requiere <strong>Compensación
-                                                                        horaria</strong></span>
-                                                                <button type="button" id="btn_agregar_compensacion"
-                                                                    class="btn btn-xs btn-primary py-0"
-                                                                    onclick="agregarFilaCompensacion()">
-                                                                    <i class="fas fa-plus mr-1"></i> Agregar Día
-                                                                </button>
-                                                            </div>
-                                                            <div class="table-responsive">
-                                                                <table id="tabla_compensacion"
-                                                                    class="table table-xs table-bordered mb-0 bg-white shadow-xs"
-                                                                    style="font-size: 0.7rem;">
-                                                                    <thead class="bg-light">
-                                                                        <tr>
-                                                                            <th>Día</th>
-                                                                            <th width="100">Hrs</th>
-                                                                            <th width="40"></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr id="compensacion_empty_row"
-                                                                            class="text-center text-muted">
-                                                                            <td colspan="3" class="py-2">No se han
-                                                                                registrado días de compensación.</td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
-                                            <!-- BOTÓN ACCIÓN D9 -->
-                                            <div class="col-12 text-right mt-3 mb-4">
-                                                <button type="button" id="btn_agregar_funcionario_d9"
-                                                    class="btn btn-primary bg-ufro-blue border-0 btn-sm px-4 font-weight-bold shadow-sm"
-                                                    style="border-radius: 20px;" onclick="addStaffToSummary()" disabled
-                                                    title="Seleccione un contrato vigente para continuar">
-                                                    <i class="fas fa-plus-circle mr-1"></i> Agregar Funcionario D9
-                                                </button>
                                             </div>
                                         </div>
+
+                                        <!-- BOTÓN ACCIÓN D9 -->
+                                        <div class="col-12 text-right mt-3 mb-4">
+                                        <button type="button" id="btn_agregar_funcionario_d9"
+                                            class="btn btn-primary bg-ufro-blue border-0 btn-sm px-4 font-weight-bold shadow-sm"
+                                            style="border-radius: 20px;" onclick="addStaffToSummary()" disabled
+                                            title="Seleccione un contrato vigente para continuar">
+                                            <i class="fas fa-plus-circle mr-1"></i> Agregar Funcionario D9
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -992,24 +968,25 @@
                     </div>
 
                     <!-- PASO 4: TABLA RESUMEN DE FUNCIONARIOS (P01-B12) -->
-                    <div id="d9_summary_container" class="card shadow-sm border-0 mb-4 rounded-lg transition-all">
+                    <div id="d9_summary_container"
+                        class="card shadow-sm border-0 mb-4 rounded-lg transition-all">
                         <div class="card-header bg-white border-bottom py-3">
                             <h6 class="m-0 font-weight-bold text-dark"><i class="fas fa-list-ul mr-2 text-primary"></i>
                                 Resumen de Funcionarios Agregados (P01-B12)</h6>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-premium mb-0" style="table-layout: auto; min-width: 1200px;">
+                                <table class="table table-premium mb-0" style="table-layout: auto; min-width: 100%; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th class="pl-4" style="width: 25%;">Funcionario / Contrato / Actividad</th>
-                                            <th style="width: 16%;">Prestación y Evidencias (Checks)</th>
-                                            <th style="width: 18%;">Validaciones D9 (Checks)</th>
-                                            <th style="width: 16%;">Modalidad / Compensación</th>
-                                            <th style="width: 10%;">Temporalidad</th>
-                                            <th class="text-right" style="width: 10%;">Finanzas</th>
+                                            <th class="pl-4" style="width: 27%;">Funcionario / Contrato / Actividad</th>
+                                            <th class="text-center" style="width: 16%;">Prestación y Evidencias (Checks)
+                                            </th>
+                                            <th class="text-center" style="width: 18%;">Validaciones D9 (Checks)</th>
+                                            <th class="text-center" style="width: 16%;">Modalidad / Compensación</th>
+                                            <th class="text-center" style="width: 10%;">Temporalidad</th>
+                                            <th class="text-right" style="width: 8%;">Finanzas</th>
                                             <th class="text-center pr-4" style="width: 5%;">Acciones</th>
-                                            <th style="width: 8%;" class="text-center">Detalle</th>
                                         </tr>
                                     </thead>
                                     <tbody id="d9_summary_body">
@@ -1029,34 +1006,28 @@
 
                     <!-- ACCIONES FINALES DE LA SOLICITUD (P01-B14) -->
                     <div class="card shadow-sm border-0 mb-5 rounded-lg overflow-hidden">
-                        <div class="card-body bg-light py-3">
-                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                                <div class="text-muted small mb-3 mb-md-0 italic">
-                                    <i class="fas fa-info-circle mr-1"></i> Al enviar, la solicitud pasará a revisión
-                                    por el <strong>Jefe de Proyecto</strong>.
-                                </div>
-                                <div class="d-flex flex-column flex-sm-row gap-2"
-                                    style="width: 100%; max-width: 400px; justify-content: flex-end;">
-                                    <button
-                                        class="btn btn-ufro-secondary mb-2 mb-sm-0 mr-sm-2 font-weight-bold px-4 py-2"
-                                        style="border-radius: 8px; font-size: 0.8rem; flex: 1;">
-                                        <i class="fas fa-save mr-1"></i> GUARDAR BORRADOR
-                                    </button>
-                                    <button class="btn btn-ufro-success font-weight-bold px-4 py-2 shadow-sm"
-                                        style="border-radius: 8px; font-size: 0.8rem; flex: 1;"
-                                        onclick="enviarSolicitud()">
-                                        <i class="fas fa-paper-plane mr-1"></i> ENVIAR SOLICITUD
-                                    </button>
-                                </div>
+                        <div class="card-body bg-light py-4 text-center">
+                            <div class="text-muted small mb-3 italic">
+                                <i class="fas fa-info-circle mr-1"></i> Al enviar, la solicitud pasará a revisión por el
+                                <strong>Jefe de Proyecto</strong>.
+                            </div>
+                            <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3 mx-auto"
+                                style="width: 100%; max-width: 500px;">
+                                <button class="btn btn-ufro-secondary mb-2 mb-sm-0 font-weight-bold px-4 py-2 shadow-sm"
+                                    style="border-radius: 8px; font-size: 0.85rem; min-width: 200px;">
+                                    <i class="fas fa-save mr-1"></i> GUARDAR BORRADOR
+                                </button>
+                                <button class="btn btn-ufro-success font-weight-bold px-4 py-2 shadow-sm"
+                                    style="border-radius: 8px; font-size: 0.85rem; min-width: 200px;"
+                                    onclick="enviarSolicitud()">
+                                    <i class="fas fa-paper-plane mr-1"></i> ENVIAR SOLICITUD
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
     </div>
     </div>
 
@@ -1385,7 +1356,10 @@
 
             vBox.classList.remove('hidden');
 
-            const tieneAsigDirectiva = funcData.asignaciones_rol && funcData.asignaciones_rol.some(a => a.bloquea);
+            // EXCEPCIÓN DECANO EN PROYECTO ANID (DU 09)
+            const ccSelected = window._selectedCC;
+            const isANID = ccSelected && (ccSelected.ind_anid || ccSelected.financiamiento_id === '44');
+            const tieneAsigDirectiva = funcData.asignaciones_rol && funcData.asignaciones_rol.some(a => a.bloquea && !(a.rol.toLowerCase().includes('decano') && isANID));
             const tieneDeudas = funcData.tiene_deudas;
 
             // ── DATOS DEL CONTRATO ──────────────────
@@ -1396,7 +1370,7 @@
             // ── ESCANEO D9 ───────────────────────────────────────────────────────
             const steps = [
                 { id: 'v_inhabilidad', label: 'Inhabilidad por Cargo', bloquea: tieneAsigDirectiva, msgBlock: 'Cargo directivo activo' },
-                { id: 'v_deudas', label: 'Deudas Pendientes', bloquea: tieneDeudas, msgBlock: 'Deudas pendientes en el sistema' }
+                { id: 'v_deudas', label: 'Deudas Pendientes', bloquea: false, msgBlock: 'Registra deudas (Advertencia: bloquea en etapa de Pago)' }
             ];
             steps.forEach((s, i) => {
                 const el = document.getElementById(s.id);
@@ -1404,14 +1378,19 @@
                 el.className = 'mt-1 text-muted';
                 setTimeout(() => {
                     const bloqueado = s.bloquea;
-                    el.innerHTML = bloqueado
-                        ? `<i class="fas fa-times-circle mr-1"></i> ${s.label}: ${s.msgBlock}`
-                        : `<i class="fas fa-check-circle mr-1"></i> ${s.label} OK`;
-                    el.className = bloqueado
-                        ? 'mt-1 text-danger font-weight-bold'
-                        : 'mt-1 text-success font-weight-bold';
+                    if (s.id === 'v_deudas' && tieneDeudas) {
+                        el.innerHTML = `<i class="fas fa-exclamation-triangle text-warning mr-1"></i> ${s.label}: ${s.msgBlock}`;
+                        el.className = 'mt-1 text-warning font-weight-bold';
+                    } else {
+                        el.innerHTML = bloqueado
+                            ? `<i class="fas fa-times-circle mr-1"></i> ${s.label}: ${s.msgBlock}`
+                            : `<i class="fas fa-check-circle mr-1"></i> ${s.label} OK`;
+                        el.className = bloqueado
+                            ? 'mt-1 text-danger font-weight-bold'
+                            : 'mt-1 text-success font-weight-bold';
+                    }
                     if (i === steps.length - 1) {
-                        vBox.className = (tieneAsigDirectiva || tieneDeudas)
+                        vBox.className = tieneAsigDirectiva
                             ? 'alert alert-danger border-0 p-2 mb-2'
                             : 'alert alert-success border-0 p-2 mb-2';
                     }
@@ -1437,7 +1416,10 @@
 
             if (!tbody) return;
 
-            const asigDirectiva = asignaciones.find(a => a.bloquea);
+            const ccSelected = window._selectedCC;
+            const isANID = ccSelected && (ccSelected.ind_anid || ccSelected.financiamiento_id === '44');
+            const asigDirectiva = asignaciones.find(a => a.bloquea && !(a.rol.toLowerCase().includes('decano') && isANID));
+            const esExencionDecanoANID = asignaciones.some(a => a.bloquea && (a.rol.toLowerCase().includes('decano') && isANID));
 
             if (asignaciones.length === 0) {
                 tbody.innerHTML = `
@@ -1453,10 +1435,18 @@
 
             tbody.innerHTML = '';
             asignaciones.forEach(a => {
-                const estadoBadge = a.bloquea
-                    ? `<span class="badge badge-danger" style="font-size:0.65rem;"><i class="fas fa-ban mr-1"></i>Inhabilitado</span>`
-                    : `<span class="badge badge-success" style="font-size:0.65rem;"><i class="fas fa-check mr-1"></i>Permitido</span>`;
-                const rowClass = a.bloquea ? 'table-danger' : '';
+                const esDecanoANID = a.rol.toLowerCase().includes('decano') && isANID;
+                let estadoBadge = '';
+                let rowClass = '';
+                if (esDecanoANID) {
+                    estadoBadge = `<span class="badge badge-success" style="font-size:0.65rem;"><i class="fas fa-check-double mr-1"></i>Exención ANID (DU 09)</span>`;
+                    rowClass = 'table-success';
+                } else if (a.bloquea) {
+                    estadoBadge = `<span class="badge badge-danger" style="font-size:0.65rem;"><i class="fas fa-ban mr-1"></i>Inhabilitado</span>`;
+                    rowClass = 'table-danger';
+                } else {
+                    estadoBadge = `<span class="badge badge-success" style="font-size:0.65rem;"><i class="fas fa-check mr-1"></i>Permitido</span>`;
+                }
 
                 tbody.innerHTML += `
                 <tr class="${rowClass}">
@@ -1473,12 +1463,22 @@
 
             if (asigDirectiva) {
                 alerta.classList.remove('hidden');
-                if (lblNombre) lblNombre.textContent = asigDirectiva.rol;
+                alerta.className = 'alert alert-danger p-2 mb-2 small';
+                if (lblNombre) lblNombre.innerHTML = `<strong>${asigDirectiva.rol}</strong> inhabilita la postulación bajo la norma general.`;
                 if (inputRol) { inputRol.value = asigDirectiva.rol; inputRol.classList.add('text-danger', 'font-weight-bold'); }
                 if (btnAgregar) { btnAgregar.disabled = true; btnAgregar.title = 'Funcionario inhabilitado: tiene asignación directiva activa'; }
+            } else if (esExencionDecanoANID) {
+                alerta.classList.remove('hidden');
+                alerta.className = 'alert alert-success border-success p-2 mb-2 small';
+                alerta.style.backgroundColor = '#dcfce7';
+                alerta.style.color = '#166534';
+                if (lblNombre) lblNombre.innerHTML = `<i class="fas fa-check-double mr-1"></i> <strong>Exención Aplicada:</strong> Decano/a en Proyecto ANID (${ccSelected.codigo}). Habilitado para prestación.`;
+                if (inputRol) { inputRol.value = `${asignaciones.map(a => a.rol).join('; ')} (Exención ANID)`; inputRol.classList.remove('text-danger'); inputRol.classList.add('text-success', 'font-weight-bold'); }
+                if (btnAgregar) { btnAgregar.disabled = false; btnAgregar.removeAttribute('title'); }
             } else {
                 alerta.classList.add('hidden');
-                if (inputRol) { inputRol.value = asignaciones.map(a => a.rol).join('; '); inputRol.classList.remove('text-danger', 'font-weight-bold'); }
+                if (inputRol) { inputRol.value = asignaciones.map(a => a.rol).join('; '); inputRol.classList.remove('text-danger', 'text-success', 'font-weight-bold'); }
+                if (btnAgregar) { btnAgregar.disabled = false; btnAgregar.removeAttribute('title'); }
             }
         }
 
@@ -1521,16 +1521,16 @@
             // ── CARGAR ASIGNACIONES DE ROL AL SELECCIONAR CONTRATO ────────────────
             const rutInput = document.getElementById('rut_funcionario');
             const rutSeleccionado = rutInput ? rutInput.value.trim() : '';
-            const esEstebanLizama = rutSeleccionado === '19.477.728-0';
+            const esEstebanLizama = rutSeleccionado === '15.890.342-K';
 
             if (esEstebanLizama) {
                 cargarAsignacionesRol([{
-                    rol: 'Director de Departamento Académico',
-                    unidad: 'Departamento de Sistemas',
-                    desde: '2024-03-01',
-                    hasta: 'Indefinida',
+                    rol: 'Decano/a de Facultad',
+                    unidad: 'Facultad de Ingeniería',
+                    desde: '01/01/2023',
+                    hasta: '31/12/2026',
                     item: '30000',
-                    itemDesc: 'Directivos',
+                    itemDesc: 'Directivo',
                     bloquea: true
                 }]);
             } else {
@@ -1826,50 +1826,56 @@
             row.style.backgroundColor = '#fafbfc';
 
             row.innerHTML = `
-            <td class="pl-4">
-                <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">${nombre}</div>
-                <div class="text-muted small mb-1" style="font-size: 0.72rem;">${rut} <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">${estamento}</span></div>
-                <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">${jerarquia} <span class="mx-1 text-light">|</span> ${jornada} <span class="mx-1 text-light">|</span> G: ${grado} <span class="mx-1 text-light">|</span> Ant: ${antiguedad}</div>
-                <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.7rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${actividad}">
-                    <i class="fas fa-tasks mr-1 text-primary"></i>"${actividad}"
-                </div>
-            </td>
-            <td>
-                ${prestHtml}
-                ${eviHtml}
-            </td>
-            <td>
-                <div class="d-flex flex-column" style="gap: 3px !important;">
-                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Formación OK</div>
-                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>
-                    <div style="font-size: 0.68rem;" class="text-info font-weight-bold"><i class="fas fa-info-circle mr-1"></i> Parentesco: Ninguno</div>
-                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>
-                    <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>
-                    <div style="font-size: 0.68rem;" class="${isTopeOk ? 'text-success' : 'text-danger'} font-weight-bold"><i class="fas ${isTopeOk ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> ${isTopeOk ? textTopeDesc : 'EXCEDE LÍMITE'}</div>
-                </div>
-            </td>
-            <td>
-                <div class="d-flex align-items-center mb-1">
-                    <span class="badge ${isDentro ? 'badge-success' : 'badge-warning'} mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
-                    <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${modalidadText}</span>
-                </div>
-                <div class="small text-muted mb-1" style="font-size: 0.7rem;">${extraInfo}</div>
-                ${compensacionDetail}
-            </td>
-            <td>
-                <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">${meses} Mes(es)</div>
-                <div class="text-muted" style="font-size: 0.7rem;">${mesesStr}</div>
-            </td>
-            <td class="text-right">
-                <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">$${totalPds}</div>
-                <div class="small text-muted" style="font-size: 0.72rem;">Total Solicitado</div>
-            </td>
-            <td class="text-center pr-4">
-                <button type="button" class="btn btn-action btn-delete border-0 text-danger" onclick="deleteStaffSummaryRow(this)" title="Eliminar" style="padding: 0.25rem 0.5rem;">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            </td>
-        `;
+             <td class="pl-4">
+                 <div class="font-weight-bold text-dark" style="font-size: 0.85rem;">${nombre}</div>
+                 <div class="text-muted small mb-1" style="font-size: 0.72rem;">${rut} <span class="mx-1 text-light">|</span> <span class="font-weight-bold text-dark">${estamento}</span></div>
+                 <div class="text-muted small mb-1" style="font-size: 0.7rem; opacity: 0.85;">${jerarquia} <span class="mx-1 text-light">|</span> ${jornada} <span class="mx-1 text-light">|</span> G: ${grado} <span class="mx-1 text-light">|</span> Ant: ${antiguedad}</div>
+                 <div class="mt-2 text-dark small italic bg-white p-2 rounded border" style="border-left: 2px solid var(--ufro-blue) !important; font-size: 0.7rem; max-width: 320px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${actividad}">
+                     <i class="fas fa-tasks mr-1 text-primary"></i>"${actividad}"
+                 </div>
+             </td>
+             <td class="text-center">
+                 <div class="d-flex flex-column align-items-center justify-content-center">
+                     ${prestHtml}
+                     ${eviHtml}
+                 </div>
+             </td>
+             <td class="text-center">
+                 <div class="d-flex flex-column align-items-start" style="gap: 3px !important; width: fit-content; margin: 0 auto;">
+                     <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Formación OK</div>
+                     <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>
+                     <div style="font-size: 0.68rem;" class="text-info font-weight-bold"><i class="fas fa-info-circle mr-1"></i> Parentesco: Ninguno</div>
+                     <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>
+                     <div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Saldo CC Disp. OK</div>
+                     <div style="font-size: 0.68rem;" class="${isTopeOk ? 'text-success' : 'text-danger'} font-weight-bold"><i class="fas ${isTopeOk ? 'fa-check-circle' : 'fa-times-circle'} mr-1"></i> ${isTopeOk ? textTopeDesc : 'EXCEDE LÍMITE'}</div>
+                 </div>
+             </td>
+             <td class="text-center">
+                 <div class="d-flex flex-column align-items-center justify-content-center">
+                     <div class="d-flex align-items-center mb-1">
+                         <span class="badge ${isDentro ? 'badge-success' : 'badge-warning'} mr-2" style="width: 10px; height: 8px; border-radius: 4px; padding: 0;">&nbsp;</span>
+                         <span class="small font-weight-bold text-dark" style="font-size: 0.75rem;">${modalidadText}</span>
+                     </div>
+                     <div class="small text-muted mb-1" style="font-size: 0.7rem;">${extraInfo}</div>
+                     ${compensacionDetail}
+                 </div>
+             </td>
+             <td class="text-center">
+                 <div class="d-flex flex-column align-items-center justify-content-center">
+                     <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">${meses} Mes(es)</div>
+                     <div class="text-muted" style="font-size: 0.7rem;">${mesesStr}</div>
+                 </div>
+             </td>
+             <td class="text-right">
+                 <div class="font-weight-bold text-primary" style="font-size: 0.9rem;">$${totalPds}</div>
+                 <div class="small text-muted" style="font-size: 0.72rem;">Total Solicitado</div>
+             </td>
+             <td class="text-center pr-4">
+                 <button type="button" class="btn btn-action btn-delete border-0 text-danger" onclick="deleteStaffSummaryRow(this)" title="Eliminar" style="padding: 0.25rem 0.5rem;">
+                     <i class="fas fa-trash-alt"></i>
+                 </button>
+             </td>
+         `;
 
             // Crear Fila Secundaria de Validación P02-B12
             const valRow = document.createElement('tr');
@@ -1914,7 +1920,7 @@
             const allReqsOk = isCCOk && isElegibleOk && isTopeOk;
 
             valRow.innerHTML = `
-            <td colspan="8" class="p-3 pl-4">
+             <td colspan="7" class="p-3 pl-4">
                 <div class="p-3 rounded bg-white border shadow-sm">
                     <div class="font-weight-bold text-ufro-blue mb-3 pb-2 border-bottom d-flex justify-content-between align-items-center" style="font-size: 0.8rem; letter-spacing: 0.5px;">
                         <span><i class="fas fa-check-double mr-2 ${isAcademic ? 'text-success' : 'text-warning'}"></i>VALIDACIÓN DE REQUISITOS Y TOPES DE CONTROL</span>
@@ -1998,7 +2004,7 @@
             setVal('estamento_d9', '');
             setVal('tipo_jornada_d9', '');
             setVal('actividad_funcionario_d9', '');
-            
+
             const montoPago = document.querySelector('.monto-pago');
             if (montoPago) montoPago.value = '';
             setVal('total_monto_display', '0');

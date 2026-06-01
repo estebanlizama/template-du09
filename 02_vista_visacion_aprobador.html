@@ -95,6 +95,10 @@
                             <div class="data-value" id="pds_periodo">01 Mayo 2026 - 30 Junio 2026</div>
                         </div>
                         <div class="summary-item">
+                            <div class="data-label">Funcionarios Incorporados</div>
+                            <div class="data-value text-primary" id="pds_funcionarios_count" style="font-weight: 600;">0</div>
+                        </div>
+                        <div class="summary-item">
                             <div class="data-label">Monto Total</div>
                             <div class="data-value text-success" id="pds_monto_total" style="font-size: 1.2rem;">$0
                             </div>
@@ -220,7 +224,7 @@
                             <div class="d-flex flex-column flex-md-row justify-content-end align-items-center">
                                 <div class="text-muted small mb-3 mb-md-0 mr-md-4 italic text-center text-md-left">
                                     <i class="fas fa-info-circle mr-1"></i> Selección de acción para el expediente
-                                    <strong>#PDS-2026-001</strong>
+                                    <strong id="pds_id_solicitud_footer">#PDS-2026-0001</strong>
                                 </div>
                                 <div class="d-flex w-100 w-md-auto gap-2">
                                     <button class="btn btn-warning text-white font-weight-bold px-3 py-2"
@@ -318,17 +322,25 @@
 
                 // 1. Llenar Datos Generales de la Solicitud
                 document.getElementById('pds_id_solicitud').innerText = '#' + solicitud.id_solicitud;
+                if (document.getElementById('pds_id_solicitud_footer')) {
+                    document.getElementById('pds_id_solicitud_footer').innerText = '#' + solicitud.id_solicitud;
+                }
 
                 const dateObj = new Date(solicitud.fecha_creacion);
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 const formattedDate = dateObj.toLocaleDateString('es-CL', options);
-                document.getElementById('pds_creador_fecha').innerHTML = `<i class="far fa-calendar-alt mr-1"></i> Creada por ${solicitud.jefe_proyecto.nombre} el <strong>${formattedDate}</strong>`;
+                const creadorNombre = (solicitud.solicitante && solicitud.solicitante.nombre) || solicitud.jefe_proyecto.nombre;
+                document.getElementById('pds_creador_fecha').innerHTML = `<i class="far fa-calendar-alt mr-1"></i> Creada por ${creadorNombre} el <strong>${formattedDate}</strong>`;
 
                 document.getElementById('pds_estado_badge').innerHTML = `<i class="fas fa-clock"></i> ${solicitud.estado.toUpperCase()}`;
                 document.getElementById('pds_cc_info').innerText = `${solicitud.centro_costo.codigo} - ${solicitud.centro_costo.nombre}`;
                 document.getElementById('pds_tipo_fondo').innerHTML = `<span class="badge badge-outline text-primary">${solicitud.detalles.tipo_financiamiento}</span>`;
                 document.getElementById('pds_periodo').innerText = `${solicitud.detalles.fecha_inicio} al ${solicitud.detalles.fecha_fin}`;
                 document.getElementById('pds_actividad').innerText = `"${solicitud.detalles.descripcion}"`;
+
+                if (document.getElementById('pds_funcionarios_count')) {
+                    document.getElementById('pds_funcionarios_count').innerText = solicitud.funcionarios.length;
+                }
 
                 // Calcular Monto Total dinámicamente
                 let totalSolicitud = 0;
@@ -421,13 +433,19 @@
                     const contrato = f_db.contratos && f_db.contratos.find(c => c.tipo === f.contrato_seleccionado);
 
                     // B. Inhabilidades Check (Roles directivos bloqueantes o sumarios)
-                    const hasBlockingRole = f_db.asignaciones_rol && f_db.asignaciones_rol.some(r => r.bloquea);
+                    const isDecano = f.jerarquia === "Decano/a de Facultad";
+                    const esAnid = cc && cc.ind_anid;
+                    const hasBlockingRole = f_db.asignaciones_rol && f_db.asignaciones_rol.some(r => r.bloquea) && !(isDecano && esAnid);
                     const hasSumario = f_db.inhabilidades && f_db.inhabilidades.length > 0;
                     const inhabilidadesOk = !hasBlockingRole && !hasSumario;
 
                     let inhabilidadesBadge = '';
                     if (inhabilidadesOk) {
-                        inhabilidadesBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>`;
+                        if (isDecano && esAnid) {
+                            inhabilidadesBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold" data-toggle="tooltip" title="Exención Normativa D9: Cargo Decano en Proyecto ANID con fondos externos autorizados."><i class="fas fa-check-circle mr-1"></i> Aprobado (ANID Exento)</div>`;
+                        } else {
+                            inhabilidadesBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Inhabilidades OK</div>`;
+                        }
                     } else {
                         let reasons = [];
                         if (hasBlockingRole) {
@@ -443,17 +461,17 @@
 
                     // C. Sin Deudas Check
                     const hasDeudas = f_db.deudas && f_db.deudas.length > 0;
-                    const deudasOk = !hasDeudas;
+                    // Las deudas son warning-only en fase de solicitud de PDS
+                    const deudasOk = true; 
                     let deudasBadge = '';
-                    if (deudasOk) {
+                    if (!hasDeudas) {
                         deudasBadge = `<div style="font-size: 0.68rem;" class="text-success font-weight-bold"><i class="fas fa-check-circle mr-1"></i> Sin Deudas OK</div>`;
                     } else {
                         const detailStr = f_db.deudas.map(d => `${d.tipo}: ${formatMonto(d.monto)} (${d.dias_mora} días mora)`).join('<br>');
-                        deudasBadge = `<div style="font-size: 0.68rem;" class="text-danger font-weight-bold cursor-pointer" data-toggle="tooltip" data-html="true" title="Posee deudas:<br>${detailStr}"><i class="fas fa-times-circle mr-1"></i> Con Deudas <i class="fas fa-info-circle small ml-1"></i></div>`;
+                        deudasBadge = `<div style="font-size: 0.68rem;" class="text-warning font-weight-bold cursor-pointer" data-toggle="tooltip" data-html="true" title="Posee deudas en SISPER:<br>${detailStr}<br><em>*Alerta informativa en solicitud, bloqueante en pago mensual.</em>"><i class="fas fa-exclamation-triangle mr-1"></i> Con Deudas (Warning) <i class="fas fa-info-circle small ml-1"></i></div>`;
                     }
 
                     // D. Saldo CC Disp Check
-                    const cc = DB_MOCK.centros_costo.find(c => c.codigo === solicitud.centro_costo.codigo);
                     const itemCod = f.estamento === 'Académico' ? '30300' : '30600';
                     const itemPresup = cc ? cc.items_presupuestarios.find(i => i.cod === itemCod) : null;
                     const saldoDisponible = itemPresup ? (itemPresup.asignado - itemPresup.ejecutado) : 0;
@@ -564,8 +582,10 @@
 
                     // H. Clase de Fila de Acuerdo a Validaciones
                     let rowClass = 'row-accent-sea';
-                    if (!inhabilidadesOk || !deudasOk || !saldoOk || !topeOk || !mesesOk) {
+                    if (!inhabilidadesOk || !saldoOk || !topeOk || !mesesOk) {
                         rowClass = 'row-accent-danger';
+                    } else if (hasDeudas) {
+                        rowClass = 'row-accent-warning';
                     } else if (f.estamento === 'Administrativo') {
                         rowClass = 'row-accent-warning';
                     }
@@ -586,9 +606,12 @@
                     </button>
                 </td>
                 <td>
-                    <div class="mb-1 text-dark" style="font-size: 0.7rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase;">Prestaciones</span>Asistencia Técnica</div>
+                    <div class="mb-1 text-dark" style="font-size: 0.7rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase;">Prestaciones</span>${solicitud.detalles.tipo_prestacion || 'Asistencia Técnica'}</div>
                     <div class="text-muted" style="font-size: 0.68rem;"><span class="font-weight-bold text-muted" style="font-size: 0.65rem; display: block; text-transform: uppercase; margin-top: 4px;">Evidencias</span>
-                        ${solicitud.detalles.evidencias_requeridas.map(ent => `<i class="fas fa-check-square text-success mr-1"></i>${ent}`).join('<br>')}
+                        ${(solicitud.detalles.evidencias_detalladas || [
+                            { nombre: 'Informe Técnico Mensual', fecha_estimada: '10/07/2026' },
+                            { nombre: 'Acta de Conformidad', fecha_estimada: '31/07/2026' }
+                        ]).map(ev => `<i class="fas fa-check-square text-success mr-1"></i>${ev.nombre} <span class="text-muted" style="font-size:0.6rem;">(Est: ${ev.fecha_estimada})</span>`).join('<br>')}
                     </div>
                 </td>
                 <td>
@@ -782,12 +805,15 @@
                 const evidenciasContainer = document.getElementById('evidencias_requeridas_container');
                 evidenciasContainer.innerHTML = '';
 
-                const uniqueEvidencias = solicitud.detalles.evidencias_requeridas || [];
+                const uniqueEvidencias = solicitud.detalles.evidencias_detalladas || [
+                    { nombre: 'Informe Técnico Mensual', fecha_estimada: '10/07/2026' },
+                    { nombre: 'Acta de Conformidad', fecha_estimada: '31/07/2026' }
+                ];
                 uniqueEvidencias.forEach(ev => {
                     const badge = document.createElement('div');
                     badge.className = 'badge badge-light border text-success py-1 px-3 mr-2 mb-1';
                     badge.style.fontSize = '0.65rem';
-                    badge.innerHTML = `<i class="fas fa-check mr-1"></i> ${ev.toUpperCase()}`;
+                    badge.innerHTML = `<i class="fas fa-check mr-1"></i> ${ev.nombre.toUpperCase()} <span class="text-muted ml-2">(Est: ${ev.fecha_estimada})</span>`;
                     evidenciasContainer.appendChild(badge);
                 });
 

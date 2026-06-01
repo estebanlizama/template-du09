@@ -745,30 +745,15 @@
                 </div>
             </div>
 
-            <!-- TRAZABILIDAD CRONOLÓGICA DE ETAPAS PREVIAS (P08-B02) -->
-            <div class="card-minimal mb-4 p-3 border shadow-sm" style="border-radius: 12px;">
-                <div class="d-flex align-items-center justify-content-around flex-wrap gap-2 py-1 w-100">
-                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">05/05 Solicitud</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
-                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">08/05 DGDP</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
-                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">10/05 Finanzas Fac.</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
-                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">12/05 Decanato</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
-                    <div class="d-flex align-items-center"><span class="state-dot dot-2"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">14/05 Finanzas Ctrl.</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem;"></i>
-                    <div class="d-flex align-items-center"><span class="state-dot dot-3 animate-pulse"></span><span class="text-dark font-weight-bold small ml-1" style="font-size: 0.65rem;">Hoy - Decretación Jurídica</span></div>
-                    <i class="fas fa-chevron-right text-muted px-1" style="font-size: 0.7rem; opacity: 0.5;"></i>
-                    <div class="d-flex align-items-center" style="opacity: 0.5;"><span class="state-dot dot-1" style="background-color: #cbd5e1;"></span><span class="text-muted small ml-1" style="font-size: 0.65rem;">Pendiente: Firmas</span></div>
-                </div>
-                    <!-- LAYOUT VERTICAL OPTIMIZADO: EDICIÓN JURÍDICA ARRIBA (ANCHO COMPLETO), DOSSIER Y MATRIZ HISTÓRICA COMPLETA ABAJO -->
+
+            <!-- LAYOUT VERTICAL OPTIMIZADO: EDICIÓN JURÍDICA ARRIBA (ANCHO COMPLETO), DOSSIER Y MATRIZ HISTÓRICA COMPLETA ABAJO -->
             <div class="row">
                 <!-- PANEL SUPERIOR DE FORMALIZACIÓN (ANCHO COMPLETO - col-12) -->
                 <div class="col-12 mb-4">
                     <h5 class="font-weight-bold text-dark mb-3"><i class="fas fa-file-signature mr-2 text-primary"></i> Formalización del Acto Administrativo</h5>
 
                     <div class="card-minimal p-4 border shadow-sm">
+
                         <!-- EDITORES ENRIQUECIDOS (P08-B09) -->
                         <div class="mb-4">
                             <!-- VISTO -->
@@ -900,14 +885,7 @@
                             </table>
                         </div>
 
-                        <!-- HISTORIAL / TRAZABILIDAD DE LA ETAPA ACTUAL (P08-B17) -->
-                        <h6 class="font-weight-bold text-dark border-bottom pb-2 mb-3"><i class="fas fa-clipboard-list mr-2 text-primary"></i> Trazabilidad Documental de la Etapa (Claudia Alvarez)</h6>
-                        <div id="container-trace-logs" class="p-3 bg-light rounded border" style="max-height: 150px; overflow-y: auto;">
-                            <div class="trace-log-item">
-                                <span class="font-weight-bold">15:41:15</span> &bull; Solicitud de formalización iniciada. Plantilla base estándar D9 cargada desde la base de datos de manera automática.
-                            </div>
-                        </div>
-                    </div>
+                     </div>
                 </div>
 
                 <!-- PANEL INFERIOR: DOSSIER DE ANTECEDENTES Y MATRIZ HISTÓRICA COMPLETA DE VALIDACIONES (col-12) -->
@@ -1032,64 +1010,8 @@
                                             <th style="min-width: 120px;" class="text-center"><i class="fas fa-check-circle mr-1"></i> Estado Final</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="row-accent-sea">
-                                            <td>
-                                                <div class="font-weight-bold text-dark text-uppercase mb-1" style="font-size: 0.82rem; letter-spacing: 0.3px;">Soto Figueroa María Elena</div>
-                                                <div class="text-muted small font-weight-bold mb-1" style="font-size: 0.7rem;">RUT: 15.987.654-3</div>
-                                                <span class="badge badge-light border text-primary" style="font-size: 0.6rem;"><i class="fas fa-tag mr-1"></i> ID PDS: #PDS-2026-001-01</span>
-                                            </td>
-                                            <td>
-                                                <div class="font-weight-bold text-dark mb-1" style="font-size: 0.76rem;">Administrativo</div>
-                                                <div class="text-muted small mb-1" style="font-size: 0.7rem;">Grado 16</div>
-                                                <div class="text-muted small font-italic" style="font-size: 0.65rem;">Inst. Agroindustria</div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex flex-column" style="gap: 5px;">
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-ban mr-1 text-success"></i> Inhabilidades Generales:</span>
-                                                        <span class="badge-success-soft">✓ SIN RESTRICCIÓN</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
-                                                        <span class="badge-success-soft">✓ SIN CONFLICTO</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-file-invoice-dollar mr-1 text-success"></i> Morosidad / Viáticos:</span>
-                                                        <span class="badge-success-soft">✓ AL DÍA</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex flex-column" style="gap: 5px;">
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-wallet mr-1 text-primary"></i> Saldo C.C. 4050.21:</span>
-                                                        <span class="badge-success-soft">✓ DISPONIBLE</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-clock mr-1 text-primary"></i> SEA (Sábado 8h):</span>
-                                                        <span class="badge-success-soft">✓ VALIDADO</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark font-weight-bold small">Asignación Bruta:</span>
-                                                        <span class="font-weight-bold text-primary" style="font-size: 0.75rem;">$280.000 / mes</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <div class="bg-white p-2 rounded border inline-block" style="display: inline-block;">
-                                                    <div class="data-label text-muted mb-1" style="font-size: 0.58rem;">Límite Renta 50%</div>
-                                                    <div class="font-weight-bold text-dark small mb-1">$280.000 / $553.079</div>
-                                                    <span class="badge badge-success px-2 py-0.5 font-weight-bold" style="font-size: 0.62rem;" title="Base Ref: $1.106.158 | Tope 50%: $553.079">CUMPLE (39%)</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <span class="badge badge-success px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px;"><i class="fas fa-check-circle mr-1"></i> VALIDADO</span>
-                                                    <span class="text-muted small mt-1 font-italic" style="font-size: 0.52rem;">Apto para Decreto</span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="tbody-active-officials">
+                                        <!-- Rendered dynamically -->
                                     </tbody>
                                 </table>
                             </div>
@@ -1117,49 +1039,58 @@
                                             <th style="min-width: 120px;" class="text-center"><i class="fas fa-ban mr-1"></i> Estado Final</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="bg-light" style="opacity: 0.95;">
-                                            <td>
-                                                <div class="font-weight-bold text-muted text-uppercase mb-1" style="font-size: 0.8rem; text-decoration: line-through;">LIZAMA AILLAPAN ESTEBAN ANDRÉS</div>
-                                                <div class="text-muted small font-weight-bold" style="font-size: 0.7rem;">RUT: 15.890.342-K</div>
-                                            </td>
-                                            <td>
-                                                <div class="font-weight-bold text-muted" style="font-size: 0.75rem;">Académico</div>
-                                                <div class="text-muted small" style="font-size: 0.68rem;">Planta Vigente</div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex flex-column" style="gap: 5px;">
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-times-circle mr-1 text-danger"></i> Inhabilidades Generales:</span>
-                                                        <span class="badge-danger-soft">✗ RESTRICCIÓN</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
-                                                        <span class="badge-success-soft">✓ SIN CONFLICTOS</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
-                                                        <span class="text-dark small"><i class="fas fa-times-circle mr-1 text-danger"></i> Morosidad / Viáticos:</span>
-                                                        <span class="badge-danger-soft">✗ PENDIENTE</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="text-muted small" style="font-size: 0.72rem; line-height: 1.4;">
-                                                    <strong>Causa de Exclusión:</strong> Duplicidad horaria al 100% (176 hrs vigentes en Planta) y Rendición de Viáticos Pendiente desde el periodo fiscal 2025.
-                                                </div>
-                                            </td>
-                                            <td class="text-right font-weight-bold text-muted align-middle" style="font-size: 0.78rem; text-decoration: line-through;">
-                                                $900.000
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <span class="badge badge-danger px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px;"><i class="fas fa-times-circle mr-1"></i> EXCLUIDO</span>
-                                                    <span class="text-muted small mt-1 font-italic" style="font-size: 0.52rem;">No Elegible</span>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="tbody-excluded-officials">
+                                        <!-- Rendered dynamically -->
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVIDENCIAS COMPROMETIDAS Y HITOS HISTÓRICOS (P08-B07) -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card-minimal h-100 p-3 border shadow-sm" style="border-top: 4px solid var(--ufro-orange) !important; border-radius: 12px;">
+                        <h6 class="font-weight-bold text-dark mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fas fa-file-signature mr-2 text-primary"></i> Evidencias Comprometidas (P08-B07)</h6>
+                        <div id="evidences-list-container" class="d-flex flex-wrap gap-2 pt-1">
+                            <div class="badge badge-light border text-success py-2 px-3 mr-2 mb-2" style="font-size: 0.68rem; font-weight: 700; border-radius: 6px;">
+                                <i class="fas fa-check-circle mr-1"></i> INFORME TÉCNICO MENSUAL (Est: 10/07/2026)
+                            </div>
+                            <div class="badge badge-light border text-success py-2 px-3 mr-2 mb-2" style="font-size: 0.68rem; font-weight: 700; border-radius: 6px;">
+                                <i class="fas fa-check-circle mr-1"></i> ACTA DE CONFORMIDAD (Est: 31/07/2026)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card-minimal h-100 p-3 border shadow-sm" style="border-top: 4px solid var(--ufro-green) !important; border-radius: 12px;">
+                        <h6 class="font-weight-bold text-dark mb-3" style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fas fa-history mr-2 text-primary"></i> Historial de Etapas e Hitos del Flujo</h6>
+                        <div id="horizontal-dots-timeline" class="d-flex align-items-center flex-wrap gap-2 pt-1 w-100">
+                            <div class="d-flex align-items-center mr-1">
+                                <span class="state-dot dot-1" style="background-color: #10b981; width: 8px; height: 8px;"></span>
+                                <span class="text-muted ml-1" style="font-size: 0.65rem; font-weight: 700;">07/05/2026 - Aprobación Jefe Proyecto</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted small mx-1" style="font-size: 0.65rem;"></i>
+                            <div class="d-flex align-items-center mr-1">
+                                <span class="state-dot dot-1" style="background-color: #10b981; width: 8px; height: 8px;"></span>
+                                <span class="text-muted ml-1" style="font-size: 0.65rem; font-weight: 700;">10/05/2026 - Aprobación Jefatura Superior</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted small mx-1" style="font-size: 0.65rem;"></i>
+                            <div class="d-flex align-items-center mr-1">
+                                <span class="state-dot dot-1" style="background-color: #10b981; width: 8px; height: 8px;"></span>
+                                <span class="text-muted ml-1" style="font-size: 0.65rem; font-weight: 700;">15/05/2026 - Auditoría DGDP</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted small mx-1" style="font-size: 0.65rem;"></i>
+                            <div class="d-flex align-items-center mr-1">
+                                <span class="state-dot dot-1" style="background-color: #10b981; width: 8px; height: 8px;"></span>
+                                <span class="text-muted ml-1" style="font-size: 0.65rem; font-weight: 700;">18/05/2026 - Revisión Finanzas Facultad</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted small mx-1" style="font-size: 0.65rem;"></i>
+                            <div class="d-flex align-items-center op-5">
+                                <span class="state-dot dot-3 animate-pulse" style="background-color: #f59e0b; width: 8px; height: 8px;"></span>
+                                <span class="text-dark font-weight-bold ml-1" style="font-size: 0.65rem;">Pend: Decreto Pago 07</span>
                             </div>
                         </div>
                     </div>
@@ -1269,19 +1200,8 @@
                                     <th>Total Bruto</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>15.987.654-3</td>
-                                    <td class="text-left font-weight-bold">Soto Figueroa María Elena</td>
-                                    <td>Administrativo</td>
-                                    <td>Apoyo Técnico y Foliación</td>
-                                    <td>4050.21</td>
-                                    <td>21.03.004</td>
-                                    <td>01/05/26 - 31/12/26</td>
-                                    <td>8</td>
-                                    <td>$280.000</td>
-                                    <td class="font-weight-bold">$2.240.000</td>
-                                </tr>
+                            <tbody id="pdf-prestaciones-tbody">
+                                <!-- Rendered dynamically -->
                             </tbody>
                         </table>
 
@@ -1377,15 +1297,289 @@
     </div>
 </div>
 
+<script src="mock_data_d9.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Variables globales
     let activeAction = '';
     let customDestinatarios = [];
+    
+    // Always load base solicitation from DB_MOCK
+    const solicitud = DB_MOCK.prestaciones_de_servicio.find(s => s.id_solicitud === "PDS-2026-0001") || DB_MOCK.prestaciones_de_servicio[0];
+
+    // Load persisted review states if they exist
+    const SOLICITUD_KEY = "solicitud_PDS-2026-0001_estado";
+    let persistedData = null;
+    try {
+        const saved = localStorage.getItem(SOLICITUD_KEY);
+        if (saved) {
+            persistedData = JSON.parse(saved);
+        }
+    } catch(e) {
+        console.error("Error loading persisted state", e);
+    }
+
+    const formatCLP = (val) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', minimumFractionDigits: 0 }).format(val);
+
+    function renderOfficials() {
+        const tbodyActive = document.getElementById("tbody-active-officials");
+        const tbodyExcluded = document.getElementById("tbody-excluded-officials");
+        const pdfTbody = document.getElementById("pdf-prestaciones-tbody");
+        if (tbodyActive) tbodyActive.innerHTML = "";
+        if (tbodyExcluded) tbodyExcluded.innerHTML = "";
+        if (pdfTbody) pdfTbody.innerHTML = "";
+
+        solicitud.funcionarios.forEach(func => {
+            // Check if excluded by DGDP or rejected by previous stages in persistedData
+            const savedState = persistedData && persistedData.officials ? persistedData.officials[func.id_ui] : null;
+            const isExcluded = func.excluido_por_dgdp || 
+                               func.estado === 'excluido' || 
+                               func.estado_revision_dgdp_inicial === 'excluido' ||
+                               (savedState && (savedState.status === 'rechazado' || savedState.status_finanzas === 'rechazado' || savedState.status === 'excluido'));
+
+            if (!isExcluded) {
+                const masterFunc = DB_MOCK.funcionarios.find(f => f.rut === func.rut) || {};
+                
+                // Build contracts table HTML
+                let contractsRowsHtml = "";
+                if (masterFunc.contratos) {
+                    masterFunc.contratos.forEach((c, idx) => {
+                        const isSelected = c.tipo === func.contrato_seleccionado;
+                        contractsRowsHtml += `
+                            <tr class="${isSelected ? 'table-primary font-weight-bold' : ''}" style="font-size: 0.65rem;">
+                                <td>${c.tipo.split("—")[0].trim()}</td>
+                                <td>${c.estamento}</td>
+                                <td>${c.jornada}</td>
+                                <td class="text-right">${formatCLP(c.bruto)}</td>
+                                <td class="text-center">${isSelected ? '<span class="badge badge-primary" style="font-size:0.55rem;">Vínculo PDS</span>' : '<span class="badge badge-light" style="font-size:0.55rem;">Adicional</span>'}</td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                // Determine Tope Legal
+                let topeExplicacion = "";
+                if (func.estamento === "Académico") {
+                    const refContract = masterFunc.contratos ? masterFunc.contratos.find(c => c.tipo === func.contrato_seleccionado) : null;
+                    const refBruto = refContract ? refContract.bruto : 0;
+                    const topeValor = refBruto * 0.5;
+                    topeExplicacion = `
+                        <div class="p-2 border rounded bg-white mt-2 small shadow-xs">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted font-weight-bold text-uppercase" style="font-size:0.58rem;">Límite Académico DU09 (50%)</span>
+                                <span class="badge badge-success px-2 py-0.5" style="font-size:0.55rem;">CUMPLE</span>
+                            </div>
+                            <div class="font-weight-bold text-ufro-blue" style="font-size: 0.78rem;">Tope Máx: ${formatCLP(topeValor)} / mes</div>
+                            <div class="text-muted" style="font-size:0.62rem;">Honorario Solicitado: ${formatCLP(Math.round(func.total_pds / func.meses))} / mes</div>
+                        </div>
+                    `;
+                } else {
+                    const topeObj = DB_MOCK.tabla_topes.find(t => t.estamento === func.estamento && t.cargo === func.jerarquia) || DB_MOCK.tabla_topes.find(t => t.estamento === func.estamento) || { valor: 553079 };
+                    topeExplicacion = `
+                        <div class="p-2 border rounded bg-white mt-2 small shadow-xs">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="text-muted font-weight-bold text-uppercase" style="font-size:0.58rem;">Límite Fijo Planta (Planta/Cargo)</span>
+                                <span class="badge badge-success px-2 py-0.5" style="font-size:0.55rem;">CUMPLE</span>
+                            </div>
+                            <div class="font-weight-bold text-ufro-blue" style="font-size: 0.78rem;">Tope Máx: ${formatCLP(topeObj.valor)} / mes</div>
+                            <div class="text-muted" style="font-size:0.62rem;">Honorario Solicitado: ${formatCLP(Math.round(func.total_pds / func.meses))} / mes</div>
+                        </div>
+                    `;
+                }
+
+                if (tbodyActive) {
+                    const tr = document.createElement("tr");
+                    tr.className = "row-accent-sea";
+                    tr.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-xs btn-link p-0 mr-2 text-primary" onclick="toggleRowDetail('${func.id_ui}')" title="Desglosar Detalle" style="outline: none; box-shadow: none;">
+                                    <i id="toggle-icon-${func.id_ui}" class="fas fa-chevron-right" style="transition: transform 0.2s; font-size: 0.75rem;"></i>
+                                </button>
+                                <div>
+                                    <div class="font-weight-bold text-dark text-uppercase mb-1" style="font-size: 0.82rem;">${func.nombre}</div>
+                                    <div class="text-muted small font-weight-bold" style="font-size: 0.7rem;">RUT: ${func.rut}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">${func.estamento}</div>
+                            <div class="text-muted small" style="font-size: 0.68rem;">${func.jerarquia || 'Planta'}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column" style="gap: 5px;">
+                                <div class="d-flex align-items-center justify-content-between p-1 bg-white border rounded shadow-xs" style="font-size: 0.68rem; gap: 8px;">
+                                    <span class="text-muted"><i class="fas fa-check-circle mr-1 text-success"></i> Inhabilidades:</span>
+                                    <span class="badge-success-soft">✓ CUMPLE</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-1 bg-white border rounded shadow-xs" style="font-size: 0.68rem; gap: 8px;">
+                                    <span class="text-muted"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
+                                    <span class="badge-success-soft">✓ SIN CONFLICTO</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column" style="gap: 5px;">
+                                <div class="d-flex align-items-center justify-content-between p-1 bg-white border rounded shadow-xs" style="font-size: 0.68rem; gap: 8px;">
+                                    <span class="text-muted"><i class="fas fa-university mr-1 text-success"></i> Finanzas Facultad:</span>
+                                    <span class="badge-success-soft">✓ VISADO</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-1 bg-white border rounded shadow-xs" style="font-size: 0.68rem; gap: 8px;">
+                                    <span class="text-muted"><i class="fas fa-coins mr-1 text-success"></i> Finanzas Central:</span>
+                                    <span class="badge-success-soft">✓ APROBADO</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="font-weight-bold text-dark" style="font-size: 0.78rem;">Tope Legal</div>
+                            <span class="badge badge-success px-2 py-1" style="font-size: 0.58rem; font-weight: 700;">✓ CUMPLE LÍMITE</span>
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex flex-column align-items-center">
+                                <span class="badge badge-success px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px; background-color: var(--ufro-green) !important;"><i class="fas fa-check-circle mr-1"></i> APTO</span>
+                                <button type="button" class="btn btn-xs btn-outline-primary mt-1 py-0 px-2 font-weight-bold" style="font-size: 0.58rem; border-radius: 4px;" onclick="toggleRowDetail('${func.id_ui}')">
+                                    VER DETALLE
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbodyActive.appendChild(tr);
+
+                    // Add dynamic detailed row
+                    const trDetail = document.createElement("tr");
+                    trDetail.id = `detail-${func.id_ui}`;
+                    trDetail.style.display = "none";
+                    trDetail.style.backgroundColor = "#f8fafc";
+                    
+                    let cuotasHtml = func.cuotas_mensuales.map(c => `
+                        <div class="d-flex justify-content-between align-items-center p-2 mb-1 bg-white rounded border small" style="min-width: 140px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                            <span class="text-muted font-weight-bold">${c.mes}</span>
+                            <span class="font-weight-bold text-dark ml-2">${formatCLP(c.monto_bruto)}</span>
+                        </div>
+                    `).join("");
+
+                    trDetail.innerHTML = `
+                        <td colspan="6" class="p-3 bg-light border-bottom" style="border-left: 4px solid var(--ufro-blue);">
+                            <div class="row">
+                                <div class="col-md-5 border-right">
+                                    <span class="text-muted small text-uppercase font-weight-bold d-block mb-2" style="font-size:0.6rem; letter-spacing:0.5px;"><i class="fas fa-file-contract mr-1 text-primary"></i> Vínculos Contractuales y Topes Habilitados</span>
+                                    <table class="table table-sm table-bordered bg-white small mb-2 text-center" style="font-size:0.65rem;">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>Contrato Vigente</th>
+                                                <th>Estam.</th>
+                                                <th>Jorn.</th>
+                                                <th>Bruto</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${contractsRowsHtml}
+                                        </tbody>
+                                    </table>
+                                    ${topeExplicacion}
+                                    <div class="small text-dark mt-2" style="line-height:1.4;"><strong>Actividad:</strong> "${func.actividad}"</div>
+                                </div>
+                                <div class="col-md-3 border-right">
+                                    <span class="text-muted small text-uppercase font-weight-bold d-block mb-2" style="font-size:0.6rem; letter-spacing:0.5px;"><i class="fas fa-coins mr-1 text-success"></i> Imputación Presupuestaria</span>
+                                    <div class="small text-dark mb-1"><strong>Centro de Costo:</strong> ${solicitud.centro_costo.codigo} - ${solicitud.centro_costo.nombre}</div>
+                                    <div class="small text-dark mb-1"><strong>Cuenta/Ítem Gasto:</strong> ${func.item_presupuestario_asociado} (${func.categoria_presupuestaria})</div>
+                                    <div class="small text-dark mb-2"><strong>Compensación Horaria:</strong> ${func.compensacion_detalle ? '✓ ' + func.compensacion_detalle.horas_semanales + ' Horas semanales (autorizado)' : 'No requiere'}</div>
+                                    <div class="small text-dark"><strong>Monto Total de PDS:</strong> <span class="font-weight-bold text-ufro-blue" style="font-size:0.85rem;">${formatCLP(func.total_pds)}</span></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="text-muted small text-uppercase font-weight-bold d-block mb-2" style="font-size:0.6rem; letter-spacing:0.5px;"><i class="fas fa-calendar-alt mr-1 text-orange"></i> Distribución Mensual</span>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        ${cuotasHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tbodyActive.appendChild(trDetail);
+                }
+
+                if (pdfTbody) {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${func.rut}</td>
+                        <td class="text-left font-weight-bold">${func.nombre}</td>
+                        <td>${func.estamento}</td>
+                        <td style="max-width: 150px; font-size: 0.7rem; text-align: left;">${func.actividad || 'Apoyo Profesional'}</td>
+                        <td>${solicitud.centro_costo.codigo}</td>
+                        <td>${func.item_presupuestario_asociado}</td>
+                        <td>01/06/26 - 31/07/26</td>
+                        <td>${func.meses}</td>
+                        <td>${formatCLP(Math.round(func.total_pds / func.meses))}</td>
+                        <td class="font-weight-bold">${formatCLP(func.total_pds)}</td>
+                    `;
+                    pdfTbody.appendChild(tr);
+                }
+            } else {
+                if (tbodyExcluded) {
+                    const tr = document.createElement("tr");
+                    tr.className = "bg-light";
+                    tr.style.opacity = "0.95";
+                    tr.innerHTML = `
+                        <td>
+                            <div class="font-weight-bold text-muted text-uppercase mb-1" style="font-size: 0.8rem; text-decoration: line-through;">${func.nombre}</div>
+                            <div class="text-muted small font-weight-bold" style="font-size: 0.7rem;">RUT: ${func.rut}</div>
+                        </td>
+                        <td>
+                            <div class="font-weight-bold text-muted" style="font-size: 0.75rem;">${func.estamento}</div>
+                            <div class="text-muted small" style="font-size: 0.68rem;">${func.jerarquia || 'Planta'}</div>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-column" style="gap: 5px;">
+                                <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                    <span class="text-dark small"><i class="fas fa-times-circle mr-1 text-danger"></i> Inhabilidades Generales:</span>
+                                    <span class="badge-danger-soft">✗ RESTRICCIÓN</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between p-1.5 bg-white border rounded shadow-xs" style="font-size: 0.7rem; gap: 10px;">
+                                    <span class="text-dark small"><i class="fas fa-users mr-1 text-success"></i> Parentesco Art. 56:</span>
+                                    <span class="badge-success-soft">✓ SIN CONFLICTO</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-muted small" style="font-size: 0.72rem; line-height: 1.4;">
+                                <strong>Causa de Exclusión:</strong> ${func.causal || func.motivo_resumido || 'Incompatibilidad detectada'}.
+                            </div>
+                        </td>
+                        <td class="text-right font-weight-bold text-muted align-middle" style="font-size: 0.78rem; text-decoration: line-through;">
+                            ${formatCLP(func.total_pds || func.monto_excluido)}
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex flex-column align-items-center">
+                                <span class="badge badge-danger px-3 py-1.5 font-weight-bold shadow-sm" style="font-size: 0.7rem; border-radius: 8px;"><i class="fas fa-times-circle mr-1"></i> EXCLUIDO</span>
+                                <span class="text-muted small mt-1 font-italic" style="font-size: 0.52rem;">No Elegible</span>
+                            </div>
+                        </td>
+                    `;
+                    tbodyExcluded.appendChild(tr);
+                }
+            }
+        });
+    }
+
+    function toggleRowDetail(id) {
+        const detailRow = document.getElementById(`detail-${id}`);
+        const icon = document.getElementById(`toggle-icon-${id}`);
+        if (detailRow) {
+            const isHidden = detailRow.style.display === "none";
+            detailRow.style.display = isHidden ? "table-row" : "none";
+            if (icon) {
+                icon.style.transform = isHidden ? "rotate(90deg)" : "rotate(0deg)";
+            }
+        }
+    }
 
     // Cargar borrador inicial si existe o pre-cargar plantilla estándar
     window.addEventListener('DOMContentLoaded', () => {
+        // Render dynamic tables
+        renderOfficials();
+
         const visto = localStorage.getItem("pds_08_visto");
         const considerando = localStorage.getItem("pds_08_considerando");
         const resuelvo = localStorage.getItem("pds_08_resuelvo");
@@ -1438,6 +1632,10 @@
     // Trazabilidad de la etapa
     function agregarTraza(mensaje) {
         const container = document.getElementById("container-trace-logs");
+        if (!container) {
+            console.log(`[Trace Log]: ${mensaje}`);
+            return;
+        }
         const ahora = new Date();
         const horaStr = ahora.toTimeString().split(' ')[0];
         
