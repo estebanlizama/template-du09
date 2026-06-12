@@ -184,7 +184,7 @@ Solicitante.
 * No encontrarse en licencia médica.
 * No estar en permiso sin goce de sueldo.
 * El proyecto no debe haber finalizado formalmente.
-* La actividad no debe corresponder a Formación Continua.
+* La actividad no debe corresponder a Formación Continua. Diplomados, cursos, postítulos, postgrados, especialidades u otras actividades de educación/formación continua deben tramitarse por el flujo de Docentes Especiales, no por DU288/D9.
 
 ### E. Reglas de negocio
 
@@ -275,9 +275,11 @@ Sistema, visible para el Solicitante.
 * Indicador de Centro de Costo estructural o no estructural.
 * Indicador de habilitación del Centro de Costo.
 * Indicador de vigencia.
-* Control presupuestario y saldo disponible.
+* Control presupuestario, Saldo Inicial del Centro de Costos (antes de la imputación de la solicitud) y Saldo de la Solicitud actual.
+* Saldo Actual/Remanente proyectado del Centro de Costos (Saldo Inicial - Saldo de la Solicitud).
+* Historial de saldos (Saldo Inicial, Saldo Solicitud, Saldo Actual) registrado e historizado para cada una de las etapas del workflow de tramitación.
 * Saldo disponible por ítem presupuestario asociado al cargo o clasificación del funcionario.
-* Indicador visual (Check) si corresponde a Formación Continua.
+* Indicador visual si el Centro de Costo o la actividad corresponden a Formación Continua.
 * Tabla informativa de distribución de Ítems Directivos asociados al Centro de Costo.
 
 ### E. Reglas de negocio levantadas
@@ -285,12 +287,15 @@ Sistema, visible para el Solicitante.
 * El Centro de Costo debe verificarse respecto de su condición estructural.
 * Debe verificarse su vigencia.
 * Debe verificarse su habilitación.
+* **Trazabilidad Presupuestaria por Etapa**: El sistema debe registrar e historizar el Saldo Inicial del Centro de Costos, el Saldo de la Solicitud actual y el Saldo Actual/Remanente proyectado en cada etapa del flujo de tramitación y aprobación (Jefe de Proyecto, Decano, Finanzas de Facultad, Finanzas Central, etc.).
+* **Consistencia de Aprobación**: Cada etapa del workflow de aprobación debe visualizar el saldo del Centro de Costo vigente en ese preciso momento, permitiendo detectar si hubo imputaciones concurrentes que afecten la viabilidad presupuestaria.
 * Debe obtenerse el saldo disponible.
 * Debe obtenerse el saldo disponible por ítem presupuestario cuando la validación dependa del cargo, contrato o asignación del funcionario.
 * El tipo de financiamiento debe corresponder a **21 - Fondos Propios** o **44 - Terceros**, según lo definido para el flujo.
 * Debe identificarse el decreto afecto.
 * Debe identificarse si el Centro de Costo posee decreto afecto y peaje regularizado cuando corresponda.
-* Debe identificarse si corresponde a Formación Continua.
+* Debe identificarse si corresponde a Formación Continua. Si se identifica como Formación Continua, el flujo DU288/D9 no debe permitir continuar y debe orientar al usuario al flujo de Docentes Especiales.
+* Mientras no exista una fuente normalizada para determinar Formación Continua desde Centro de Costo, decreto afecto u otra clasificación institucional, el sistema debe mostrar el estado como “no determinado” y dejar trazabilidad de la validación pendiente.
 * Los Centros de Costo deben obtenerse desde fuentes institucionales vigentes e integradas con la información financiera/resolutiva correspondiente.
 * Si el monto solicitado supera el saldo disponible, debe generarse una alerta informativa, pero esa condición no necesariamente bloquea el envío según lo previamente definido.
 * **Solo para flujo D9**: La actividad no debe corresponder a Formación Continua.
@@ -303,10 +308,10 @@ Sistema, visible para el Solicitante.
 | VAL-P01-CC-01 | Centro de Costo no estructural cuando aplique | Mostrar cumplimiento o alerta.              |
 | VAL-P01-CC-02 | Centro de Costo habilitado                    | Mostrar cumplimiento o incumplimiento.      |
 | VAL-P01-CC-03 | Centro de Costo vigente                       | Mostrar cumplimiento o incumplimiento.      |
-| VAL-P01-CC-04 | Saldo disponible consultado                   | Mostrar saldo vigente.                      |
+| VAL-P01-CC-04 | Saldo disponible consultado                   | Mostrar saldo inicial, de solicitud y proyectado. |
 | VAL-P01-CC-05 | Tipo de financiamiento compatible             | Mostrar cumplimiento o alerta.              |
 | VAL-P01-CC-06 | Decreto afecto identificado                   | Cargar dato en formulario.                  |
-| VAL-P01-CC-07 | Formación Continua identificada               | Registrar resultado para control posterior. |
+| VAL-P01-CC-07 | Formación Continua identificada               | Si corresponde a Formación Continua, bloquear DU288/D9 e informar que debe tramitarse por Docentes Especiales. Si no existe fuente normalizada, mostrar “no determinado”. |
 | VAL-P01-CC-08 | Saldo por ítem presupuestario consultado      | Mostrar saldo disponible del ítem aplicable. |
 | VAL-P01-CC-09 | Decreto afecto y peaje identificado           | Mostrar dato normalizado cuando aplique.    |
 
@@ -319,10 +324,13 @@ Sistema, visible para el Solicitante.
 * **RF-P01-009:** El sistema debe validar la condición estructural del Centro de Costo.
 * **RF-P01-010:** El sistema debe validar la vigencia del Centro de Costo.
 * **RF-P01-011:** El sistema debe validar la habilitación del Centro de Costo.
-* **RF-P01-012:** El sistema debe consultar y mostrar el saldo disponible.
+* **RF-P01-012:** El sistema debe consultar y mostrar el saldo disponible (Saldo Inicial, Saldo de la Solicitud y Saldo Proyectado Remanente).
+* **RF-P01-012A:** El sistema debe capturar, almacenar e historizar los saldos (inicial, de la solicitud y proyectado) de forma independiente en cada etapa del workflow de tramitación.
 * **RF-P01-013:** El sistema debe mostrar alertas cuando el Centro de Costo no cumpla reglas aplicables.
 * **RF-P01-013A:** El sistema debe consultar y mostrar el saldo disponible por ítem presupuestario cuando corresponda.
 * **RF-P01-013B:** El sistema debe consumir la información normalizada de decreto afecto, peaje y condición ANID cuando dichas fuentes estén disponibles.
+* **RF-P01-013C:** El sistema debe mostrar explícitamente que Formación Continua no es admisible en DU288/D9 y debe bloquear el avance cuando la fuente institucional identifique esa condición.
+* **RF-P01-013D:** Si la condición de Formación Continua no puede determinarse automáticamente por falta de fuente normalizada, el sistema debe mostrar la validación como pendiente/no determinada y no afirmarla como cumplida.
 
 ---
 
@@ -356,6 +364,7 @@ Sistema, visible para el Solicitante.
 * Los datos deben obtenerse automáticamente desde la fuente institucional correspondiente.
 * Estos campos deben ser de solo lectura para el solicitante, salvo que el negocio defina excepciones posteriores.
 * **TODO: pendiente ANID.** La condición ANID no debe inferirse desde texto libre; debe cargarse desde la fuente normalizada que defina Finanzas.
+* **TODO: pendiente Formación Continua.** La condición de Formación Continua no debe inferirse desde texto libre ni solo desde la descripción del decreto afecto; debe cargarse desde una fuente institucional normalizada o desde una regla formal validada por Finanzas/DGDP.
 
 ### F. Validaciones
 
@@ -629,6 +638,7 @@ Sistema, visible para el Solicitante.
 ### G. Requerimientos funcionales preliminares
 
 * **RF-P01-034:** El sistema debe validar si la prestación se encuentra asociada a Formación Continua.
+  Si la prestación corresponde a Formación Continua, debe bloquearse el flujo DU288/D9 y orientar la tramitación al flujo de Docentes Especiales.
 * **RF-P01-035:** El sistema debe validar si el funcionario presenta inhabilidad por cargo según `caex`.
 * **RF-P01-036:** El sistema debe validar si el funcionario presenta deudas pendientes.
 * **RF-P01-037:** El sistema debe mostrar el resultado de cada validación preventiva al solicitante.
@@ -1286,7 +1296,93 @@ Solicitante.
 
 ---
 
-# 6. Inventario consolidado de funcionalidades de la Pantalla 01
+# 6. Prellenado desde Solicitud PDS Previa
+
+## 6.1 Objetivo funcional
+
+La pantalla debe permitir iniciar una nueva solicitud PDS usando como base una solicitud previa registrada, con el fin de evitar redigitar informacion de la prestacion y de los funcionarios cuando el nuevo tramite sea similar o corresponda a una regularizacion.
+
+El prellenado no debe depender exclusivamente del usuario creador anterior. Debe poder buscarse por Centro de Costo y por solicitudes PDS asociadas a ese Centro de Costo, siempre que el usuario tenga permisos sobre dicho ambito.
+
+## 6.2 Casos de uso esperados
+
+| Caso | Comportamiento esperado |
+| :--- | :--- |
+| Crear nueva PDS similar a una anterior | El usuario selecciona una solicitud previa y copia datos base de prestacion. |
+| Regularizar funcionario rechazado | Se crea una nueva solicitud usando datos de la PDS original, pero seleccionando solo el funcionario regularizado. |
+| Repetir prestacion por nuevo periodo | Se copian datos base y se actualizan fechas, meses y montos segun corresponda. |
+| Reutilizar grupo de funcionarios | Se copian funcionarios seleccionados desde una PDS previa, no necesariamente todos. |
+| Usar solicitudes del mismo Centro de Costo | El modal lista solicitudes previas asociadas al Centro de Costo autorizado. |
+
+## 6.3 Datos que se pueden prellenar
+
+| Grupo | Datos posibles | Regla |
+| :--- | :--- | :--- |
+| Prestacion | Actividad, modalidad, centro de costo, unidad financiera, proyecto global, jefe de proyecto. | Deben quedar editables antes de enviar, segun permisos. |
+| Periodo | Fechas generales de inicio/termino. | Deben revisarse porque pueden cambiar en la nueva solicitud. |
+| Evidencias requeridas | Tipos de evidencia comprometida para pago. | Se pueden copiar como requerimientos, no como documentos cargados. |
+| Funcionarios | RUT, cargo, contrato sugerido, item, monto mensual, periodo, jornada, compensacion. | El usuario debe poder seleccionar uno, varios o todos. |
+| Meses | Meses previamente definidos por funcionario. | Deben recalcularse o confirmarse para el nuevo periodo. |
+
+## 6.4 Datos que no se deben copiar automaticamente
+
+| Dato | Motivo |
+| :--- | :--- |
+| Estado de la solicitud anterior | La nueva solicitud debe iniciar como borrador. |
+| Historial de aprobaciones | Pertenece al tramite anterior. |
+| Resolucion firmada anterior | Solo puede mostrarse como referencia, no como resolucion de la nueva solicitud. |
+| Evidencias ya cargadas para pago | Corresponden a ejecucion anterior. |
+| Estados de cuota o pago | Pertenecen al flujo de pagos anterior. |
+| Indicadores de rechazo anteriores | Deben evaluarse nuevamente, salvo que se quiera mostrar como advertencia. |
+
+## 6.5 Busqueda y seleccion de solicitud previa
+
+La pantalla debe incorporar una opcion tipo **"Crear desde solicitud previa"**.
+
+Filtros minimos:
+
+| Filtro | Uso |
+| :--- | :--- |
+| Centro de Costo | Listar solicitudes asociadas al Centro de Costo autorizado. |
+| Numero de PDS | Buscar una solicitud especifica. |
+| Resolucion | Buscar por acto administrativo formalizado. |
+| Funcionario | Encontrar solicitudes donde participo un funcionario. |
+| Periodo | Filtrar por anio, mes o rango de prestacion. |
+| Estado | Priorizar PDS aprobadas/formalizadas, pero permitir borradores si negocio lo autoriza. |
+
+## 6.6 Reglas de seguridad y permisos
+
+1. El usuario solo puede usar como base solicitudes de Centros de Costo sobre los que tenga permiso directo o delegado.
+2. Si la solicitud previa pertenece a otro responsable, debe validarse delegacion o autorizacion.
+3. La copia debe registrar la solicitud origen para trazabilidad si negocio lo requiere.
+4. Los datos copiados deben quedar como borrador y pasar nuevamente por validaciones.
+5. El sistema debe advertir si un funcionario copiado tiene nuevas restricciones: cargo no habilitado, deuda, parentesco, contrato no vigente u otra validacion critica.
+
+## 6.7 Impacto en modelo de datos
+
+La funcionalidad puede implementarse inicialmente como procedimiento de consulta/copia sin agregar campos nuevos.
+
+Si se requiere trazabilidad explicita de origen, se recomienda evaluar un campo opcional:
+
+| Tabla | Campo sugerido | Uso |
+| :--- | :--- | :--- |
+| `sg_prse` | `nro_solori int null` | Referencia a la PDS usada como origen de prellenado o regularizacion. |
+
+Regla: `nro_solori` no reemplaza a `nro_solici`; solo permite saber de que solicitud se tomaron datos base.
+
+## 6.8 Preguntas pendientes
+
+| Pregunta | Por que importa |
+| :--- | :--- |
+| Se permite copiar desde cualquier PDS del Centro de Costo o solo desde PDS formalizadas? | Define filtros y permisos. |
+| Se debe poder copiar solo datos de prestacion sin funcionarios? | Define opciones del modal. |
+| Se debe poder copiar un funcionario especifico desde una PDS previa? | Apoya regularizacion sin redigitar. |
+| Se debe guardar `nro_solori` en la nueva PDS? | Define trazabilidad estructural. |
+| Que validaciones deben ejecutarse nuevamente al copiar? | Evita aprobar datos desactualizados. |
+
+---
+
+# 7. Inventario consolidado de funcionalidades de la Pantalla 01
 
 | Código  | Funcionalidad                                            |
 | ------- | -------------------------------------------------------- |
