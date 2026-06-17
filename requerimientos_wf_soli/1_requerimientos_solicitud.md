@@ -1409,3 +1409,164 @@ Regla: `nro_solori` no reemplaza a `nro_solici`; solo permite saber de que solic
 | P01-F22 | Eliminar funcionario de la solicitud.                    |
 | P01-F23 | Guardar solicitud como borrador.                         |
 | P01-F24 | Enviar solicitud a validación.                           |
+
+---
+
+# 8. TODO controlado por dependencias de datos institucionales
+
+La primera vista de solicitud DU288/D9 cubre el flujo operativo principal. Los siguientes puntos quedan documentados como pendientes porque dependen de PA, fuentes normalizadas o definiciones institucionales externas al formulario.
+
+| TODO | Dependencia | Uso esperado |
+| :--- | :--- | :--- |
+| TODO PA10 - Deudas | Procedimiento/consulta institucional de deudas regularizadas y no regularizadas. | Integrar validacion automatica de deuda cuando el PA quede confirmado. Hasta entonces no debe bloquear silenciosamente el ingreso del funcionario. |
+| TODO Parentesco | Consulta SISPER `sp_par1` / `sp_par2` y regla institucional de autorizacion. | Detectar parentesco y definir si bloquea o permite continuar con `Constancia/autorizacion por parentesco`. |
+| TODO Asignaciones bloqueantes | Normalizacion de reglas/cargos/asignaciones que impiden participar en DU288. | Ampliar la validacion actual para cubrir todos los tipos bloqueantes, no solo la asignacion directiva detectada en la vista. |
+| TODO ANID | Fuente normalizada para identificar proyectos ANID/DIUFRO/DITT y excepciones normativas. | Aplicar excepciones de decanos/proyectos con financiamiento externo certificado cuando exista dato institucional. |
+| TODO Saldos | PA/modelo para saldo disponible, saldo por item e historizacion por etapa. | Mostrar y registrar saldo inicial, saldo solicitud y saldo remanente por cada etapa del workflow. |
+| TODO Licencias, permisos y receso | Fuente institucional para situaciones administrativas vigentes. | Dejar como constancias/evidencias en esta pantalla; la validacion automatica queda para integracion posterior. |
+
+Regla general: estos TODO no impiden mantener operativa la vista actual. Deben incorporarse como validaciones reales solo cuando exista fuente de datos confiable y trazabilidad definida.
+
+
+base para solicitud vista 
+
+
+Solicitudes
+ Inicio
+
+ Prestación de servicios
+Nueva solicitud
+Solicitudes en espera
+Solicitudes Históricas
+
+Nueva solicitud
+Prestación de servicios
+Nueva solicitud
+ Programa Docente Especiales
+ Normativo D.U. 288
+
+Normativa y Regulaciones aplicables a la Solicitud (DU288)
+Centro de costo
+7110-11 - FONDO PREINVERSION Y DES.PROG.
+Proyecto
+FONDO PREINVERSION Y DESARROLLO DE PROGRAMAS
+Jefe de proyecto
+JOSIAS GAMALIEL ZAPATA SALAZAR
+RUT jefe de proyecto
+055968039
+Unidad ejecutora
+7110 - DEPARTAMENTO DE INGENIERIA DE SISTEMAS
+Centro de costo vigente
+Responsable vigente
+Financiamiento compatible DU288
+Decreto afecto: 2 - No Afecto
+No corresponde a Formación Continua
+Tipos de evidencia verificable *
+Evidencias
+
+Acta firmada
+
+Informe con evidencias
+
+Base de datos entregada
+Constancias
+
+Constancia por licencia medica
+
+Constancia por permiso
+
+Constancia por receso
+2 tipos seleccionados.
+Inicio de ejecución *
+martes, 2 de junio de 2026Seleccionada
+Término de ejecución *
+viernes, 31 de julio de 2026Seleccionada
+Descripción general de la actividad *
+asdasddddddddddddddddddddddddd
+RUT: 169500576
+Nombre: NEFTALI JONATHAN HUICHAPAN ANCAVIL
+Correo: No informado
+Tope mensual: $382.519
+Tope fijo por cargo/planta
+Contratos vigentes o en trámite informados (Seleccione uno)
+Sel.	Contrato	Principal	Vinculación	Cargo	Estamento	Jornada	Horas	Tope mensual	Vigencia
+	45098	Principal	04 - CONTRATA	5160 - AUXILIAR	3 - ADMINISTRATIVO	01 - J/C	44 hrs	$382.519	Vigente
+Datos Laborales del Contrato Seleccionado
+ID Contrato
+45098
+Vinculación
+04 - CONTRATA
+Cargo
+5160 - AUXILIAR
+Unidad
+09010000 - DECANATO FACULTAD DE AGRONOMIA
+Estamento
+3 - ADMINISTRATIVO
+Jerarquía
+53 - AUXILIAR
+Grado
+Grado 8
+Jornada
+01 - J/C
+Horas
+44 Hrs
+Inicio
+01-01-2009
+Término decreto
+31-12-2009
+Término contrato
+Sin término
+Antigüedad
+17 años
+Datos de la Solicitud del Funcionario
+Actividad específica *
+asdasdasdasdasdasdasd
+Monto bruto total *
+300.000
+Tope bruto total
+$382.519 (1 mes)
+Meses a pagar * (Máximo 2 meses por año)
+Ene
+Feb
+Mar
+Abr
+May
+Jun
+Jul
+Ago
+Sep
+Oct
+Nov
+Dic
+Modalidad de jornada *
+
+Fuera de jornada
+Contrato vigente
+Contrato principal
+Cargo habilitado
+Modalidad: fuera de jornada
+SEA: no aplica
+Compensación: no requerida
+Buscar
+Funcionario	Contrato	Jornada / regla	Solicitud	Compensación	Monto	Acciones
+NEFTALI JONATHAN HUICHAPAN ANCAVIL
+RUT: 169500576
+ Editando	
+#No aplica
+Vigente
+No aplica
+AUXILIAR
+No aplica · No aplica · 0 hrs
+Fuera de jornada
+SEA no aplica
+Tope pendiente
+Tope: pendiente
+Meses:
+Actividad:
+asdasdasdasdasdasdasd
+No requerida
+No aplica
+$300.000	
+Total solicitud: $300.000
+ 
+Editar funcionario
