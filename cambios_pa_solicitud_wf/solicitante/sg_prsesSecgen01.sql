@@ -1,0 +1,42 @@
+USE secgen_db
+GO
+
+IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
+           WHERE a.uid = b.uid AND a.type = 'P'
+           AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen01')
+    DROP PROCEDURE Analisis2.sg_prsesSecgen01
+GO
+
+/* Procedimiento : sg_prsesSecgen01
+    Objetivo : Consultar Prestación de servicios con soporte de modalidad.
+*/
+CREATE PROCEDURE Analisis2.sg_prsesSecgen01
+    @nro_solici int = NULL
+AS
+BEGIN
+    IF @nro_solici IS NULL
+    BEGIN
+        SELECT 'Falta campo Numero Solicitud' msg
+        RETURN
+    END
+
+    SELECT
+        p.nro_solici,
+        p.actividad,
+        p.per_desde,
+        p.per_hasta,
+        p.rut_jefpro,
+        p.cod_unifin,
+        p.cod_ccto,
+        p.cc_global,
+        p.pry_global,
+        p.cod_modprs,
+        m.des_modprs
+    FROM secgen_db.dbo.sg_prse p
+    LEFT JOIN secgen_db.dbo.sg_tmod m ON p.cod_modprs = m.cod_modprs
+    WHERE p.nro_solici = @nro_solici
+END
+GO
+
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen01 TO UsuaVrac
+GO
