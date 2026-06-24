@@ -47,15 +47,55 @@ BEGIN
         fu.mto_tope,
         fu.f_cal_tope,
         fu.tot_cuotas,
+        
+        -- Datos dinámicos del funcionario
         (pers.nom_nombre + ' ' + pers.nom_appate + ' ' + pers.nom_apmate) AS nombre,
         pers.uni_ctadi,
-        carg.nom_cargo
+        
+        -- Datos dinámicos del contrato (enlazado por fu.cod_contra)
+        isnull(cont.principal, '0') AS principal,
+        cont.cod_unidad,
+        rtrim(unid.des_unidad) AS des_unidad,
+        cont.cod_cargo AS cod_cargo_contrato,
+        rtrim(carg.nom_cargo) AS nom_cargo,
+        cont.cod_estame,
+        rtrim(estm.des_estame) AS des_estame,
+        cont.cod_calida,
+        rtrim(cali.des_calida) AS des_calida,
+        cont.cod_jerpla,
+        rtrim(jpfu.des_jerpla) AS des_jerpla,
+        cont.cod_niv_gr,
+        rtrim(nigr.des_niv_gr) AS des_niv_gr,
+        cont.cod_jornad,
+        rtrim(jorn.des_jornad) AS des_jornad,
+        isnull(cont.num_horas, 0) AS num_horas,
+        cont.f_inicio_d,
+        cont.f_termin_d,
+        cont.vigen_cont,
+        rtrim(vigc.des_vigen) AS des_vigen
     FROM
         sg_fups fu
         LEFT JOIN sisper_db..sp_pers pers
             ON (pers.rut_person = fu.rut)
-        LEFT JOIN sisper_db..sp_carg carg
-            ON (carg.cod_cargo = fu.cod_cargo)
+        LEFT JOIN sisper_db.dbo.sp_cont cont
+            ON (cont.cod_contra = fu.cod_contra)
+        LEFT JOIN sisper_db.dbo.sp_carg carg
+            ON (carg.cod_cargo = cont.cod_cargo)
+        LEFT JOIN sisper_db.dbo.sp_cali cali
+            ON (cali.cod_calida = cont.cod_calida)
+        LEFT JOIN ufro_db.dbo.es_unid unid
+            ON (unid.cod_unidad = cont.cod_unidad)
+        LEFT JOIN sisper_db.dbo.sp_jpfu jpfu
+            ON (jpfu.cod_jerpla = cont.cod_jerpla)
+        LEFT JOIN sisper_db.dbo.sp_nigr nigr
+            ON (nigr.cod_jerpla = cont.cod_jerpla
+           AND nigr.cod_niv_gr = cont.cod_niv_gr)
+        LEFT JOIN sisper_db.dbo.sp_jorn jorn
+            ON (jorn.cod_jornad = cont.cod_jornad)
+        LEFT JOIN sisper_db.dbo.sp_estm estm
+            ON (estm.cod_estame = cont.cod_estame)
+        LEFT JOIN sisper_db.dbo.sp_vigc vigc
+            ON (vigc.vigen_cont = cont.vigen_cont)
     WHERE
         fu.nro_solici = @nro_solici
 END

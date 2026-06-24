@@ -170,6 +170,7 @@ BEGIN
             SELECT 'El estado especificado no existe en el catálogo de estados' AS msg
             RETURN
         END
+
     END
     ELSE
     BEGIN

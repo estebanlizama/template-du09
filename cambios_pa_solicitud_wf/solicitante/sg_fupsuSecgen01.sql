@@ -50,8 +50,7 @@ CREATE PROCEDURE Analisis2.sg_fupsuSecgen01
     @mto_haber int = NULL,
     @mto_tope int = NULL,
     @f_cal_tope datetime = NULL,
-    @tot_cuotas tinyint = NULL,
-    @cod_estfun tinyint = NULL
+    @tot_cuotas tinyint = NULL
 AS
 BEGIN
     IF @id_funprse IS NULL
@@ -126,15 +125,6 @@ BEGIN
         SELECT 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
         RETURN
     END
-    -- Validar que el estado exista en sg_efun si se provee
-    IF @cod_estfun IS NOT NULL
-    BEGIN
-        IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
-        BEGIN
-            SELECT 'El estado especificado no existe en el catálogo de estados' AS msg
-            RETURN
-        END
-    END
     DECLARE @cod_modprs tinyint
     DECLARE @rows_updated int
     DECLARE @err int
@@ -145,6 +135,7 @@ BEGIN
 
     IF @cod_modprs IS NULL
         SELECT @cod_modprs = 1
+
 
     BEGIN TRAN
 
@@ -172,8 +163,7 @@ BEGIN
             mto_haber = @mto_haber,
             mto_tope = @mto_tope,
             f_cal_tope = @f_cal_tope,
-            tot_cuotas = @tot_cuotas,
-            cod_estfun = isnull(@cod_estfun, cod_estfun)
+            tot_cuotas = @tot_cuotas
         WHERE
             id_funprse = @id_funprse
 
@@ -189,7 +179,8 @@ BEGIN
     END
     ELSE
     BEGIN
-        -- Flujo Legacy: actualiza únicamente campos legacy, asegurando nulos en DU288
+        -- Flujo Legacy: actualiza unicamente los campos historicos.
+        -- Las columnas DU288 quedan fuera del SET.
         UPDATE sg_fups
         SET
             rut = @rut,
@@ -203,16 +194,7 @@ BEGIN
             cod_moneda = @cod_moneda,
             cod_tpps = @cod_tpps,
             f_inicio = @f_inicio,
-            f_termino = @f_termino,
-            dentro_jor = NULL,
-            cod_contra = NULL,
-            mes_haber = NULL,
-            ano_haber = NULL,
-            mto_haber = NULL,
-            mto_tope = NULL,
-            f_cal_tope = NULL,
-            tot_cuotas = NULL,
-            cod_estfun = NULL
+            f_termino = @f_termino
         WHERE
             id_funprse = @id_funprse
 
