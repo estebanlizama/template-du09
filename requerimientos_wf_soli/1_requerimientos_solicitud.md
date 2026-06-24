@@ -616,7 +616,9 @@ Sistema, visible para el Solicitante.
 ### D. Reglas de negocio previamente levantadas
 
 * Si el funcionario mantiene deudas no regularizadas, no debe poder avanzar.
-* Si pertenece a un cargo inhabilitado registrado en `caex`, no debe poder incorporarse.
+* Si el PA determina que el cargo no está habilitado para DU288/D9, no debe poder incorporarse.
+* La inhabilidad por cargo se determina desde SISPER mediante el PA: los cargos con `sp_carg.cod_tipcar = 5` se consideran directivos y quedan no habilitados.
+* Si el Centro de Costo cumple condición ANID o condición institucional definida por PA, la excepción permitida se limita al cargo `cod_cargo = 3120`.
 * La verificación de parentesco es únicamente informativa y no determina por sí sola si se puede generar la solicitud.
 * Deben considerarse restricciones especiales para Decanos, Directores de Instituto Independiente y Académicos con funciones directivas.
 
@@ -625,7 +627,7 @@ Sistema, visible para el Solicitante.
 | Código         | Validación                                   | Efecto                                                        |
 | -------------- | -------------------------------------------- | ------------------------------------------------------------- |
 | VAL-P01-FUN-01 | Verificación de Parentesco                   | Informativo. Mostrar relaciones familiares si existen, no bloquea envío. |
-| VAL-P01-FUN-02 | Verificación de Cargos no habilitados        | Bloquea incorporación si el cargo está en `caex` para la modalidad aplicable. |
+| VAL-P01-FUN-02 | Verificación de cargo habilitado por PA      | Bloquea incorporación si el PA informa cargo no habilitado. Regla base: `sp_carg.cod_tipcar = 5`; excepción por CCTO ANID/definido solo para `cod_cargo = 3120`. |
 | VAL-P01-FUN-03 | Verificación de deudas pendientes            | Bloquea incorporación y envío si no cumple.                   |
 | VAL-P01-FUN-04 | Verificación de situación de licencia médica | Debe incorporarse si forma parte de la regla normativa final. |
 | VAL-P01-FUN-05 | Verificación de permiso sin goce de sueldo   | Debe incorporarse si forma parte de la regla normativa final. |
@@ -639,7 +641,9 @@ Sistema, visible para el Solicitante.
 
 * **RF-P01-034:** El sistema debe validar si la prestación se encuentra asociada a Formación Continua.
   Si la prestación corresponde a Formación Continua, debe bloquearse el flujo DU288/D9 y orientar la tramitación al flujo de Docentes Especiales.
-* **RF-P01-035:** El sistema debe validar si el funcionario presenta inhabilidad por cargo según `caex`.
+* **RF-P01-035:** El sistema debe validar si el funcionario presenta inhabilidad por cargo según el PA de cargo habilitado, sin depender de una tabla local de cargos excluidos.
+* **RF-P01-035A:** El PA debe considerar no habilitados los cargos con `sp_carg.cod_tipcar = 5`.
+* **RF-P01-035B:** Si el Centro de Costo cumple condición ANID o condición institucional definida, el PA debe permitir únicamente la excepción `cod_cargo = 3120`.
 * **RF-P01-036:** El sistema debe validar si el funcionario presenta deudas pendientes.
 * **RF-P01-037:** El sistema debe mostrar el resultado de cada validación preventiva al solicitante.
 * **RF-P01-037A:** El sistema debe mostrar parentescos detectados como antecedente informativo, sin bloquear la solicitud por este solo resultado.
@@ -895,7 +899,7 @@ Sistema, visible para el Solicitante.
 
 ### D. Reglas de negocio previamente levantadas
 
-* El sistema debe consultar la tabla de topes fijos (`sg_trca`) y la tabla de cargos excluidos (`caex`).
+* El sistema debe consultar la tabla de topes fijos (`sg_trca`) y el PA de cargo habilitado.
 * Si el cargo tiene un tope fijo mensual (ej. Planta técnica, administrativa, auxiliar), se aplica ese límite exacto.
 * Si el cargo NO tiene un tope fijo asignado o si corresponde a un académico, el sistema debe calcular su límite basándose en el 50% de su sueldo posible (Renta Bruta del contrato seleccionado).
 * Directores de Institutos Independientes: regla especial según resolución anual.
@@ -998,7 +1002,7 @@ Se considera SEA cuando el funcionario:
 
 ### A. Descripción funcional
 
-Cuando corresponda compensar, el sistema debe permitir ingresar los días y horas de compensación por funcionario.
+Cuando corresponda compensar, el sistema debe permitir ingresar compensaciones por funcionario usando el día del mes seleccionado y rango horario. La cantidad de horas no se ingresa como dato principal; si se requiere mostrarla, se calcula desde la hora de inicio y la hora de término.
 
 ### B. Actor principal
 
@@ -1006,8 +1010,9 @@ Solicitante.
 
 ### C. Datos de entrada
 
-* Día de compensación.
-* Cantidad de horas.
+* Día de compensación dentro del mes seleccionado.
+* Hora de inicio.
+* Hora de término.
 * Acción agregar/eliminar fila.
 
 ### D. Reglas de negocio
@@ -1015,21 +1020,23 @@ Solicitante.
 * Administrativo dentro de jornada: compensa siempre.
 * Académico dentro de jornada sin SEA: compensa.
 * Académico dentro de jornada con SEA: no requiere compensar.
-* La suma de horas de jornada base y compensación no puede superar 12 horas de trabajo diario.
-* La compensación horaria debe registrarse por funcionario y conservar el detalle de día, horas y observación cuando corresponda.
+* La suma de jornada base y tramo de compensación no puede superar 12 horas de trabajo diario.
+* La compensación horaria debe registrarse por funcionario y conservar el detalle de mes, día, hora de inicio y hora de término.
+* La duración de la compensación debe derivarse del rango horario; no debe capturarse como cantidad manual de horas.
 
 ### E. Validaciones
 
 | Código          | Validación                                  | Efecto                                |
 | --------------- | ------------------------------------------- | ------------------------------------- |
 | VAL-P01-COMP-01 | Compensación obligatoria cuando corresponda | Bloquea agregar funcionario si falta. |
-| VAL-P01-COMP-02 | Día seleccionado                            | Bloquea fila inválida.                |
-| VAL-P01-COMP-03 | Horas registradas                           | Bloquea fila incompleta.              |
+| VAL-P01-COMP-02 | Día de compensación seleccionado            | Bloquea fila inválida.                |
+| VAL-P01-COMP-03 | Rango horario registrado                    | Bloquea fila incompleta.              |
 | VAL-P01-COMP-04 | Total diario no supera 12 horas             | Bloquea exceso.                       |
+| VAL-P01-COMP-05 | Hora de término mayor que hora de inicio    | Bloquea rango inválido.               |
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-19:** Como **Solicitante**, quiero registrar los días y horas de compensación cuando la normativa lo exige, para acreditar adecuadamente la ejecución dentro de jornada.
+**HU-P01-19:** Como **Solicitante**, quiero registrar el día y tramo horario de compensación cuando la normativa lo exige, para acreditar adecuadamente la ejecución dentro de jornada.
 
 ### G. Requerimientos funcionales preliminares
 
@@ -1038,6 +1045,8 @@ Solicitante.
 * **RF-P01-059:** El sistema debe exigir compensación cuando la regla normativa lo determine.
 * **RF-P01-060:** El sistema debe validar que no se superen 12 horas totales de trabajo diario.
 * **RF-P01-060A:** El sistema debe conservar el detalle de compensación horaria asociado al funcionario de la PDS.
+* **RF-P01-060B:** El sistema debe registrar día del mes, hora de inicio y hora de término de cada compensación.
+* **RF-P01-060C:** El sistema debe calcular la duración desde el rango horario, sin exigir ingreso manual de cantidad de horas.
 
 ---
 
@@ -1132,7 +1141,7 @@ Solicitante.
 * Jefe de Proyecto.
 * Unidad Ejecutora.
 * Monto neto.
-* Horas de compensación.
+* Detalle de compensación horaria: mes, día, hora de inicio y hora de término.
 * Decreto afecto.
 * Vigencias.
 * Modalidad de prestación.
