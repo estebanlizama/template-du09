@@ -24,7 +24,6 @@ erDiagram
         int id_funcuo PK
         int id_funmes FK
         tinyint nro_cuota
-        tinyint tot_cuotas
         decimal mto_cuota
         smallint cod_estcuo FK
         int id_docum
@@ -51,33 +50,37 @@ erDiagram
         char vigente
     }
 
+    sg_his2 {
+        int id_histfun PK
+        int id_funprse FK
+        int nro_solici FK
+        smallint cod_estfun
+        char rut_accion
+        datetime f_accion
+        varchar observacion
+        char vigente
+    }
+
     sg_trca {
         int id_trca PK
         tinyint cod_modprs
         smallint cod_cargo
-        smallint cod_jerpln
-        varchar cod_jerpla
-        varchar cod_niv_gr
-        char cod_unidad
-        decimal mto_base_haber
+        varchar cod_unidad
+        decimal mto_total
         decimal pct_aplicado
-        char cod_forcal
         decimal mto_tope
-        smallint ano_vigen
-        datetime f_inicio
-        datetime f_termino
-        char vigente
     }
 
     sg_trca |o--o{ sg_fups : "id_trca"
     sg_fups ||--o{ sg_fume : "id_funprse"
     sg_fups ||--o{ sg_fuco : "id_funprse"
+    sg_fups ||--o{ sg_his2 : "id_funprse"
     sg_fume ||--o{ sg_fucu : "id_funmes"
     sg_ecuo ||--o{ sg_fucu : "cod_estcuo"
 
     classDef newTable fill:#fff3cd,stroke:#e65100,stroke-width:2px,color:#4a1a00
 
-    class sg_fume,sg_fucu,sg_ecuo,sg_fuco,sg_trca newTable
+    class sg_fume,sg_fucu,sg_ecuo,sg_fuco,sg_his2,sg_trca newTable
 ```
 
 ## Resumen de Tablas y Cambios a Pedir
@@ -89,7 +92,8 @@ erDiagram
 | `sg_fucu` | Crear | Cuota habilitada por mes aprobado del funcionario. | Deja preparado el registro consultable por pagos, sin crear aun la solicitud formal de pago. |
 | `sg_ecuo` | Crear | Maestro de estados de cuota. | Parametriza estados de vida de cada cuota habilitada. |
 | `sg_fuco` | Reemplazar/evolucionar estructura actual | Tramos de compensacion horaria por funcionario y fecha calendario real. | La estructura actual por `dia_semana` y `cant_horas` no permite registrar fecha exacta, cruce de anio/mes ni multiples tramos. |
-| `sg_trca` | Crear | Maestro de reglas y topes DU288 por modalidad, cargo, jerarquia, nivel, unidad y vigencia. | Permite resolver topes fijos, calculados y especiales con trazabilidad historica. |
+| `sg_his2` | Crear / integrar si se confirma negocio | Historial individual por funcionario dentro de la PDS. | Complementa `sg_hist` y `sg_apso` cuando se necesita trazabilidad parcial por funcionario, observacion, rechazo o cambio de estado individual. |
+| `sg_trca` | Crear | Maestro minimo de topes DU288 solo para cargos directivos. | En esta fase solo parametriza los topes directivos de instituto explicitamente definidos. |
 
 ## Detalle de Atributos por Tabla
 
@@ -118,7 +122,6 @@ erDiagram
 | `id_funmes` | `int` | `NOT NULL` | FK a `sg_fume.id_funmes`. Mes aprobado desde el cual nace la cuota. |
 | `nro_cuota` | `tinyint` | `NOT NULL` | Numero de cuota del funcionario dentro de la PDS. |
 | `tot_cuotas` | `tinyint` | `NOT NULL` | Total de cuotas generadas para el funcionario dentro de la PDS. |
-| `mto_cuota` | `decimal(19,2)` | `NOT NULL` | Monto de la cuota. Al formalizar la PDS debe quedar en `0`; el monto real se asigna en el flujo posterior de pago. |
 | `cod_estcuo` | `smallint` | `NOT NULL` | FK a `sg_ecuo.cod_estcuo`. Estado actual de la cuota. |
 | `id_docum` | `int` | `NULL` | Documento/evidencia asociado en etapa posterior de pago, si corresponde. |
 | `f_gencuo` | `datetime` | `NOT NULL` | Fecha y hora de generacion de la cuota al formalizar/archivar la PDS. |
@@ -160,6 +163,24 @@ Datos iniciales:
 | `hora_termino` | `datetime` | `NOT NULL` | Hora de termino del tramo compensado. En Sybase 12 puede usarse `datetime` usando la porcion horaria. |
 | `vigente` | `char(1)` | `NOT NULL` | Vigencia logica del tramo. Valores esperados: `S` / `N`. |
 
+### `sg_his2` - Historial Individual por Funcionario
+
+| Atributo | Tipo sugerido | Null | Descripcion |
+| :--- | :--- | :--- | :--- |
+| `id_histfun` | `int identity` | `NOT NULL` | PK. Identificador del evento historico por funcionario. |
+| `id_funprse` | `int` | `NOT NULL` | FK a `sg_fups.id_funprse`. Funcionario de la PDS afectado. |
+| `nro_solici` | `int` | `NOT NULL` | FK logica a `sg_soli.nro_solici`. Solicitud madre para trazabilidad cruzada. |
+| `cod_estfun` | `smallint` | `NULL` | Estado del funcionario luego de la accion, si aplica. |
+| `rut_accion` | `char(9)` | `NOT NULL` | Usuario que ejecuto la accion sobre el funcionario. |
+| `f_accion` | `datetime` | `NOT NULL` | Fecha y hora del evento. |
+| `observacion` | `varchar(500)` | `NULL` | Comentario o motivo de aprobacion, observacion, devolucion, rechazo o exclusion parcial. |
+| `vigente` | `char(1)` | `NOT NULL` | Vigencia logica del registro. Valores esperados: `S` / `N`. |
+
+Notas:
+
+1. `sg_his2` no reemplaza `sg_hist`; lo complementa a nivel de funcionario.
+2. Solo debe integrarse si negocio confirma trazabilidad parcial por funcionario como requisito formal.
+3. Si se integra, debe usarse para registrar exclusiones, rechazos parciales, observaciones y cambios de estado individuales.
 
 ### `sg_trca` - Reglas y Topes DU288
 
@@ -167,37 +188,27 @@ Datos iniciales:
 | :--- | :--- | :--- | :--- |
 | `id_trca` | `int identity` | `NOT NULL` | PK. Identificador de la regla/tope. |
 | `cod_modprs` | `tinyint` | `NOT NULL` | Modalidad PDS. Para DU288-D09/2026 usar `2`. |
-| `cod_cargo` | `smallint` | `NULL` | Cargo SISPER cuando la regla aplica a un cargo especifico. Ejemplo: `3120`. |
-| `cod_jerpln` | `smallint` | `NULL` | Grupo/planta normalizada desde `sp_jpfu.cod_jerpln`. |
-| `cod_jerpla` | `varchar(3)` | `NULL` | Jerarquia/planta especifica desde `sp_jpfu.cod_jerpla`. |
-| `cod_niv_gr` | `varchar(3)` | `NULL` | Nivel/grado cuando la regla se amarra a escala especifica. |
-| `cod_unidad` | `char(8)` | `NULL` | Unidad/instituto cuando el tope depende de unidad especifica. |
-| `mto_base_haber` | `decimal(12,0)` | `NULL` | Total haber/base de calculo usada como referencia. |
+| `cod_cargo` | `smallint` | `NOT NULL` | Cargo SISPER al que aplica el tope. En esta fase corresponde a `3120`. |
+| `cod_unidad` | `varchar(20)` | `NULL` | Codigo de unidad/instituto asociado al cargo directivo. |
+| `mto_total` | `decimal(12,0)` | `NOT NULL` | Total base usado como referencia para el cálculo. |
 | `pct_aplicado` | `decimal(5,2)` | `NULL` | Porcentaje aplicado sobre la base, cuando corresponde. |
-| `cod_forcal` | `char(1)` | `NOT NULL` | Forma de calculo: `F` fijo, `C` calculado, `S` especial. |
-| `mto_tope` | `decimal(12,0)` | `NULL` | Tope mensual final. Obligatorio para `F`; `NULL` para `C`. |
-| `ano_vigen` | `smallint` | `NOT NULL` | Anio de vigencia normativa/presupuestaria. |
-| `f_inicio` | `datetime` | `NOT NULL` | Fecha desde la cual aplica la regla. |
-| `f_termino` | `datetime` | `NULL` | Fecha hasta la cual aplica la regla. `NULL` indica vigencia abierta. |
-| `vigente` | `char(1)` | `NOT NULL` | Vigencia del registro. Valores esperados: `S` / `N`. |
+| `mto_tope` | `decimal(12,0)` | `NOT NULL` | Tope mensual final asociado al cargo directivo. |
 
 Datos iniciales base:
 
-| id_trca | cod_modprs | cod_cargo | cod_jerpln | cod_jerpla | cod_niv_gr | cod_unidad | mto_base_haber | pct_aplicado | cod_forcal | mto_tope | ano_vigen | f_inicio | f_termino | vigente |
-| ---: | ---: | :--- | ---: | :--- | :--- | :--- | :--- | ---: | :--- | :--- | ---: | :--- | :--- | :--- |
-| 1 | 2 | null | 7 | null | null | null | null | 50.00 | C | null | 2026 | 2026-01-01 | null | S |
-| 2 | 2 | null | 7 | 01 | 1 | null | 4720149 | 50.00 | F | 2360075 | 2026 | 2026-01-01 | null | S |
-| 3 | 2 | null | 7 | 02 | 4 | null | 3508060 | 50.00 | F | 1754030 | 2026 | 2026-01-01 | null | S |
-| 4 | 2 | null | 7 | 03 | 7 | null | 2653174 | 50.00 | F | 1326587 | 2026 | 2026-01-01 | null | S |
-| 5 | 2 | null | 7 | 04 | 11 | null | 1723206 | 50.00 | F | 861603 | 2026 | 2026-01-01 | null | S |
-| 6 | 2 | null | 3 | null | null | null | 1243268 | 50.00 | F | 621634 | 2026 | 2026-01-01 | null | S |
-| 7 | 2 | null | 4 | null | null | null | 1106158 | 50.00 | F | 553079 | 2026 | 2026-01-01 | null | S |
-| 8 | 2 | null | 5 | null | null | null | 765038 | 50.00 | F | 382519 | 2026 | 2026-01-01 | null | S |
-| 9 | 2 | 3120 | 1 | 11 | 156 | 16150000 | 5291266 | 35.00 | F | 1851943 | 2026 | 2026-01-01 | null | S |
-| 10 | 2 | 3120 | 1 | 11 | 156 | pendiente | 5291266 | 50.00 | F | 2645633 | 2026 | 2026-01-01 | null | S |
-| 11 | 2 | 3120 | 1 | 11 | 156 | pendiente | 5291266 | 48.50 | F | 2566751 | 2026 | 2026-01-01 | null | S |
-| 12 | 2 | 3120 | 1 | 11 | 156 | pendiente | 5291266 | 48.30 | F | 2554357 | 2026 | 2026-01-01 | null | S |
-| 13 | 2 | 3120 | 1 | 11 | 156 | pendiente | 5291266 | 46.70 | F | 2471469 | 2026 | 2026-01-01 | null | S |
-| 14 | 2 | 3120 | 1 | 11 | 156 | pendiente | 5291266 | 45.30 | F | 2397930 | 2026 | 2026-01-01 | null | S |
+| id_trca | cod_modprs | cod_cargo | cod_unidad | mto_total | pct_aplicado | cod_forcal | mto_tope |
+| ---: | ---: | ---: | :--- | :--- | ---: | ---: | :--- | ---: |
+| 1 | 2 | 3120 | 16150000 | DIRECTOR INST. INNOVACION Y EMPRENDIMIENTO | 5291266 | 35.00 | F | 1851943 |
+| 2 | 2 | 3120 | pendiente | DIRECTOR INST. INFORMATICA EDUCATIVA | 5291266 | 50.00 | F | 2645633 |
+| 3 | 2 | 3120 | pendiente | DIRECTOR INST. AGROINDUSTRIAS | 5291266 | 48.50 | F | 2566751 |
+| 4 | 2 | 3120 | pendiente | DIRECTOR INST. DESARROLLO LOCAL Y REGIONAL | 5291266 | 48.30 | F | 2554357 |
+| 5 | 2 | 3120 | pendiente | DIRECTOR INST. ESTUDIOS INDIGENAS E INTERCULTURALES | 5291266 | 46.70 | F | 2471469 |
+| 6 | 2 | 3120 | pendiente | DIRECTOR INST. MEDIO AMBIENTE | 5291266 | 45.30 | F | 2397930 |
+
+Notas:
+
+1. En este pendiente `sg_trca` queda restringida solo a cargos directivos explicitamente definidos.
+2. No se deben agregar registros academicos, tecnicos, administrativos ni auxiliares en esta fase.
+3. Los campos economicos requeridos para esta etapa son solo `mto_total`, `pct_aplicado` y `mto_tope`.
 
 

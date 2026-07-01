@@ -567,75 +567,39 @@ Datos iniciales:
 
 **Accion:** crear tabla maestra PDS.
 
-**Objetivo:** definir la regla de tope mensual aplicable por grupo/planta SISPER, modalidad, anio y rango de vigencia. La tabla permite versionar reajustes dentro del mismo anio y distinguir topes fijos, topes calculados y reglas especiales sin repetir el mismo monto por cada cargo individual.
-
-La carga inicial debe construirse cruzando:
-
-1. `sisper_db.dbo.sp_carg`: identifica `cod_cargo`, `nom_cargo`, `cod_tipcar`, `cod_jerpla`, vigencia del cargo y otros atributos descriptivos necesarios para visualizacion y validacion.
-2. `sisper_db.dbo.sp_jpfu`: traduce `cod_jerpla` a `cod_jerpln`, descripcion de jerarquia/planta y nivel global.
-3. Escala de Remuneraciones vigente para el anio: entrega la remuneracion base de jornada completa por planta/grado.
-4. Reglas DU288-D09/2026: define si el tope es fijo, porcentaje de remuneracion efectiva o regla especial.
+**Objetivo:** parametrizar solo los topes directivos de instituto que hoy se necesitan para DU288. Esta tabla no se cargara completa por grupo/planta ni con catalogo general SISPER; en esta fase solo contendrá los registros directivos explicitamente definidos.
 
 | Campo | Tipo sugerido | Cambio | Uso |
 | :--- | :--- | :--- | :--- |
 | `id_trca` | `int identity` | Crear PK | Identificador unico de la regla/tope. |
 | `id_modprse` | `tinyint` | Crear | Modalidad de prestacion. Para DU288-D09/2026 usar `2`. |
-| `cod_jerpln` | `smallint` | Crear | Grupo/planta normalizada desde `sp_jpfu.cod_jerpln`. Permite definir topes por academico, tecnico, administrativo/profesional o auxiliar. |
-| `ano_vigen` | `smallint` | Crear | Anio de referencia normativa o presupuestaria. |
-| `f_inicio` | `datetime` | Crear | Fecha desde la cual aplica la regla/tope. |
-| `f_termino` | `datetime null` | Crear | Fecha hasta la cual aplica la regla/tope. Si queda `NULL`, se considera vigencia abierta. |
+| `cod_cargo` | `smallint` | Crear | Codigo del cargo asociado al tope. En esta fase corresponde a `3120`. |
+| `cod_unidad` | `varchar(20)` | Crear | Codigo de la unidad asociada al cargo directivo. |
+| `nom_unidad` | `varchar(200)` | Crear | Nombre descriptivo de la unidad/directorio evaluado. |
+| `mto_total` | `decimal(12,0)` | Crear | Total base usado para el cálculo del tope. |
+| `pct_aplicado` | `decimal(5,2)` | Crear | Porcentaje aplicado sobre el total base. |
 | `cod_forcal` | `char(1)` | Crear | Forma de calculo: `F` fijo, `C` calculo por remuneracion efectiva, `S` especial. |
-| `mto_tope` | `decimal(12,0) null` | Crear | Monto tope mensual cuando la regla es fija. Para reglas calculadas o especiales puede quedar `0` o `NULL`. |
-| `vigente` | `char(1)` | Crear | Vigencia del registro. |
+| `mto_tope` | `decimal(12,0)` | Crear | Tope mensual final asociado al registro. |
 
-Normalizacion de `cod_jerpln` para DU288-D09/2026:
+Datos iniciales minimos para esta fase:
 
-| `cod_jerpln` | Grupo normalizado DU288 | Origen esperado desde `sp_jpfu` | Regla esperada |
-| :--- | :--- | :--- | :--- |
-| `7` | Academico | Profesor titular, asociado, asistente, instructor, asistente, medico Ley 15076 | Tope calculado por remuneracion efectiva (`cod_forcal = 'C'`). |
-| `3` | Tecnico | Tecnico A, Tecnico B, Tecnico C | Tope fijo tecnico (`cod_forcal = 'F'`). |
-| `2` | Profesional/Administrativo | Profesional | Tope fijo administrativo/profesional (`cod_forcal = 'F'`). |
-| `4` | Administrativo | Administrativo | Tope fijo administrativo/profesional (`cod_forcal = 'F'`). |
-| `5` | Auxiliar | Mayordomo, chofer, auxiliar, guardia, estafeta | Tope fijo auxiliar (`cod_forcal = 'F'`). |
-| `1` | Directivo | Directivo superior, director, jefaturas | No se usa como tope general; los cargos se validan principalmente con `sg_caex` o regla especial. |
-| `0` / `8` / sin cruce | No clasificado | No tiene, planta antigua o datos incompletos | Regla especial o validacion pendiente (`cod_forcal = 'S'`). |
-
-Regla de normalizacion:
-
-1. `sg_trca` guarda solo `cod_jerpln`, porque representa el grupo funcional usado por la regla de tope.
-2. `cod_jerpla` se obtiene desde `sp_carg/sp_jpfu` para mostrar el nombre especifico de la jerarquia/planta del cargo, pero no se duplica en `sg_trca`.
-3. Si una jerarquia especifica requiere una excepcion futura, se debe resolver con una regla complementaria o una tabla de excepciones; no se debe sobrecargar `sg_trca` mientras el tope sea por grupo.
-4. Los cargos excluidos siguen en `sg_caex`, porque la exclusion es por cargo especifico y no por grupo completo.
-
-Valores esperados para `cod_forcal`:
-
-| Codigo | Uso | Como se valida |
-| :--- | :--- | :--- |
-| `F` | Tope fijo configurado por planta/cargo. | Comparar monto mensual solicitado contra `mto_tope`. |
-| `C` | Tope calculado con remuneracion efectiva. | Obtener remuneracion efectiva PA11 y aplicar la regla DU288 vigente. |
-| `S` | Regla especial no resuelta solo con tabla. | Exigir PA/regla complementaria antes de aprobar. |
-
-Reglas de carga inicial para DU288-D09/2026:
-
-| Caso | Regla `sg_trca` | Campos clave |
-| :--- | :--- | :--- |
-| Academicos o cargos cuyo tope se calcula contra remuneracion efectiva | `cod_forcal = 'C'` | `cod_jerpln = 7`; `mto_tope = 0` o `NULL`; el monto final se calcula con PA11 y se congela en `sg_fups.mto_tope_mes`. |
-| Planta tecnica | `cod_forcal = 'F'` | `cod_jerpln = 3`; `mto_tope = 621634` segun escala vigente para el rango `f_inicio`/`f_termino`. |
-| Planta administrativa/profesional | `cod_forcal = 'F'` | `cod_jerpln IN (2, 4)` o filas separadas segun definicion institucional; `mto_tope = 553079` segun escala vigente. |
-| Planta auxiliar | `cod_forcal = 'F'` | `cod_jerpln = 5`; `mto_tope = 382519` segun escala vigente para el rango `f_inicio`/`f_termino`. |
-| Jerarquia/planta no clasificada (`cod_jerpla = 0`, `100`, nula o sin cruce) | `cod_forcal = 'S'` | Requiere PA/regla complementaria antes de aprobar automaticamente. |
-| Honorarios, rector, vicerrectores, contralor, decanos y otros cargos excluidos | No se parametrizan como tope | Mantener en `sg_caex` cuando corresponda bloqueo por modalidad/cargo especifico. |
-| Director instituto independiente u otra excepcion normativa | `cod_forcal = 'S'` | Requiere PA/regla complementaria anual. |
+| `id_trca` | `id_modprse` | `cod_cargo` | `cod_unidad` | `nom_unidad` | `mto_total` | `pct_aplicado` | `cod_forcal` | `mto_tope` |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `1` | `2` | `3120` | `16150000` | `DIRECTOR INST. INNOVACION Y EMPRENDIMIENTO` | `5291266` | `35.00` | `F` | `1851943` |
+| `2` | `2` | `3120` | `pendiente` | `DIRECTOR INST. INFORMATICA EDUCATIVA` | `5291266` | `50.00` | `F` | `2645633` |
+| `3` | `2` | `3120` | `pendiente` | `DIRECTOR INST. AGROINDUSTRIAS` | `5291266` | `48.50` | `F` | `2566751` |
+| `4` | `2` | `3120` | `pendiente` | `DIRECTOR INST. DESARROLLO LOCAL Y REGIONAL` | `5291266` | `48.30` | `F` | `2554357` |
+| `5` | `2` | `3120` | `pendiente` | `DIRECTOR INST. ESTUDIOS INDIGENAS E INTERCULTURALES` | `5291266` | `46.70` | `F` | `2471469` |
+| `6` | `2` | `3120` | `pendiente` | `DIRECTOR INST. MEDIO AMBIENTE` | `5291266` | `45.30` | `F` | `2397930` |
 
 Notas de implementacion:
 
-1. Debe existir una fila por `cod_jerpln`, modalidad y rango de vigencia aplicable. `cod_jerpla` no se guarda en `sg_trca`; se obtiene desde `sp_carg/sp_jpfu` solo para descripcion y trazabilidad visual.
-2. Un mismo grupo/planta puede tener mas de una fila dentro del mismo anio si existe reajuste o cambio normativo durante el periodo.
-3. Para topes fijos, `mto_tope` guarda el monto mensual aplicable.
-4. Para topes calculados, `cod_forcal = 'C'` identifica que el monto se obtiene con PA11; el resultado final se guarda en `sg_fups.mto_tope_mes`.
-5. La regla aplicable se busca cruzando `sg_fups.cod_cargo -> sp_carg.cod_jerpla -> sp_jpfu.cod_jerpln`, mas `id_modprse`, fecha de solicitud/registro dentro de `f_inicio` y `f_termino`, y `vigente = 'S'`.
-6. `sg_fups.id_trca` debe guardar el registro exacto de `sg_trca` usado para calcular/congelar el tope.
-7. `sp_carg` debe seguir siendo la fuente del nombre/codigo del cargo; `sp_jpfu` debe ser la fuente de planta/jerarquia; `sg_trca` solo parametriza la regla de tope aplicable.
+1. En esta fase `sg_trca` no se carga por grupo/planta general; se carga solo con los registros directivos explicitamente definidos.
+2. No se agregan otras filas distintas de las indicadas arriba mientras no exista una definicion cerrada para el resto de los casos.
+3. `cod_unidad` puede quedar como `pendiente` cuando aun no exista el codigo definitivo de la unidad, pero `nom_unidad` debe quedar informado.
+4. `mto_total`, `pct_aplicado` y `mto_tope` son los unicos datos economicos requeridos para esta tabla en esta fase.
+5. `sg_fups.id_trca` debe guardar el registro exacto usado para congelar el tope aplicado al funcionario.
+6. Si en una etapa posterior se requiere ampliar `sg_trca` a academicos, tecnicos, administrativos o auxiliares, esa expansion debe documentarse aparte; no se asume en este plan previo.
 
 ### 3.12 `sg_efun` - Estado de funcionario PDS
 
@@ -735,11 +699,11 @@ Esta seccion define como llevar el modelo maestro al flujo actual sin depender a
 1. La tabla de catalogo de topes debe consumir solo `position-caps`; no debe tener topes hardcodeados.
 2. La tabla debe mostrar solo datos utiles:
    - codigo de cargo,
-   - nombre de cargo,
-   - planta/nivel,
-   - tipo de regla,
-   - tope mensual cuando exista,
-   - vigencia.
+   - codigo de unidad,
+   - nombre de unidad,
+   - total base,
+   - porcentaje aplicado,
+   - tope mensual.
 3. La lista de contratos debe calcular dinamicamente el tope aplicable segun el contrato seleccionado.
 4. Si el contrato cambia, deben recalcularse:
    - cargo habilitado,

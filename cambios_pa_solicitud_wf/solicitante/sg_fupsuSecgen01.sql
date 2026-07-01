@@ -50,7 +50,7 @@ CREATE PROCEDURE Analisis2.sg_fupsuSecgen01
     @mto_haber int = NULL,
     @mto_tope int = NULL,
     @f_cal_tope datetime = NULL,
-    @tot_cuotas tinyint = NULL
+    @tot_cuotas tinyint = NULL,
 AS
 BEGIN
     IF @id_funprse IS NULL
@@ -163,7 +163,7 @@ BEGIN
             mto_haber = @mto_haber,
             mto_tope = @mto_tope,
             f_cal_tope = @f_cal_tope,
-            tot_cuotas = @tot_cuotas
+            tot_cuotas = @tot_cuotas,
         WHERE
             id_funprse = @id_funprse
 

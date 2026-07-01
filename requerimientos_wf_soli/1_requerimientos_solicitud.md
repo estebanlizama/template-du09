@@ -1427,14 +1427,14 @@ La primera vista de solicitud DU288/D9 cubre el flujo operativo principal. Los s
 
 | TODO | Dependencia | Uso esperado |
 | :--- | :--- | :--- |
-| TODO PA10 - Deudas | Procedimiento/consulta institucional de deudas regularizadas y no regularizadas. | Integrar validacion automatica de deuda cuando el PA quede confirmado. Hasta entonces no debe bloquear silenciosamente el ingreso del funcionario. |
-| TODO Parentesco | Consulta SISPER `sp_par1` / `sp_par2` y regla institucional de autorizacion. | Detectar parentesco y definir si bloquea o permite continuar con `Constancia/autorizacion por parentesco`. |
+| TODO PA10 - Deudas | Procedimiento/consulta institucional de deudas regularizadas y no regularizadas. | Integrar validacion automatica de deudas cuando el PA quede confirmado. Temporalmente se muestra como pendiente no bloqueante en el listado de checks. |
+| TODO Parentesco | Consulta SISPER `sp_par1` / `sp_par2` y regla de parentesco. | Detectar parentesco. Incompatibilidad absoluta (`requiereConstancia === 'N'`) bloquea en frontend y backend. Incompatibilidad parcial (`requiereConstancia === 'S'`) se trata como advertencia informativa ("Pendiente documental") y no bloquea el envío. |
 | TODO Asignaciones bloqueantes | Normalizacion de reglas/cargos/asignaciones que impiden participar en DU288. | Ampliar la validacion actual para cubrir todos los tipos bloqueantes, no solo la asignacion directiva detectada en la vista. |
 | TODO ANID | Fuente normalizada para identificar proyectos ANID/DIUFRO/DITT y excepciones normativas. | Aplicar excepciones de decanos/proyectos con financiamiento externo certificado cuando exista dato institucional. |
 | TODO Saldos | PA/modelo para saldo disponible, saldo por item e historizacion por etapa. | Mostrar y registrar saldo inicial, saldo solicitud y saldo remanente por cada etapa del workflow. |
-| TODO Licencias, permisos y receso | Fuente institucional para situaciones administrativas vigentes. | Dejar como constancias/evidencias en esta pantalla; la validacion automatica queda para integracion posterior. |
+| TODO Licencias, permisos y receso | Fuente institucional para situaciones administrativas vigentes. | Dejar como advertencias de "Pendiente por fuente institucional" en el listado de checks; la validacion automatica queda para integracion posterior. |
 
-Regla general: estos TODO no impiden mantener operativa la vista actual. Deben incorporarse como validaciones reales solo cuando exista fuente de datos confiable y trazabilidad definida.
+Regla general: estos TODO no impiden mantener operativa la vista actual. Se incorporan como advertencias o validaciones reales de acuerdo con la disponibilidad de fuentes de datos institucionales.
 
 
 base para solicitud vista 
@@ -1478,13 +1478,6 @@ Acta firmada
 Informe con evidencias
 
 Base de datos entregada
-Constancias
-
-Constancia por licencia medica
-
-Constancia por permiso
-
-Constancia por receso
 2 tipos seleccionados.
 Inicio de ejecución *
 martes, 2 de junio de 2026Seleccionada
