@@ -34,21 +34,29 @@ begin
     SELECT prse.nro_solici, prse.actividad, prse.per_desde,
            prse.per_hasta, prse.rut_jefpro, prse.cod_unifin, prse.cod_ccto,
            prse.cc_global, prse.pry_global, prse.cod_modprs, soli.rut_solici, soli.nro_resolu, soli.cod_estsol,
-           soli.cod_tipsol, soli.f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol, SUM(funps.mto_total) as total,
+           soli.cod_tipsol, soli.f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol, isnull(funps_total.total, 0) as total,
            (pers.nom_nombre + ' ' + pers.nom_appate + ' ' + pers.nom_apmate) as nombre
     FROM secgen_db.dbo.sg_prse prse
          JOIN secgen_db.dbo.sg_soli soli ON (prse.nro_solici = soli.nro_solici)
          JOIN secgen_db.dbo.sg_tsol tiposol ON (soli.cod_tipsol = tiposol.cod_tipsol)
          JOIN secgen_db.dbo.sg_esol estsol ON (soli.cod_estsol = estsol.cod_estsol)
-         JOIN secgen_db.dbo.sg_apso apso ON (soli.nro_solici = apso.nro_solici)
          LEFT JOIN sisper_db..sp_pers as pers ON (soli.rut_solici = pers.rut_person)
-         JOIN secgen_db.dbo.sg_fups funps ON (soli.nro_solici = funps.nro_solici)
+         LEFT JOIN (
+             SELECT nro_solici, SUM(mto_total) AS total
+             FROM secgen_db.dbo.sg_fups
+             GROUP BY nro_solici
+         ) funps_total ON (soli.nro_solici = funps_total.nro_solici)
     WHERE soli.cod_estsol != 7
-      AND apso.cod_estapr = 4
+      AND EXISTS (
+          SELECT 1
+          FROM secgen_db.dbo.sg_apso apso
+          WHERE apso.nro_solici = soli.nro_solici
+            AND apso.cod_estapr = 4
+            AND apso.rut_usua = @rut_jefpro
+      )
       -- TODO: DU288_PROD_RUT_JEFPRO: Habilitar el filtro de rut_jefpro para produccion
       -- AND prse.rut_jefpro = @rut_jefpro
-      AND apso.rut_usua = @rut_jefpro
-    GROUP BY prse.nro_solici, prse.actividad, prse.per_desde, prse.per_hasta, prse.rut_jefpro, prse.cod_unifin, prse.cod_ccto, prse.cc_global, prse.pry_global, prse.cod_modprs,
+    GROUP BY prse.nro_solici, prse.actividad, prse.per_desde, prse.per_hasta, prse.rut_jefpro, prse.cod_unifin, prse.cod_ccto, prse.cc_global, prse.pry_global, prse.cod_modprs, funps_total.total,
              soli.rut_solici, soli.nro_resolu, soli.cod_estsol,
              soli.cod_tipsol, soli.f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol, pers.rut_person, pers.nom_nombre, pers.nom_appate, pers.nom_apmate
     ORDER BY soli.nro_solici DESC
