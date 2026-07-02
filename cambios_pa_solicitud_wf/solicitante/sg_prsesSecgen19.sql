@@ -14,7 +14,7 @@ go
     Entrada  :
         @rut_jefdep varchar(9)
 
-    Objetivo : Seleccionar las solicitudes DU288 pendientes de aprobaciÃ³n
+    Objetivo : Seleccionar las solicitudes pendientes de aprobación
                para el rol Jefe de Departamento del Jefe de Proyecto.
 
     Creacion: AI 2026/07/01
@@ -48,7 +48,6 @@ begin
              GROUP BY nro_solici
          ) funps_total ON (soli.nro_solici = funps_total.nro_solici)
     WHERE soli.cod_estsol != 7
-      AND prse.cod_modprs = 2
       AND EXISTS (
           SELECT 1
           FROM secgen_db.dbo.sg_apso apso
