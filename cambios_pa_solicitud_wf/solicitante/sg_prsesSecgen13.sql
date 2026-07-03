@@ -5,29 +5,29 @@ if exists (select 1 from sysobjects a, sysusers b
            where a.uid  = b.uid
              and a.type = 'P'
              and b.name = 'Analisis2'
-             and a.name = 'sg_prsesSecgen18')
-    drop procedure Analisis2.sg_prsesSecgen18
+             and a.name = 'sg_prsesSecgen13')
+    drop procedure Analisis2.sg_prsesSecgen13
 go
 
-/* Procedimiento : sg_prsesSecgen18
+/* Procedimiento : sg_prsesSecgen13
 
     Entrada  :
-        @rut_jefpro varchar(9)
+        @rut_solici varchar(9)
 
-    Objetivo : Seleccionar las solicitudes en etapa de Jefe de Proyecto pendientes de aprobación para su RUT
+    Objetivo : Seleccionar las solicitudes pendientes de aprobación en prestación de servicios
+               asignadas al RUT especificado.
 
-    Creacion: AI 2026/06/30
-    Actualizacion:
-
+    Creacion: AI 2023/05/11
+    Actualizacion: AI 2026/07/02 - Modificado para recibir RUT y devolver cod_modprs (DU288)
 */
 
-create procedure Analisis2.sg_prsesSecgen18
-    @rut_jefpro varchar(9) = NULL
+create procedure  Analisis2.sg_prsesSecgen13
+    @rut_solici varchar(9) = NULL
 as
 begin
-    if @rut_jefpro is null
+    if @rut_solici is null
     begin
-        select 'Falta Rut de Jefe de Proyecto' msg
+        select 'Falta Rut de Usuario' msg
         return
     end
 
@@ -52,10 +52,8 @@ begin
           FROM secgen_db.dbo.sg_apso apso
           WHERE apso.nro_solici = soli.nro_solici
             AND apso.cod_estapr = 4
-            AND apso.rut_usua = @rut_jefpro
+            AND apso.rut_usua = @rut_solici
       )
-      -- TODO: DU288_PROD_RUT_JEFPRO: Habilitar el filtro de rut_jefpro para produccion
-      -- AND prse.rut_jefpro = @rut_jefpro
     GROUP BY prse.nro_solici, prse.actividad, prse.per_desde, prse.per_hasta, prse.rut_jefpro, prse.cod_unifin, prse.cod_ccto, prse.cc_global, prse.pry_global, prse.cod_modprs, funps_total.total,
              soli.rut_solici, soli.nro_resolu, soli.cod_estsol,
              soli.cod_tipsol, soli.f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol, pers.rut_person, pers.nom_nombre, pers.nom_appate, pers.nom_apmate
@@ -63,5 +61,5 @@ begin
 end
 go
 
-grant execute on Analisis2.sg_prsesSecgen18 to UsuaVrac
+grant execute on Analisis2.sg_prsesSecgen13 to UsuaVrac
 go
