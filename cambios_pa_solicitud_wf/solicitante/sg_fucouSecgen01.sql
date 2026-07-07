@@ -121,14 +121,16 @@ BEGIN
                     RETURN
                 END
 
-                -- Validar duplicados en la misma transacción temporal
+                -- Validar traslapes en la misma transacción temporal
                 IF EXISTS (
                     SELECT 1 
                     FROM #comps 
                     WHERE fec_compro = convert(datetime, @fec_str)
+                      AND hora_ini < convert(time, @ter_str)
+                      AND convert(time, @ini_str) < hora_ter
                 )
                 BEGIN
-                    SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: Fecha de compensación duplicada en la misma carga: ' + @fec_str AS msg
+                    SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: Horario de compensación superpuesto en el mismo día: ' + @fec_str AS msg
                     RETURN
                 END
                 
