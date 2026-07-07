@@ -60,8 +60,8 @@ BEGIN
 
     CREATE TABLE #comps (
         fec_compro datetime NOT NULL,
-        hora_ini time(3) NOT NULL,
-        hora_ter time(3) NOT NULL
+        hora_ini time NOT NULL,
+        hora_ter time NOT NULL
     )
 
     -- 3. Validar y parsear todo el CSV antes de modificar las compensaciones persistidas.
@@ -114,11 +114,6 @@ BEGIN
                 SELECT @ter_str = ltrim(rtrim(substring(@subchunk, @col_pos2 + 1, char_length(@subchunk) - @col_pos2)))
 
                 -- Validar conversiones
-                IF isdate(@fec_str) = 0
-                BEGIN
-                    SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: Fecha de compensación no válida: ' + @fec_str AS msg
-                    RETURN
-                END
 
                 IF charindex(':', @ini_str) = 0 OR charindex(':', @ter_str) = 0
                 BEGIN

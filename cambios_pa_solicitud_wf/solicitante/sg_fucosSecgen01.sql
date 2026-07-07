@@ -14,8 +14,8 @@ GO
    Salida        :
        id_funprse  int
        fec_compro  datetime
-       hora_ini    time(3)
-       hora_ter    time(3)
+       hora_ini    time
+       hora_ter    time
 */
 CREATE PROCEDURE Analisis2.sg_fucosSecgen01
     @nro_solici int = NULL
