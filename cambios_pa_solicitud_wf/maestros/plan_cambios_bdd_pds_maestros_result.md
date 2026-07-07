@@ -402,9 +402,9 @@ Estos criterios se documentan para no contaminar el modelo de solicitud PDS con 
 4. La evidencia de ejecucion es un documento subido en la etapa de pago para justificar la actividad realizada.
 5. Mientras se requiera solo un documento por cuota/detalle, no se necesita una tabla propia de evidencias; el documento se asocia directamente a la cuota habilitada (`sg_fucu.id_docum`) en la etapa de pago.
 6. Solo se debe crear una tabla de evidencias de pago si se confirma necesidad de multiples documentos por cuota, historial documental, reemplazo documental o revision independiente del documento.
-7. El monto no se calcula automÃ¡ticamente de manera directa. Al abrir el formulario de pago, el sistema valida condiciones como licencias mÃ©dicas (totales o parciales), dÃ­as efectivamente trabajados y labores registradas para reducir dinÃ¡micamente el tope mÃ¡ximo al cual el funcionario puede optar, restringiendo el formulario para ingresar Ãºnicamente un monto menor o igual a este tope ajustado.
-8. Si el registro final en Finanzas genera un rechazo externo (por ejemplo, debido a falta de fondos, falta de pago o datos errÃ³neos en su sistema), la respuesta debe ser capturada por nuestro sistema para permitir al usuario reactivar y reenviar la solicitud una vez solucionado el problema.
-9. El flujo de pagos en SG-Solicitudes finaliza cuando se guardan/registran correctamente los datos solicitados en las tablas del sistema de Finanzas. Si Finanzas confirma el pago real posterior, esa confirmaciÃ³n puede actualizar `sg_fucu.f_pago` y su estado.
+7. El monto no se calcula automáticamente de manera directa. Al abrir el formulario de pago, el sistema valida condiciones como licencias médicas (totales o parciales), días efectivamente trabajados y labores registradas para reducir dinámicamente el tope máximo al cual el funcionario puede optar, restringiendo el formulario para ingresar únicamente un monto menor o igual a este tope ajustado.
+8. Si el registro final en Finanzas genera un rechazo externo (por ejemplo, debido a falta de fondos, falta de pago o datos erróneos en su sistema), la respuesta debe ser capturada por nuestro sistema para permitir al usuario reactivar y reenviar la solicitud una vez solucionado el problema.
+9. El flujo de pagos en SG-Solicitudes finaliza cuando se guardan/registran correctamente los datos solicitados en las tablas del sistema de Finanzas. Si Finanzas confirma el pago real posterior, esa confirmación puede actualizar `sg_fucu.f_pago` y su estado.
 
 ---
 
