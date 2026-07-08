@@ -1,10 +1,6 @@
 USE secgen_db
 GO
 
-/* PENDIENTE FASE 2 - NO DESPLEGAR TODAVIA.
-   El backend no invoca este PA mientras sg_fume no exista.
-*/
-
 IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
            WHERE a.uid = b.uid AND a.type = 'P'
            AND b.name = 'Analisis2' AND a.name = 'sg_fumesSecgen01')
@@ -27,18 +23,19 @@ BEGIN
     END
 
     SELECT 
-        fm.id_funmes,
         fm.id_funprse,
-        fm.anio,
-        fm.nro_mes,
-        fm.vigente
+        fm.nro_cuota,
+        fm.ano_prop,
+        fm.mes_prop,
+        fm.cod_estcuo,
+        e.des_estcuo
     FROM secgen_db.dbo.sg_fume fm
     INNER JOIN secgen_db.dbo.sg_fups fu ON fm.id_funprse = fu.id_funprse
     INNER JOIN secgen_db.dbo.sg_prse prse ON prse.nro_solici = fu.nro_solici
+    LEFT JOIN secgen_db.dbo.sg_ecuo e ON fm.cod_estcuo = e.cod_estcuo
     WHERE fu.nro_solici = @nro_solici
       AND isnull(prse.cod_modprs, 1) = 2
-      AND fm.vigente = 'S'
-    ORDER BY fm.id_funprse, fm.anio, fm.nro_mes
+    ORDER BY fm.id_funprse, fm.ano_prop, fm.mes_prop
 END
 GO
 

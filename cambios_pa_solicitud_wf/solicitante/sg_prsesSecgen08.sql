@@ -44,7 +44,7 @@ begin
         tiposol.des_tipsol,
         estsol.des_estsol,
         (pers.nom_nombre + ' ' + pers.nom_appate + ' ' + pers.nom_apmate) as nombre,
-        SUM(funps.mto_total) AS total
+        isnull(SUM(funps.mto_total), 0) AS total
     FROM
         secgen_db.dbo.sg_prse prse
         JOIN secgen_db.dbo.sg_soli soli
@@ -54,7 +54,7 @@ begin
         JOIN secgen_db.dbo.sg_esol estsol
             ON soli.cod_estsol = estsol.cod_estsol
             AND soli.cod_estsol IN (1, 2, 5, 6)
-        JOIN secgen_db.dbo.sg_fups funps
+        LEFT JOIN secgen_db.dbo.sg_fups funps
             ON soli.nro_solici = funps.nro_solici
         LEFT JOIN sisper_db..sp_pers pers
             ON pers.rut_person = soli.rut_solici

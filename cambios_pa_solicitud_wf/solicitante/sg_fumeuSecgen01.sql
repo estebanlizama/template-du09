@@ -1,10 +1,6 @@
 USE secgen_db
 GO
 
-/* PENDIENTE FASE 2 - NO DESPLEGAR TODAVIA.
-   El backend no invoca este PA mientras sg_fume no exista.
-*/
-
 IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
            WHERE a.uid = b.uid AND a.type = 'P'
            AND b.name = 'Analisis2' AND a.name = 'sg_fumeuSecgen01')
@@ -17,10 +13,12 @@ GO
    Entrada       :
        @id_funprse int
        @meses_csv  varchar(500) -- Formato: '2026:7;2026:8'
+       @cod_estcuo int
 */
 CREATE PROCEDURE Analisis2.sg_fumeuSecgen01
     @id_funprse int = NULL,
-    @meses_csv varchar(500) = NULL
+    @meses_csv varchar(500) = NULL,
+    @cod_estcuo int = 1
 AS
 BEGIN
     IF @id_funprse IS NULL
@@ -52,7 +50,19 @@ BEGIN
         RETURN
     END
 
-    CREATE TABLE #meses (
+    -- Validar que si ya existen cuotas persistidas, solo se permita modificar si están en estado editable: 1 (Propuesta) o 3 (Observada)
+    IF EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_fume
+        WHERE id_funprse = @id_funprse
+          AND cod_estcuo NOT IN (1, 3)
+    )
+    BEGIN
+        SELECT 'Error: No se pueden modificar las cuotas porque están en proceso de visación o pago' AS msg
+        RETURN
+    END
+
+    CREATE TABLE #meses_raw (
         anio smallint NOT NULL,
         nro_mes tinyint NOT NULL
     )
@@ -118,7 +128,7 @@ BEGIN
 
                 IF EXISTS (
                     SELECT 1
-                    FROM #meses
+                    FROM #meses_raw
                     WHERE anio = convert(smallint, @anio)
                       AND nro_mes = convert(tinyint, @nro_mes)
                 )
@@ -127,11 +137,23 @@ BEGIN
                     RETURN
                 END
 
-                INSERT INTO #meses (anio, nro_mes)
+                INSERT INTO #meses_raw (anio, nro_mes)
                 VALUES (convert(smallint, @anio), convert(tinyint, @nro_mes))
             END
         END
     END
+
+    -- Copiar ordenado cronológicamente para generar nro_cuota en orden cronológico estricto
+    CREATE TABLE #meses (
+        nro_cuota numeric(4,0) identity,
+        anio smallint NOT NULL,
+        nro_mes tinyint NOT NULL
+    )
+
+    INSERT INTO #meses (anio, nro_mes)
+    SELECT anio, nro_mes
+    FROM #meses_raw
+    ORDER BY anio, nro_mes
 
     BEGIN TRAN
 
@@ -147,15 +169,17 @@ BEGIN
 
     INSERT INTO secgen_db.dbo.sg_fume (
         id_funprse,
-        nro_mes,
-        anio,
-        vigente
+        nro_cuota,
+        ano_prop,
+        mes_prop,
+        cod_estcuo
     )
     SELECT
         @id_funprse,
-        nro_mes,
+        nro_cuota,
         anio,
-        'S'
+        nro_mes,
+        @cod_estcuo
     FROM #meses
 
     IF @@error <> 0
