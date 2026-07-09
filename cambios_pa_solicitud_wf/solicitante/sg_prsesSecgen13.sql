@@ -19,6 +19,7 @@ go
 
     Creacion: AI 2023/05/11
     Actualizacion: AI 2026/07/02 - Modificado para recibir RUT y devolver cod_modprs (DU288)
+    Actualizacion: AI 2026/07/08 - Estandarizado para bandeja de roles evaluadores por sg_apso
 */
 
 create procedure  Analisis2.sg_prsesSecgen13
