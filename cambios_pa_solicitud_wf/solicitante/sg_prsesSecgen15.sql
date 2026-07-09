@@ -51,7 +51,7 @@ BEGIN
     JOIN secgen_db.dbo.sg_apre apre
         ON (soli.ano_resolu = apre.ano_resolu AND soli.nro_resolu = apre.nro_resolu)
     JOIN secgen_db.dbo.sg_rslc rslc
-        ON (soli.ano_resolu = rslc.ano_resolu AND soli.nro_resolu = rslc.nro_resolu) AND (rslc.cod_estres = 9)
+        ON (soli.ano_resolu = rslc.ano_resolu AND soli.nro_resolu = rslc.nro_resolu) AND (rslc.cod_estres IN (1, 9))
     LEFT JOIN sisper_db.dbo.sp_pers pers
         ON (soli.rut_solici = pers.rut_person)
     GROUP BY 
