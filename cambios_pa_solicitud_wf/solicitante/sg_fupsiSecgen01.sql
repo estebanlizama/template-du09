@@ -56,7 +56,7 @@ CREATE PROCEDURE Analisis2.sg_fupsiSecgen01
     @mto_tope int = NULL,
     @f_cal_tope datetime = NULL,
     @tot_cuotas tinyint = NULL,
-    @cod_estfun tinyint = NULL,
+    @cod_estfun tinyint = NULL
 AS
 BEGIN
     IF @nro_solici IS NULL
@@ -223,7 +223,7 @@ BEGIN
             mto_haber,
             mto_tope,
             f_cal_tope,
-            tot_cuotas,
+            tot_cuotas
         ) VALUES (
             @id_funprse,
             @nro_solici,
@@ -247,7 +247,7 @@ BEGIN
             @mto_haber,
             @mto_tope,
             @f_cal_tope,
-            @tot_cuotas,
+            @tot_cuotas
         )
     END
     ELSE

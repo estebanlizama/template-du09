@@ -51,6 +51,8 @@ CREATE PROCEDURE Analisis2.sg_fupsuSecgen01
     @mto_tope int = NULL,
     @f_cal_tope datetime = NULL,
     @tot_cuotas tinyint = NULL,
+    @cod_estfun tinyint = NULL,
+    @rut_visado char(9) = NULL
 AS
 BEGIN
     IF @id_funprse IS NULL
@@ -128,7 +130,10 @@ BEGIN
     DECLARE @cod_modprs tinyint
     DECLARE @rows_updated int
     DECLARE @err int
-    SELECT @cod_modprs = isnull(prse.cod_modprs, 1)
+    DECLARE @current_estfun tinyint
+    
+    SELECT @cod_modprs = isnull(prse.cod_modprs, 1),
+           @current_estfun = fu.cod_estfun
     FROM secgen_db.dbo.sg_prse prse
     JOIN sg_fups fu ON prse.nro_solici = fu.nro_solici
     WHERE fu.id_funprse = @id_funprse
@@ -138,6 +143,18 @@ BEGIN
 
 
     BEGIN TRAN
+
+    IF @cod_modprs = 2 AND @cod_estfun IS NOT NULL
+    BEGIN
+        -- Validar que el estado exista en sg_efun
+        IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
+        BEGIN
+            SELECT 'El estado especificado no existe en el catálogo de estados' AS msg
+            IF @@transtate = 2
+                ROLLBACK TRAN
+            RETURN
+        END
+    END
 
     IF @cod_modprs = 2
     BEGIN
@@ -164,6 +181,7 @@ BEGIN
             mto_tope = @mto_tope,
             f_cal_tope = @f_cal_tope,
             tot_cuotas = @tot_cuotas,
+            cod_estfun = isnull(@cod_estfun, cod_estfun)
         WHERE
             id_funprse = @id_funprse
 
@@ -175,6 +193,32 @@ BEGIN
             IF @@transtate = 2
                 ROLLBACK TRAN
             RETURN
+        END
+
+        -- Historizar el cambio de estado si corresponde
+        IF @cod_estfun IS NOT NULL AND (isnull(@current_estfun, 0) <> @cod_estfun)
+        BEGIN
+            INSERT INTO sg_his2 (
+                id_funprse,
+                f_visacion,
+                rut_visado,
+                cod_estact,
+                cod_estnue
+            ) VALUES (
+                @id_funprse,
+                getdate(),
+                isnull(@rut_visado, 'SYSTEM'),
+                isnull(@current_estfun, 1),
+                @cod_estfun
+            )
+
+            IF @@error <> 0
+            BEGIN
+                SELECT 'Error al registrar historial de visación del funcionario (sg_his2)' AS msg
+                IF @@transtate = 2
+                    ROLLBACK TRAN
+                RETURN
+            END
         END
     END
     ELSE

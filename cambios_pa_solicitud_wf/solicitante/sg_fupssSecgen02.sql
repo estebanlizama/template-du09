@@ -39,6 +39,7 @@ BEGIN
         fu.f_inicio,
         fu.f_termino,
         fu.cod_estfun,
+        isnull(rtrim(efun.des_estfun), '') AS des_estfun,
         fu.dentro_jor,
         fu.cod_contra,
         fu.mes_haber,
@@ -75,6 +76,8 @@ BEGIN
         rtrim(vigc.des_vigen) AS des_vigen
     FROM
         sg_fups fu
+        LEFT JOIN secgen_db.dbo.sg_efun efun
+            ON (efun.cod_estfun = fu.cod_estfun)
         LEFT JOIN sisper_db..sp_pers pers
             ON (pers.rut_person = fu.rut)
         LEFT JOIN sisper_db.dbo.sp_cont cont
