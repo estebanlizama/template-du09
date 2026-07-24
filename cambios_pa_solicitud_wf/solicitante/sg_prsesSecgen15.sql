@@ -29,7 +29,7 @@ BEGIN
         prse.pry_global, 
         prse.cod_modprs,
         soli.rut_solici, 
-        apre.nro_resolu, 
+        soli.nro_resolu, 
         soli.cod_estsol,
         soli.cod_tipsol, 
         soli.f_solicit, 
@@ -37,7 +37,7 @@ BEGIN
         soli.f_ultmodif, 
         tiposol.des_tipsol, 
         estsol.des_estsol,
-        SUM(funps.mto_total) AS total,
+        funps.total,
         ltrim(rtrim(isnull(pers.nom_nombre, '') + ' ' + isnull(pers.nom_appate, '') + ' ' + isnull(pers.nom_apmate, ''))) AS nombre
     FROM secgen_db.dbo.sg_prse prse
     JOIN secgen_db.dbo.sg_soli soli
@@ -46,37 +46,27 @@ BEGIN
         ON (soli.cod_tipsol = tiposol.cod_tipsol)
     JOIN secgen_db.dbo.sg_esol estsol
         ON (soli.cod_estsol = estsol.cod_estsol) AND (soli.cod_estsol = 8)
-    JOIN secgen_db.dbo.sg_fups funps
+    JOIN (
+        SELECT nro_solici, SUM(mto_total) AS total
+        FROM secgen_db.dbo.sg_fups
+        GROUP BY nro_solici
+    ) funps
         ON (soli.nro_solici = funps.nro_solici)
-    JOIN secgen_db.dbo.sg_apre apre
-        ON (soli.ano_resolu = apre.ano_resolu AND soli.nro_resolu = apre.nro_resolu)
-    JOIN secgen_db.dbo.sg_rslc rslc
-        ON (soli.ano_resolu = rslc.ano_resolu AND soli.nro_resolu = rslc.nro_resolu) AND (rslc.cod_estres IN (1, 9))
     LEFT JOIN sisper_db.dbo.sp_pers pers
         ON (soli.rut_solici = pers.rut_person)
-    GROUP BY 
-        soli.nro_solici, 
-        prse.actividad, 
-        prse.per_desde, 
-        prse.per_hasta, 
-        prse.rut_jefpro, 
-        prse.cod_unifin,
-        prse.cod_ccto, 
-        prse.cc_global, 
-        prse.pry_global, 
-        prse.cod_modprs,
-        soli.rut_solici, 
-        apre.nro_resolu, 
-        soli.cod_estsol,
-        soli.cod_tipsol, 
-        soli.f_solicit, 
-        soli.f_creacion, 
-        soli.f_ultmodif, 
-        tiposol.des_tipsol, 
-        estsol.des_estsol,
-        pers.nom_nombre,
-        pers.nom_appate,
-        pers.nom_apmate
+    WHERE EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_apre apre
+        WHERE apre.ano_resolu = soli.ano_resolu
+          AND apre.nro_resolu = soli.nro_resolu
+    )
+      AND EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_rslc rslc
+        WHERE rslc.ano_resolu = soli.ano_resolu
+          AND rslc.nro_resolu = soli.nro_resolu
+          AND rslc.cod_estres IN (1, 9)
+    )
     ORDER BY soli.nro_solici DESC
 END
 GO
