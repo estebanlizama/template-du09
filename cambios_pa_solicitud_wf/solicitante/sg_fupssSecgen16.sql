@@ -20,8 +20,9 @@ Objetivo      : Resolver la jefatura directa de un funcionario segun el
 Prioridad     :
     1. Jefatura de la unidad ocupada por contrato (sp_orco).
     2. Jefatura de la unidad ocupada por designacion (sp_orde).
-    3. Si no existe jefatura o existe autojefatura, subir por cod_orgjef.
-    4. Si cod_orgjef no resuelve, subir por es_ujer.cod_unisup.
+    3. Autoridad subrogante configurada en sp_aufi.
+    4. Si no existe jefatura o existe autojefatura, subir por cod_orgjef.
+    5. Si cod_orgjef no resuelve, subir por es_ujer.cod_unisup.
 
 Importante    : El PA no inserta en sg_apso. Si retorna estado_resolucion
                 AMBIGUO, la aplicacion no debe asignar un jefe arbitrario.
@@ -47,6 +48,7 @@ BEGIN
     DECLARE @nivel tinyint
     DECLARE @cantidad int
     DECLARE @cantidad_rut int
+    DECLARE @prioridad_aufi tinyint
 
     SELECT
         @cod_unidad = cont.cod_unidad,
@@ -179,6 +181,121 @@ BEGIN
 
         IF @cantidad = 0
         BEGIN
+            /*
+             * Buscar una autoridad subrogante. sp_aufi.cod_organi identifica
+             * el cargo requerido y cod_organ2 el cargo que lo subroga.
+             */
+            SELECT @prioridad_aufi = NULL
+
+            SELECT @prioridad_aufi = MIN(aufi.prioridad)
+            FROM ufro_db.dbo.es_orga orga_obj
+            INNER JOIN sisper_db.dbo.sp_aufi aufi
+                ON aufi.cod_organi = orga_obj.cod_organi
+            WHERE orga_obj.cod_unidad = @unidad_actual
+              AND orga_obj.cod_tiporg = 1
+              AND (
+                  EXISTS (
+                      SELECT 1
+                      FROM sisper_db.dbo.sp_orco orco_vig
+                      WHERE orco_vig.cod_organi = aufi.cod_organ2
+                        AND orco_vig.vigente = 'S'
+                        AND orco_vig.rut_person <> @rut_person
+                  )
+                  OR EXISTS (
+                      SELECT 1
+                      FROM sisper_db.dbo.sp_orde orde_vig
+                      WHERE orde_vig.cod_organi = aufi.cod_organ2
+                        AND orde_vig.vigente = 'S'
+                        AND orde_vig.rut_person <> @rut_person
+                  )
+              )
+
+            INSERT INTO #Jefaturas (
+                rut_jefe,
+                nombre_jefe,
+                cod_organi_jefe,
+                cargo_jefe,
+                cod_unidad_jefe,
+                departamento_jefe,
+                fuente_jefatura,
+                nivel_jefatura
+            )
+            SELECT DISTINCT
+                orco.rut_person,
+                LTRIM(RTRIM(
+                    ISNULL(pers.nom_nombre, '') + ' ' +
+                    ISNULL(pers.nom_appate, '') + ' ' +
+                    ISNULL(pers.nom_apmate, '')
+                )),
+                orga_obj.cod_organi,
+                RTRIM(orga_obj.des_organi),
+                orga_obj.cod_unidad,
+                RTRIM(unid.des_unidad),
+                'AUFI_ORCO',
+                @nivel
+            FROM ufro_db.dbo.es_orga orga_obj
+            INNER JOIN sisper_db.dbo.sp_aufi aufi
+                ON aufi.cod_organi = orga_obj.cod_organi
+            INNER JOIN sisper_db.dbo.sp_orco orco
+                ON orco.cod_organi = aufi.cod_organ2
+            LEFT JOIN sisper_db.dbo.sp_pers pers
+                ON pers.rut_person = orco.rut_person
+            LEFT JOIN ufro_db.dbo.es_unid unid
+                ON unid.cod_unidad = orga_obj.cod_unidad
+            WHERE orga_obj.cod_unidad = @unidad_actual
+              AND orga_obj.cod_tiporg = 1
+              AND orco.vigente = 'S'
+              AND orco.rut_person <> @rut_person
+              AND aufi.prioridad = @prioridad_aufi
+
+            SELECT @cantidad = @@rowcount
+        END
+
+        IF @cantidad = 0
+        BEGIN
+            INSERT INTO #Jefaturas (
+                rut_jefe,
+                nombre_jefe,
+                cod_organi_jefe,
+                cargo_jefe,
+                cod_unidad_jefe,
+                departamento_jefe,
+                fuente_jefatura,
+                nivel_jefatura
+            )
+            SELECT DISTINCT
+                orde.rut_person,
+                LTRIM(RTRIM(
+                    ISNULL(pers.nom_nombre, '') + ' ' +
+                    ISNULL(pers.nom_appate, '') + ' ' +
+                    ISNULL(pers.nom_apmate, '')
+                )),
+                orga_obj.cod_organi,
+                RTRIM(orga_obj.des_organi),
+                orga_obj.cod_unidad,
+                RTRIM(unid.des_unidad),
+                'AUFI_ORDE',
+                @nivel
+            FROM ufro_db.dbo.es_orga orga_obj
+            INNER JOIN sisper_db.dbo.sp_aufi aufi
+                ON aufi.cod_organi = orga_obj.cod_organi
+            INNER JOIN sisper_db.dbo.sp_orde orde
+                ON orde.cod_organi = aufi.cod_organ2
+            LEFT JOIN sisper_db.dbo.sp_pers pers
+                ON pers.rut_person = orde.rut_person
+            LEFT JOIN ufro_db.dbo.es_unid unid
+                ON unid.cod_unidad = orga_obj.cod_unidad
+            WHERE orga_obj.cod_unidad = @unidad_actual
+              AND orga_obj.cod_tiporg = 1
+              AND orde.vigente = 'S'
+              AND orde.rut_person <> @rut_person
+              AND aufi.prioridad = @prioridad_aufi
+
+            SELECT @cantidad = @@rowcount
+        END
+
+        IF @cantidad = 0
+        BEGIN
             SELECT @unidad_superior = NULL
 
             /*
@@ -212,12 +329,42 @@ BEGIN
                   AND orde.rut_person = @rut_person
             END
 
+            /*
+             * Si el cargo de jefatura existe pero esta vacante, continuar
+             * por su organizacion superior.
+             */
+            IF @unidad_superior IS NULL
+            BEGIN
+                SELECT @unidad_superior = orga_sup.cod_unidad
+                FROM ufro_db.dbo.es_orga orga,
+                     ufro_db.dbo.es_orga orga_sup
+                WHERE orga.cod_orgjef = orga_sup.cod_organi
+                  AND orga.cod_unidad = @unidad_actual
+                  AND orga.cod_tiporg = 1
+                  AND (orga.por_contra = 'S' OR orga.por_desig = 'S')
+            END
+
             /* Fallback formal de jerarquia de unidades. */
             IF @unidad_superior IS NULL
             BEGIN
                 SELECT @unidad_superior = ujer.cod_unisup
                 FROM ufro_db.dbo.es_ujer ujer
                 WHERE ujer.cod_unidep = @unidad_actual
+            END
+
+            /*
+             * Compatibilidad con unidades antiguas que no tienen relacion
+             * registrada en es_ujer. La jerarquia se obtiene eliminando el
+             * ultimo segmento significativo del codigo de unidad.
+             */
+            IF @unidad_superior IS NULL
+            BEGIN
+                IF CONVERT(int, RIGHT(@unidad_actual, 2)) > 0
+                    SELECT @unidad_superior = LEFT(@unidad_actual, 6) + '00'
+                ELSE IF CONVERT(int, RIGHT(@unidad_actual, 4)) > 0
+                    SELECT @unidad_superior = LEFT(@unidad_actual, 4) + '0000'
+                ELSE IF CONVERT(int, RIGHT(@unidad_actual, 6)) > 0
+                    SELECT @unidad_superior = LEFT(@unidad_actual, 2) + '000000'
             END
 
             IF @unidad_superior IS NULL OR @unidad_superior = @unidad_actual
@@ -327,7 +474,7 @@ SELECT
     orga.por_contra,
     orga.por_desig
 FROM ufro_db.dbo.es_orga orga
-WHERE orga.cod_unidad = '16150000'
+WHERE orga.cod_unidad IN ('16150000', '16000000')
   AND orga.cod_tiporg = 1
 
 SELECT
@@ -339,7 +486,7 @@ SELECT
 FROM ufro_db.dbo.es_orga orga
 INNER JOIN sisper_db.dbo.sp_orco orco
     ON orco.cod_organi = orga.cod_organi
-WHERE orga.cod_unidad = '16150000'
+WHERE orga.cod_unidad IN ('16150000', '16000000')
   AND orga.cod_tiporg = 1
 
 SELECT
@@ -351,7 +498,7 @@ SELECT
 FROM ufro_db.dbo.es_orga orga
 INNER JOIN sisper_db.dbo.sp_orde orde
     ON orde.cod_organi = orga.cod_organi
-WHERE orga.cod_unidad = '16150000'
+WHERE orga.cod_unidad IN ('16150000', '16000000')
   AND orga.cod_tiporg = 1
 
 SELECT
@@ -359,4 +506,19 @@ SELECT
     ujer.cod_unisup
 FROM ufro_db.dbo.es_ujer ujer
 WHERE ujer.cod_unidep = '16150000'
+
+-- Subrogancias para la jefatura propia (100) y su superior (82):
+SELECT
+    aufi.cod_organi AS cod_organi_requerida,
+    orga_obj.des_organi AS cargo_requerido,
+    aufi.cod_organ2 AS cod_organi_subrogante,
+    orga_sub.des_organi AS cargo_subrogante,
+    aufi.prioridad
+FROM sisper_db.dbo.sp_aufi aufi
+INNER JOIN ufro_db.dbo.es_orga orga_obj
+    ON orga_obj.cod_organi = aufi.cod_organi
+INNER JOIN ufro_db.dbo.es_orga orga_sub
+    ON orga_sub.cod_organi = aufi.cod_organ2
+WHERE aufi.cod_organi IN (100, 82)
+ORDER BY aufi.cod_organi, aufi.prioridad
 */
