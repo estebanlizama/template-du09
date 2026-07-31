@@ -1,97 +1,71 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-           where a.uid  = b.uid
-             and a.type = 'P'
-             and b.name = 'Analisis2'
-             and a.name = 'sg_prsesSecgen08')
-    drop procedure Analisis2.sg_prsesSecgen08
-go
+IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
+           WHERE a.uid = b.uid AND a.type = 'P'
+           AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen08')
+    DROP PROCEDURE Analisis2.sg_prsesSecgen08
+GO
 
-/* Procedimiento : sg_prsesSecgen08
-
-    Entrada  :
-        @rut_solici -> Rut funcionario solicitante
-
-    Objetivo :
-        Listar prestaciones de servicios en espera asociadas al solicitante,
-        incluyendo la modalidad de prestacion desde sg_prse.cod_modprs.
-
-    Creacion     : CHL 2022/12/27
-    Actualizacion: PDS Fase 2 - agrega cod_modprs para filtrar modalidad
-
+/*
+Procedimiento : Analisis2.sg_prsesSecgen08
+Objetivo      : Listar solicitudes PDS activas creadas por el RUT autenticado.
 */
 
-create procedure Analisis2.sg_prsesSecgen08
+CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL
-as
-begin
-    if @rut_solici is null
-    begin
-        select 'Falta campo Rut Solicitud' msg
-        return
-    end
+AS
+BEGIN
+    IF @rut_solici IS NULL
+    BEGIN
+        SELECT 'Falta campo Rut Solicitud' AS msg
+        RETURN
+    END
 
     SELECT
         soli.nro_solici,
         soli.cod_tipsol,
+        soli.cod_estsol,
         prse.cod_modprs,
-        prse.cc_global,
-        prse.pry_global,
-        soli.f_solicit,
-        soli.f_ultmodif,
-        tiposol.des_tipsol,
-        estsol.des_estsol,
-        (pers.nom_nombre + ' ' + pers.nom_appate + ' ' + pers.nom_apmate) as nombre,
-        isnull(SUM(funps.mto_total), 0) AS total
-    FROM
-        secgen_db.dbo.sg_prse prse
-        JOIN secgen_db.dbo.sg_soli soli
-            ON prse.nro_solici = soli.nro_solici
-        JOIN secgen_db.dbo.sg_tsol tiposol
-            ON soli.cod_tipsol = tiposol.cod_tipsol
-        JOIN secgen_db.dbo.sg_esol estsol
-            ON soli.cod_estsol = estsol.cod_estsol
-            AND soli.cod_estsol IN (1, 2, 5, 6)
-        LEFT JOIN secgen_db.dbo.sg_fups funps
-            ON soli.nro_solici = funps.nro_solici
-        LEFT JOIN sisper_db..sp_pers pers
-            ON pers.rut_person = soli.rut_solici
-    WHERE
-        soli.rut_solici = @rut_solici
-    GROUP BY
-        soli.nro_solici,
-        prse.cod_modprs,
-        prse.actividad,
-        prse.per_desde,
-        prse.per_hasta,
-        prse.rut_jefpro,
-        prse.cod_unifin,
-        prse.cod_ccto,
+        prse.cod_flusol,
+        prse.cod_etapa,
+        eta.des_etapa,
         prse.cc_global,
         prse.pry_global,
         soli.rut_solici,
-        soli.nro_resolu,
-        soli.cod_estsol,
-        soli.cod_tipsol,
         soli.f_solicit,
         soli.f_creacion,
         soli.f_ultmodif,
         tiposol.des_tipsol,
         estsol.des_estsol,
-        pers.rut_person,
-        pers.nom_nombre,
-        pers.nom_appate,
-        pers.nom_apmate
-    ORDER BY
-        soli.f_creacion DESC
-end
-go
+        ltrim(rtrim(isnull(pers.nom_nombre, '') + ' ' +
+                    isnull(pers.nom_appate, '') + ' ' +
+                    isnull(pers.nom_apmate, ''))) AS nombre,
+        isnull(funps_total.total, 0) AS total,
+        'PROPIA' AS tipo_acceso
+    FROM secgen_db.dbo.sg_prse prse
+    INNER JOIN secgen_db.dbo.sg_soli soli
+        ON prse.nro_solici = soli.nro_solici
+    INNER JOIN secgen_db.dbo.sg_tsol tiposol
+        ON soli.cod_tipsol = tiposol.cod_tipsol
+    INNER JOIN secgen_db.dbo.sg_esol estsol
+        ON soli.cod_estsol = estsol.cod_estsol
+    LEFT JOIN secgen_db.dbo.sg_eta1 eta
+        ON eta.cod_flusol = prse.cod_flusol
+       AND eta.cod_etapa = prse.cod_etapa
+    LEFT JOIN sisper_db..sp_pers pers
+        ON pers.rut_person = soli.rut_solici
+    LEFT JOIN (
+        SELECT nro_solici, sum(mto_total) AS total
+        FROM secgen_db.dbo.sg_fups
+        GROUP BY nro_solici
+    ) funps_total
+        ON funps_total.nro_solici = soli.nro_solici
+    WHERE soli.rut_solici = @rut_solici
+      AND soli.cod_estsol IN (1, 2, 5, 6)
+    ORDER BY soli.f_creacion DESC
+END
+GO
 
-grant execute on Analisis2.sg_prsesSecgen08 to UsuaVrac
-go
-
-/*
-EXECUTE secgen_db.Analisis2.sg_prsesSecgen08 @rut_solici = '092867439'
-*/
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen08 TO UsuaVrac
+GO
