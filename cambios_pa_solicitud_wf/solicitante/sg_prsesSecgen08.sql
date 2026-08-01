@@ -1,9 +1,14 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen08')
+IF EXISTS (
+    SELECT 1
+    FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid
+      AND a.type = 'P'
+      AND b.name = 'Analisis2'
+      AND a.name = 'sg_prsesSecgen08'
+)
     DROP PROCEDURE Analisis2.sg_prsesSecgen08
 GO
 
@@ -11,7 +16,6 @@ GO
 Procedimiento : Analisis2.sg_prsesSecgen08
 Objetivo      : Listar solicitudes PDS activas creadas por el RUT autenticado.
 */
-
 CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL
 AS

@@ -1,14 +1,21 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen01')
+IF EXISTS (
+    SELECT 1
+    FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid
+      AND a.type = 'P'
+      AND b.name = 'Analisis2'
+      AND a.name = 'sg_prsesSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_prsesSecgen01
 GO
 
-/* Procedimiento : sg_prsesSecgen01
-    Objetivo : Consultar Prestación de servicios con soporte de modalidad.
+/*
+Procedimiento : Analisis2.sg_prsesSecgen01
+Objetivo      : Consultar una solicitud de Prestacion de Servicios con su
+                modalidad, flujo y etapa actuales.
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen01
     @nro_solici int = NULL
@@ -16,7 +23,7 @@ AS
 BEGIN
     IF @nro_solici IS NULL
     BEGIN
-        SELECT 'Falta campo Numero Solicitud' msg
+        SELECT 'Falta campo Numero Solicitud' AS msg
         RETURN
     END
 
@@ -31,9 +38,17 @@ BEGIN
         p.cc_global,
         p.pry_global,
         p.cod_modprs,
-        m.des_modprs
+        m.des_modprs,
+        p.cod_flusol,
+        p.cod_etapa,
+        e.des_etapa,
+        e.cod_perfil
     FROM secgen_db.dbo.sg_prse p
-    LEFT JOIN secgen_db.dbo.sg_tmod m ON p.cod_modprs = m.cod_modprs
+    LEFT JOIN secgen_db.dbo.sg_tmod m
+        ON m.cod_modprs = p.cod_modprs
+    LEFT JOIN secgen_db.dbo.sg_eta1 e
+        ON e.cod_flusol = p.cod_flusol
+       AND e.cod_etapa = p.cod_etapa
     WHERE p.nro_solici = @nro_solici
 END
 GO

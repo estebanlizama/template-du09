@@ -1,28 +1,25 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_usacsSecgen01')
+IF EXISTS (
+    SELECT 1
+    FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid
+      AND a.type = 'P'
+      AND b.name = 'Analisis2'
+      AND a.name = 'sg_usacsSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_usacsSecgen01
 GO
 
 /*
 Procedimiento : Analisis2.sg_usacsSecgen01
 Objetivo      : Obtener perfiles y privilegios dinamicos de acceso a PDS.
-Parametros    :
-    @rut        char(9)    : RUT autenticado.
-    @cod_sistem char(2)    : Codigo del sistema.
-    @cod_modulo varchar(8) : Codigo del modulo.
-    @fecha_eval datetime   : Fecha de evaluacion de contrato.
 
-Reglas:
-    - El perfil solicitante (6) se obtiene por contrato vigente.
-    - Los perfiles aprobadores se obtienen de tareas PDS pendientes.
-    - Los privilegios se obtienen de bd_pepr/bd_prvg.
-    - No consulta bd_pri2.
+El perfil solicitante se obtiene por contrato vigente. Los perfiles
+aprobadores se obtienen desde tareas pendientes de sg_apso, donde
+rut_usua ya contiene el responsable efectivo de la tarea.
 */
-
 CREATE PROCEDURE Analisis2.sg_usacsSecgen01
     @rut         char(9) = NULL,
     @cod_sistem  char(2) = 'SG',
@@ -76,11 +73,13 @@ BEGIN
     FROM secgen_db..sg_apso apso
     INNER JOIN secgen_db..sg_prse prse
         ON prse.nro_solici = apso.nro_solici
+       AND prse.cod_flusol = apso.cod_flusol
+       AND prse.cod_etapa = apso.cod_etapa
     INNER JOIN secgen_db..sg_eta1 eta
         ON eta.cod_flusol = apso.cod_flusol
        AND eta.cod_etapa = apso.cod_etapa
-    WHERE apso.rut_usua = @rut
-      AND apso.cod_estapr = 4
+    WHERE apso.cod_estapr = 4
+      AND apso.rut_usua = @rut
       AND isnull(eta.vigente, 'S') = 'S'
       AND NOT EXISTS (
           SELECT 1
