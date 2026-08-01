@@ -22,10 +22,11 @@ ENCONTRADO y debe rechazar configuraciones ambiguas o incompletas.
 */
 CREATE PROCEDURE Analisis2.sg_etasSecgen01
     @nro_solici int,
-    @cod_etapa tinyint
+    @cod_etapa tinyint,
+    @cod_flusol tinyint = NULL
 AS
 BEGIN
-    DECLARE @cod_flusol tinyint
+    DECLARE @cod_flusol1 tinyint
     DECLARE @cod_respon tinyint
     DECLARE @cod_perfil smallint
     DECLARE @cod_organi int
@@ -34,7 +35,7 @@ BEGIN
     DECLARE @prioridad tinyint
 
     SELECT
-        @cod_flusol = prse.cod_flusol,
+        @cod_flusol1 = isnull(@cod_flusol, prse.cod_flusol),
         @cod_perfil = eta.cod_perfil,
         @cod_organi = eta.cod_organi,
         @cod_respon = CASE
@@ -45,15 +46,15 @@ BEGIN
         END
     FROM dbo.sg_prse prse
     INNER JOIN dbo.sg_eta1 eta
-        ON eta.cod_flusol = prse.cod_flusol
+        ON eta.cod_flusol = isnull(@cod_flusol, prse.cod_flusol)
        AND eta.cod_etapa = @cod_etapa
     WHERE prse.nro_solici = @nro_solici
       AND isnull(eta.vigente, 'S') = 'S'
 
-    IF @cod_flusol IS NULL OR @cod_perfil IS NULL
+    IF @cod_flusol1 IS NULL OR @cod_perfil IS NULL
     BEGIN
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -73,7 +74,7 @@ BEGIN
         WHERE soli.nro_solici = @nro_solici
 
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -93,7 +94,7 @@ BEGIN
         WHERE prse.nro_solici = @nro_solici
 
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -109,7 +110,7 @@ BEGIN
     IF @cod_respon = 3
     BEGIN
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -130,7 +131,7 @@ BEGIN
     IF @cod_organi IS NULL
     BEGIN
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -214,7 +215,7 @@ BEGIN
     IF @cantidad = 0
     BEGIN
         SELECT
-            @cod_flusol AS cod_flusol,
+            @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil,
             @cod_organi AS cod_organi,
@@ -228,7 +229,7 @@ BEGIN
     END
 
     SELECT DISTINCT
-        @cod_flusol AS cod_flusol,
+        @cod_flusol1 AS cod_flusol,
         @cod_etapa AS cod_etapa,
         @cod_perfil AS cod_perfil,
         @cod_organi AS cod_organi,
