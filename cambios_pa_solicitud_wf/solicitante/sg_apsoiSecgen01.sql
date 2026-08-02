@@ -19,14 +19,15 @@ Objetivo      : Crear una tarea de aprobacion asociada al flujo y etapa
 
 Compatibilidad:
     Mantiene compatibles los tres parametros legacy. Los nuevos parametros
-    son opcionales. Si la solicitud aun no posee flujo configurado,
-    cod_flusol y cod_etapa se guardan NULL.
+    son opcionales. @exige_flujo debe enviarse en 1 desde el motor DU288 para
+    impedir tareas sin flujo o etapa; los consumidores legacy pueden omitirlo.
 */
 CREATE PROCEDURE Analisis2.sg_apsoiSecgen01
     @nro_solici int = NULL,
     @rut_usua char(9) = NULL,
     @cod_estapr tinyint = NULL,
-    @id_funprse int = NULL
+    @id_funprse int = NULL,
+    @exige_flujo tinyint = 0
 AS
 BEGIN
     IF @nro_solici IS NULL
@@ -50,6 +51,8 @@ BEGIN
     DECLARE @nro_aproba int
     DECLARE @cod_flusol tinyint
     DECLARE @cod_etapa tinyint
+    DECLARE @error int
+    DECLARE @filas int
 
     IF @id_funprse = 0
         SELECT @id_funprse = NULL
@@ -59,6 +62,45 @@ BEGIN
         @cod_etapa = cod_etapa
     FROM secgen_db.dbo.sg_prse
     WHERE nro_solici = @nro_solici
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_eapr
+        WHERE cod_estapr = @cod_estapr
+    )
+    BEGIN
+        SELECT 0 AS status, 'El estado de aprobacion no existe' AS msg
+        RETURN
+    END
+
+    IF isnull(@exige_flujo, 0) = 1
+       AND (
+           @cod_flusol IS NULL
+           OR @cod_etapa IS NULL
+           OR NOT EXISTS (
+               SELECT 1
+               FROM secgen_db.dbo.sg_eta1
+               WHERE cod_flusol = @cod_flusol
+                 AND cod_etapa = @cod_etapa
+                 AND isnull(vigente, 'S') = 'S'
+           )
+       )
+    BEGIN
+        SELECT 0 AS status, 'La solicitud no posee una etapa de flujo vigente' AS msg
+        RETURN
+    END
+
+    IF @id_funprse IS NOT NULL
+       AND NOT EXISTS (
+           SELECT 1
+           FROM secgen_db.dbo.sg_fups
+           WHERE id_funprse = @id_funprse
+             AND nro_solici = @nro_solici
+       )
+    BEGIN
+        SELECT 0 AS status, 'El funcionario no pertenece a la solicitud' AS msg
+        RETURN
+    END
 
     IF EXISTS (
         SELECT 1
@@ -72,9 +114,11 @@ BEGIN
     )
     BEGIN
         SELECT
+            1 AS status,
             nro_aproba,
             cod_flusol,
             cod_etapa,
+            rut_usua,
             id_funprse
         FROM secgen_db.dbo.sg_apso
         WHERE nro_solici = @nro_solici
@@ -88,21 +132,29 @@ BEGIN
 
     BEGIN TRAN
 
-    SELECT @nro_aproba = max(ultimo_id)
-    FROM secgen_db.dbo.sg_parm
-    WHERE nom_tabla LIKE 'sg_apso'
-
-    SELECT @nro_aproba = isnull(@nro_aproba, 0) + 1
-
     UPDATE secgen_db.dbo.sg_parm
-    SET ultimo_id = @nro_aproba
-    WHERE nom_tabla LIKE 'sg_apso'
+    SET ultimo_id = isnull(ultimo_id, 0) + 1
+    WHERE nom_tabla = 'sg_apso'
 
-    IF @@transtate = 2 OR @@transtate = 3
+    SELECT @error = @@error, @filas = @@rowcount
+
+    IF @error <> 0 OR @filas <> 1
     BEGIN
-        SELECT 'Error al actualizar correlativo. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        IF @@transtate <> 0
             ROLLBACK TRAN
+        SELECT 0 AS status, 'Error al actualizar correlativo de sg_apso' AS msg
+        RETURN
+    END
+
+    SELECT @nro_aproba = ultimo_id
+    FROM secgen_db.dbo.sg_parm
+    WHERE nom_tabla = 'sg_apso'
+
+    IF @nro_aproba IS NULL
+    BEGIN
+        IF @@transtate <> 0
+            ROLLBACK TRAN
+        SELECT 0 AS status, 'No fue posible obtener correlativo de sg_apso' AS msg
         RETURN
     END
 
@@ -132,17 +184,20 @@ BEGIN
         @id_funprse
     )
 
-    IF @@transtate = 2 OR @@transtate = 3
+    SELECT @error = @@error, @filas = @@rowcount
+
+    IF @error <> 0 OR @filas <> 1
     BEGIN
-        SELECT 'Error al crear la tarea de aprobacion. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        IF @@transtate <> 0
             ROLLBACK TRAN
+        SELECT 0 AS status, 'Error al crear la tarea de aprobacion' AS msg
         RETURN
     END
 
     COMMIT TRAN
 
     SELECT
+        1 AS status,
         @nro_aproba AS nro_aproba,
         @cod_flusol AS cod_flusol,
         @cod_etapa AS cod_etapa,

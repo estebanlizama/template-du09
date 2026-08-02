@@ -25,6 +25,19 @@ BEGIN
         RETURN
     END
 
+    IF NOT EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_eapr
+        WHERE cod_estapr = @cod_estapr
+    )
+    BEGIN
+        SELECT 0 AS status, 'El estado para cerrar las tareas no existe' AS mensaje
+        RETURN
+    END
+
+    DECLARE @filas int
+    DECLARE @error int
+
     UPDATE secgen_db.dbo.sg_apso
     SET cod_estapr = @cod_estapr,
         f_ultmodif = getdate()
@@ -33,9 +46,18 @@ BEGIN
       AND cod_etapa = @cod_etapa
       AND cod_estapr = 4
 
+    SELECT @error = @@error, @filas = @@rowcount
+
+    IF @error <> 0
+    BEGIN
+        SELECT 0 AS status, 0 AS filas_actualizadas,
+               'Error al cerrar las tareas pendientes' AS mensaje
+        RETURN
+    END
+
     SELECT
         1 AS status,
-        @@rowcount AS filas_actualizadas,
+        @filas AS filas_actualizadas,
         CONVERT(varchar(255), NULL) AS mensaje
 END
 GO

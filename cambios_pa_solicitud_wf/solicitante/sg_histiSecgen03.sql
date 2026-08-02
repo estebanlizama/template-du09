@@ -15,49 +15,114 @@ GO
 /*
 Procedimiento : Analisis2.sg_histiSecgen03
 Objetivo      : Registrar el historial funcional de la solicitud.
+Salida        : Una fila con status, id_histor y msg. Este contrato es
+                obligatorio para confirmar atomicamente la escritura desde
+                el backend.
 */
 CREATE PROCEDURE Analisis2.sg_histiSecgen03
     @cod_tipsol tinyint = NULL,
     @nro_solici int = NULL,
     @nro_resolu int = NULL,
-    @ano_resolu int = NULL,
+    @ano_resolu smallint = NULL,
     @id_tipacc tinyint = NULL,
     @observaci varchar(250) = NULL,
     @rut_accion char(9) = NULL,
-    @id_perfil tinyint = NULL
+    @id_perfil smallint = NULL
 AS
 BEGIN
     IF @cod_tipsol IS NULL
     BEGIN
-        SELECT 'Falta campo Codigo Tipo de Solicitud' AS msg
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Falta campo Codigo Tipo de Solicitud' AS msg
         RETURN
     END
 
     IF @nro_solici IS NULL
     BEGIN
-        SELECT 'Falta campo Numero Solicitud' AS msg
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Falta campo Numero Solicitud' AS msg
+        RETURN
+    END
+
+    IF @id_tipacc IS NULL
+    BEGIN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Falta campo Tipo de Accion' AS msg
+        RETURN
+    END
+
+    IF @rut_accion IS NULL
+       OR ltrim(rtrim(@rut_accion)) = ''
+    BEGIN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Falta campo RUT Accion' AS msg
+        RETURN
+    END
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_soli
+        WHERE nro_solici = @nro_solici
+    )
+    BEGIN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'La solicitud no existe' AS msg
+        RETURN
+    END
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_tsol
+        WHERE cod_tipsol = @cod_tipsol
+    )
+    BEGIN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'El tipo de solicitud no existe' AS msg
+        RETURN
+    END
+
+    IF NOT EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_tacc
+        WHERE id_tipacc = @id_tipacc
+    )
+    BEGIN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'El tipo de accion no existe' AS msg
         RETURN
     END
 
     DECLARE @id_histor int
+    DECLARE @error int
+    DECLARE @filas int
 
     BEGIN TRAN
 
-    SELECT @id_histor = max(ultimo_id)
-    FROM secgen_db.dbo.sg_parm
-    WHERE nom_tabla LIKE 'sg_hist'
-
-    SELECT @id_histor = isnull(@id_histor, 0) + 1
-
     UPDATE secgen_db.dbo.sg_parm
-    SET ultimo_id = @id_histor
-    WHERE nom_tabla LIKE 'sg_hist'
+    SET ultimo_id = isnull(ultimo_id, 0) + 1
+    WHERE nom_tabla = 'sg_hist'
 
-    IF @@transtate = 2 OR @@transtate = 3
+    SELECT @error = @@error, @filas = @@rowcount
+
+    IF @error <> 0 OR @filas <> 1
     BEGIN
-        SELECT 'Error al actualizar correlativo. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        IF @@transtate <> 0
             ROLLBACK TRAN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Error al actualizar correlativo de sg_hist' AS msg
+        RETURN
+    END
+
+    SELECT @id_histor = ultimo_id
+    FROM secgen_db.dbo.sg_parm
+    WHERE nom_tabla = 'sg_hist'
+
+    IF @id_histor IS NULL
+    BEGIN
+        IF @@transtate <> 0
+            ROLLBACK TRAN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'No fue posible obtener correlativo de sg_hist' AS msg
         RETURN
     END
 
@@ -87,17 +152,21 @@ BEGIN
         getdate()
     )
 
-    IF @@transtate = 2 OR @@transtate = 3
+    SELECT @error = @@error, @filas = @@rowcount
+
+    IF @error <> 0 OR @filas <> 1
     BEGIN
-        SELECT 'Error al insertar historial. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        IF @@transtate <> 0
             ROLLBACK TRAN
+        SELECT 0 AS status, convert(int, NULL) AS id_histor,
+               'Error al insertar historial' AS msg
         RETURN
     END
 
     COMMIT TRAN
 
-    SELECT @id_histor AS id_histor
+    SELECT 1 AS status, @id_histor AS id_histor,
+           convert(varchar(100), NULL) AS msg
 END
 GO
 

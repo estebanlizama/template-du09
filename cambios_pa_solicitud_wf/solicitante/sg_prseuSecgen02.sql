@@ -17,7 +17,8 @@ Procedimiento : Analisis2.sg_prseuSecgen02
 Objetivo      : Inicializar el flujo y la etapa vigente de una solicitud PDS.
 
 La configuracion maestra de sg_eta2 debe cargarse previamente mediante
-sg_eta2iSecgen01. Este PA no modifica tablas maestras del flujo.
+maestros/carga_sg_eta2_desde_eta1.sql. Este PA no modifica tablas maestras
+del flujo.
 */
 CREATE PROCEDURE Analisis2.sg_prseuSecgen02
     @nro_solici int = NULL,
