@@ -62,6 +62,8 @@ BEGIN
             CONVERT(int, NULL) AS id_funprse,
             CONVERT(char(9), NULL) AS rut_responsable,
             CONVERT(varchar(20), NULL) AS fuente_resolucion,
+            CONVERT(varchar(255), NULL) AS nombre_responsable,
+            CONVERT(varchar(100), NULL) AS cargo_responsable,
             'NO_CONFIGURADO' AS estado_resolucion,
             'La etapa no posee una estrategia de responsable vigente.' AS mensaje
         RETURN
@@ -139,6 +141,8 @@ BEGIN
             CONVERT(int, NULL) AS id_funprse,
             CONVERT(char(9), NULL) AS rut_responsable,
             'ORGANIZACION' AS fuente_resolucion,
+            CONVERT(varchar(255), NULL) AS nombre_responsable,
+            CONVERT(varchar(100), NULL) AS cargo_responsable,
             'NO_CONFIGURADO' AS estado_resolucion,
             'La etapa institucional no posee cod_organi configurado.' AS mensaje
         RETURN
@@ -223,6 +227,8 @@ BEGIN
             CONVERT(int, NULL) AS id_funprse,
             CONVERT(char(9), NULL) AS rut_responsable,
             'ORGANIZACION' AS fuente_resolucion,
+            CONVERT(varchar(255), NULL) AS nombre_responsable,
+            CONVERT(varchar(100), NULL) AS cargo_responsable,
             'NO_ENCONTRADO' AS estado_resolucion,
             'No existe titular ni subrogante vigente para la organizacion.' AS mensaje
         RETURN
@@ -237,12 +243,27 @@ BEGIN
         CONVERT(int, NULL) AS id_funprse,
         resp.rut_responsable,
         resp.fuente_resolucion,
+        RTRIM(LTRIM(
+            ISNULL(
+                CASE
+                    WHEN LEN(ISNULL(per.nom_dest, '')) <= 1
+                        THEN per.nom_nombre
+                    ELSE per.nom_dest
+                END,
+                ''
+            ) + ' ' + ISNULL(per.nom_appate, '') + ' ' + ISNULL(per.nom_apmate, '')
+        )) AS nombre_responsable,
+        RTRIM(org.des_organi) AS cargo_responsable,
         CASE WHEN @cantidad = 1 THEN 'ENCONTRADO' ELSE 'AMBIGUO' END AS estado_resolucion,
         CASE
             WHEN @cantidad = 1 THEN NULL
             ELSE 'Existe mas de un titular o subrogante vigente para la organizacion.'
         END AS mensaje
     FROM #responsables resp
+    LEFT JOIN ufro_db..es_orga org
+        ON org.cod_organi = @cod_organi
+    LEFT JOIN sisper_db..sp_pers per
+        ON per.rut_person = resp.rut_responsable
     ORDER BY resp.rut_responsable
 END
 GO
