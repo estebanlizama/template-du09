@@ -26,7 +26,8 @@ El PA solo consulta y valida. No modifica sg_prse, sg_soli ni sg_apso.
 CREATE PROCEDURE Analisis2.sg_eta2sSecgen01
     @nro_solici int = NULL,
     @cod_flusol tinyint = NULL,
-    @id_tipacc tinyint = NULL
+    @id_tipacc tinyint = NULL,
+    @cod_etaori tinyint = NULL
 AS
 BEGIN
     DECLARE @cod_flusol1 tinyint
@@ -48,7 +49,7 @@ BEGIN
     BEGIN
         SELECT
             @cod_flusol1 = cod_flusol,
-            @cod_etapa1 = cod_etapa
+            @cod_etapa1 = isnull(@cod_etaori, cod_etapa)
         FROM secgen_db.dbo.sg_prse
         WHERE nro_solici = @nro_solici
     END
@@ -56,10 +57,17 @@ BEGIN
     BEGIN
         SELECT @cod_flusol1 = @cod_flusol
 
-        SELECT @cod_etapa1 = min(cod_etapa)
-        FROM secgen_db.dbo.sg_eta1
-        WHERE cod_flusol = @cod_flusol1
-          AND isnull(vigente, 'S') = 'S'
+        IF @cod_etaori IS NOT NULL
+        BEGIN
+            SELECT @cod_etapa1 = @cod_etaori
+        END
+        ELSE
+        BEGIN
+            SELECT @cod_etapa1 = min(cod_etapa)
+            FROM secgen_db.dbo.sg_eta1
+            WHERE cod_flusol = @cod_flusol1
+              AND isnull(vigente, 'S') = 'S'
+        END
     END
 
     IF @cod_flusol1 IS NULL OR @cod_etapa1 IS NULL
