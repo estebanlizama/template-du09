@@ -465,211 +465,20 @@ CREATE UNIQUE INDEX PK_sg_eta1 ON secgen_db.dbo.sg_eta1 (cod_flusol,cod_etapa);
 
 CREATE TABLE secgen_db.dbo.sg_eta2 (
 	cod_flusol tinyint NOT NULL,
--- secgen_db.dbo.sg_tacc definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tacc;
-
-CREATE TABLE secgen_db.dbo.sg_tacc (
-	id_tipacc tinyint NOT NULL,
-	des_accion varchar(50) NOT NULL,
-	CONSTRAINT SG_TACC_PK PRIMARY KEY (id_tipacc)
-);
-CREATE UNIQUE INDEX PK_sg_tacc ON secgen_db.dbo.sg_tacc (id_tipacc);
-
-
--- secgen_db.dbo.sg_tdre definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tdre;
-
-CREATE TABLE secgen_db.dbo.sg_tdre (
-	id_tipdev smallint NOT NULL,
-	des_tipdev varchar(100) NOT NULL,
-	CONSTRAINT SG_TDRE_PK PRIMARY KEY (id_tipdev)
-);
-CREATE UNIQUE INDEX PK_sg_tdre ON secgen_db.dbo.sg_tdre (id_tipdev);
-
-
--- secgen_db.dbo.sg_telm definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_telm;
-
-CREATE TABLE secgen_db.dbo.sg_telm (
-	id_tipelm tinyint NOT NULL,
-	nom_tipelm varchar(100) NOT NULL,
-	CONSTRAINT SG_TELM_PK PRIMARY KEY (id_tipelm)
-);
-CREATE UNIQUE INDEX PK_sg_telm ON secgen_db.dbo.sg_telm (id_tipelm);
-
-
--- secgen_db.dbo.sg_tfls definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tfls;
-
-CREATE TABLE secgen_db.dbo.sg_tfls (
-	cod_flusol tinyint NOT NULL,
-	des_flusol varchar(60) NOT NULL,
-	abr_flusol varchar(10) NOT NULL,
-	vigente char(1) NOT NULL,
-	f_creacion datetime NULL,
-	f_ultmodif datetime NULL,
-	CONSTRAINT SG_TFLS_PK PRIMARY KEY (cod_flusol)
-);
-CREATE UNIQUE INDEX PK_sg_tfls ON secgen_db.dbo.sg_tfls (cod_flusol);
-
-
--- secgen_db.dbo.sg_tipc definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tipc;
-
-CREATE TABLE secgen_db.dbo.sg_tipc (
-	id_tipinc tinyint NOT NULL,
-	des_tipinc varchar(255) NOT NULL,
-	CONSTRAINT SG_TIPC_PK PRIMARY KEY (id_tipinc)
-);
-CREATE UNIQUE INDEX PK_sg_tipc ON secgen_db.dbo.sg_tipc (id_tipinc);
-
-
--- secgen_db.dbo.sg_tmod definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tmod;
-
-CREATE TABLE secgen_db.dbo.sg_tmod (
-	cod_modprs tinyint NOT NULL,
-	des_modprs varchar(60) NOT NULL,
-	CONSTRAINT SG_TMOD_PK PRIMARY KEY (cod_modprs)
-);
-CREATE UNIQUE INDEX PK_sg_tmod ON secgen_db.dbo.sg_tmod (cod_modprs);
-
-
--- secgen_db.dbo.sg_toca definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_toca;
-
-CREATE TABLE secgen_db.dbo.sg_toca (
-	cod_cargo smallint NOT NULL,
-	cod_unidad char(8) NOT NULL,
-	f_inicio datetime NOT NULL,
-	f_termino datetime NULL,
-	mto_tope int NOT NULL,
-	vigente char(1) NULL,
-	CONSTRAINT SG_TOCA_PK PRIMARY KEY (cod_cargo,cod_unidad,f_inicio)
-);
-CREATE UNIQUE INDEX PK_sg_toca ON secgen_db.dbo.sg_toca (cod_cargo,cod_unidad,f_inicio);
-
-
--- secgen_db.dbo.sg_tpag definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tpag;
-
-CREATE TABLE secgen_db.dbo.sg_tpag (
-	cod_tipago tinyint NOT NULL,
-	des_tipago varchar(30) NOT NULL,
-	CONSTRAINT SG_TPAG_PK PRIMARY KEY (cod_tipago)
-);
-CREATE UNIQUE INDEX PK_sg_tpag ON secgen_db.dbo.sg_tpag (cod_tipago);
-
-
--- secgen_db.dbo.sg_tpps definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tpps;
-
-CREATE TABLE secgen_db.dbo.sg_tpps (
-	cod_tpps int NOT NULL,
-	des_tpps varchar(10) NOT NULL,
-	CONSTRAINT SG_TPPS_PK PRIMARY KEY (cod_tpps)
-);
-CREATE UNIQUE INDEX PK_sg_tpps ON secgen_db.dbo.sg_tpps (cod_tpps);
-
-
--- secgen_db.dbo.sg_trec definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_trec;
-
-CREATE TABLE secgen_db.dbo.sg_trec (
-	id_tiprec tinyint NOT NULL,
-	des_tiprec varchar(100) NOT NULL,
-	CONSTRAINT SG_TREC_PK PRIMARY KEY (id_tiprec)
-);
-CREATE UNIQUE INDEX PK_sg_trec ON secgen_db.dbo.sg_trec (id_tiprec);
-
-
--- secgen_db.dbo.sg_tsol definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_tsol;
-
-CREATE TABLE secgen_db.dbo.sg_tsol (
-	cod_tipsol tinyint NOT NULL,
-	des_tipsol varchar(30) NOT NULL,
-	nro_orden tinyint NOT NULL,
-	vigente char(1) NOT NULL,
-	CONSTRAINT SG_TSOL_PK PRIMARY KEY (cod_tipsol)
-);
-CREATE INDEX NC_sg_tsol_orden ON secgen_db.dbo.sg_tsol (nro_orden);
-CREATE UNIQUE INDEX PK_sg_tsol ON secgen_db.dbo.sg_tsol (cod_tipsol);
-
-
--- secgen_db.dbo.sg_eta1 definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_eta1;
-
-CREATE TABLE secgen_db.dbo.sg_eta1 (
-	cod_flusol tinyint NOT NULL,
-	cod_etapa tinyint NOT NULL,
-	des_etapa varchar(100) NOT NULL,
-	cod_sistem char(2) NOT NULL,
-	cod_modulo varchar(8) NOT NULL,
-	cod_perfil smallint NOT NULL,
-	est_final char(1) NULL,
-	vigente char(1) NULL,
-	cod_organi int NULL,
-	CONSTRAINT SG_ETA1_PK PRIMARY KEY (cod_flusol,cod_etapa),
-	CONSTRAINT FK_sg_eta1_sg_tfls FOREIGN KEY (cod_flusol) REFERENCES secgen_db.dbo.sg_tfls(cod_flusol) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE UNIQUE INDEX PK_sg_eta1 ON secgen_db.dbo.sg_eta1 (cod_flusol,cod_etapa);
-
-
--- secgen_db.dbo.sg_eta2 definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_eta2;
-
-CREATE TABLE secgen_db.dbo.sg_eta2 (
-	cod_flusol tinyint NOT NULL,
 	cod_etapa1 tinyint NOT NULL,
 	cod_etapa2 tinyint NOT NULL,
 	id_tipacc tinyint NOT NULL,
 	cod_estsol tinyint NULL,
-	CONSTRAINT SG_ETA2_PK PRIMARY KEY (cod_flusol,cod_etapa1,id_tipacc),
+	CONSTRAINT SG_ETA2_PK PRIMARY KEY (cod_flusol,cod_etapa1,cod_etapa2),
 	CONSTRAINT FK_sg_eta2_sg_esol FOREIGN KEY (cod_estsol) REFERENCES secgen_db.dbo.sg_esol(cod_estsol) ON DELETE RESTRICT ON UPDATE RESTRICT,
-	CONSTRAINT FK_sg_eta2_eta_ori FOREIGN KEY (cod_flusol,cod_etapa1) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
-	CONSTRAINT FK_sg_eta2_eta_des FOREIGN KEY (cod_flusol,cod_etapa2) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_eta2_sg_eta1 FOREIGN KEY (cod_etapa1,cod_etapa2) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_eta2_sg_eta1_2 FOREIGN KEY (cod_flusol) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_eta2_sg_eta1_3 FOREIGN KEY (cod_flusol) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	CONSTRAINT FK_sg_eta2_sg_tacc_6 FOREIGN KEY (id_tipacc) REFERENCES secgen_db.dbo.sg_tacc(id_tipacc) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
+CREATE UNIQUE INDEX PK_fc_eta2 ON secgen_db.dbo.sg_eta2 (cod_flusol,cod_etapa1,cod_etapa2);
+
+
 -- secgen_db.dbo.sg_grpc definition
 
 -- Drop table
@@ -1283,6 +1092,78 @@ CREATE TABLE secgen_db.dbo.sg_dfpc (
 	CONSTRAINT SG_DFPC_PK PRIMARY KEY (id_defopc),
 	CONSTRAINT FK_sg_dfpc_sg_delm FOREIGN KEY (id_detelm) REFERENCES secgen_db.dbo.sg_delm(id_detelm) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	CONSTRAINT FK_sg_dfpc_sg_ifpc_2 FOREIGN KEY (id_itfopc) REFERENCES secgen_db.dbo.sg_ifpc(id_itfopc) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+CREATE INDEX NC_sg_dfpc_itm_form_plant ON secgen_db.dbo.sg_dfpc (id_itfopc,id_detelm);
+CREATE UNIQUE INDEX PK_sg_dfpc ON secgen_db.dbo.sg_dfpc (id_defopc);
+
+
+-- secgen_db.dbo.sg_fups definition
+
+-- Drop table
+
+-- DROP TABLE secgen_db.dbo.sg_fups;
+
+CREATE TABLE secgen_db.dbo.sg_fups (
+	id_funprse int NOT NULL,
+	nro_solici int NOT NULL,
+	rut char(9) NOT NULL,
+	cod_cargo smallint NULL,
+	cod_sitm varchar(5) NULL,
+	itm_global varchar(15) NULL,
+	motivo varchar(255) NULL,
+	periodos tinyint NOT NULL,
+	monto_mes decimal(19,2) NOT NULL,
+	mto_total decimal(19,2) NOT NULL,
+	cod_moneda tinyint NULL,
+	cod_tpps int NULL,
+	f_inicio datetime NULL,
+	f_termino datetime NULL,
+	cod_estfun tinyint NULL,
+	dentro_jor char(1) NULL,
+	cod_contra int NULL,
+	mes_haber tinyint NULL,
+	ano_haber smallint NULL,
+	mto_haber int NULL,
+	mto_tope int NULL,
+	f_cal_tope datetime NULL,
+	tot_cuotas tinyint NULL,
+	CONSTRAINT SG_FUPS_PK PRIMARY KEY (id_funprse),
+	CONSTRAINT FK_sg_fups_sg_efun FOREIGN KEY (cod_estfun) REFERENCES secgen_db.dbo.sg_efun(cod_estfun) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_fups_sg_prse_2 FOREIGN KEY (nro_solici) REFERENCES secgen_db.dbo.sg_prse(nro_solici) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_fups_sg_tpps_3 FOREIGN KEY (cod_tpps) REFERENCES secgen_db.dbo.sg_tpps(cod_tpps) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+CREATE INDEX NC_sg_fups_rut ON secgen_db.dbo.sg_fups (rut);
+CREATE UNIQUE INDEX PK_sg_fups ON secgen_db.dbo.sg_fups (id_funprse);
+
+
+-- secgen_db.dbo.sg_his2 definition
+
+-- Drop table
+
+-- DROP TABLE secgen_db.dbo.sg_his2;
+
+CREATE TABLE secgen_db.dbo.sg_his2 (
+	id_funprse int NOT NULL,
+	f_visacion datetime NOT NULL,
+	rut_visado char(9) NOT NULL,
+	cod_estact tinyint NOT NULL,
+	cod_estnue tinyint NOT NULL,
+	CONSTRAINT SG_HIS2_PK PRIMARY KEY (id_funprse,f_visacion),
+	CONSTRAINT FK_sg_his2_sg_fups FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+CREATE UNIQUE INDEX PK_sg_his2 ON secgen_db.dbo.sg_his2 (id_funprse,f_visacion);
+
+
+-- secgen_db.dbo.sg_inac definition
+
+-- Drop table
+
+-- DROP TABLE secgen_db.dbo.sg_inac;
+
+CREATE TABLE secgen_db.dbo.sg_inac (
+	id_incacad int NOT NULL,
+	nro_solici int NOT NULL,
+	rut_acad char(9) NOT NULL,
 	cod_moneda tinyint NULL,
 	monto decimal(19,2) NOT NULL,
 	f_ultmodif datetime NOT NULL,
@@ -1317,13 +1198,13 @@ CREATE TABLE secgen_db.dbo.sg_apso (
 	id_funprse int NULL,
 	CONSTRAINT SG_APSO_PK PRIMARY KEY (nro_aproba),
 	CONSTRAINT FK_sg_apso_sg_eapr FOREIGN KEY (cod_estapr) REFERENCES secgen_db.dbo.sg_eapr(cod_estapr) ON DELETE RESTRICT ON UPDATE RESTRICT,
-	CONSTRAINT FK_sg_apso_sg_eta1 FOREIGN KEY (cod_flusol,cod_etapa) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_apso_sg_eta1 FOREIGN KEY (cod_etapa) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
+	CONSTRAINT FK_sg_apso_sg_eta1_2 FOREIGN KEY (cod_flusol) REFERENCES secgen_db.dbo.sg_eta1(cod_flusol,cod_etapa) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	CONSTRAINT FK_sg_apso_sg_fups_4 FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT,
 	CONSTRAINT FK_sg_apso_sg_soli_5 FOREIGN KEY (nro_solici) REFERENCES secgen_db.dbo.sg_soli(nro_solici) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 CREATE INDEX NC_sg_apso_rut ON secgen_db.dbo.sg_apso (rut_usua);
 CREATE INDEX NC_sg_apso_soli ON secgen_db.dbo.sg_apso (nro_solici);
-CREATE INDEX NC_sg_apso_etapa ON secgen_db.dbo.sg_apso (nro_solici,cod_flusol,cod_etapa,cod_estapr);
 CREATE UNIQUE INDEX PK_sg_apso ON secgen_db.dbo.sg_apso (nro_aproba);
 
 
@@ -1344,96 +1225,22 @@ CREATE TABLE secgen_db.dbo.sg_fuco (
 CREATE UNIQUE INDEX PK_sg_fuco ON secgen_db.dbo.sg_fuco (id_funprse,fec_compro);
 
 
--- secgen_db.dbo.sg_fume definition
+-- secgen_db.dbo.sg_fuho definition
 
 -- Drop table
 
--- DROP TABLE secgen_db.dbo.sg_fume;
+-- DROP TABLE secgen_db.dbo.sg_fuho;
 
-CREATE TABLE secgen_db.dbo.sg_fume (
+CREATE TABLE secgen_db.dbo.sg_fuho (
 	id_funprse int NOT NULL,
-	nro_cuota tinyint NOT NULL,
-	ano_prop smallint NOT NULL,
-	mes_prop tinyint NOT NULL,
-	cod_estcuo tinyint NOT NULL,
-	ano_ejec smallint NULL,
-	mes_ejec tinyint NULL,
-	mto_apagar int NULL,
-	id_evidenc int NULL,
-	val_licmed char(1) NULL,
-	val_inabili char(1) NULL,
-	val_singoce char(1) NULL,
-	val_ciecc char(1) NULL,
-	fec_valida datetime NULL,
-	rut_autori char(9) NULL,
-	fec_autori datetime NULL,
-	fec_envrem datetime NULL,
-	fec_pago datetime NULL,
-	ano_pago smallint NULL,
-	mes_pago tinyint NULL,
-	CONSTRAINT SG_FUME_PK PRIMARY KEY (id_funprse,nro_cuota),
-	CONSTRAINT FK_sg_fume_sg_ecuo FOREIGN KEY (cod_estcuo) REFERENCES secgen_db.dbo.sg_ecuo(cod_estcuo) ON DELETE RESTRICT ON UPDATE RESTRICT,
-	CONSTRAINT FK_sg_fume_sg_fups_2 FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE UNIQUE INDEX PK_sg_fume ON secgen_db.dbo.sg_fume (id_funprse,nro_cuota);
-
-
--- secgen_db.dbo.sg_fuc2 definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_fuc2;
-
-CREATE TABLE secgen_db.dbo.sg_fuc2 (
-	id_funprse int NOT NULL,
-	nro_cuota tinyint NOT NULL,
-	fec_comrea datetime NOT NULL,
-	hora_ini time(3) NOT NULL,
-	hora_ter time(3) NOT NULL,
-	CONSTRAINT SG_FUC2_PK PRIMARY KEY (id_funprse,nro_cuota,fec_comrea),
-	CONSTRAINT FK_sg_fuc2_sg_fume FOREIGN KEY (id_funprse,nro_cuota) REFERENCES secgen_db.dbo.sg_fume(id_funprse,nro_cuota) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE UNIQUE INDEX PK_sg_fuc2 ON secgen_db.dbo.sg_fuc2 (id_funprse,nro_cuota,fec_comrea);
-
-
--- secgen_db.dbo.sg_fum2 definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_fum2;
-
-CREATE TABLE secgen_db.dbo.sg_fum2 (
-	id_funprse int NOT NULL,
-	nro_cuota tinyint NOT NULL,
+	cod_diasem tinyint NOT NULL,
 	correlativ tinyint NOT NULL,
-	ano_prop smallint NOT NULL,
-	mes_prop tinyint NOT NULL,
-	cod_estcuo tinyint NOT NULL,
-	ano_ejec smallint NULL,
-	mes_ejec tinyint NULL,
-	mto_apagar int NULL,
-	id_evidenc int NULL,
-	val_licmed char(1) NULL,
-	val_inabili char(1) NULL,
-	val_singoce char(1) NULL,
-CREATE UNIQUE INDEX PK_sg_apso ON secgen_db.dbo.sg_apso (nro_aproba);
-
-
--- secgen_db.dbo.sg_fuco definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_fuco;
-
-CREATE TABLE secgen_db.dbo.sg_fuco (
-	id_funprse int NOT NULL,
-	fec_compro datetime NOT NULL,
 	hora_ini time(3) NOT NULL,
 	hora_ter time(3) NOT NULL,
-	CONSTRAINT SG_FUCO_PK PRIMARY KEY (id_funprse,fec_compro),
-	CONSTRAINT FK_sg_fuco_sg_fups FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT
+	CONSTRAINT SG_FUHO_PK PRIMARY KEY (id_funprse,cod_diasem,correlativ),
+	CONSTRAINT FK_sg_fuho_sg_fups FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
-CREATE UNIQUE INDEX PK_sg_fuco ON secgen_db.dbo.sg_fuco (id_funprse,fec_compro);
+CREATE UNIQUE INDEX PK_sg_fuho ON secgen_db.dbo.sg_fuho (id_funprse,cod_diasem,correlativ);
 
 
 -- secgen_db.dbo.sg_fume definition
@@ -1517,21 +1324,3 @@ CREATE TABLE secgen_db.dbo.sg_fum2 (
 	CONSTRAINT FK_sg_fum2_sg_fume FOREIGN KEY (id_funprse,nro_cuota) REFERENCES secgen_db.dbo.sg_fume(id_funprse,nro_cuota) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 CREATE UNIQUE INDEX PK_sg_fum2 ON secgen_db.dbo.sg_fum2 (id_funprse,nro_cuota,correlativ);
-
-
--- secgen_db.dbo.sg_fuho definition
-
--- Drop table
-
--- DROP TABLE secgen_db.dbo.sg_fuho;
-
-CREATE TABLE secgen_db.dbo.sg_fuho (
-	id_funprse int NOT NULL,
-	cod_diasem tinyint NOT NULL,
-	correlativ tinyint NOT NULL,
-	hora_ini time(3) NOT NULL,
-	hora_ter time(3) NOT NULL,
-	CONSTRAINT SG_FUHO_PK PRIMARY KEY (id_funprse,cod_diasem,correlativ),
-	CONSTRAINT FK_sg_fuho_sg_fups FOREIGN KEY (id_funprse) REFERENCES secgen_db.dbo.sg_fups(id_funprse) ON DELETE RESTRICT ON UPDATE RESTRICT
-);
-CREATE UNIQUE INDEX PK_sg_fuho ON secgen_db.dbo.sg_fuho (id_funprse,cod_diasem,correlativ);
