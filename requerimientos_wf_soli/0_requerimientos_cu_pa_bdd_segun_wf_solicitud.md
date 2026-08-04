@@ -1,5 +1,7 @@
 # PDS Normativo D9 / DU288 / DU09
 
+> **Decisión complementaria vigente:** [Rango de ejecución PDS sin generación de `sg_fume`](./decision_rango_ejecucion_sin_fume.md). Esta decisión separa el rango aprobado de las cuotas financieras creadas posteriormente en el workflow de pago.
+
 ## Pantalla 01 — Solicitante
 
 ### Estructura base de requerimientos por pantalla y funcionalidad

@@ -66,7 +66,8 @@ BEGIN
     ) funps_total
         ON funps_total.nro_solici = soli.nro_solici
     WHERE soli.rut_solici = @rut_solici
-      AND soli.cod_estsol IN (1, 2, 5, 6)
+      AND soli.cod_tipsol = 1
+      AND soli.cod_estsol IN (1, 2, 3, 5, 6, 7, 10)
     ORDER BY soli.f_creacion DESC
 END
 GO
