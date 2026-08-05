@@ -165,6 +165,10 @@ Aplicado en SG Solicitudes:
 - La resolución usa el rango de ejecución, el monto total y los tramos semanales de FUHO.
 - FUCO se limita al rango autorizado y respeta la estructura vigente, que permite un solo tramo por fecha.
 - Se prepararon los PA Sybase sin incorporar columnas nuevas a `sg_fuco`.
+- Se eliminó del alta del funcionario la validación heredada que exigía seleccionar meses. La cobertura se valida directamente con `f_inicio` y `f_termino` del funcionario dentro del rango general.
+- La compensación se valida contra el rango de ejecución del funcionario; los meses visibles en el calendario se derivan automáticamente de ese rango y no se persisten como selección.
+- Las duraciones de FUHO y FUCO se presentan en horas y minutos enteros (`8 h 58 min`, `1 h 2 min`) y no como horas decimales.
+- El máximo aplicable mostrado depende del monto total: utiliza un tope mensual cuando `mto_total <= mto_tope` y dos topes cuando `mto_tope < mto_total <= 2 × mto_tope`. Sobre ese límite la solicitud queda bloqueada; este cálculo no crea cuotas ni selecciona meses.
 
 Pendiente fuera de este repositorio:
 
