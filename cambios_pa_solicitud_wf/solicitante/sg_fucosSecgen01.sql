@@ -27,7 +27,7 @@ BEGIN
         RETURN
     END
 
-    SELECT 
+    SELECT
         fc.id_funprse,
         fc.fec_compro,
         fc.hora_ini,

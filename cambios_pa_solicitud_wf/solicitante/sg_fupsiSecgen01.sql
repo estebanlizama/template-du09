@@ -59,6 +59,17 @@ CREATE PROCEDURE Analisis2.sg_fupsiSecgen01
     @cod_estfun tinyint = NULL
 AS
 BEGIN
+    -- La modalidad persistida en sg_prse es la fuente de verdad.
+    DECLARE @resolved_modprs tinyint
+    SELECT @resolved_modprs = cod_modprs
+    FROM secgen_db.dbo.sg_prse
+    WHERE nro_solici = @nro_solici
+
+    IF @resolved_modprs IS NOT NULL
+        SELECT @cod_modprs = @resolved_modprs
+    ELSE IF @cod_modprs IS NULL
+        SELECT @cod_modprs = 1
+
     IF @nro_solici IS NULL
     BEGIN
         SELECT 'Falta campo Numero Solicitud' AS msg
@@ -95,13 +106,13 @@ BEGIN
         RETURN
     END
 
-    IF @periodos IS NULL
+    IF @cod_modprs <> 2 AND @periodos IS NULL
     BEGIN
         SELECT 'Falta campo Periodos' AS msg
         RETURN
     END
 
-    IF @monto_mes IS NULL
+    IF @cod_modprs <> 2 AND @monto_mes IS NULL
     BEGIN
         SELECT 'Falta campo Monto Mensual' AS msg
         RETURN
@@ -144,23 +155,17 @@ BEGIN
         RETURN
     END
 
-    -- Resolver la modalidad desde sg_prse
-    DECLARE @resolved_modprs tinyint
-    SELECT @resolved_modprs = cod_modprs
-    FROM secgen_db.dbo.sg_prse
-    WHERE nro_solici = @nro_solici
-
-    IF @resolved_modprs IS NOT NULL
-        SELECT @cod_modprs = @resolved_modprs
-    ELSE
-    BEGIN
-        IF @cod_modprs IS NULL
-            SELECT @cod_modprs = 1
-    END
-
     -- Determinar el estado del funcionario (por defecto 1 para DU288 si es NULL)
     IF @cod_modprs = 2
     BEGIN
+        -- Compatibilidad con la BDD vigente: periodos y monto_mes son NOT NULL.
+        -- DU288 no los utiliza para crear cuotas; la fuente oficial es @mto_total.
+        IF @periodos IS NULL
+            SELECT @periodos = 1
+        IF @monto_mes IS NULL
+            SELECT @monto_mes = @mto_total
+        SELECT @tot_cuotas = NULL
+
         IF @cod_estfun IS NULL
             SELECT @cod_estfun = 1
 

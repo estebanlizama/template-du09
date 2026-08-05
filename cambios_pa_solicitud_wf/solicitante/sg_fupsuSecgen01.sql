@@ -55,6 +55,20 @@ CREATE PROCEDURE Analisis2.sg_fupsuSecgen01
     @rut_visado char(9) = NULL
 AS
 BEGIN
+    DECLARE @cod_modprs tinyint
+    DECLARE @rows_updated int
+    DECLARE @err int
+    DECLARE @current_estfun tinyint
+
+    SELECT @cod_modprs = isnull(prse.cod_modprs, 1),
+           @current_estfun = fu.cod_estfun
+    FROM secgen_db.dbo.sg_prse prse
+    JOIN sg_fups fu ON prse.nro_solici = fu.nro_solici
+    WHERE fu.id_funprse = @id_funprse
+
+    IF @cod_modprs IS NULL
+        SELECT @cod_modprs = 1
+
     IF @id_funprse IS NULL
     BEGIN
         SELECT 'Falta campo Id Funcionarios prestación de servicios' AS msg
@@ -97,13 +111,13 @@ BEGIN
         RETURN
     END
 
-    IF @periodos IS NULL
+    IF @cod_modprs <> 2 AND @periodos IS NULL
     BEGIN
         SELECT 'Falta campo Periodos' AS msg
         RETURN
     END
 
-    IF @monto_mes IS NULL
+    IF @cod_modprs <> 2 AND @monto_mes IS NULL
     BEGIN
         SELECT 'Falta campo Monto Mensual' AS msg
         RETURN
@@ -127,21 +141,6 @@ BEGIN
         SELECT 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
         RETURN
     END
-    DECLARE @cod_modprs tinyint
-    DECLARE @rows_updated int
-    DECLARE @err int
-    DECLARE @current_estfun tinyint
-    
-    SELECT @cod_modprs = isnull(prse.cod_modprs, 1),
-           @current_estfun = fu.cod_estfun
-    FROM secgen_db.dbo.sg_prse prse
-    JOIN sg_fups fu ON prse.nro_solici = fu.nro_solici
-    WHERE fu.id_funprse = @id_funprse
-
-    IF @cod_modprs IS NULL
-        SELECT @cod_modprs = 1
-
-
     BEGIN TRAN
 
     IF @cod_modprs = 2 AND @cod_estfun IS NOT NULL
@@ -158,6 +157,14 @@ BEGIN
 
     IF @cod_modprs = 2
     BEGIN
+        -- Compatibilidad con la BDD vigente: periodos y monto_mes son NOT NULL.
+        -- DU288 no los utiliza para crear cuotas; la fuente oficial es @mto_total.
+        IF @periodos IS NULL
+            SELECT @periodos = 1
+        IF @monto_mes IS NULL
+            SELECT @monto_mes = @mto_total
+        SELECT @tot_cuotas = NULL
+
         -- Flujo DU288: actualiza todos los campos nuevos
         UPDATE sg_fups
         SET
@@ -180,7 +187,7 @@ BEGIN
             mto_haber = @mto_haber,
             mto_tope = @mto_tope,
             f_cal_tope = @f_cal_tope,
-            tot_cuotas = @tot_cuotas,
+            tot_cuotas = NULL,
             cod_estfun = isnull(@cod_estfun, cod_estfun)
         WHERE
             id_funprse = @id_funprse

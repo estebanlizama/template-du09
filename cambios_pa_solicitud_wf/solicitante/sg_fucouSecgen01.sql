@@ -38,9 +38,13 @@ BEGIN
     -- 2. Confirmar modalidad DU288
     DECLARE @cod_modprs tinyint
     DECLARE @dentro_jor char(1)
+    DECLARE @f_inicio datetime
+    DECLARE @f_termino datetime
     SELECT 
         @cod_modprs = isnull(prse.cod_modprs, 1),
-        @dentro_jor = isnull(fu.dentro_jor, 'N')
+        @dentro_jor = isnull(fu.dentro_jor, 'N'),
+        @f_inicio = fu.f_inicio,
+        @f_termino = fu.f_termino
     FROM secgen_db.dbo.sg_prse prse
     JOIN secgen_db.dbo.sg_fups fu ON prse.nro_solici = fu.nro_solici
     WHERE fu.id_funprse = @id_funprse
@@ -114,10 +118,22 @@ BEGIN
                 SELECT @ter_str = ltrim(rtrim(substring(@subchunk, @col_pos2 + 1, char_length(@subchunk) - @col_pos2)))
 
                 -- Validar conversiones
-
                 IF charindex(':', @ini_str) = 0 OR charindex(':', @ter_str) = 0
                 BEGIN
                     SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: Rango horario no válido. Use HH:MM.' AS msg
+                    RETURN
+                END
+
+                IF convert(time, @ter_str) <= convert(time, @ini_str)
+                BEGIN
+                    SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: La hora de termino debe ser posterior a la hora de inicio.' AS msg
+                    RETURN
+                END
+
+                IF datediff(day, @f_inicio, convert(datetime, @fec_str)) < 0
+                   OR datediff(day, convert(datetime, @fec_str), @f_termino) < 0
+                BEGIN
+                    SELECT @id_funprse AS id_funprse, 0 AS registros_insertados, 'Error: La compensacion debe estar dentro del rango de ejecucion autorizado.' AS msg
                     RETURN
                 END
 
@@ -164,6 +180,20 @@ BEGIN
     -- 6. Insertar registros procesados
     DECLARE @insertados int
     SELECT @insertados = 0
+
+    /* La PK vigente de sg_fuco permite un solo tramo por fecha. */
+    IF EXISTS (
+        SELECT fec_compro
+        FROM #comps
+        GROUP BY fec_compro
+        HAVING count(*) > 1
+    )
+    BEGIN
+        SELECT @id_funprse AS id_funprse, 0 AS registros_insertados,
+            'Error: La BDD permite un solo tramo FUCO por fecha.' AS msg
+        ROLLBACK TRAN
+        RETURN
+    END
 
     INSERT INTO secgen_db.dbo.sg_fuco (id_funprse, fec_compro, hora_ini, hora_ter)
     SELECT @id_funprse, fec_compro, hora_ini, hora_ter

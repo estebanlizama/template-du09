@@ -95,10 +95,10 @@ mes_haber / ano_haber	Remuneración usada como referencia
 mto_haber	Base utilizada para calcular el tope
 cod_contra	Contrato evaluado
 
-Para DU288 deberían quedar nulos:
-monto_mes
-tot_cuotas
-periodos debería quedar nulo o considerarse únicamente un dato calculado desde el rango, pero nunca interpretarse como número de cuotas.
+En la BDD vigente, `periodos` y `monto_mes` son `NOT NULL`. Por compatibilidad
+se almacenan `periodos = 1` y `monto_mes = mto_total` para DU288, pero no se
+utilizan para crear cuotas ni para determinar meses de pago. La fuente oficial
+continúa siendo `mto_total`. `tot_cuotas` permanece nulo.
 Totales de la solicitud
 El cálculo general debe ser:
 total_solicitud =
@@ -154,3 +154,18 @@ La restricción general de dos meses corresponde a los meses efectivos
 de pago o prorrateo, no a la duración de la ejecución.
 Esto debe actualizarse en [reglas_restricciones_du288_d09.md (line 61)](D:/trabajo_ufro_2026/nuevo_workflow_fase_2/reglas/reglas_restricciones_du288_d09.md:61).
 En conclusión, el monto oficial de la resolución debe ser mto_total. El tope mensual se conserva como regla de control, pero la distribución y los meses efectivos se determinan en el pago. Así se elimina correctamente FUME sin perder las validaciones financieras.
+
+## Estado de implementación — 2026-08-05
+
+Aplicado en SG Solicitudes:
+
+- DU288 registra rango de ejecución, FUHO, FUCO, monto total, tope y antecedentes de remuneración; no solicita meses ni genera FUME/cuotas.
+- `periodos` y `monto_mes` utilizan valores de compatibilidad exigidos por la BDD; `tot_cuotas` queda nulo y no se crean cuotas.
+- El monto total se valida contra el máximo general pagable en dos meses, conservando la excepción ANID a nivel de la solicitud.
+- La resolución usa el rango de ejecución, el monto total y los tramos semanales de FUHO.
+- FUCO se limita al rango autorizado y respeta la estructura vigente, que permite un solo tramo por fecha.
+- Se prepararon los PA Sybase sin incorporar columnas nuevas a `sg_fuco`.
+
+Pendiente fuera de este repositorio:
+
+- Implementar en la aplicación de pagos la creación de cuotas, selección de periodos cubiertos, evidencias y validación transaccional de saldo/tope. En este workspace solo existe su especificación/prototipo, no el backend/frontend productivo de pagos.
