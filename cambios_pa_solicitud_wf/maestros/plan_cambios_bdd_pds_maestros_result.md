@@ -704,7 +704,7 @@ Nota de alineacion:
 
 - En el modelo objetivo inicial se proponia cantidad de horas, pero la definicion funcional actual cambia a compensacion por dia y rango horario.
 - En la BDD integrada quedo con PK compuesta `id_funprse + dia_semana`.
-- Este diseno evita duplicar un mismo dia por funcionario, pero no permite mas de un tramo por fecha ni asociar la compensacion a un mes especifico.
+- Como no se permite modificar la tabla, la clave se mantiene en `id_funprse + fec_compro`. `fec_compro` utiliza su componente horario para guardar el inicio real y distinguir varios tramos del mismo dia; `hora_ini` y `hora_ter` conservan el rango informado. Si `hora_ter` es menor que `hora_ini`, el fin se interpreta en el dia siguiente.
 - `cant_horas` no debe usarse como dato principal del modelo final.
 - La definicion funcional actual requiere compensacion por fecha calendario y rango horario. Por lo tanto, se recomienda evolucionar `sg_fuco` para usar `id_funprse`, `anio`, `nro_mes`, `nro_dia`, `hora_inicio`, `hora_termino` y `vigente`.
 

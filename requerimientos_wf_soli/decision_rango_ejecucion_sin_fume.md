@@ -41,10 +41,11 @@ La cantidad de meses contenidos en el rango no determina la cantidad de cuotas f
 Cada fecha de compensación debe cumplir:
 
 ```text
-sg_fups.f_inicio <= sg_fuco.fec_compro <= sg_fups.f_termino
+datediff(day, sg_fups.f_inicio, sg_fuco.fec_compro) >= 0
+AND datediff(day, sg_fuco.fec_compro, sg_fups.f_termino) >= 0
 ```
 
-El mes que se presenta en pantalla para identificar la compensación se obtiene desde la fecha registrada en `sg_fuco`; no requiere una fila en `sg_fume`.
+El mes que se presenta en pantalla para identificar la compensación se obtiene desde `sg_fuco.fec_compro`; no requiere una fila en `sg_fume`. Como `fec_compro` es `datetime`, guarda la fecha y hora real de inicio y permite distinguir varios tramos del mismo día sin modificar la tabla. Si `hora_ter` es menor que `hora_ini`, el término se interpreta en el día siguiente.
 
 ## 4. Resolución
 
@@ -102,4 +103,3 @@ Los meses visibles pueden derivarse del rango de ejecución o de las fechas de `
 La creación dinámica de cuotas, la selección del periodo cubierto y la validación del monto se documentan en:
 
 [Decisión funcional: cuotas creadas en la solicitud de pago](../../template_wf_pagos/requerimientos_wf/decision_cuotas_creadas_en_pago.md)
-

@@ -35,6 +35,7 @@ BEGIN
         p.rut_jefpro,
         p.cod_unifin,
         p.cod_ccto,
+        rtrim(c.nom_ccto) AS nom_ccto,
         p.cc_global,
         p.pry_global,
         p.cod_modprs,
@@ -44,6 +45,9 @@ BEGIN
         e.des_etapa,
         e.cod_perfil
     FROM secgen_db.dbo.sg_prse p
+    LEFT JOIN fin21_db..es_ccto c
+        ON c.cod_unifin = p.cod_unifin
+       AND c.cod_ccto = p.cod_ccto
     LEFT JOIN secgen_db.dbo.sg_tmod m
         ON m.cod_modprs = p.cod_modprs
     LEFT JOIN secgen_db.dbo.sg_eta1 e

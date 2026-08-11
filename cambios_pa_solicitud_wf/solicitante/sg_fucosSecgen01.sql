@@ -29,7 +29,12 @@ BEGIN
 
     SELECT
         fc.id_funprse,
-        fc.fec_compro,
+        /* El componente horario identifica el tramo; la interfaz recibe el dia. */
+        dateadd(
+            day,
+            datediff(day, convert(datetime, '19000101'), fc.fec_compro),
+            convert(datetime, '19000101')
+        ) AS fec_compro,
         fc.hora_ini,
         fc.hora_ter
     FROM secgen_db.dbo.sg_fuco fc
@@ -37,7 +42,7 @@ BEGIN
     INNER JOIN secgen_db.dbo.sg_prse prse ON prse.nro_solici = fu.nro_solici
     WHERE fu.nro_solici = @nro_solici
       AND isnull(prse.cod_modprs, 1) = 2
-    ORDER BY fc.id_funprse, fc.fec_compro
+    ORDER BY fc.id_funprse, fc.fec_compro, fc.hora_ini, fc.hora_ter
 END
 GO
 
