@@ -25,6 +25,14 @@ Parametros    :
 Retorna       :
     Lista de asignaciones vigentes y habilitado_du288 ('S'/'N').
 
+Regla         :
+    - cod_tipcar = 5 corresponde a cargo directivo formal.
+    - cod_tipcar = 3 corresponde a una funcion. No se bloquea por el tipo
+      solamente; se resuelve la funcion vigente mediante sp_orde/sp_desg y
+      se clasifica por el nombre oficial del cargo de SISPER.
+    - Las funciones directivas identificadas en SISPER se bloquean dentro
+      del PA. El frontend y backend no deben inferirlas por texto.
+
 Creacion      : 2026/07/10
 */
 
@@ -61,11 +69,37 @@ BEGIN
         CASE
             WHEN @ind_anid = 'S' AND desg.cod_cargo = 3110 THEN 'S'
             WHEN carg.cod_tipcar = '5' THEN 'N'
+            WHEN carg.cod_tipcar = '3'
+             AND (
+                    UPPER(RTRIM(carg.nom_cargo)) LIKE '%DIRECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DIRECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%RECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%RECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DECANO%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DECANA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%VICERRECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%VICERRECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%SECRETARIO GENERAL%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%SECRETARIA GENERAL%'
+                ) THEN 'N'
             ELSE 'S'
         END AS habilitado_du288,
         CASE
             WHEN @ind_anid = 'S' AND desg.cod_cargo = 3110 THEN NULL
-            WHEN carg.cod_tipcar = '5' THEN 'Asignacion/designacion directiva vigente'
+            WHEN carg.cod_tipcar = '5' THEN 'Cargo directivo vigente'
+            WHEN carg.cod_tipcar = '3'
+             AND (
+                    UPPER(RTRIM(carg.nom_cargo)) LIKE '%DIRECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DIRECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%RECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%RECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DECANO%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%DECANA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%VICERRECTOR%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%VICERRECTORA%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%SECRETARIO GENERAL%'
+                 OR UPPER(RTRIM(carg.nom_cargo)) LIKE '%SECRETARIA GENERAL%'
+                ) THEN 'Funcion directiva vigente'
             ELSE NULL
         END AS motivo_inhabilidad
     FROM sisper_db.dbo.sp_orde orde
