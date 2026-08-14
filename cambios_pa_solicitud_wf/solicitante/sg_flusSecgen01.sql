@@ -14,21 +14,16 @@ GO
 
 /*
 Procedimiento : Analisis2.sg_flusSecgen01
-Objetivo      : Resolver el flujo organizacional DU288 correspondiente a un
-                Centro de Costo, sin recibir cod_flusol desde el cliente.
+Objetivo      : Resolver el flujo DU288 con los datos existentes del Centro
+                de Costo y los maestros sg_tfls/sg_eta1.
 
-Reglas vigentes:
-    02xxxxxx                         -> VRAC
-    03xxxxxx                         -> VRAF
-    16xxxxxx                         -> VRIP
-    05/07/08/09/17/18xxxxxx          -> FACULTAD
-
-Pendiente de definicion institucional:
-    ANID, DITT, INVESTIGACION e INSTITUTO.
-    Estas rutas no deben inferirse ni usar un flujo alternativo.
-
-La columna abr_flusol de sg_tfls debe contener una de las abreviaturas
-FACULTAD, VRIP, VRAC o VRAF y debe existir exactamente un flujo vigente.
+Restricciones del modelo actual:
+    - No crea ni consulta tablas adicionales de configuracion.
+    - La unidad institucional se obtiene desde fin21_db..es_ccto/es_ufin.
+    - El prefijo institucional determina los flujos identificables con los
+      datos actualmente disponibles.
+    - Investigacion y DITT deben contar con un dato diferenciador existente
+      antes de incorporarse; no se infieren por nombre ni por RUT.
 */
 CREATE PROCEDURE Analisis2.sg_flusSecgen01
     @cod_unifin smallint = NULL,
@@ -38,9 +33,10 @@ BEGIN
     DECLARE @cod_unidad char(8)
     DECLARE @unidad_mayor char(8)
     DECLARE @des_unidad varchar(100)
-    DECLARE @abr_flujo varchar(10)
+    DECLARE @prefijo char(2)
     DECLARE @cod_flusol tinyint
     DECLARE @des_flusol varchar(60)
+    DECLARE @abr_flujo varchar(10)
     DECLARE @cantidad_flujos int
     DECLARE @cantidad_etapas int
 
@@ -90,22 +86,21 @@ BEGIN
         RETURN
     END
 
-    SELECT @unidad_mayor = SUBSTRING(@cod_unidad, 1, 2) + '000000'
+    SELECT @prefijo = SUBSTRING(@cod_unidad, 1, 2)
+    SELECT @unidad_mayor = @prefijo + '000000'
 
-    SELECT @abr_flujo = CASE SUBSTRING(@cod_unidad, 1, 2)
-        WHEN '02' THEN 'VRAC'
-        WHEN '03' THEN 'VRAF'
-        WHEN '16' THEN 'VRIP'
-        WHEN '05' THEN 'FACULTAD'
-        WHEN '07' THEN 'FACULTAD'
-        WHEN '08' THEN 'FACULTAD'
-        WHEN '09' THEN 'FACULTAD'
-        WHEN '17' THEN 'FACULTAD'
-        WHEN '18' THEN 'FACULTAD'
+    /* Correspondencia soportada exclusivamente por la codificacion vigente. */
+    SELECT @cod_flusol = CASE
+        WHEN @prefijo IN ('06', '07', '08', '09', '17', '18') THEN 1
+        WHEN @prefijo IN ('10', '14', '15') THEN 4
+        WHEN @prefijo = '03' THEN 5
+        WHEN @prefijo = '02' THEN 6
+        WHEN @prefijo = '19' THEN 7
+        WHEN @prefijo = '16' THEN 8
         ELSE NULL
     END
 
-    IF @abr_flujo IS NULL
+    IF @cod_flusol IS NULL
     BEGIN
         SELECT
             @cod_unifin AS cod_unifin,
@@ -119,13 +114,13 @@ BEGIN
             CONVERT(varchar(10), NULL) AS abr_flusol,
             0 AS status,
             'NO_CONFIGURADO' AS estado_resolucion,
-            'La unidad institucional del Centro de Costo no tiene un flujo DU288 configurado.' AS mensaje
+            'La unidad institucional no permite determinar un flujo DU288 con los datos existentes.' AS mensaje
         RETURN
     END
 
     SELECT @cantidad_flujos = COUNT(*)
     FROM dbo.sg_tfls
-    WHERE UPPER(RTRIM(abr_flusol)) = @abr_flujo
+    WHERE cod_flusol = @cod_flusol
       AND ISNULL(vigente, 'S') = 'S'
 
     IF ISNULL(@cantidad_flujos, 0) <> 1
@@ -136,27 +131,27 @@ BEGIN
             @cod_unidad AS cod_unidad,
             @unidad_mayor AS unidad_mayor,
             @des_unidad AS des_unidad,
-            @abr_flujo AS tipo_flujo,
-            CONVERT(tinyint, NULL) AS cod_flusol,
+            CONVERT(varchar(10), NULL) AS tipo_flujo,
+            @cod_flusol AS cod_flusol,
             CONVERT(varchar(60), NULL) AS des_flusol,
-            @abr_flujo AS abr_flusol,
+            CONVERT(varchar(10), NULL) AS abr_flusol,
             0 AS status,
             CASE WHEN ISNULL(@cantidad_flujos, 0) = 0
                 THEN 'NO_CONFIGURADO'
                 ELSE 'AMBIGUO'
             END AS estado_resolucion,
             CASE WHEN ISNULL(@cantidad_flujos, 0) = 0
-                THEN 'No existe un flujo vigente en sg_tfls para la unidad institucional.'
-                ELSE 'Existe mas de un flujo vigente en sg_tfls para la unidad institucional.'
+                THEN 'El flujo determinado no existe o no esta vigente en sg_tfls.'
+                ELSE 'Existe mas de un flujo vigente para el codigo determinado.'
             END AS mensaje
         RETURN
     END
 
     SELECT
-        @cod_flusol = cod_flusol,
-        @des_flusol = des_flusol
+        @des_flusol = des_flusol,
+        @abr_flujo = abr_flusol
     FROM dbo.sg_tfls
-    WHERE UPPER(RTRIM(abr_flusol)) = @abr_flujo
+    WHERE cod_flusol = @cod_flusol
       AND ISNULL(vigente, 'S') = 'S'
 
     SELECT @cantidad_etapas = COUNT(*)
@@ -178,7 +173,7 @@ BEGIN
             @abr_flujo AS abr_flusol,
             0 AS status,
             'NO_CONFIGURADO' AS estado_resolucion,
-            'El flujo correspondiente no posee etapas vigentes configuradas.' AS mensaje
+            'El flujo correspondiente no posee etapas vigentes en sg_eta1.' AS mensaje
         RETURN
     END
 

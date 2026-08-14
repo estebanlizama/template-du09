@@ -88,7 +88,7 @@ erDiagram
 
 | Tabla | PK | Uso | Depende de | Si se agrega un registro |
 |---|---|---|---|---|
-| `secgen_db.dbo.sg_tfls` | `cod_flusol` | Define cada rama: Facultad, Investigación, DITT, Instituto, VRAF, VRAC, VIPRE o VRIP. | Ninguna física. | Agregar todas sus etapas en `sg_eta1`, transiciones en `sg_eta2` y una regla de resolución en `sg_flusSecgen01` si el flujo depende del centro de costo. |
+| `secgen_db.dbo.sg_tfls` | `cod_flusol` | Define cada rama: Facultad, Investigación, DITT, Instituto, VRAF, VRAC, VIPRE o VRIP. | Ninguna física. | Agregar etapas en `sg_eta1`, transiciones en `sg_eta2` y actualizar la correspondencia del PA únicamente si los datos existentes permiten identificar el flujo. |
 | `secgen_db.dbo.sg_eta1` | `cod_flusol + cod_etapa` | Define etapa, perfil, módulo y cargo organizacional. | `sg_tfls`; lógicamente `sistema_db.dbo.bd_per1` y `ufro_db.dbo.es_orga`. | Agregar transiciones de entrada/salida en `sg_eta2`, permiso en `bd_pepr` y confirmar que el actor pueda resolverse en ORCO/ORDE/AUFI. |
 | `secgen_db.dbo.sg_eta2` | `cod_flusol + cod_etapa1 + cod_etapa2` | Define acciones permitidas, destino y estado resultante. | `sg_eta1`, `sg_tacc`, `sg_esol`. | Debe existir una transición única por flujo, etapa origen y acción. Validar retorno a corrección y etapa final. |
 
@@ -308,14 +308,14 @@ contrato -> unidad -> es_orga.cod_organi
 |---|---|---|
 | Nuevo tipo de solicitud | `sg_tsol`; perfil/permisos; plantilla `sg_plre/sg_plde`; estados y PA que lo filtran. | Crear borrador y consultar bandeja. |
 | Nueva modalidad PDS | `sg_tmod`; reglas de PA por modalidad; frontend/backend constants. | Crear solicitud y comprobar reglas específicas. |
-| Nuevo flujo | `sg_tfls` -> `sg_eta1` -> `sg_eta2` -> `bd_pepr`; ajustar `sg_flusSecgen01` si la selección es por centro. | Resolver centro, mostrar etapas y ejecutar cada acción. |
+| Nuevo flujo | `sg_tfls` -> `sg_eta1` -> `sg_eta2` -> `bd_pepr`; utilizar `es_ccto/es_ufin` para identificarlo y ORCO/ORDE/AUFI para resolver actores. | Resolver centro, actores, política de omisión, mostrar etapas y ejecutar cada acción. |
 | Nueva etapa | `sg_eta1`; transiciones entrantes/salientes `sg_eta2`; perfil `bd_per1`; permiso `bd_pepr`; cargo/actor ORCO-ORDE-AUFI. | El PA de actores devuelve exactamente el responsable esperado. |
 | Nueva acción | `sg_tacc`; una transición `sg_eta2` por etapa; mapeo de backend. | Acción visible, estado resultante correcto e historial creado. |
 | Nuevo estado de solicitud | `sg_esol`; `sg_eta2`; constantes y filtros de bandeja. | La solicitud aparece únicamente en la bandeja correspondiente. |
 | Nuevo estado de aprobación | `sg_eapr`; lógica de actualización/consulta de `sg_apso` y `sg_apre`. | Tareas y firmantes no quedan pendientes por un código desconocido. |
 | Nuevo perfil estático | `bd_per1`; privilegio en `bd_pepr`; eventualmente `sg_perf/sg_uspe`. | El JWT entrega permiso y la etapa reconoce el perfil. |
 | Nuevo actor dinámico | No crear perfil personal. Resolver RUT desde solicitud/organización y crear `sg_apso`. | La tarea aparece solo para el RUT resuelto. |
-| Nuevo centro de costo de prueba | `fin21.es_ccto` y maestros financieros relacionados; responsable/persona/unidad existentes. Si requiere nueva rama, ajustar `sg_flusSecgen01`. | Centro recuperado con nombre, proyecto, jefe y flujo correctos. |
+| Nuevo centro de costo de prueba | `fin21.es_ccto` y maestros financieros relacionados; responsable/persona/unidad existentes. Debe poseer una unidad cuya codificación permita determinar un flujo vigente. | Centro recuperado con nombre, proyecto, jefe y flujo correctos. |
 | Nuevo cargo/tope | Cargo en `sp_carg`, unidad en `es_unid`, regla vigente en `sg_toca`. | `sg_tocasSecgen01` devuelve tope y condición correcta. |
 | Nuevo funcionario en solicitud | `sg_fups`; `sg_fuho`; `sg_fuco` solo si compensa. Fuentes de persona/contrato deben existir. | Detalle y edición recargan horarios y compensaciones. |
 | Nueva plantilla de resolución | `sg_plse` si falta sección; `sg_plre`; todos los `sg_plde`; configurar ID usado por backend. | Previsualización sin variables pendientes y resolución reproducible. |
@@ -417,11 +417,11 @@ Si existen tareas `sg_apso` asociadas al funcionario, no corresponde una elimina
 
 ## 14. Riesgos detectados
 
-1. `sg_flusSecgen01` contiene reglas de resolución por centro/prefijo; agregar solo `sg_tfls` no garantiza que el flujo sea seleccionable.
-2. `sg_fuco` permite varios tramos diarios porque `fec_compro` guarda fecha y hora de inicio; normalizarlo a medianoche volvería a producir colisiones de PK.
-3. El backend conserva consultas legacy a `sg_fume`; una validación antigua puede reactivar erróneamente `MESES_NO_SELECCIONADOS`.
-4. Los roles dinámicos dependen de datos externos vigentes. Una etapa bien configurada puede quedar sin actor si ORCO, ORDE, AUFI u ORGA no tienen correspondencia.
-5. Los documentos firmados se guardan en una tabla MySQL anual. Al cambiar de año debe existir `MySecGen.sg_rslc_<año>` con la misma estructura y permisos.
-6. Los PA legacy usan `sg_parm`; una carga manual que no actualice el correlativo puede provocar claves duplicadas.
-7. La definición documental de algunas FK de `sg_eta2` es inconsistente; se debe validar el esquema real de certificación antes de aplicar DDL.
-
+1. `sg_flusSecgen01` usa la unidad institucional existente. Investigación y DITT requieren un atributo actual, estable y diferenciador; no deben inferirse por nombre o RUT.
+2. `sg_etasSecgen01` usa `sg_eta1.cod_perfil` y `sg_eta1.cod_organi`. Cuando `cod_organi` está vacío para una etapa institucional, el PA utiliza el código existente de `es_orga` según flujo y unidad.
+3. `sg_fuco` permite varios tramos diarios porque `fec_compro` guarda fecha y hora de inicio; normalizarlo a medianoche volvería a producir colisiones de PK.
+4. El backend conserva consultas legacy a `sg_fume`; una validación antigua puede reactivar erróneamente `MESES_NO_SELECCIONADOS`.
+5. Los roles dinámicos dependen de datos externos vigentes. Una etapa bien configurada puede quedar sin actor si ORCO, ORDE, AUFI u ORGA no tienen correspondencia.
+6. Los documentos firmados se guardan en una tabla MySQL anual. Al cambiar de año debe existir `MySecGen.sg_rslc_<año>` con la misma estructura y permisos.
+7. Los PA legacy usan `sg_parm`; una carga manual que no actualice el correlativo puede provocar claves duplicadas.
+8. La definición documental de algunas FK de `sg_eta2` es inconsistente; se debe validar el esquema real de certificación antes de aplicar DDL.
