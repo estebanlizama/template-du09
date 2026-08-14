@@ -148,27 +148,32 @@ BEGIN
         RETURN
     END
 
-    CREATE TABLE #responsables (
-        rut_responsable char(9) NOT NULL,
-        fuente_resolucion varchar(20) NOT NULL
-    )
+    DECLARE @rut_responsable char(9)
+    DECLARE @fuente_resolucion varchar(20)
 
-    INSERT INTO #responsables
-    SELECT DISTINCT orco.rut_person, 'ORCO'
+    /* 1. Evaluar Titular (ORCO) */
+    SELECT @rut_responsable = min(orco.rut_person)
     FROM sisper_db.dbo.sp_orco orco
     WHERE orco.cod_organi = @cod_organi
       AND orco.vigente = 'S'
 
-    IF @@rowcount = 0
+    IF @rut_responsable IS NOT NULL
+        SELECT @fuente_resolucion = 'ORCO'
+
+    /* 2. Si no existe Titular, evaluar Subrogante/Delegado (ORDE) */
+    IF @rut_responsable IS NULL
     BEGIN
-        INSERT INTO #responsables
-        SELECT DISTINCT orde.rut_person, 'ORDE'
+        SELECT @rut_responsable = min(orde.rut_person)
         FROM sisper_db.dbo.sp_orde orde
         WHERE orde.cod_organi = @cod_organi
           AND orde.vigente = 'S'
+
+        IF @rut_responsable IS NOT NULL
+            SELECT @fuente_resolucion = 'ORDE'
     END
 
-    IF NOT EXISTS (SELECT 1 FROM #responsables)
+    /* 3. Si no existe en la organizacion directa, evaluar Jefatura AUFI */
+    IF @rut_responsable IS NULL
     BEGIN
         SELECT @prioridad = min(aufi.prioridad)
         FROM sisper_db.dbo.sp_aufi aufi
@@ -188,35 +193,37 @@ BEGIN
               )
           )
 
-        INSERT INTO #responsables
-        SELECT DISTINCT orco.rut_person, 'AUFI_ORCO'
-        FROM sisper_db.dbo.sp_aufi aufi
-        INNER JOIN sisper_db.dbo.sp_orco orco
-            ON orco.cod_organi = aufi.cod_organ2
-           AND orco.vigente = 'S'
-        WHERE aufi.cod_organi = @cod_organi
-          AND aufi.prioridad = @prioridad
+        IF @prioridad IS NOT NULL
+        BEGIN
+            SELECT @rut_responsable = min(orco.rut_person)
+            FROM sisper_db.dbo.sp_aufi aufi
+            INNER JOIN sisper_db.dbo.sp_orco orco
+                ON orco.cod_organi = aufi.cod_organ2
+               AND orco.vigente = 'S'
+            WHERE aufi.cod_organi = @cod_organi
+              AND aufi.prioridad = @prioridad
 
-        INSERT INTO #responsables
-        SELECT DISTINCT orde.rut_person, 'AUFI_ORDE'
-        FROM sisper_db.dbo.sp_aufi aufi
-        INNER JOIN sisper_db.dbo.sp_orde orde
-            ON orde.cod_organi = aufi.cod_organ2
-           AND orde.vigente = 'S'
-        WHERE aufi.cod_organi = @cod_organi
-          AND aufi.prioridad = @prioridad
-          AND NOT EXISTS (
-              SELECT 1
-              FROM sisper_db.dbo.sp_orco orco
-              WHERE orco.cod_organi = aufi.cod_organ2
-                AND orco.vigente = 'S'
-          )
+            IF @rut_responsable IS NOT NULL
+                SELECT @fuente_resolucion = 'AUFI_ORCO'
+
+            IF @rut_responsable IS NULL
+            BEGIN
+                SELECT @rut_responsable = min(orde.rut_person)
+                FROM sisper_db.dbo.sp_aufi aufi
+                INNER JOIN sisper_db.dbo.sp_orde orde
+                    ON orde.cod_organi = aufi.cod_organ2
+                   AND orde.vigente = 'S'
+                WHERE aufi.cod_organi = @cod_organi
+                  AND aufi.prioridad = @prioridad
+
+                IF @rut_responsable IS NOT NULL
+                    SELECT @fuente_resolucion = 'AUFI_ORDE'
+            END
+        END
     END
 
-    SELECT @cantidad = count(DISTINCT rut_responsable)
-    FROM #responsables
-
-    IF @cantidad = 0
+    /* 4. Si no fue posible resolver un responsable */
+    IF @rut_responsable IS NULL
     BEGIN
         SELECT
             @cod_flusol1 AS cod_flusol,
@@ -234,15 +241,16 @@ BEGIN
         RETURN
     END
 
-    SELECT DISTINCT
+    /* 5. Retornar el responsable resuelto */
+    SELECT
         @cod_flusol1 AS cod_flusol,
         @cod_etapa AS cod_etapa,
         @cod_perfil AS cod_perfil,
         @cod_organi AS cod_organi,
         @cod_respon AS cod_respon,
         CONVERT(int, NULL) AS id_funprse,
-        resp.rut_responsable,
-        resp.fuente_resolucion,
+        @rut_responsable AS rut_responsable,
+        @fuente_resolucion AS fuente_resolucion,
         RTRIM(LTRIM(
             ISNULL(
                 CASE
@@ -254,17 +262,12 @@ BEGIN
             ) + ' ' + ISNULL(per.nom_appate, '') + ' ' + ISNULL(per.nom_apmate, '')
         )) AS nombre_responsable,
         RTRIM(org.des_organi) AS cargo_responsable,
-        CASE WHEN @cantidad = 1 THEN 'ENCONTRADO' ELSE 'AMBIGUO' END AS estado_resolucion,
-        CASE
-            WHEN @cantidad = 1 THEN NULL
-            ELSE 'Existe mas de un titular o subrogante vigente para la organizacion.'
-        END AS mensaje
-    FROM #responsables resp
+        'ENCONTRADO' AS estado_resolucion,
+        CONVERT(varchar(255), NULL) AS mensaje
+    FROM sisper_db..sp_pers per
     LEFT JOIN ufro_db..es_orga org
         ON org.cod_organi = @cod_organi
-    LEFT JOIN sisper_db..sp_pers per
-        ON per.rut_person = resp.rut_responsable
-    ORDER BY resp.rut_responsable
+    WHERE per.rut_person = @rut_responsable
 END
 GO
 

@@ -256,14 +256,13 @@ BEGIN
         RETURN
     END
 
-    /* Una correccion devuelta desde decretacion reingresa a esa fase. */
+    /* Una correccion devuelta desde la fase de resolucion reingresa a esa fase. */
     IF @nro_solici IS NOT NULL AND @id_tipacc = 1
     BEGIN
-        SELECT @cod_etapa_resol = min(cod_etapa)
-        FROM secgen_db.dbo.sg_eta1
+        SELECT @cod_etapa_resol = min(cod_etapa1)
+        FROM secgen_db.dbo.sg_eta2
         WHERE cod_flusol = @cod_flusol1
-          AND cod_perfil = 12
-          AND isnull(vigente, 'S') = 'S'
+          AND id_tipacc IN (5, 6)
 
         SELECT @cod_etapa_devol = cod_etapa
         FROM secgen_db.dbo.sg_apso
@@ -310,12 +309,7 @@ BEGIN
         accion.des_accion,
         destino.cod_perfil AS cod_perfil_destino,
         destino.cod_organi AS cod_organi_destino,
-        CASE
-            WHEN destino.cod_perfil = 6 THEN 1
-            WHEN destino.cod_perfil = 25 THEN 2
-            WHEN destino.cod_perfil = 26 THEN 3
-            ELSE 4
-        END AS cod_respon_destino,
+        destino.cod_perfil AS cod_respon_destino,
         destino.est_final AS etapa_final,
         CONVERT(varchar(255), NULL) AS mensaje
     FROM secgen_db.dbo.sg_eta2 transicion
