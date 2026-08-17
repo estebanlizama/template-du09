@@ -854,7 +854,10 @@ Jefe de Proyecto.
   * Rol.
   * Fecha y hora.
   * Estado resultante.
-* La solicitud aprobada debe avanzar a la etapa siguiente del flujo: **Jefatura Directa / Dirección de Departamento**.
+* La condición de jornada determina únicamente la participación de la **Jefatura Directa**:
+  * `dentro_jor IN ('S', 'D')`: la solicitud debe asignarse a la Jefatura Directa vigente del funcionario.
+  * `dentro_jor = 'N'`: la etapa de Jefatura Directa no aplica y debe omitirse automáticamente, sin crear una visación ficticia.
+* Cuando se omita la Jefatura Directa, el sistema debe registrar el motivo en la trazabilidad y continuar a la siguiente etapa organizacional aplicable.
 
 ### E. Historia de usuario preliminar
 
@@ -864,7 +867,8 @@ Jefe de Proyecto.
 
 * **RF-PP02-050:** El sistema debe permitir aprobar la solicitud desde la pantalla del Jefe de Proyecto.
 * **RF-PP02-051:** El sistema debe registrar la aprobación con usuario, rol, fecha y hora/ acorde alo definido en el proyecto.
-* **RF-PP02-052:** El sistema debe derivar la solicitud aprobada a la etapa siguiente del flujo que es Jefatura Directa o Direccion de Departamento.
+* **RF-PP02-052:** El sistema debe derivar la solicitud aprobada a Jefatura Directa cuando la prestación se realiza dentro de jornada, o a la siguiente etapa organizacional cuando se realiza fuera de jornada.
+* **RF-PP02-053:** El Jefe de Proyecto debe participar siempre, independientemente de la condición de jornada declarada para la prestación.
 
 ---
 
@@ -1026,7 +1030,8 @@ Sistema.
 
 | Acción del Jefe de Proyecto             | Estado resultante de la solicitud                                | Destino del flujo                                       |
 | --------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------- |
-| Aprobar                                 | Aprobada por Jefe de Proyecto / En revisión por Jefatura Directa | Etapa 03 — Jefatura Directa / Dirección de Departamento |
+| Aprobar, prestación dentro de jornada   | Aprobada por Jefe de Proyecto / En revisión por Jefatura Directa | Etapa 03 — Jefatura Directa                              |
+| Aprobar, prestación fuera de jornada    | Aprobada por Jefe de Proyecto / En revisión organizacional       | Se omite Jefatura Directa y continúa a la etapa aplicable |
 | Devolver al Solicitante con comentarios | Devuelta al Solicitante para corrección                          | Regresa a Pantalla 01 con edición habilitada            |
 | Rechazar definitivamente                | Rechazada por Jefe de Proyecto                                   | Cierre del flujo para ese expediente                    |
 
@@ -1045,7 +1050,8 @@ Sistema.
 | RG-P02-007 | La solicitud devuelta debe reabrirse para edición del Solicitante.                                      |
 | RG-P02-008 | La solicitud rechazada no debe avanzar a etapas posteriores.                                            |
 | RG-P02-009 | La solicitud aprobada debe pasar a la etapa siguiente de visación.                                      |
-| **RG-PP02-010** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
+| RG-P02-010 | La jornada solo condiciona la etapa de Jefatura Directa; no condiciona la revisión del Jefe de Proyecto. |
+| **RG-PP02-011** | Toda acción de devolución o rechazo debe gatillar un correo electrónico automático de notificación al Solicitante (y destinatarios correspondientes si aplica) y dejar registro auditable en trazabilidad. |
 
 ---
 

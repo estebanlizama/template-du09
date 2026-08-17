@@ -1292,7 +1292,7 @@ Solicitante.
 * Centro de Costo seleccionado y validado.
 * Datos generales de proyecto completos.
 * Evidencias completas.
-* Al menos un funcionario agregado.
+* Exactamente un funcionario agregado para solicitudes DU288.
 * El funcionario agregado cumple sus validaciones.
 * Montos y topes válidos.
 * Compensaciones requeridas completas.
@@ -1309,6 +1309,7 @@ Solicitante.
 * **RF-P01-077:** El sistema debe impedir el envío y mostrar errores detallados si existen incumplimientos.
 * **RF-P01-078:** El sistema debe cambiar el estado de la solicitud a “Enviada” cuando el despacho sea exitoso.
 * **RF-P01-079:** El sistema debe derivar la solicitud a la etapa de Jefe de Proyecto.
+* **RF-P01-080:** La condición de jornada no modifica la primera revisión: toda solicitud DU288 enviada debe pasar por Jefe de Proyecto.
 
 ---
 

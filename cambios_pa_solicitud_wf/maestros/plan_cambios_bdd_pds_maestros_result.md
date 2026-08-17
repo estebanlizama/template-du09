@@ -979,6 +979,28 @@ request.provision.activity = request.staffList[0].reason
 5. Ejecutar `npm run build` y `npm run test:unit` en backend.
 6. Ejecutar lint, `lint:du288-ui` y build en frontend.
 7. Ejecutar la matriz E2E contra BDD de desarrollo.
+
+### 9.8 Regla de jornada y Jefatura Directa
+
+1. La solicitud DU288 siempre se envia primero al Jefe de Proyecto. La condicion de jornada no altera esta etapa.
+2. Despues de la aprobacion del Jefe de Proyecto:
+   - `dentro_jor IN ('S', 'D')`: se resuelve y asigna la Jefatura Directa vigente;
+   - `dentro_jor = 'N'`: la etapa Jefe Directo Funcionario no aplica y se omite.
+3. La omision por jornada no debe crear una tarea pendiente ni una aprobacion automatica atribuida al jefe directo.
+4. La omision debe quedar registrada en el historial con el motivo funcional y con el usuario cuya aprobacion produjo el avance.
+5. La previsualizacion debe informar:
+   - la etapa que no aplica;
+   - el motivo: prestacion fuera de jornada;
+   - la siguiente etapa efectiva y su responsable vigente.
+6. `sg_etasSecgen01` debe retornar `OMITIR_FUERA_JORNADA` para la estrategia `JEFE_DIRECTO` cuando `sg_fups.dentro_jor = 'N'`.
+7. Si la condicion de jornada es nula o distinta de `S`, `D` o `N`, backend debe bloquear el avance por dato inconsistente.
+8. Esta regla es distinta de la omision por actor repetido: fuera de jornada significa que la revision no aplica; actor repetido significa que la misma persona revisara posteriormente en otra etapa.
+
+| Condicion | Jefe de Proyecto | Jefe Directo | Resultado |
+| :--- | :--- | :--- | :--- |
+| Dentro de jornada (`S`/`D`) | Revisa | Revisa | Continuan ambas visaciones configuradas. |
+| Fuera de jornada (`N`) | Revisa | No aplica | Se registra la omision y se continua a la siguiente etapa organizacional. |
+| No informada/invalida | No se altera la revision ya realizada | No se resuelve | Se bloquea el avance hasta corregir el dato. |
 8. Desplegar en orden PA, backend y frontend.
 9. Realizar prueba de humo posterior al despliegue.
 
