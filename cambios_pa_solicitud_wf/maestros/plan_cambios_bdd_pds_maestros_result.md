@@ -937,6 +937,7 @@ request.provision.activity = request.staffList[0].reason
    - resolucion.
 9. Ajustar textos de creacion a singular: `Funcionario de la solicitud`, `Actividad del funcionario` y mensajes equivalentes.
 10. En vistas historicas capaces de recibir varias filas, conservar presentacion compatible y no ocultar informacion existente.
+11. Permitir quitar el funcionario de la tabla durante la edicion local. La solicitud no puede guardarse ni enviarse hasta incorporar nuevamente exactamente uno.
 
 ### 9.5 Matriz de validaciones
 
@@ -987,6 +988,7 @@ request.provision.activity = request.staffList[0].reason
 | :--- | :--- | :--- |
 | PA | `solicitante/sg_fupsiSecgen01.sql` | Limite de una fila, respuesta estructurada y sincronizacion de actividad. |
 | PA | `solicitante/sg_fupsuSecgen01.sql` | Actualizacion atomica de actividad de funcionario y prestacion. |
+| PA | `solicitante/sg_fupsdSecgen01.sql` | Impedir la eliminacion aislada del unico funcionario DU288 y permitir solo limpieza de excedentes historicos. |
 | Backend | `service-provision-workflow.service.ts` | Validacion previa a transaccion para crear y actualizar. |
 | Backend | `service-provision-request-procedures.repository.ts` | Normalizacion, reemplazo uno a uno y validacion de respuestas PA. |
 | Backend | `service-provision-request.ts` | Contrato de ejecucion de PA, si requiere nuevos parametros o retorno. |

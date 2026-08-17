@@ -42,7 +42,7 @@ La pantalla debe permitir que el solicitante:
 2. Seleccione un Centro de Costo compatible con el flujo normativo.
 3. Visualice los antecedentes asociados al proyecto y su origen presupuestario.
 4. Declare la modalidad de prestación y la planificación de evidencias verificables.
-5. Registre la descripción general y periodo de ejecución de la actividad.
+5. Registre el periodo general de ejecución.
 6. Busque y seleccione al funcionario que recibirá la prestación.
 7. Visualice y valide sus antecedentes contractuales, normativos y financieros.
 8. Declare la modalidad de ejecución dentro o fuera de jornada.
@@ -67,11 +67,11 @@ La Pantalla 01 debe organizarse en los siguientes bloques funcionales:
 | **P01-B05** | Descripción y periodo de ejecución         | Registrar actividad general y fechas de inicio/término.                                         |
 | **P01-B06** | Búsqueda y selección de funcionario        | Localizar al funcionario que será incorporado a la PDS.                                         |
 | **P01-B07** | Validaciones preventivas del funcionario   | Revisar formación continua, inhabilidades, deudas, elegibilidad y antecedentes complementarios. |
-| **P01-B08** | Datos contractuales y actividad específica | Mostrar perfil laboral y registrar la actividad individual del funcionario.                     |
+| **P01-B08** | Datos contractuales y actividad del funcionario | Mostrar perfil laboral y registrar la actividad única de la solicitud.                     |
 | P01-B09 | Modalidad de ejecución y montos            | Definir meses, monto bruto total, total PDS y visualizar control de topes.                      |
 | **P01-B10** | Jornada y compensación horaria             | Definir trabajo dentro/fuera de jornada y compensación si aplica.                               |
 | **P01-B11** | Agregar funcionario                        | Incorporar al funcionario validado a la solicitud.                                              |
-| **P01-B12** | Tabla resumen de funcionarios              | Visualizar los funcionarios incorporados y sus datos principales.                               |
+| **P01-B12** | Resumen del funcionario                    | Visualizar el funcionario incorporado y sus datos principales.                                  |
 | **P01-B13** | Acciones finales                           | Guardar borrador o enviar solicitud a la etapa siguiente.                                       |
 
 ---
@@ -466,11 +466,11 @@ Solicitante.
 
 # P01-B05 — Descripción y periodo de ejecución
 
-## Funcionalidad P01-F08 — Registrar descripción general de la actividad
+## Funcionalidad P01-F08 — Sincronizar actividad de la prestación
 
 ### A. Descripción funcional
 
-El solicitante debe ingresar una descripción general de la actividad de prestación de servicios asociada al proyecto.
+El sistema debe copiar automáticamente a la prestación la actividad ingresada para el único funcionario de la solicitud DU288.
 
 ### B. Actor principal
 
@@ -478,27 +478,30 @@ Solicitante.
 
 ### C. Datos de entrada
 
-* Descripción textual de la actividad.
+* No existe un campo adicional. La fuente de entrada es la actividad del funcionario.
 
 ### D. Reglas de negocio
 
-* La descripción debe quedar almacenada como parte de la solicitud.
-* Debe distinguirse de la “actividad específica del funcionario”, que se registra posteriormente.
+* `sg_fups.motivo` es la fuente de verdad.
+* `sg_prse.actividad` debe guardar automáticamente el mismo texto.
+* El solicitante no puede editar ambas actividades de forma independiente.
+* Esta sincronización aplica solo a DU288; el flujo legacy conserva su comportamiento.
 
 ### E. Validaciones
 
 | Validación        | Efecto                               |
 | ----------------- | ------------------------------------ |
-| Campo obligatorio | Bloquea avance final si queda vacío. |
+| Actividad del funcionario ausente o menor a 10 caracteres | Bloquea guardado y envío. |
+| Actividades distintas en el payload | El backend usa la actividad del funcionario. |
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-08:** Como **Solicitante**, quiero describir la actividad general de la PDS, para dejar claramente definido el propósito de la solicitud.
+**HU-P01-08:** Como **Solicitante**, quiero ingresar una sola actividad para el funcionario, para que la prestación mantenga automáticamente el mismo texto.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P01-026:** El sistema debe permitir registrar la descripción general de la actividad.
-* **RF-P01-027:** El sistema debe exigir la descripción como campo obligatorio.
+* **RF-P01-026:** El sistema debe derivar `sg_prse.actividad` desde `sg_fups.motivo`.
+* **RF-P01-027:** El sistema debe exigir una actividad de al menos 10 caracteres antes de guardar o enviar.
 
 ---
 
@@ -756,11 +759,11 @@ Sistema, visible para el Solicitante.
 
 ---
 
-## Funcionalidad P01-F13 — Registrar actividad específica del funcionario
+## Funcionalidad P01-F13 — Registrar actividad del funcionario
 
 ### A. Descripción funcional
 
-El solicitante debe registrar la actividad específica que realizará el funcionario dentro del marco general de la prestación.
+El solicitante debe registrar la actividad que realizará el único funcionario de la solicitud. Este texto también representa la actividad de la prestación.
 
 ### B. Actor principal
 
@@ -772,7 +775,9 @@ Solicitante.
 
 ### D. Reglas de negocio
 
-* Esta actividad es específica por funcionario, no necesariamente idéntica a la descripción general de la solicitud.
+* La solicitud DU288 contiene exactamente un funcionario.
+* La actividad del funcionario es la fuente principal y debe ser idéntica a la actividad de la prestación.
+* Al cambiar la actividad del funcionario, el sistema debe sincronizar la prestación en la misma transacción.
 
 ### E. Validaciones
 
@@ -782,12 +787,13 @@ Solicitante.
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-13:** Como **Solicitante**, quiero describir la actividad específica que realizará el funcionario, para precisar su participación dentro de la prestación solicitada.
+**HU-P01-13:** Como **Solicitante**, quiero describir una sola vez la actividad del funcionario, para evitar inconsistencias con la prestación solicitada.
 
 ### G. Requerimientos funcionales preliminares
 
-* **RF-P01-042:** El sistema debe permitir registrar una actividad específica por funcionario.
-* **RF-P01-043:** El sistema debe exigir que la actividad específica esté completa antes de agregar al funcionario.
+* **RF-P01-042:** El sistema debe permitir registrar la actividad del único funcionario DU288.
+* **RF-P01-043:** El sistema debe exigir que la actividad esté completa antes de incorporar, guardar o enviar.
+* **RF-P01-043A:** El backend y los PA deben ignorar una actividad de prestación distinta y usar `sg_fups.motivo`.
 
 ---
 
@@ -812,7 +818,7 @@ Solicitante.
 ### D. Reglas de negocio
 
 * Se permite seleccionar como máximo dos meses por año calendario para una misma actividad por funcionario, según lo previamente definido.
-* Los meses de ejecución pueden ser distintos entre funcionarios dentro de una misma solicitud.
+* Los meses de ejecución corresponden al único funcionario de la solicitud.
 * Los meses deben encontrarse dentro del rango entre la fecha de inicio y término de la prestación.
 * El sistema debe considerar los meses ya aprobados o en trámite para el mismo funcionario y actividad dentro del año calendario, no solo los meses seleccionados en la solicitud actual.
 * Si la actividad del funcionario requiere más de dos meses, la solicitud debe bloquear esa asignación e informar que corresponde evaluar otra modalidad contractual según normativa.
@@ -859,7 +865,7 @@ Solicitante y Sistema.
 ### D. Datos calculados
 
 * Total PDS del funcionario.
-* Total PDS de la solicitud como sumatoria de los montos brutos totales de los funcionarios incorporados.
+* Total PDS de la solicitud igual al monto bruto total del funcionario incorporado.
 
 ### E. Reglas de negocio
 
@@ -1074,12 +1080,11 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 * Datos de proyecto cargados.
 * Modalidad de prestación definida.
 * Evidencia seleccionada.
-* Descripción general de actividad.
 * Fechas de ejecución.
 * Funcionario seleccionado.
 * Contrato vigente seleccionado cuando corresponda.
 * Validaciones de deudas, inhabilidades y restricciones cumplidas.
-* Actividad específica del funcionario registrada.
+* Actividad del funcionario registrada.
 * Meses de ejecución seleccionados.
 * Monto bruto total ingresado.
 * Tope aplicable cumplido.
@@ -1091,11 +1096,12 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 
 * El funcionario se incorpora a la tabla resumen de la solicitud.
 * El funcionario queda asociado a la modalidad de prestación, contrato seleccionado, condición dentro/fuera de jornada, meses de ejecución, monto bruto total, evidencias y compensaciones cuando correspondan.
-* El formulario de funcionario puede limpiarse para permitir agregar otro funcionario, si el flujo lo permite.
+* Una vez incorporado el funcionario, la búsqueda para agregar otro debe quedar deshabilitada.
+* El usuario puede editar o reemplazar al funcionario existente, conservando el `id_funprse` al persistir.
 
 ### F. Historia de usuario preliminar
 
-**HU-P01-20:** Como **Solicitante**, quiero agregar a la solicitud un funcionario que ya fue validado, para construir la nómina de personas asociadas a la PDS.
+**HU-P01-20:** Como **Solicitante**, quiero asociar un único funcionario validado a la solicitud DU288, para completar la prestación sin duplicidades.
 
 ### G. Requerimientos funcionales preliminares
 
@@ -1103,16 +1109,18 @@ El sistema debe verificar que estén completos y válidos dinamico en la pagina 
 * **RF-P01-062:** El sistema debe impedir agregar funcionarios con validaciones pendientes o incumplidas.
 * **RF-P01-063:** El sistema debe mostrar mensajes detallados de incumplimiento cuando no sea posible agregar al funcionario.
 * **RF-P01-063A:** El sistema debe persistir los datos normativos y financieros asociados al funcionario incorporado a la PDS.
+* **RF-P01-063B:** El sistema debe impedir guardar o enviar una DU288 con cero o más de un funcionario.
+* **RF-P01-063C:** El reemplazo debe actualizar la relación existente y no ejecutarse como eliminación seguida de inserción.
 
 ---
 
-# P01-B12 — Tabla resumen de funcionarios
+# P01-B12 — Resumen del funcionario
 
-## Funcionalidad P01-F21 — Visualizar resumen de funcionarios agregados
+## Funcionalidad P01-F21 — Visualizar resumen del funcionario
 
 ### A. Descripción funcional
 
-El sistema debe mostrar una tabla resumen con los funcionarios ya incorporados a la solicitud.
+El sistema debe mostrar el resumen del único funcionario incorporado a la solicitud.
 
 ### B. Actor principal
 
@@ -1154,20 +1162,20 @@ Solicitante.
 
 ### E. Historia de usuario preliminar
 
-**HU-P01-21:** Como **Solicitante**, quiero visualizar un resumen de los funcionarios agregados, para revisar la composición de la solicitud antes de enviarla.
+**HU-P01-21:** Como **Solicitante**, quiero visualizar el resumen del funcionario, para revisar la solicitud antes de enviarla.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P01-064:** El sistema debe mostrar una tabla resumen con los funcionarios incorporados.
-* **RF-P01-065:** El sistema debe conservar todos los datos detallados asociados a cada funcionario agregado.
+* **RF-P01-064:** El sistema debe mostrar el resumen del funcionario incorporado.
+* **RF-P01-065:** El sistema debe conservar todos los datos detallados asociados al funcionario.
 
 ---
 
-## Funcionalidad P01-F22 — Eliminar funcionario de la solicitud
+## Funcionalidad P01-F22 — Reemplazar funcionario de la solicitud
 
 ### A. Descripción funcional
 
-El solicitante debe poder eliminar un funcionario incorporado a la tabla resumen antes del envío.
+El solicitante debe poder reemplazar el funcionario antes del envío, sin dejar una solicitud persistida sin funcionario.
 
 ### B. Actor principal
 
@@ -1175,20 +1183,23 @@ Solicitante.
 
 ### C. Acción disponible
 
-* Botón eliminar en la columna “Acciones”.
+* Acciones **Editar**, **Eliminar de la tabla** y **Reemplazar funcionario**.
 
 ### D. Regla de negocio
 
-* La eliminación debe realizarse antes del envío formal de la solicitud.
+* El reemplazo debe realizarse antes del envío formal de la solicitud.
+* El formulario puede quedar temporalmente sin funcionario durante la edición local, pero no puede guardarse ni enviarse en ese estado.
+* El guardado debe reutilizar el `id_funprse` existente.
+* No se permite persistir una eliminación aislada del único funcionario.
 
 ### E. Historia de usuario preliminar
 
-**HU-P01-22:** Como **Solicitante**, quiero eliminar un funcionario de la solicitud antes de enviarla, para corregir la nómina cuando sea necesario.
+**HU-P01-22:** Como **Solicitante**, quiero reemplazar al funcionario antes de enviar, para corregir la solicitud sin romper su relación uno a uno.
 
 ### F. Requerimientos funcionales preliminares
 
-* **RF-P01-066:** El sistema debe permitir eliminar funcionarios agregados mientras la solicitud se encuentre editable.
-* **RF-P01-067:** El sistema debe solicitar confirmación antes de eliminar el registro.
+* **RF-P01-066:** El sistema debe permitir editar, quitar de la tabla o reemplazar el funcionario mientras la solicitud se encuentre editable.
+* **RF-P01-067:** El sistema debe mantener el mismo `id_funprse` durante el reemplazo.
 
 ---
 
@@ -1282,7 +1293,7 @@ Solicitante.
 * Datos generales de proyecto completos.
 * Evidencias completas.
 * Al menos un funcionario agregado.
-* Todos los funcionarios agregados cumplen sus validaciones.
+* El funcionario agregado cumple sus validaciones.
 * Montos y topes válidos.
 * Compensaciones requeridas completas.
 * Fechas y meses consistentes.
@@ -1401,12 +1412,12 @@ Regla: `nro_solori` no reemplaza a `nro_solici`; solo permite saber de que solic
 | P01-F04 | Validar Centro de Costo seleccionado.                    |
 | P01-F05 | Cargar datos del proyecto asociados al Centro de Costo.  |
 | P01-F07 | Registrar evidencias verificables.                       |
-| P01-F08 | Registrar descripción general de la actividad.           |
+| P01-F08 | Sincronizar actividad de la prestación.                  |
 | P01-F09 | Registrar fechas de inicio y término de ejecución.       |
 | P01-F10 | Buscar funcionario.                                      |
 | P01-F11 | Ejecutar escaneo normativo inicial del funcionario.      |
 | P01-F12 | Mostrar datos laborales y contractuales del funcionario. |
-| P01-F13 | Registrar actividad específica del funcionario.          |
+| P01-F13 | Registrar actividad del funcionario.                     |
 | P01-F14 | Seleccionar meses de ejecución.                          |
 | P01-F15 | Asignar monto bruto total y calcular total PDS.          |
 | P01-F16 | Visualizar y validar tope aplicable.                     |
@@ -1414,8 +1425,8 @@ Regla: `nro_solori` no reemplaza a `nro_solici`; solo permite saber de que solic
 | P01-F18 | Evaluar condición SEA para académicos.                   |
 | P01-F19 | Registrar compensación horaria.                          |
 | P01-F20 | Incorporar funcionario a la solicitud.                   |
-| P01-F21 | Visualizar resumen de funcionarios agregados.            |
-| P01-F22 | Eliminar funcionario de la solicitud.                    |
+| P01-F21 | Visualizar resumen del funcionario.                      |
+| P01-F22 | Reemplazar funcionario de la solicitud.                  |
 | P01-F23 | Guardar solicitud como borrador.                         |
 | P01-F24 | Enviar solicitud a validación.                           |
 

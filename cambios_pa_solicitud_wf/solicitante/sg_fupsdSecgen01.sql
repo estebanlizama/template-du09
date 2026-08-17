@@ -16,19 +16,44 @@ CREATE PROCEDURE Analisis2.sg_fupsdSecgen01
     @id_funprse int = NULL
 AS
 BEGIN
+    SET NOCOUNT ON
+
     IF @id_funprse IS NULL
     BEGIN
-        SELECT 'Falta id del funcionario' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta id del funcionario' AS msg
         RETURN
     END
 
     IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_fups WHERE id_funprse = @id_funprse)
     BEGIN
-        SELECT 'El funcionario especificado no existe' AS msg
+        SELECT 0 AS status, 'STAFF_NOT_FOUND' AS code, 'El funcionario especificado no existe' AS msg
         RETURN
     END
 
+    DECLARE @nro_solici int
+    DECLARE @cod_modprs tinyint
+    DECLARE @staff_count int
+
+    SELECT @nro_solici = fu.nro_solici,
+           @cod_modprs = isnull(prse.cod_modprs, 1)
+    FROM secgen_db.dbo.sg_fups fu
+    JOIN secgen_db.dbo.sg_prse prse ON prse.nro_solici = fu.nro_solici
+    WHERE fu.id_funprse = @id_funprse
+
     BEGIN TRAN
+
+    SELECT @staff_count = count(*)
+    FROM secgen_db.dbo.sg_fups HOLDLOCK
+    WHERE nro_solici = @nro_solici
+
+    IF @cod_modprs = 2 AND @staff_count <= 1
+    BEGIN
+        ROLLBACK TRAN
+        SELECT 0 AS status,
+               'DU288_LAST_STAFF_DELETE' AS code,
+               'El unico funcionario DU288 no puede eliminarse. Debe actualizar o reemplazar el registro existente.' AS msg
+        RETURN
+    END
 
     -- TODO Fase 2: eliminar meses de sg_fume cuando la tabla sea desplegada.
 
@@ -38,8 +63,8 @@ BEGIN
     
     IF @@error <> 0
     BEGIN
-        SELECT 'Error al eliminar compensaciones del funcionario' AS msg
-        IF @@transtate = 2 ROLLBACK TRAN
+        SELECT 0 AS status, 'STAFF_DELETE_ERROR' AS code, 'Error al eliminar compensaciones del funcionario' AS msg
+        IF @@transtate <> 0 ROLLBACK TRAN
         RETURN
     END
 
@@ -49,13 +74,13 @@ BEGIN
 
     IF @@error <> 0
     BEGIN
-        SELECT 'Error al eliminar el funcionario' AS msg
-        IF @@transtate = 2 ROLLBACK TRAN
+        SELECT 0 AS status, 'STAFF_DELETE_ERROR' AS code, 'Error al eliminar el funcionario' AS msg
+        IF @@transtate <> 0 ROLLBACK TRAN
         RETURN
     END
 
     COMMIT TRAN
-    SELECT 'Funcionario y compensaciones eliminados correctamente' AS msg
+    SELECT 1 AS status, 'OK' AS code, 'Funcionario y compensaciones eliminados correctamente' AS msg, @id_funprse AS id_funprse
 END
 GO
 

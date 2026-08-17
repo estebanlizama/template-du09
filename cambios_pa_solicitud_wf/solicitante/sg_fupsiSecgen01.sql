@@ -59,6 +59,8 @@ CREATE PROCEDURE Analisis2.sg_fupsiSecgen01
     @cod_estfun tinyint = NULL
 AS
 BEGIN
+    SET NOCOUNT ON
+
     -- La modalidad persistida en sg_prse es la fuente de verdad.
     DECLARE @resolved_modprs tinyint
     SELECT @resolved_modprs = cod_modprs
@@ -72,86 +74,92 @@ BEGIN
 
     IF @nro_solici IS NULL
     BEGIN
-        SELECT 'Falta campo Numero Solicitud' AS msg
+        SELECT 0 AS status, 'INVALID_REQUEST' AS code, 'Falta campo Numero Solicitud' AS msg
         RETURN
     END
 
     IF @rut IS NULL
     BEGIN
-        SELECT 'Falta campo RUT' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo RUT' AS msg
         RETURN
     END
 
     IF @cod_cargo IS NULL
     BEGIN
-        SELECT 'Falta campo Codigo Cargo' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Codigo Cargo' AS msg
         RETURN
     END
 
     IF @cod_sitm IS NULL
     BEGIN
-        SELECT 'Falta campo Codigo Situacion M' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Codigo Situacion M' AS msg
         RETURN
     END
 
     IF @itm_global IS NULL
     BEGIN
-        SELECT 'Falta campo Itm Global' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Itm Global' AS msg
         RETURN
     END
 
     IF @motivo IS NULL
     BEGIN
-        SELECT 'Falta campo Motivo' AS msg
+        SELECT 0 AS status, 'INVALID_ACTIVITY' AS code, 'Falta campo Motivo' AS msg
+        RETURN
+    END
+
+    IF @cod_modprs = 2 AND len(ltrim(rtrim(@motivo))) < 10
+    BEGIN
+        SELECT 0 AS status, 'DU288_INVALID_ACTIVITY' AS code, 'La actividad del funcionario debe tener al menos 10 caracteres' AS msg
         RETURN
     END
 
     IF @cod_modprs <> 2 AND @periodos IS NULL
     BEGIN
-        SELECT 'Falta campo Periodos' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Periodos' AS msg
         RETURN
     END
 
     IF @cod_modprs <> 2 AND @monto_mes IS NULL
     BEGIN
-        SELECT 'Falta campo Monto Mensual' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Monto Mensual' AS msg
         RETURN
     END
 
     IF @mto_total IS NULL
     BEGIN
-        SELECT 'Falta campo Monto Total' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Monto Total' AS msg
         RETURN
     END
 
     IF @cod_moneda IS NULL
     BEGIN
-        SELECT 'Falta campo Codigo Moneda' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Codigo Moneda' AS msg
         RETURN
     END
 
     IF @cod_tpps IS NULL
     BEGIN
-        SELECT 'Falta campo tipo de periodo' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo tipo de periodo' AS msg
         RETURN
     END
 
     IF @f_inicio IS NULL
     BEGIN
-        SELECT 'Falta campo fecha de inicio' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de inicio' AS msg
         RETURN
     END
 
     IF @f_termino IS NULL
     BEGIN
-        SELECT 'Falta campo fecha de término' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de término' AS msg
         RETURN
     END
 
     -- Validar fechas de inicio y término
     IF @f_inicio > @f_termino
     BEGIN
-        SELECT 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
+        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
         RETURN
     END
 
@@ -172,7 +180,7 @@ BEGIN
         -- Validar que el estado exista en sg_efun
         IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
         BEGIN
-            SELECT 'El estado especificado no existe en el catálogo de estados' AS msg
+            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el catálogo de estados' AS msg
             RETURN
         END
 
@@ -183,10 +191,28 @@ BEGIN
         SELECT @cod_estfun = NULL
     END
 
+    DECLARE @id_funprse int
+
     BEGIN TRAN
 
-    DECLARE @id_funprse int
-    SELECT @id_funprse = max(ultimo_id) FROM secgen_db..sg_parm WHERE nom_tabla LIKE 'sg_fups'
+    -- Serializa la comprobacion y asignacion sin consumir el correlativo al rechazar.
+    SELECT @id_funprse = max(ultimo_id)
+    FROM secgen_db..sg_parm HOLDLOCK
+    WHERE nom_tabla LIKE 'sg_fups'
+
+    IF @cod_modprs = 2 AND EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_fups
+        WHERE nro_solici = @nro_solici
+    )
+    BEGIN
+        ROLLBACK TRAN
+        SELECT 0 AS status,
+               'DU288_STAFF_LIMIT' AS code,
+               'La solicitud DU288 ya posee un funcionario. Debe actualizar el registro existente.' AS msg
+        RETURN
+    END
+
     SELECT @id_funprse = isnull(@id_funprse, 0) + 1
 
     UPDATE secgen_db..sg_parm
@@ -195,8 +221,8 @@ BEGIN
 
     IF @@error <> 0 OR @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 'Error al actualizar correlativo. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        SELECT 0 AS status, 'CORRELATIVE_ERROR' AS code, 'Error al actualizar correlativo. Se aborta el procedimiento' AS msg
+        IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN
     END
@@ -293,14 +319,29 @@ BEGIN
 
     IF @@error <> 0 OR @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 'Error al actualizar información de validación de proceso. Se aborta el procedimiento' AS msg
-        IF @@transtate = 2
+        SELECT 0 AS status, 'STAFF_INSERT_ERROR' AS code, 'Error al actualizar información de validación de proceso. Se aborta el procedimiento' AS msg
+        IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN
     END
 
+    IF @cod_modprs = 2
+    BEGIN
+        UPDATE secgen_db.dbo.sg_prse
+        SET actividad = @motivo
+        WHERE nro_solici = @nro_solici
+
+        IF @@error <> 0 OR @@rowcount <> 1 OR @@transtate = 2 OR @@transtate = 3
+        BEGIN
+            SELECT 0 AS status, 'DU288_ACTIVITY_SYNC_ERROR' AS code, 'No fue posible sincronizar la actividad de la prestacion' AS msg
+            IF @@transtate <> 0
+                ROLLBACK TRAN
+            RETURN
+        END
+    END
+
     COMMIT TRAN
-    SELECT 'Funcionario insertado correctamente' AS msg, @id_funprse AS id_funprse
+    SELECT 1 AS status, 'OK' AS code, 'Funcionario insertado correctamente' AS msg, @id_funprse AS id_funprse
 END
 GO
 
