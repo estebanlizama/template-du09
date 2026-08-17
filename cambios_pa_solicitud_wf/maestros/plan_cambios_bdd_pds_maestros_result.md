@@ -1001,10 +1001,8 @@ request.provision.activity = request.staffList[0].reason
 | Dentro de jornada (`S`/`D`) | Revisa | Revisa | Continuan ambas visaciones configuradas. |
 | Fuera de jornada (`N`) | Revisa | No aplica | Se registra la omision y se continua a la siguiente etapa organizacional. |
 | No informada/invalida | No se altera la revision ya realizada | No se resuelve | Se bloquea el avance hasta corregir el dato. |
-8. Desplegar en orden PA, backend y frontend.
-9. Realizar prueba de humo posterior al despliegue.
 
-### 9.8 Archivos principales afectados
+### 9.9 Archivos principales afectados
 
 | Capa | Archivo | Cambio esperado |
 | :--- | :--- | :--- |
@@ -1020,10 +1018,236 @@ request.provision.activity = request.staffList[0].reason
 | Frontend | `PdsWorkflowRequestSummary.vue` | Resumen consistente para roles posteriores. |
 | Frontend | `lang/es/pds.js` y mensajes normativos | Textos singulares y errores de cardinalidad. |
 
-### 9.9 Fuera de alcance
+### 9.10 Fuera de alcance
 
 1. No eliminar columnas existentes de `sg_prse` ni `sg_fups`.
 2. No crear una migracion destructiva para solicitudes historicas.
 3. No modificar la cardinalidad del flujo legacy.
 4. No modificar el modelo de pagos por este cambio.
 5. No eliminar soporte de lectura para listas historicas de funcionarios.
+
+---
+
+## 10. Evaluacion E2E de subrogancia y representacion
+
+### 10.1 Decision de arquitectura
+
+1. El RUT autenticado/JWT siempre identifica a la persona que ejecuta la accion. Nunca debe reemplazarse por el RUT del titular.
+2. La subrogancia agrega un alcance contextual sobre un cargo o una tarea; no convierte al usuario en el titular ni le copia todos sus perfiles globales.
+3. No se deben unir indiscriminadamente todas las solicitudes del titular y del subrogante. El alcance depende de la operacion:
+   - aprobacion o firma institucional;
+   - visualizacion del expediente;
+   - creacion por cuenta de otra persona;
+   - edicion de borradores o solicitudes devueltas.
+4. La subrogancia institucional vigente puede habilitar decisiones asociadas al cargo representado. No habilita automaticamente la creacion o edicion de solicitudes personales del titular.
+5. `sg_apso.rut_usua` conserva el destinatario original de la tarea y `sg_apso.rut_autori` debe registrar al subrogante que efectivamente decidio.
+6. Consultar la bandeja no debe reasignar ni modificar tareas. La autorizacion efectiva debe comprobarse nuevamente dentro de la transaccion de aprobacion.
+
+### 10.2 PA propuesto para resolver representaciones
+
+Crear y certificar el PA de solo lectura `Analisis2.sp_ordesSecgen01`. El nombre sigue la convencion `<tabla><operacion><base><correlativo>`: tabla conductora `sp_orde`, operacion `s`, base de ejecucion `Secgen`, correlativo `01`.
+
+```text
+entrada:
+  @rut_actor char(9)
+  @fecha_eval datetime = getdate()
+
+salida por representacion vigente:
+  rut_actor
+  rut_titular
+  cod_organi_representado
+  cod_organi_actor
+  cod_design
+  cod_des_su
+  tipo_representacion       -- SUBROGANCIA
+  fuente                    -- ORDE
+  fecha_desde
+  fecha_hasta
+  titular_ausente
+  numero_resolucion
+  estado_resolucion         -- VIGENTE, NO_VIGENTE o AMBIGUA
+  mensaje
+```
+
+Fuentes minimas:
+
+1. `sisper_db.dbo.sp_orde`: persona designada y organizacion representada.
+2. `sisper_db.dbo.sp_desg`: tipo, resolucion y vigencia temporal de la designacion.
+3. `sisper_db.dbo.sp_tdsu`: catalogo certificado del tipo de designacion; solo `cod_des_su = '1'` habilita subrogancia.
+4. `sisper_db.dbo.sp_orco`: titular vigente y marca `ausente`.
+5. `sisper_db.dbo.sp_aufi`: representacion jerarquica cuando corresponda.
+6. `ufro_db.dbo.es_orga`: descripcion del cargo representado y del cargo real.
+
+El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()` cuando exista mas de una representacion aplicable con igual prioridad.
+
+### 10.3 Matriz de alcance recomendada
+
+| Operacion | Alcance inicial recomendado | Regla |
+| :--- | :--- | :--- |
+| Ver solicitudes propias | Si | `sg_soli.rut_solici = RUT JWT`. |
+| Ver tarea institucional subrogada | Si | La tarea corresponde al cargo representado y la subrogancia esta vigente. |
+| Aprobar/rechazar/devolver como subrogante | Si | Validacion transaccional; `rut_autori = RUT JWT`; conservar titular/cargo representado. |
+| Firmar resolucion como subrogante | Si | Registrar firmante real, cargo representado, fuente y vigencia. |
+| Crear una solicitud propia | Si | El creador sigue siendo el RUT JWT. |
+| Crear por cuenta del titular | Si | Selector explicito; backend revalida contexto, conserva principal y registra ejecutor JWT. |
+| Editar borrador del titular | Si | Solo con representacion vigente, estado editable y trazabilidad del editor real. |
+| Ver todo el historial personal del titular | No | Mostrar solo expedientes vinculados al cargo/tarea representada. |
+
+### 10.4 PA y endpoints afectados
+
+1. `sg_prsesSecgen13`: bandeja pendiente. Debe devolver tareas directas y tareas institucionales que el RUT puede resolver como subrogante, con `tipo_acceso`, `rut_titular`, cargo representado y fuente.
+2. `sg_prsesSecgen18`: acceso contextual. Debe distinguir acceso directo, subrogado y solo lectura; `puede_editar` no debe derivarse automaticamente de una subrogancia institucional.
+3. `sg_usacsSecgen01`: permisos contextuales. Debe incorporar el perfil de la etapa cuando existe una tarea subrogada efectivamente autorizada.
+4. `sg_apsosSecgen03` o un PA nuevo por `nro_aproba`: debe obtener la tarea efectiva para el RUT JWT, aunque el destinatario original sea el titular.
+5. `sg_apsouSecgen03`: debe volver a validar la representacion vigente dentro de la misma transaccion y guardar `rut_autori = RUT JWT`.
+6. `sg_prsesSecgen08` incorpora solicitudes activas del titular mientras la representacion esta vigente. `sg_prsesSecgen17` conserva historicos solo cuando el actor participo en historial o decisiones.
+7. `sg_etasSecgen01` conserva la tarea asignada al titular institucional. No debe reasignarla al subrogante ni duplicarla al crear la etapa.
+8. La representacion y su metadata se resuelven dinamicamente al listar, consultar y decidir la tarea mediante `sp_ordesSecgen01`, `sg_prsesSecgen13`, `sg_apsosSecgen03` y `sg_apsouSecgen03`. Asi, una designacion que comienza o vence no exige reescribir `sg_apso`.
+
+### 10.5 Cambios backend
+
+1. Crear un servicio central `ServiceProvisionRepresentationService` que resuelva el contexto desde el PA y nunca desde datos enviados por frontend.
+2. Reemplazar la busqueda estricta `solicitud + estado + rut_usua = JWT` por una autorizacion de tarea efectiva basada en `nro_aproba + RUT JWT`.
+3. Mantener `request.rutApproval = RUT JWT` como ejecutor real.
+4. Separar los permisos `canView`, `canDecide`, `canSign`, `canCreateOnBehalf` y `canEditOnBehalf`.
+5. No sobrescribir `request.applicantDni` al editar una solicitud representada; debe conservarse el solicitante persistido y registrar por separado al editor real en historial.
+6. Revalidar vigencia y estado pendiente inmediatamente antes de actualizar `sg_apso`, evitando decisiones posteriores al termino de la subrogancia.
+7. Deduplicar una tarea que pudiera aparecer simultaneamente como directa y subrogada usando `nro_aproba`.
+
+### 10.6 Cambios frontend
+
+1. La sesion sigue mostrando la identidad real del usuario conectado.
+2. La bandeja puede combinar tareas directas y subrogadas, pero cada fila debe indicar `Asignacion directa` o `En subrogancia de <titular>`.
+3. El modal de decision debe informar el cargo representado y el titular antes de confirmar.
+4. No enviar `rut_titular`, `rut_actor` ni permisos efectivos como fuente de autorizacion; son datos informativos resueltos por backend.
+5. Solo si se aprueba la creacion por cuenta de otro usuario, agregar un selector explicito `Actuar por cuenta de`, nunca una seleccion automatica al iniciar sesion.
+
+### 10.7 Casos de prueba obligatorios
+
+1. Usuario sin subrogancia ve y decide solo sus tareas.
+2. Subrogante vigente ve sus tareas directas y las tareas institucionales del cargo representado.
+3. La misma tarea directa/subrogada aparece una sola vez.
+4. La decision conserva el destinatario/titular y registra al RUT JWT en `rut_autori` e historial.
+5. Subrogancia vencida entre la carga del modal y la confirmacion produce `403/409` y no modifica la tarea.
+6. Dos subrogantes con igual prioridad bloquean la decision como asignacion ambigua.
+7. El subrogante no puede editar borradores del titular sin delegacion expresa de edicion.
+8. El subrogante no obtiene todo el historial personal del titular.
+9. Al finalizar la subrogancia desaparecen las tareas no autorizadas sin alterar decisiones ya registradas.
+10. Legacy conserva su comportamiento hasta definir una estrategia de compatibilidad separada.
+
+### 10.8 Decisiones aplicadas en la implementacion
+
+1. La vigencia se determina por `sp_orde.vigente`, `sp_desg.vigencia`, fechas y `es_orga.por_desig = 'S'`; `sp_orco.ausente` se informa, pero no es la unica condicion habilitante.
+2. Se certifico el catalogo `sp_tdsu`: `1 = Designacion`, `2 = Sumario` y `3 = Fondos Fijos`. Solo `sp_desg.cod_des_su = '1'` habilita la representacion funcional mostrada como `Subrogancia`; los tipos 2 y 3 quedan excluidos.
+3. Una representacion iniciada despues de crear la tarea habilita acceso dinamico; no reasigna ni duplica `sg_apso`.
+4. La representacion aplica a tareas cuyo destinatario es titular ORCO de la organizacion. Una asignacion personal que no proviene de ORCO, como Jefe de Proyecto, no se subroga automaticamente.
+5. Se habilita crear y editar por cuenta del titular mediante contexto explicito y revalidacion servidor.
+6. Al vencer la representacion desaparece el acceso operativo. El historico permanece visible solo si el actor participo en `sg_hist` o `sg_apso`.
+7. Cuando existe mas de un titular ORCO o mas de un RUT ORDE vigente para la misma organizacion, las capacidades quedan bloqueadas como asignacion ambigua.
+8. Sin una columna que vincule cada solicitud con el cargo representado, la bandeja activa por representacion se delimita por titular durante la vigencia. La trazabilidad de nuevas solicitudes queda determinada por principal en `sg_soli` y actor en `sg_hist`.
+
+### 10.9 Opciones sin cambios estructurales de BDD
+
+| Opcion | Descripcion | Ventajas | Riesgos | Decision |
+| :--- | :--- | :--- | :--- | :--- |
+| A. Union simple de RUT | Consultar las solicitudes del JWT y del titular, y permitir operar usando cualquiera de los RUT. | Implementacion inicialmente corta. | Confunde identidad, permite escalamiento horizontal, rompe `rut_autori` y no delimita cargo ni vigencia. | Descartada. |
+| B. Reasignar tareas al ingresar | Cambiar `sg_apso.rut_usua` desde titular a subrogante durante el inicio de sesion. | Reutiliza consultas actuales. | Un login produce escrituras, pierde el destinatario original, genera carreras y exige revertir tareas al terminar la subrogancia. | Descartada. |
+| C. Duplicar tareas | Crear una tarea para titular y otra para subrogante. | Ambos ven la solicitud. | Permite dos decisiones para una etapa y complica el cierre de flujo. | Descartada. |
+| D. Ambito de gestion contextual | Mantener el JWT real, resolver representaciones por PA y autorizar cada lectura/escritura segun contexto vigente. | Conserva identidad, titular, cargo y auditoria; no requiere columnas nuevas. | Requiere modificar PAs de bandeja/acceso y guards backend. | Recomendada. |
+
+### 10.10 Flujo recomendado de ambito de gestion
+
+#### Ingreso a la aplicacion
+
+1. El usuario se autentica siempre con su RUT real.
+2. Backend ejecuta `sp_ordesSecgen01` y construye los ambitos vigentes:
+
+```text
+PERSONAL
+REPRESENTACION: titular + cargo + organizacion + tipo + vigencia
+```
+
+3. `GET /users/me/management-contexts` retorna ambitos informativos con capacidades calculadas:
+
+```text
+canView
+canCreate
+canEdit
+canDecide
+canSign
+```
+
+4. El frontend no cambia la identidad ni el JWT. Muestra una bandeja consolidada y permite filtrar por `Todos`, `Personal` o cada representacion.
+5. Cada fila informa el origen: `Propia`, `Asignacion directa` o `En subrogancia de <titular> - <cargo>`.
+
+#### Creacion de solicitud
+
+1. Antes de abrir el formulario se debe seleccionar explicitamente:
+   - `Crear solicitud personal`;
+   - `Crear por cuenta de <titular/cargo>`.
+2. El frontend envia un identificador de contexto, `rut_titular` y `cod_organi` solo como referencia. Backend obtiene el RUT JWT y vuelve a validar la representacion.
+3. Persistencia propuesta usando campos existentes:
+   - creacion personal: `sg_soli.rut_solici = RUT JWT`;
+   - creacion representada: `sg_soli.rut_solici = RUT titular`;
+   - en ambos casos: `sg_hist.rut_accion = RUT JWT` para los eventos `DRAFT`, `SUBMISSION` y `REQUEST_EDIT`;
+   - `sg_prse.rut_jefpro` mantiene al Jefe de Proyecto real del centro de costo y no se usa como campo generico de subrogancia.
+4. La solicitud pertenece funcionalmente al principal (`sg_soli.rut_solici`), mientras el historial conserva quien la creo y modifico realmente.
+5. Los borradores tambien deben generar un evento `DRAFT`; actualmente la creacion en borrador retorna antes de insertar historial y no permite distinguir al ejecutor representado.
+6. Al editar nunca se debe reemplazar `sg_soli.rut_solici` por el RUT JWT. Se conserva el principal persistido y se registra el editor en `sg_hist.rut_accion`.
+
+#### Bandejas
+
+1. `Mis solicitudes` combina:
+   - solicitudes cuyo principal es el RUT JWT;
+   - solicitudes cuyo principal esta representado por el JWT y para las cuales el contexto concede lectura/edicion.
+2. `Solicitudes en espera` combina:
+   - tareas asignadas directamente al JWT;
+   - tareas cuyo cargo puede ejercer el JWT como subrogante vigente.
+3. Las filas se deduplican por:
+   - `nro_solici` en solicitudes propias/representadas;
+   - `nro_aproba` en tareas de decision.
+4. Las solicitudes historicas no se incorporan automaticamente por ser del titular. Se muestran cuando el JWT fue ejecutor (`sg_hist.rut_accion`), destinatario/autoridad (`sg_apso`) o la politica confirma acceso historico por representacion.
+
+#### Aprobacion y firma
+
+1. La tarea conserva `sg_apso.rut_usua` como destinatario/titular original.
+2. El PA transaccional autoriza al RUT JWT por asignacion directa o representacion vigente del cargo.
+3. La decision registra `sg_apso.rut_autori = RUT JWT` y `sg_hist.rut_accion = RUT JWT`.
+4. El modal informa: `Actua como subrogante de <titular>, en el cargo <cargo>`.
+5. El servidor vuelve a validar vigencia, etapa, tarea pendiente y cargo al confirmar; el contexto seleccionado en frontend nunca es autorizacion suficiente.
+
+### 10.11 Regla de segregacion de funciones
+
+La posibilidad de crear y aprobar bajo la misma representacion debe controlarse expresamente:
+
+1. Si el RUT JWT creo o edito la solicitud por representacion, no debe aprobar la misma solicitud en la etapa correspondiente al titular sin una politica institucional explicita.
+2. Alternativas de negocio:
+   - asignar la revision al titular si esta disponible;
+   - derivar a la autoridad superior vigente;
+   - bloquear el envio mientras no exista un revisor diferente;
+   - permitirlo excepcionalmente dejando una doble traza, solo si la normativa lo autoriza.
+3. Recomendacion: aplicar separacion de funciones y exigir un revisor distinto al ejecutor que creo la solicitud.
+4. El PA de autorizacion debe comparar el RUT JWT con los eventos iniciales `DRAFT`/`SUBMISSION` de `sg_hist` antes de habilitar la decision.
+
+### 10.12 Impacto concreto sobre la implementacion actual
+
+1. `serviceProvisionPost` hoy fuerza `request.applicantDni = RUT JWT`; debe aceptar un principal representado solo despues de validar el contexto.
+2. `serviceProvisionUpdate` hoy vuelve a forzar `request.applicantDni = RUT JWT`; debe recuperar y conservar `sg_soli.rut_solici`.
+3. `ServiceProvisionWorkflowService.updateRequest` usa `request.applicantDni` como autor del reenvio; debe recibir por separado `principalDni` y `actorDni`.
+4. `sg_prsesSecgen08` y `sg_prsesSecgen17` filtran exclusivamente por `sg_soli.rut_solici`; deben recibir `@rut_actor` y resolver internamente los principales accesibles.
+5. `sg_prsesSecgen13`, `sg_apsosSecgen03`, `sg_prsesSecgen18`, `sg_usacsSecgen01` y `sg_apsouSecgen03` deben usar la misma funcion/PA de representacion para evitar reglas divergentes.
+6. El frontend requiere un store de ambitos de gestion, filtro de bandeja, selector obligatorio al crear y etiquetas de representacion en detalle/modales.
+7. No se requiere agregar columnas ni tablas. Se reutilizan `sg_soli.rut_solici`, `sg_apso.rut_usua`, `sg_apso.rut_autori` y `sg_hist.rut_accion`.
+8. Desplegar en orden PA, backend y frontend.
+9. Realizar prueba de humo posterior al despliegue.
+
+### 10.13 Resultado implementado
+
+1. PA nuevo `sp_ordesSecgen01` para retornar ambitos personales y representados con capacidades, normalizado sobre su tabla conductora `sp_orde`.
+2. PA ajustados: `sg_prsesSecgen08`, `sg_prsesSecgen13`, `sg_prsesSecgen17`, `sg_prsesSecgen18`, `sg_apsosSecgen03`, `sg_apsouSecgen03` y `sg_usacsSecgen01`.
+3. Backend con `ServiceProvisionRepresentationService`, endpoint `GET /users/me/management-contexts`, preservacion del principal al editar y actor separado en historial.
+4. Los borradores DU288 registran `DRAFT`; las ediciones de borrador registran `REQUEST_EDIT` con el RUT JWT.
+5. Frontend con selector explicito al crear, bandejas filtrables por ambito, columna de origen y aviso de representacion en el modal de decision.
+6. La representacion se limita a DU288. El flujo legacy mantiene autorizacion directa.
+7. Validaciones locales ejecutadas: build backend, 66 pruebas unitarias, ESLint focalizado frontend y build Nuxt.
+8. El despliegue fue intentado el 17-08-2026 con la cuenta de aplicacion del ambiente de desarrollo. Sybase rechazo `CREATE PROCEDURE` por falta de `sa_role`; no se alteraron tablas ni se reemplazaron los PA existentes. Los scripts deben ser ejecutados por DBA y luego someterse a la prueba funcional con una designacion real.

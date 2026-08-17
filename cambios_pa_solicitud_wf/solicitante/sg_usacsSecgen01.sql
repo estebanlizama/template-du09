@@ -17,8 +17,8 @@ Procedimiento : Analisis2.sg_usacsSecgen01
 Objetivo      : Obtener perfiles y privilegios dinamicos de acceso a PDS.
 
 El perfil solicitante se obtiene por contrato vigente. Los perfiles
-aprobadores se obtienen desde tareas pendientes de sg_apso, donde
-rut_usua ya contiene el responsable efectivo de la tarea.
+aprobadores se obtienen desde tareas pendientes directas o desde una
+representacion institucional vigente y no ambigua.
 */
 CREATE PROCEDURE Analisis2.sg_usacsSecgen01
     @rut         char(9) = NULL,
@@ -68,6 +68,27 @@ BEGIN
         VALUES (6, 'CONTRATO')
     END
 
+    IF NOT EXISTS (SELECT 1 FROM #perfiles WHERE cod_perfil = 6)
+       AND EXISTS (
+           SELECT 1
+           FROM sisper_db.dbo.sp_orde orde
+           INNER JOIN sisper_db.dbo.sp_desg desg
+             ON desg.cod_design = orde.cod_design
+            AND desg.cod_des_su = '1'
+            AND desg.vigencia IN ('1', 'S')
+            AND desg.f_inicio <= @fecha_val
+            AND (desg.f_termino IS NULL OR desg.f_termino >= @fecha_val)
+           INNER JOIN ufro_db.dbo.es_orga orga
+             ON orga.cod_organi = orde.cod_organi
+            AND orga.por_desig = 'S'
+           WHERE orde.rut_person = @rut
+             AND orde.vigente = 'S'
+       )
+    BEGIN
+        INSERT INTO #perfiles (cod_perfil, origen)
+        VALUES (6, 'REPRESENTA')
+    END
+
     INSERT INTO #perfiles (cod_perfil, origen)
     SELECT DISTINCT eta.cod_perfil, 'TAREA'
     FROM secgen_db..sg_apso apso
@@ -79,7 +100,41 @@ BEGIN
         ON eta.cod_flusol = apso.cod_flusol
        AND eta.cod_etapa = apso.cod_etapa
     WHERE apso.cod_estapr = 4
-      AND apso.rut_usua = @rut
+      AND (
+          apso.rut_usua = @rut
+          OR EXISTS (
+              SELECT 1
+              FROM sisper_db.dbo.sp_orco orco
+              INNER JOIN sisper_db.dbo.sp_orde orde
+                ON orde.cod_organi = orco.cod_organi
+               AND orde.rut_person = @rut
+               AND orde.vigente = 'S'
+              INNER JOIN sisper_db.dbo.sp_desg desg
+                ON desg.cod_design = orde.cod_design
+               AND desg.cod_des_su = '1'
+               AND desg.vigencia IN ('1', 'S')
+               AND desg.f_inicio <= @fecha_val
+               AND (desg.f_termino IS NULL OR desg.f_termino >= @fecha_val)
+              INNER JOIN ufro_db.dbo.es_orga orga
+                ON orga.cod_organi = orde.cod_organi
+               AND orga.por_desig = 'S'
+              WHERE orco.rut_person = apso.rut_usua
+                AND prse.cod_modprs = 2
+                AND orco.vigente = 'S'
+                AND (SELECT count(DISTINCT o2.rut_person)
+                     FROM sisper_db.dbo.sp_orco o2
+                     WHERE o2.cod_organi = orde.cod_organi AND o2.vigente = 'S') = 1
+                AND (SELECT count(DISTINCT d2.rut_person)
+                     FROM sisper_db.dbo.sp_orde d2
+                     INNER JOIN sisper_db.dbo.sp_desg g2 ON g2.cod_design = d2.cod_design
+                     WHERE d2.cod_organi = orde.cod_organi
+                       AND d2.vigente = 'S'
+                       AND g2.cod_des_su = '1'
+                       AND g2.vigencia IN ('1', 'S')
+                       AND g2.f_inicio <= @fecha_val
+                       AND (g2.f_termino IS NULL OR g2.f_termino >= @fecha_val)) = 1
+          )
+      )
       AND isnull(eta.vigente, 'S') = 'S'
       AND NOT EXISTS (
           SELECT 1

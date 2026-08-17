@@ -47,7 +47,15 @@ BEGIN
         ltrim(rtrim(isnull(pers.nom_nombre, '') + ' ' +
                     isnull(pers.nom_appate, '') + ' ' +
                     isnull(pers.nom_apmate, ''))) AS nombre,
-        'PROPIA' AS tipo_acceso
+        CASE WHEN soli.rut_solici = @rut_solici
+             THEN 'PROPIA' ELSE 'PARTICIPACION' END AS tipo_acceso,
+        CASE WHEN soli.rut_solici = @rut_solici
+             THEN 'PERSONAL' ELSE 'HISTORIAL:' + rtrim(soli.rut_solici) END AS context_key,
+        CASE WHEN soli.rut_solici = @rut_solici
+             THEN convert(char(9), NULL) ELSE soli.rut_solici END AS rut_titular,
+        convert(int, NULL) AS cod_organi_representado,
+        convert(varchar(100), NULL) AS cargo_representado,
+        convert(varchar(40), NULL) AS tipo_representacion
     FROM secgen_db.dbo.sg_prse prse
     INNER JOIN secgen_db.dbo.sg_soli soli
         ON soli.nro_solici = prse.nro_solici
@@ -66,7 +74,21 @@ BEGIN
         GROUP BY nro_solici
     ) funps_total
         ON funps_total.nro_solici = soli.nro_solici
-    WHERE soli.rut_solici = @rut_solici
+    WHERE (
+          soli.rut_solici = @rut_solici
+          OR (prse.cod_modprs = 2 AND EXISTS (
+              SELECT 1
+              FROM secgen_db.dbo.sg_hist hist
+              WHERE hist.nro_solici = soli.nro_solici
+                AND hist.rut_accion = @rut_solici
+          ))
+          OR (prse.cod_modprs = 2 AND EXISTS (
+              SELECT 1
+              FROM secgen_db.dbo.sg_apso apso
+              WHERE apso.nro_solici = soli.nro_solici
+                AND (apso.rut_usua = @rut_solici OR apso.rut_autori = @rut_solici)
+          ))
+      )
       AND soli.cod_tipsol = 1
       AND soli.cod_estsol IN (4, 8, 9, 11)
     ORDER BY soli.f_creacion DESC
