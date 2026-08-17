@@ -44,12 +44,40 @@ BEGIN
         RETURN
     END
 
+    CREATE TABLE #titulares_activos (
+        cod_organi int not null,
+        cantidad int not null
+    )
+
+    INSERT INTO #titulares_activos (cod_organi, cantidad)
+    SELECT cod_organi, count(DISTINCT rut_person)
+    FROM sisper_db.dbo.sp_orco
+    WHERE vigente = 'S'
+    GROUP BY cod_organi
+
+    CREATE TABLE #designados_vigentes (
+        cod_organi int not null,
+        cantidad int not null
+    )
+
+    INSERT INTO #designados_vigentes (cod_organi, cantidad)
+    SELECT orde.cod_organi, count(DISTINCT orde.rut_person)
+    FROM sisper_db.dbo.sp_orde orde
+    INNER JOIN sisper_db.dbo.sp_desg desg
+        ON desg.cod_design = orde.cod_design
+       AND desg.cod_des_su = '1'
+       AND desg.vigencia IN ('1', 'S')
+       AND desg.f_inicio <= getdate()
+       AND (desg.f_termino IS NULL OR desg.f_termino >= getdate())
+    WHERE orde.vigente = 'S'
+    GROUP BY orde.cod_organi
+
     SELECT DISTINCT
         apso.nro_aproba,
         apso.nro_solici,
         apso.rut_usua,
         apso.cod_estapr,
-        apso.comentario,
+        convert(varchar(255), apso.comentario) AS comentario,
         apso.f_aprobac,
         apso.f_creacion,
         apso.f_ultmodif,
@@ -83,12 +111,16 @@ BEGIN
     LEFT JOIN sisper_db.dbo.sp_orco orco
       ON orco.rut_person = apso.rut_usua
      AND orco.vigente = 'S'
+    LEFT JOIN #titulares_activos titulares
+      ON titulares.cod_organi = orco.cod_organi
     LEFT JOIN sisper_db.dbo.sp_pers titular
       ON titular.rut_person = apso.rut_usua
     LEFT JOIN sisper_db.dbo.sp_orde orde
       ON orde.cod_organi = orco.cod_organi
      AND orde.rut_person = @rut_usua
      AND orde.vigente = 'S'
+    LEFT JOIN #designados_vigentes designados
+      ON designados.cod_organi = orde.cod_organi
     LEFT JOIN sisper_db.dbo.sp_desg desg
       ON desg.cod_design = orde.cod_design
      AND desg.cod_des_su = '1'
@@ -106,22 +138,15 @@ BEGIN
               AND
               orde.rut_person = @rut_usua
               AND orga.por_desig = 'S'
-              AND (SELECT count(DISTINCT o2.rut_person)
-                   FROM sisper_db.dbo.sp_orco o2
-                   WHERE o2.cod_organi = orde.cod_organi AND o2.vigente = 'S') = 1
-              AND (SELECT count(DISTINCT d2.rut_person)
-                   FROM sisper_db.dbo.sp_orde d2
-                   INNER JOIN sisper_db.dbo.sp_desg g2 ON g2.cod_design = d2.cod_design
-                   WHERE d2.cod_organi = orde.cod_organi
-                     AND d2.vigente = 'S'
-                     AND g2.cod_des_su = '1'
-                     AND g2.vigencia IN ('1', 'S')
-                     AND g2.f_inicio <= getdate()
-                     AND (g2.f_termino IS NULL OR g2.f_termino >= getdate())) = 1
+              AND titulares.cantidad = 1
+              AND designados.cantidad = 1
           )
       )
       AND isnull(eta.vigente, 'S') = 'S'
     ORDER BY apso.nro_aproba DESC
+
+    DROP TABLE #designados_vigentes
+    DROP TABLE #titulares_activos
 END
 GO
 

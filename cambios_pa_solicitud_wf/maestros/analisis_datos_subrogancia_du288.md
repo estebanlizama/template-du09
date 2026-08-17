@@ -137,10 +137,71 @@ El endpoint transforma esos nombres al contrato camelCase del frontend:
 `designationId`, `designationTypeCode`, `source`, `validFrom`, `validTo`,
 `principalAbsent`, `resolutionNumber` y las capacidades booleanas.
 
+Para el candidato local, la respuesta HTTP esperada de
+`GET /users/me/management-contexts` es:
+
+```json
+[
+  {
+    "contextKey": "PERSONAL",
+    "contextType": "PERSONAL",
+    "actorDni": "101661210",
+    "principalDni": "101661210",
+    "canView": true,
+    "canCreate": true,
+    "canEdit": true,
+    "canDecide": true,
+    "canSign": true
+  },
+  {
+    "contextKey": "REP:60:176525665",
+    "contextType": "REPRESENTATION",
+    "actorDni": "101661210",
+    "principalDni": "176525665",
+    "representedOrganizationId": 60,
+    "representedPosition": "ENCARGADA DE DIRECCION DE INFORMATICA",
+    "designationId": "3477",
+    "designationTypeCode": "1",
+    "representationType": "SUBROGANCIA",
+    "source": "ORDE",
+    "principalAbsent": false,
+    "canView": true,
+    "canCreate": true,
+    "canEdit": true,
+    "canDecide": true,
+    "canSign": true,
+    "resolutionStatus": "VIGENTE"
+  }
+]
+```
+
+`principalName`, `validFrom`, `validTo` y `resolutionNumber` deben venir con
+los valores efectivos de `sp_pers` y `sp_desg`; no se pueden deducir de los
+volcados locales disponibles.
+
 ## 5. Observaciones
 
 1. `ausente` no puede usarse como unica condicion: en el volcado no existe ningun ORCO vigente con valor `S`.
 2. La organizacion 579 sirve para probar ambiguedad de titular porque posee dos RUT ORCO vigentes.
 3. La organizacion 79 posee dos designaciones ORDE vigentes para el mismo RUT; no es ambigua al contar personas distintas.
 4. `sg_aufi` sirve para jerarquia/prioridad entre organizaciones, pero no sustituye `sp_orde + sp_desg` para acreditar al actor.
-5. La primera version del PA excedia el limite de 14 tablas del optimizador ASE. La version actual materializa conteos en temporales; debe redesplegarse antes de repetir la prueba.
+5. La primera version del PA excedia el limite de 14 tablas del optimizador ASE. Las versiones actuales materializan la representacion en temporales.
+
+## 6. PA que deben redesplegarse despues de este analisis
+
+1. `sp_ordesSecgen01`: entrega los contextos de gestion al iniciar la aplicacion.
+2. `sg_prsesSecgen08`: lista solicitudes activas propias y del titular representado.
+3. `sg_prsesSecgen13`: lista tareas pendientes directas y representadas.
+
+Los otros PA de autorizacion trabajan en consultas separadas y no alcanzan el
+limite de 14 tablas. Despues del despliegue deben probarse, en este orden:
+
+```sql
+EXEC Analisis2.sp_ordesSecgen01 @rut_actor = '101661210'
+EXEC Analisis2.sg_prsesSecgen08 @rut_solici = '101661210'
+EXEC Analisis2.sg_prsesSecgen13 @rut_solici = '101661210'
+```
+
+La prueba de `sp_ordesSecgen01` ejecutada antes de esta correccion fallo con
+`Maximum number of tables in a query (14) exceeded`; por ello una respuesta
+solo con contexto personal no acredita que no exista subrogancia.
