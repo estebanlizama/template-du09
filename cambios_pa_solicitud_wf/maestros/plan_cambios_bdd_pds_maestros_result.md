@@ -12,6 +12,9 @@ El alcance de solicitud llega hasta la generacion de cuotas habilitadas por mes 
 > [!IMPORTANT]
 > La solicitud PDS no registra evidencias documentales de ejecucion. La evidencia se entiende como documento cargado en la etapa de pago para justificar la realizacion de la actividad de un mes/cuota. Por lo tanto, no se crean tablas de evidencias en este alcance.
 
+> [!IMPORTANT]
+> Decision funcional vigente para DU288: cada solicitud persistida debe contener exactamente un funcionario. La actividad ingresada para ese funcionario (`sg_fups.motivo`) es la fuente de verdad y la actividad de la prestacion (`sg_prse.actividad`) se completa y sincroniza automaticamente con el mismo valor. Esta decision reemplaza para DU288 cualquier regla anterior de este documento que permita cero o varios funcionarios, o actividades general e individual editables por separado. El flujo legacy conserva su comportamiento actual.
+
 ---
 
 ## 2. Modificaciones Estructurales
@@ -64,7 +67,7 @@ Reglas:
 
 **Accion:** modificar tabla existente.
 
-**Objetivo:** mantener los funcionarios asociados a la PDS y agregar datos requeridos para Fase 2, incluyendo la captura minima del tope aplicado al momento de registrar el funcionario.
+**Objetivo:** mantener los funcionarios asociados a PDS legacy y, para DU288, representar al unico funcionario de la solicitud junto con los datos requeridos para Fase 2, incluyendo la actividad canonica y la captura minima del tope aplicado.
 
 | Campo | Tipo sugerido | Cambio | Uso |
 | :--- | :--- | :--- | :--- |
@@ -384,7 +387,7 @@ Regla: si un funcionario queda `RECHAZADO` o `EXCLUIDO`, los demas funcionarios 
 
 1. `sg_soli` sigue siendo la cabecera comun de la solicitud.
 2. `sg_prse` es la tabla hija especifica de PDS.
-3. `sg_fups` mantiene los funcionarios de la PDS.
+3. `sg_fups` mantiene los funcionarios de PDS legacy. Para DU288 debe existir exactamente una fila `sg_fups` por `nro_solici`.
 4. `sg_efun` controla el estado individual del funcionario dentro de la PDS.
 5. `sg_fume` normaliza los meses por funcionario.
 6. `sg_fucu` registra las cuotas habilitadas por mes al formalizar/archivar la PDS con resolucion.
@@ -583,8 +586,10 @@ Este plan permite aplicar los cambios en backend y frontend sin tocar aun los pr
 
 1. Al guardar borrador:
    - Enviar `provision` actualizado.
-   - Enviar `staffList` completa.
-   - Si `staffList` viene vacia, backend debe eliminar/desvincular funcionarios de la solicitud.
+   - Para DU288, enviar `staffList` con exactamente un funcionario.
+   - Para DU288, derivar `provision.activity` desde `staffList[0].reason` antes de persistir.
+   - Para legacy, mantener el contrato actual de `staffList` completa.
+   - No permitir que una solicitud DU288 quede persistida sin funcionario.
    - No crear registros vacios.
 
 2. Al recargar solicitud:
@@ -601,7 +606,7 @@ Este plan permite aplicar los cambios en backend y frontend sin tocar aun los pr
 4. Cambiar contrato seleccionado y confirmar recalculo de tope.
 5. Agregar funcionario, guardar borrador y recargar.
 6. Editar funcionario, guardar cambios y recargar.
-7. Eliminar funcionario, guardar borrador y recargar.
+7. Reemplazar el funcionario conservando la cardinalidad uno a uno, guardar borrador y recargar.
 8. Validar que `position-caps` y el PA/endpoint de cargo habilitado no respondan 404.
 9. Validar que el flujo legacy de PDS Docentes Especiales no cambie.
 
@@ -839,3 +844,162 @@ Notas de alineacion:
 5. Mientras no existan `sg_fume` y `sg_fucu`, no se puede cerrar completamente la generacion de cuotas por mes.
 6. Mientras no exista `sg_trca`, el tope se puede guardar en `sg_fups.mto_tope`, pero no queda trazada la regla exacta usada salvo por metadata externa.
 7. Para compensacion horaria, el frontend/backend deben enviar anio, mes, dia y rango horario; la duracion debe calcularse desde `sg_fuco.hora_inicio` y `sg_fuco.hora_termino`.
+
+---
+
+## 9. Cambio E2E - Solicitud DU288 con un funcionario y una actividad
+
+### 9.1 Decision funcional
+
+1. La regla aplica solo a solicitudes con `sg_prse.cod_modprs = 2`.
+2. Toda solicitud DU288 persistida debe contener exactamente un funcionario.
+3. Una solicitud DU288 no puede guardarse ni enviarse con cero funcionarios.
+4. Una solicitud DU288 no puede guardarse ni enviarse con mas de un funcionario.
+5. La actividad se ingresa una sola vez, en el bloque del funcionario.
+6. `sg_fups.motivo` es la fuente de verdad de la actividad DU288.
+7. `sg_prse.actividad` es una copia automatica para compatibilidad con consultas, cabeceras, workflow y resoluciones.
+8. Para una solicitud DU288 debe cumplirse siempre:
+
+```text
+COUNT(sg_fups WHERE nro_solici = solicitud) = 1
+sg_prse.actividad = sg_fups.motivo
+```
+
+9. El flujo legacy conserva multiples funcionarios y actividades diferenciadas.
+10. Las solicitudes historicas no se migran ni se sobrescriben por este cambio. Se mantienen consultables con su informacion original.
+
+### 9.2 Procedimientos almacenados
+
+#### `sg_fupsiSecgen01`
+
+1. Resolver la modalidad real desde `sg_prse.cod_modprs`.
+2. Si la modalidad es DU288 y ya existe una fila en `sg_fups` para `nro_solici`, rechazar la insercion antes de consumir el correlativo.
+3. Retornar un contrato explicito:
+   - exito: `status = 1`, `id_funprse` y `msg`;
+   - rechazo: `status = 0`, `code` y `msg`.
+4. En DU288, insertar `sg_fups.motivo` con la actividad recibida y actualizar `sg_prse.actividad` con el mismo valor dentro de la misma transaccion.
+5. En legacy, mantener el comportamiento actual.
+
+#### `sg_fupsuSecgen01`
+
+1. Identificar la solicitud y modalidad asociadas a `id_funprse`.
+2. En DU288, actualizar `sg_fups.motivo` y `sg_prse.actividad` de forma atomica.
+3. Retornar `status`, `code` y `msg` verificables por backend.
+4. En legacy, no sincronizar ambos campos automaticamente.
+
+#### Reemplazo del funcionario
+
+1. No implementar el reemplazo DU288 como `DELETE` seguido de `INSERT`.
+2. Reutilizar el `id_funprse` existente y actualizar la fila mediante `sg_fupsuSecgen01`.
+3. Reemplazar horarios y compensaciones dependientes dentro de la misma transaccion backend.
+4. Esto evita estados intermedios sin funcionario, conserva la cardinalidad y mantiene estables las referencias al registro.
+5. La eliminacion aislada del unico funcionario DU288 no debe formar parte del flujo normal de guardado.
+
+### 9.3 Backend
+
+1. Centralizar la regla en la validacion normativa compartida por crear y actualizar.
+2. Antes de abrir una transaccion, validar para DU288:
+   - `staffList` existe;
+   - `staffList.length === 1`;
+   - `staffList[0].reason` tiene contenido valido;
+   - no existen identificadores de funcionario duplicados o ajenos a la solicitud.
+3. Normalizar siempre:
+
+```text
+request.provision.activity = request.staffList[0].reason
+```
+
+4. No confiar en `provision.activity` enviado por el cliente para DU288.
+5. En creacion, normalizar la actividad antes de ejecutar el PA de `sg_prse`.
+6. En actualizacion, reutilizar el `id_funprse` persistido cuando se cambie el funcionario.
+7. Validar que los PA de funcionario retornen `status = 1`; cualquier otro resultado debe lanzar una excepcion y provocar rollback.
+8. Responder:
+   - `422 Unprocessable Entity` para payload con cardinalidad o actividad invalida;
+   - `409 Conflict` cuando el PA detecte un segundo funcionario o una inconsistencia concurrente.
+9. Mantener la validacion en backend aunque el frontend bloquee la accion.
+
+### 9.4 Frontend
+
+1. Mantener un solo campo editable: `Actividad del funcionario`.
+2. Retirar la edicion independiente de `Descripcion general de la actividad` en el formulario DU288.
+3. Construir el payload con el mismo valor en:
+   - `staffList[0].reason` como dato principal;
+   - `provision.activity` como copia de transporte compatible.
+4. Deshabilitar la busqueda/agregado cuando ya existe un funcionario.
+5. Mantener disponibles las acciones de editar y reemplazar el funcionario existente.
+6. Bloquear guardado y envio si `staffSummary.length !== 1`.
+7. Bloquear guardado y envio si la actividad del funcionario esta vacia o no cumple el largo minimo.
+8. Mostrar la misma actividad en:
+   - resumen del funcionario;
+   - resumen previo al envio;
+   - detalle de la solicitud;
+   - resumen del workflow;
+   - resolucion.
+9. Ajustar textos de creacion a singular: `Funcionario de la solicitud`, `Actividad del funcionario` y mensajes equivalentes.
+10. En vistas historicas capaces de recibir varias filas, conservar presentacion compatible y no ocultar informacion existente.
+
+### 9.5 Matriz de validaciones
+
+| Capa | Caso | Resultado esperado |
+| :--- | :--- | :--- |
+| Frontend | Intentar guardar sin funcionario | Bloqueo local con mensaje claro. |
+| Frontend | Intentar agregar un segundo funcionario | Accion deshabilitada y guarda defensiva sin modificar el resumen. |
+| Frontend | Actividad vacia o menor al minimo | Bloqueo antes de guardar o enviar. |
+| Backend | `staffList` vacia | `422`, sin abrir transaccion de escritura. |
+| Backend | `staffList` con dos o mas filas | `422`, sin abrir transaccion de escritura. |
+| Backend | `provision.activity` distinto de `staffList[0].reason` | Backend usa la actividad del funcionario y reemplaza la copia de prestacion. |
+| PA | Segunda insercion DU288 para el mismo `nro_solici` | `status = 0`, sin consumir correlativo ni insertar. |
+| PA | Actualizacion de actividad DU288 | `sg_fups.motivo` y `sg_prse.actividad` quedan iguales. |
+| Transaccion | Falla horario o compensacion | Rollback de todos los cambios de funcionario y actividad. |
+| Legacy | Solicitud con multiples funcionarios | Mantiene el comportamiento actual. |
+| Historico | Consulta DU288 con multiples funcionarios previos | Se visualiza sin migracion destructiva. |
+
+### 9.6 Pruebas y criterios de aceptacion
+
+1. Crear una solicitud DU288 con un funcionario y confirmar persistencia exitosa.
+2. Confirmar en BDD que existe una sola fila `sg_fups` para la solicitud.
+3. Confirmar que `sg_prse.actividad` y `sg_fups.motivo` son iguales.
+4. Editar la actividad del funcionario y verificar que ambos campos cambian en la misma transaccion.
+5. Reemplazar el funcionario y comprobar que se reutiliza la relacion uno a uno sin crear una segunda fila.
+6. Intentar guardar payloads con cero y dos funcionarios y confirmar `422`.
+7. Ejecutar directamente el PA intentando una segunda insercion y confirmar `status = 0`.
+8. Simular dos inserciones concurrentes y confirmar que solo una puede persistir.
+9. Provocar una falla al sincronizar horarios o compensaciones y confirmar rollback completo.
+10. Generar resumen y resolucion y verificar que muestran la actividad del funcionario como actividad de la prestacion.
+11. Abrir solicitudes historicas y confirmar que siguen siendo consultables.
+12. Crear/editar una solicitud legacy con multiples funcionarios y confirmar ausencia de regresiones.
+
+### 9.7 Orden de implementacion y despliegue
+
+1. Actualizar y probar PA en ambiente de desarrollo.
+2. Implementar normalizacion, validaciones y manejo de respuesta PA en backend.
+3. Agregar pruebas unitarias de backend y pruebas de transaccion.
+4. Actualizar formulario, resumen, detalle y mensajes del frontend.
+5. Ejecutar `npm run build` y `npm run test:unit` en backend.
+6. Ejecutar lint, `lint:du288-ui` y build en frontend.
+7. Ejecutar la matriz E2E contra BDD de desarrollo.
+8. Desplegar en orden PA, backend y frontend.
+9. Realizar prueba de humo posterior al despliegue.
+
+### 9.8 Archivos principales afectados
+
+| Capa | Archivo | Cambio esperado |
+| :--- | :--- | :--- |
+| PA | `solicitante/sg_fupsiSecgen01.sql` | Limite de una fila, respuesta estructurada y sincronizacion de actividad. |
+| PA | `solicitante/sg_fupsuSecgen01.sql` | Actualizacion atomica de actividad de funcionario y prestacion. |
+| Backend | `service-provision-workflow.service.ts` | Validacion previa a transaccion para crear y actualizar. |
+| Backend | `service-provision-request-procedures.repository.ts` | Normalizacion, reemplazo uno a uno y validacion de respuestas PA. |
+| Backend | `service-provision-request.ts` | Contrato de ejecucion de PA, si requiere nuevos parametros o retorno. |
+| Frontend | `PdsDu288RequestForm.vue` | Cardinalidad, payload, actividad canonica y guardas de persistencia. |
+| Frontend | `Du288StaffRequestSection.vue` | Unico campo editable de actividad. |
+| Frontend | `Du288StaffSummarySection.vue` | Presentacion singular y actividad unificada. |
+| Frontend | `PdsWorkflowRequestSummary.vue` | Resumen consistente para roles posteriores. |
+| Frontend | `lang/es/pds.js` y mensajes normativos | Textos singulares y errores de cardinalidad. |
+
+### 9.9 Fuera de alcance
+
+1. No eliminar columnas existentes de `sg_prse` ni `sg_fups`.
+2. No crear una migracion destructiva para solicitudes historicas.
+3. No modificar la cardinalidad del flujo legacy.
+4. No modificar el modelo de pagos por este cambio.
+5. No eliminar soporte de lectura para listas historicas de funcionarios.
