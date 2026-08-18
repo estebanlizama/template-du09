@@ -1028,7 +1028,11 @@ request.provision.activity = request.staffList[0].reason
 
 ---
 
-## 10. Evaluacion E2E de subrogancia y representacion
+## 10. Evaluacion E2E de subrogancia y representacion (sustituida)
+
+> Esta evaluacion incluia creacion y edicion por cuenta del titular. Esa parte
+> fue descartada por la decision final de la seccion 11. Se conserva solamente
+> como antecedente de las alternativas analizadas.
 
 ### 10.1 Decision de arquitectura
 
@@ -1039,7 +1043,7 @@ request.provision.activity = request.staffList[0].reason
    - visualizacion del expediente;
    - creacion por cuenta de otra persona;
    - edicion de borradores o solicitudes devueltas.
-4. La subrogancia institucional vigente puede habilitar decisiones asociadas al cargo representado. No habilita automaticamente la creacion o edicion de solicitudes personales del titular.
+4. La subrogancia institucional vigente habilita crear, consultar y editar por cuenta del titular solo cuando el usuario selecciona explicitamente ese contexto y el backend lo revalida. Nunca se obtiene este alcance por enviar solamente el RUT del titular.
 5. `sg_apso.rut_usua` conserva el destinatario original de la tarea y `sg_apso.rut_autori` debe registrar al subrogante que efectivamente decidio.
 6. Consultar la bandeja no debe reasignar ni modificar tareas. La autorizacion efectiva debe comprobarse nuevamente dentro de la transaccion de aprobacion.
 
@@ -1057,26 +1061,26 @@ salida por representacion vigente:
   rut_titular
   cod_organi_representado
   cod_organi_actor
-  cod_design
-  cod_des_su
   tipo_representacion       -- SUBROGANCIA
-  fuente                    -- ORDE
-  fecha_desde
-  fecha_hasta
+  fuente                    -- AUFI_ORCO o AUFI_ORDE
+  prioridad
   titular_ausente
-  numero_resolucion
   estado_resolucion         -- VIGENTE, NO_VIGENTE o AMBIGUA
   mensaje
 ```
 
 Fuentes minimas:
 
-1. `sisper_db.dbo.sp_orde`: persona designada y organizacion representada.
-2. `sisper_db.dbo.sp_desg`: tipo, resolucion y vigencia temporal de la designacion.
-3. `sisper_db.dbo.sp_tdsu`: catalogo certificado del tipo de designacion; solo `cod_des_su = '1'` habilita subrogancia.
-4. `sisper_db.dbo.sp_orco`: titular vigente y marca `ausente`.
-5. `sisper_db.dbo.sp_aufi`: representacion jerarquica cuando corresponda.
-6. `ufro_db.dbo.es_orga`: descripcion del cargo representado y del cargo real.
+1. `sisper_db.dbo.sp_aufi`: cargo representado, cargo que puede subrogarlo y prioridad.
+2. `sisper_db.dbo.sp_orco`: ocupantes vigentes por contrato, tanto del cargo representado como del cargo actor.
+3. `sisper_db.dbo.sp_orde`: ocupantes vigentes por designacion, tanto del cargo representado como del cargo actor.
+4. `ufro_db.dbo.es_orga`: descripcion del cargo representado y del cargo real.
+5. `sisper_db.dbo.sp_pers`: identidad y nombre del titular y del subrogante.
+
+`sp_desg` puede complementar antecedentes documentales de una designacion, pero
+su campo `vigencia` no autoriza ni invalida la subrogancia operativa. La fuente
+de vigencia es `sp_orco.vigente` o `sp_orde.vigente` y la relacion funcional se
+obtiene desde `sp_aufi`.
 
 El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()` cuando exista mas de una representacion aplicable con igual prioridad.
 
@@ -1137,14 +1141,15 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 
 ### 10.8 Decisiones aplicadas en la implementacion
 
-1. La vigencia se determina por `sp_orde.vigente`, `sp_desg.vigencia`, fechas y `es_orga.por_desig = 'S'`; `sp_orco.ausente` se informa, pero no es la unica condicion habilitante.
-2. Se certifico el catalogo `sp_tdsu`: `1 = Designacion`, `2 = Sumario` y `3 = Fondos Fijos`. Solo `sp_desg.cod_des_su = '1'` habilita la representacion funcional mostrada como `Subrogancia`; los tipos 2 y 3 quedan excluidos.
-3. Una representacion iniciada despues de crear la tarea habilita acceso dinamico; no reasigna ni duplica `sg_apso`.
-4. La representacion aplica a tareas cuyo destinatario es titular ORCO de la organizacion. Una asignacion personal que no proviene de ORCO, como Jefe de Proyecto, no se subroga automaticamente.
-5. Se habilita crear y editar por cuenta del titular mediante contexto explicito y revalidacion servidor.
-6. Al vencer la representacion desaparece el acceso operativo. El historico permanece visible solo si el actor participo en `sg_hist` o `sg_apso`.
-7. Cuando existe mas de un titular ORCO o mas de un RUT ORDE vigente para la misma organizacion, las capacidades quedan bloqueadas como asignacion ambigua.
-8. Sin una columna que vincule cada solicitud con el cargo representado, la bandeja activa por representacion se delimita por titular durante la vigencia. La trazabilidad de nuevas solicitudes queda determinada por principal en `sg_soli` y actor en `sg_hist`.
+1. La vigencia operativa de un ocupante se determina por `sp_orco.vigente = 'S'` o `sp_orde.vigente = 'S'`.
+2. La subrogancia entre cargos se obtiene desde `sp_aufi.cod_organi -> sp_aufi.cod_organ2`, respetando su prioridad. Un cruce ORCO/ORDE dentro del mismo cargo no acredita por si solo una subrogancia.
+3. Se habilita crear, consultar y editar por cuenta del titular mediante contexto explicito y revalidacion servidor.
+4. En una solicitud representada, `sg_soli.rut_solici` conserva al titular y `sg_hist.rut_accion` registra al subrogante que creo, edito o envio.
+5. Una representacion iniciada despues de crear la tarea habilita acceso dinamico; no reasigna ni duplica `sg_apso`.
+6. Al decidir, `sg_apso.rut_usua` conserva al destinatario original y `sg_apso.rut_autori` registra al subrogante que ejecuto la accion.
+7. Al finalizar la representacion desaparece el acceso operativo. El historico permanece visible cuando el actor participo en `sg_hist` o `sg_apso`.
+8. Cuando una organizacion o una prioridad AUFI resuelve mas de una persona distinta, las capacidades quedan bloqueadas como asignacion ambigua.
+9. Sin una columna que vincule cada solicitud con el cargo representado, la bandeja activa por representacion se delimita por titular durante la vigencia. La trazabilidad queda determinada por principal en `sg_soli` y actor en `sg_hist`/`sg_apso`.
 
 ### 10.9 Opciones sin cambios estructurales de BDD
 
@@ -1251,3 +1256,248 @@ La posibilidad de crear y aprobar bajo la misma representacion debe controlarse 
 6. La representacion se limita a DU288. El flujo legacy mantiene autorizacion directa.
 7. Validaciones locales ejecutadas: build backend, 66 pruebas unitarias, ESLint focalizado frontend y build Nuxt.
 8. El despliegue fue intentado el 17-08-2026 con la cuenta de aplicacion del ambiente de desarrollo. Sybase rechazo `CREATE PROCEDURE` por falta de `sa_role`; no se alteraron tablas ni se reemplazaron los PA existentes. Los scripts deben ser ejecutados por DBA y luego someterse a la prueba funcional con una designacion real.
+
+---
+
+## 11. Decision final: subrogancia solo para aprobacion
+
+### 11.1 Alcance
+
+1. La subrogancia no habilita crear solicitudes a nombre del titular.
+2. La subrogancia no habilita editar borradores ni consultar todas las solicitudes personales del titular.
+3. Se aplica exclusivamente al resolver, mostrar y ejecutar tareas institucionales de aprobacion, revision o firma.
+4. El solicitante y el funcionario de una DU288 no cambian por esta regla.
+5. El usuario autenticado conserva siempre su identidad JWT.
+
+### 11.2 Resolucion del responsable efectivo
+
+Para una etapa institucional, `sg_eta1.cod_organi` identifica el cargo que debe
+aprobar. El PA debe aplicar el siguiente orden:
+
+1. ORCO directo: una persona unica con `vigente = 'S'` y `ausente <> 'S'`.
+2. ORDE directo: si no existe ORCO disponible, una persona unica del mismo cargo con `vigente = 'S'` y `ausente <> 'S'`.
+3. AUFI: si el cargo sigue sin ocupante disponible, recorrer exclusivamente todas las relaciones directas `sp_aufi.cod_organi = cargo requerido`, en orden ascendente de `prioridad`, sin un tope fijo.
+4. En cada prioridad se deben reunir y deduplicar todos los ocupantes ORCO/ORDE disponibles de los `cod_organ2` configurados en ese nivel.
+5. Si un nivel no posee ocupantes, continuar con el siguiente. Si posee una persona unica, seleccionarla y detener la busqueda. Si posee mas de una persona distinta, bloquear como `AMBIGUO`; no escoger mediante `MIN(rut_person)`.
+6. No encadenar el AUFI del cargo candidato ni recorrer `es_orga.cod_orgjef`. La busqueda permanece anclada al cargo original de la etapa.
+7. Sin responsable despues de agotar todas las prioridades AUFI configuradas para el cargo requerido: retornar `NO_ENCONTRADO`; la jerarquia organizacional no acredita autorizacion para aprobar.
+
+El campo `ausente` vacio se interpreta como `N`. `sp_desg.vigencia` no participa
+en esta resolucion. `sp_desg` puede aportar antecedentes documentales, pero la
+vigencia operativa proviene de ORCO/ORDE.
+
+En este alcance, "nivel" significa `sp_aufi.prioridad`, no profundidad del
+organigrama. Se recorren todas las prioridades configuradas, aunque existan 12
+o mas. La prioridad no autoriza a saltar a `es_orga.cod_orgjef`: cada candidato
+debe provenir directamente de `sp_aufi.cod_organi = cargo requerido`.
+
+### 11.2.1 Diferencia con la busqueda de jefe directo
+
+La disponibilidad del ocupante se comparte, pero el recorrido no:
+
+1. Ambos resolutores deben considerar disponible solamente a quien tenga
+   `vigente = 'S'` y `ausente <> 'S'`.
+2. Jefe directo (`sg_fupssSecgen16`) parte desde la unidad contractual del
+   funcionario. En cada cargo de jefatura resuelve ORCO, ORDE y AUFI; solo si
+   ese cargo no posee ningun responsable efectivo avanza por
+   `es_orga.cod_orgjef`, sin cambiar la raiz institucional.
+3. Etapa institucional (`sg_etasSecgen01`) parte desde `sg_eta1.cod_organi` y
+   recorre todo el AUFI directo en orden de prioridad.
+4. Jefe Directo y las autoridades institucionales pueden reutilizar el mismo
+   resolvedor de ocupante efectivo de un cargo. La diferencia es que solo Jefe
+   Directo puede intentar otro cargo mediante `cod_orgjef`.
+5. La version actual de `sg_fupssSecgen16` filtra por `vigente`, pero todavia no
+   excluye `ausente = 'S'`; por lo tanto, esa validacion debe corregirse tambien.
+6. El recorrido jerarquico actual de Jefe Directo se conserva, pero debe dejar
+   de elegir mediante `MIN(rut_person)`: en cada fuente y nivel debe contar RUT
+   distintos y retornar `AMBIGUO` cuando exista mas de uno.
+7. Antes de consultar cada nivel deben reiniciarse las variables del candidato
+   y del cargo siguiente, evitando reutilizar el valor de una iteracion anterior.
+8. La eleccion inicial de un cargo de jefatura dentro de la unidad tampoco debe
+   resolverse silenciosamente con `MIN(cod_organi)` cuando existan varios cargos
+   equivalentes configurados.
+
+### 11.3 Diferencia entre ORDE y AUFI
+
+1. ORDE en el mismo `cod_organi` es un ocupante por designacion del cargo requerido.
+2. AUFI relaciona el cargo requerido con otro cargo autorizado para subrogarlo.
+3. Un cruce ORCO/ORDE de dos personas en el mismo cargo no basta para afirmar que una subroga a la otra.
+4. Para AUFI se conserva tanto `cod_organi` representado como `cod_organ2` del cargo real del subrogante.
+
+### 11.4 Registro usando las tablas existentes
+
+Al crear la tarea:
+
+1. `sg_apso.rut_usua` guarda el RUT efectivo que debe revisar. Si el resolver eligio AUFI, corresponde al subrogante.
+2. `sg_apso.cod_flusol` y `sg_apso.cod_etapa` conservan la etapa y permiten identificar el cargo requerido en `sg_eta1`.
+3. La bandeja y el modal reciben desde el resolver: `es_subrogante`, titular, cargo representado, cargo real, fuente y prioridad.
+
+Al decidir:
+
+1. `sg_apso.rut_usua` permanece como destinatario de la tarea.
+2. `sg_apso.rut_autori` guarda el RUT JWT que ejecuto la aprobacion, rechazo o devolucion.
+3. `sg_hist.rut_accion` guarda el mismo RUT JWT.
+4. `sg_hist.observaci` deja constancia explicita: `Actuo como subrogante de <titular/cargo>; fuente=<AUFI_ORCO|AUFI_ORDE>; prioridad=<n>`.
+
+Sin modificar la BDD, `sg_apso` no posee una columna que conserve una fotografia
+estructurada de la subrogancia. `rut_usua`, flujo y etapa entregan la traza
+operativa; `sg_hist.observaci` entrega la constancia historica legible. Si se
+requiere consultar historicamente por tipo de asignacion sin interpretar texto,
+seria necesaria una columna o tabla adicional, fuera del alcance acordado.
+
+### 11.5 Ejemplo VRAF
+
+Si el Vicerrector `13158007K` esta marcado como ausente:
+
+1. Se descarta como responsable efectivo, aunque ORCO permanezca vigente.
+2. AUFI para el cargo 39 indica cargo 41 con prioridad 1 y cargo 50 con prioridad 2; no existen mas prioridades configuradas para VRAF.
+3. Se intenta primero el ocupante vigente y no ausente del cargo 41.
+4. Con los datos actuales se resuelve `14220231K`, Miguel Sandoval, mediante `AUFI_ORDE`.
+5. Solo si el cargo 41 no tiene ocupante disponible se intenta el cargo 50.
+6. Si tampoco existe, se comprueban las restantes prioridades configuradas; al no existir otras para VRAF, la etapa queda sin responsable.
+7. No se consulta el AUFI propio de los cargos 41 o 50 ni se escala por `es_orga.cod_orgjef`.
+
+### 11.5.1 Momento en que se aplica
+
+1. La regla se ejecuta cada vez que el motor determina el responsable de la
+   proxima etapa institucional: aprobacion, revision, decretacion o firma.
+2. No se ejecuta para ampliar permisos al iniciar sesion y no crea un contexto
+   para actuar en nombre de otra persona.
+3. Si el resultado es directo (`ORCO` u `ORDE` del mismo cargo), la tarea se
+   asigna a ese ocupante sin marcarlo automaticamente como subrogante.
+4. Si el resultado proviene de AUFI, `sg_apso.rut_usua` recibe al subrogante y
+   la respuesta debe indicar el cargo requerido, el cargo real, el titular
+   ausente, la fuente y la prioridad.
+5. La condicion de subrogancia se muestra al previsualizar el avance, en la
+   bandeja y en el modal de decision, y se conserva en el historial al decidir.
+
+### 11.6 Componentes que deben corregirse
+
+1. `sg_etasSecgen01`: considerar ausencia, recorrer todas las prioridades AUFI,
+   deduplicar conjuntamente ORCO/ORDE por prioridad y devolver metadata de
+   subrogancia. La metadata minima es `es_subrogante`, `prioridad`, cargo
+   requerido, cargo real, RUT/nombre del titular disponible y fuente.
+2. `sg_fupssSecgen16`: conservar el ascenso por `cod_orgjef`, agregar ausencia,
+   ambiguedad real y control correcto de las variables de cada nivel. En cada
+   cargo debe resolver ORCO, ORDE y AUFI antes de intentar el cargo superior.
+   AUFI determina al ocupante efectivo; no reemplaza ni encadena la jerarquia.
+3. `sg_apsoiSecgen01`: conservar su contrato e insertar en `rut_usua` el RUT
+   efectivo entregado por el resolver; no guardar primero al titular para luego
+   habilitar acceso dinamico al subrogante.
+4. `sg_prsesSecgen13`: listar tareas cuyo `sg_apso.rut_usua` coincide con el JWT;
+   no unir solicitudes personales ni tareas de un titular representado.
+5. `sg_apsosSecgen03` y `sg_apsouSecgen03`: eliminar la autorizacion por cruce
+   ORCO/ORDE/SP_DESG. La tarea pendiente pertenece al RUT efectivo almacenado;
+   al decidir se conserva `rut_usua`, se registra `rut_autori = JWT` y se genera
+   la observacion de subrogancia cuando la asignacion provino de AUFI.
+6. `sg_usacsSecgen01`: derivar perfiles desde tareas efectivamente asignadas,
+   sin copiar perfiles globales del titular.
+7. Backend: retirar los contextos representados de creacion, edicion y acceso a
+   tareas. Propagar la metadata de `sg_etasSecgen01` en la previsualizacion y en
+   la decision. La conversion de `es_subrogante` debe reconocer explicitamente
+   `S`; no utilizar `Boolean('N')`, porque en JavaScript tambien resulta `true`.
+8. Frontend: retirar el selector `Crear por cuenta de`; mostrar en bandeja,
+   previsualizacion y modal `Actua como subrogante de <cargo/titular>` solo para
+   asignaciones AUFI. No presentar la subrogancia como visacion automatica.
+9. Etapas de decretacion, firma u otra autoridad configurada: deben utilizar el
+   mismo resolver por `sg_eta1.cod_organi`. Cualquier rama legacy que resuelva
+   firmantes por otra consulta debe adaptarse al resolver antes de crear su
+   tarea, sin cambiar el comportamiento del flujo legacy no DU288.
+
+### 11.7 Pruebas obligatorias
+
+1. Titular vigente y presente recibe la tarea.
+2. Titular vigente pero ausente no recibe la tarea.
+3. ORDE directo disponible recibe la tarea antes de AUFI.
+4. AUFI selecciona la menor prioridad disponible.
+5. Si prioridad 1 no tiene ocupante, se selecciona prioridad 2.
+6. La busqueda continua por todas las prioridades AUFI configuradas hasta encontrar la primera prioridad efectiva.
+7. Dos personas distintas en la prioridad efectiva, considerando conjuntamente ORCO y ORDE, bloquean la asignacion como ambigua.
+8. No se encadena AUFI ni se utiliza `es_orga.cod_orgjef` para encontrar otro cargo.
+9. Sin ORCO, ORDE ni AUFI disponible despues de agotar las prioridades configuradas, la etapa queda `NO_ENCONTRADO`.
+10. El subrogante ve solo la tarea asignada, no las solicitudes personales del titular.
+11. La decision conserva `rut_usua`, registra `rut_autori` y genera historial indicando subrogancia.
+12. El flujo legacy mantiene su comportamiento.
+
+### 11.8 Ajuste previo del avance y omision de etapas
+
+Antes de incorporar AUFI se debe corregir el motor base que determina la
+siguiente tarea. La secuencia definitiva es:
+
+El flujo de decisiones, las fuentes por tipo de etapa y los diagramas de
+resolucion se detallan en `flujo_decision_responsables_etapas_du288.md`.
+
+1. Obtener una transicion unica y vigente desde `sg_eta2`.
+2. Resolver al responsable efectivo de la etapa destino.
+3. Clasificar el resultado antes de modificar `sg_prse`:
+   - `ENCONTRADO`: evaluar repeticion y crear la tarea si corresponde;
+   - `OMITIR_NO_APLICA`: registrar la omision y continuar;
+   - `NO_ENCONTRADO`, `AMBIGUO` o `NO_CONFIGURADO`: bloquear sin avanzar.
+4. Si el RUT efectivo participa posteriormente y la etapa permite omision,
+   registrar la omision y continuar. No crear una tarea `sg_apso`, no marcarla
+   aprobada y no atribuir una aprobacion al responsable que no actuo.
+5. Si la etapa no permite omision, conservar la tarea aunque el RUT se repita.
+6. Utilizar el mismo destino posterior en previsualizacion, ejecucion e
+   historial. Si se omiten varias apariciones consecutivas, informar la etapa
+   que finalmente conservara la revision.
+7. Una ausencia o falta de ocupante no significa `NO_APLICA`: primero se agotan
+   las alternativas validas del resolver y, si ninguna existe, se bloquea.
+8. La comparacion de responsables repetidos se ejecuta despues de resolver
+   ORCO, ORDE o AUFI, usando siempre el RUT efectivo.
+
+#### Ajustes por componente
+
+1. `sg_eta2sSecgen01` y `sg_prseuSecgen03`: conservar la validacion de una
+   transicion unica, destino vigente y actualizacion condicional de etapa. No
+   deben inferir un destino por el numero de etapa ni saltar una configuracion
+   ausente.
+2. `sg_fupssSecgen16`: subir por `cod_orgjef` solo para Jefe Directo y solamente
+   cuando ORCO, ORDE y todas las prioridades AUFI directas del nivel actual
+   entreguen cero candidatos disponibles. Agregar `ausente`, conteo de RUT
+   distintos, deteccion de ambiguedad, control de ciclos y reinicio de variables
+   por nivel.
+3. `sg_etasSecgen01`: no usar `cod_orgjef` para autoridades institucionales.
+   Resolver ORCO, ORDE y AUFI; un resultado inexistente o ambiguo bloquea.
+4. `ServiceProvisionWorkflowService`: reemplazar la creacion y autoaprobacion
+   de tareas repetidas por una omision sin `sg_apso`; unificar la seleccion de
+   la etapa posterior entre previsualizacion y ejecucion.
+5. `ServiceProvisionRequestProceduresRepository`: reemplazar el error generico
+   `DIRECT_HEAD_RESOLUTION_FAILED` por errores segun estrategia y etapa.
+6. Historial: una omision no debe presentarse como visacion automatica. Debe
+   quedar como evento de omision con el actor que produjo el avance y el motivo
+   `FUERA_JORNADA`, `RESPONSABLE_REPETIDO` u otra causa explicitamente admitida.
+
+#### Condiciones de ascenso para Jefe Directo
+
+El ascenso a otro cargo se permite solo si se cumplen todas estas condiciones:
+
+1. La prestacion requiere Jefe Directo (`dentro_jor IN ('S', 'D')`).
+2. Existe un cargo de jefatura inicial asociado a la unidad contractual.
+3. ORCO, ORDE y AUFI del nivel actual tienen cero ocupantes unicos, vigentes,
+   presentes y distintos del funcionario evaluado.
+4. `cod_orgjef` no es nulo, no apunta al mismo cargo y no fue visitado antes.
+5. El cargo superior mantiene la misma raiz institucional de la unidad.
+
+Una fuente ambigua, una etapa institucional, un responsable repetido o una
+prestacion fuera de jornada nunca habilitan el ascenso jerarquico.
+
+### 11.9 Interaccion entre Jefe Directo, AUFI y omision posterior
+
+1. Primero se determina el cargo que corresponde como Jefe Directo desde el
+   contrato, la unidad y `es_orga`.
+2. Para ese cargo se resuelve a la persona efectiva mediante ORCO, ORDE y AUFI.
+3. Si AUFI entrega a la persona, la asignacion conserva el cargo de jefatura
+   requerido, el cargo real del actor, la prioridad y `es_subrogante = 'S'`.
+4. Solo si ninguna fuente resuelve ese cargo se intenta `cod_orgjef` y se repite
+   el mismo algoritmo en el cargo superior.
+5. Una vez obtenido el RUT efectivo, se compara contra los RUT efectivos de las
+   etapas posteriores. La comparacion nunca se realiza por titular ni solo por
+   nombre del cargo.
+6. Si el mismo RUT efectivo revisara posteriormente y la etapa Jefe Directo
+   permite omision, no se crea ni autoaprueba una tarea de Jefe Directo.
+7. El historial debe indicar que la etapa fue omitida, que el responsable
+   efectivo actuaba como subrogante, que cargo subrogaba y en que etapa posterior
+   se esperaba su revision.
+8. La cadena futura se vuelve a validar inmediatamente antes de confirmar el
+   avance. La omision queda como una fotografia de la resolucion vigente en ese
+   momento; la etapa posterior vuelve a resolver vigencia cuando sea activada.
