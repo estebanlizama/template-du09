@@ -142,8 +142,6 @@ BEGIN
             FROM sisper_db.dbo.sp_orde orde
             WHERE orde.cod_organi = @cod_actual AND orde.vigente = 'S'
               AND orde.rut_person <> @rut_person
-              AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                          WHERE orga.cod_organi = @cod_actual AND orga.por_desig = 'S')
 
             IF @cantidad > 1
             BEGIN
@@ -172,8 +170,6 @@ BEGIN
                 FROM sisper_db.dbo.sp_orde orde
                 WHERE orde.cod_organi = @cod_actual AND orde.vigente = 'S'
                   AND orde.rut_person <> @rut_person
-                  AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                              WHERE orga.cod_organi = @cod_actual AND orga.por_desig = 'S')
                 SELECT @fuente = 'ORDE', @cod_actor = @cod_actual, @es_subrogante = 'N'
             END
         END
@@ -194,8 +190,6 @@ BEGIN
                 INNER JOIN sisper_db.dbo.sp_orco orco
                   ON orco.cod_organi = aufi.cod_organ2 AND orco.vigente = 'S'
                  AND upper(ltrim(rtrim(isnull(orco.ausente, 'N')))) <> 'S'
-                INNER JOIN ufro_db.dbo.es_orga actor_org
-                  ON actor_org.cod_organi = aufi.cod_organ2 AND actor_org.por_contra = 'S'
                 WHERE aufi.cod_organi = @cod_actual AND aufi.prioridad = @prioridad
                   AND orco.rut_person <> @rut_person
                 UNION
@@ -203,8 +197,6 @@ BEGIN
                 FROM sisper_db.dbo.sp_aufi aufi
                 INNER JOIN sisper_db.dbo.sp_orde orde
                   ON orde.cod_organi = aufi.cod_organ2 AND orde.vigente = 'S'
-                INNER JOIN ufro_db.dbo.es_orga actor_org
-                  ON actor_org.cod_organi = aufi.cod_organ2 AND actor_org.por_desig = 'S'
                 WHERE aufi.cod_organi = @cod_actual AND aufi.prioridad = @prioridad
                   AND orde.rut_person <> @rut_person
 

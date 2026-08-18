@@ -324,8 +324,6 @@ BEGIN
       AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
                       WHERE f.nro_solici = @nro_solici
                         AND f.rut = orco.rut_person)
-      AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                  WHERE orga.cod_organi = @cod_organi AND orga.por_contra = 'S')
 
     IF ISNULL(@cantidad, 0) > 1
     BEGIN
@@ -355,8 +353,6 @@ BEGIN
           AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
                           WHERE f.nro_solici = @nro_solici
                             AND f.rut = orco.rut_person)
-          AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                      WHERE orga.cod_organi = @cod_organi AND orga.por_contra = 'S')
         SELECT @fuente_resolucion = 'ORCO',
                @cod_organi_actor = @cod_organi,
                @es_subrogante = 'N'
@@ -372,8 +368,6 @@ BEGIN
           AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
                           WHERE f.nro_solici = @nro_solici
                             AND f.rut = orde.rut_person)
-          AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                      WHERE orga.cod_organi = @cod_organi AND orga.por_desig = 'S')
 
         IF ISNULL(@cantidad, 0) > 1
         BEGIN
@@ -402,8 +396,6 @@ BEGIN
               AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
                               WHERE f.nro_solici = @nro_solici
                                 AND f.rut = orde.rut_person)
-              AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
-                          WHERE orga.cod_organi = @cod_organi AND orga.por_desig = 'S')
             SELECT @fuente_resolucion = 'ORDE',
                    @cod_organi_actor = @cod_organi,
                    @es_subrogante = 'N'
@@ -433,9 +425,6 @@ BEGIN
               ON orco.cod_organi = aufi.cod_organ2
              AND orco.vigente = 'S'
              AND UPPER(LTRIM(RTRIM(ISNULL(orco.ausente, 'N')))) <> 'S'
-            INNER JOIN ufro_db.dbo.es_orga actor_org
-              ON actor_org.cod_organi = aufi.cod_organ2
-             AND actor_org.por_contra = 'S'
             WHERE aufi.cod_organi = @cod_organi
               AND aufi.prioridad = @prioridad
               AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
@@ -447,9 +436,6 @@ BEGIN
             INNER JOIN sisper_db.dbo.sp_orde orde
               ON orde.cod_organi = aufi.cod_organ2
              AND orde.vigente = 'S'
-            INNER JOIN ufro_db.dbo.es_orga actor_org
-              ON actor_org.cod_organi = aufi.cod_organ2
-             AND actor_org.por_desig = 'S'
             WHERE aufi.cod_organi = @cod_organi
               AND aufi.prioridad = @prioridad
               AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
