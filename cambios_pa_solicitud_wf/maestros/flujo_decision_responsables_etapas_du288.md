@@ -224,13 +224,11 @@ flowchart TD
     G --> H[Evaluar siguiente transicion]
 ```
 
-### Politica actual que debe revisarse antes de implementar
+### Politica de omision aplicada
 
-El PA actual marca como no omitibles los perfiles `6`, `25`, `12`, `13`, `14`,
-`16`, `17`, `18` y `23`; para los demas permite omision por repeticion. Esta
-lista esta codificada en el PA y no en `sg_eta1`. Debe validarse expresamente,
-en especial para Finanzas, Decanatura, Rector y otros perfiles formales que no
-aparecen en la lista.
+La politica conservadora aplicada permite omision por responsable repetido
+solamente para Jefe Directo, perfil `26`. Las autoridades formales, Solicitante
+y Jefe de Proyecto mantienen su tarea aunque el RUT efectivo se repita.
 
 La omision por fuera de jornada es independiente de esa lista y solo aplica a
 Jefe Directo.
@@ -307,3 +305,11 @@ EXECUTE secgen_db.Analisis2.sg_fupssSecgen16
 
 Estas consultas son de solo lectura. Sus resultados deben conservarse como
 evidencia antes de desplegar los cambios.
+
+## 10. Estado de aplicacion
+
+El flujo descrito en este documento esta implementado en los scripts y en el
+codigo local de backend/frontend. La instalacion de los PA en Sybase y su prueba
+con datos reales siguen siendo un paso de despliegue controlado por DBA; hasta
+completarlo, este documento no constituye evidencia de que el ambiente remoto
+haya sido actualizado.

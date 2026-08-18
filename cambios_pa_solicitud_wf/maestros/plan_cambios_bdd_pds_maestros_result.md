@@ -1030,11 +1030,13 @@ request.provision.activity = request.staffList[0].reason
 
 ## 10. Evaluacion E2E de subrogancia y representacion (sustituida)
 
-> Esta evaluacion incluia creacion y edicion por cuenta del titular. Esa parte
-> fue descartada por la decision final de la seccion 11. Se conserva solamente
-> como antecedente de las alternativas analizadas.
+> **NO IMPLEMENTAR ESTA SECCION.** Esta evaluacion incluia creacion, edicion y
+> acceso dinamico por cuenta del titular. La alternativa completa fue descartada
+> por la decision final de la seccion 11 y se conserva solamente como antecedente
+> de arquitectura. Ninguna regla de las subsecciones 10.1 a 10.12 prevalece sobre
+> la seccion 11.
 
-### 10.1 Decision de arquitectura
+### 10.1 Alternativa de arquitectura descartada
 
 1. El RUT autenticado/JWT siempre identifica a la persona que ejecuta la accion. Nunca debe reemplazarse por el RUT del titular.
 2. La subrogancia agrega un alcance contextual sobre un cargo o una tarea; no convierte al usuario en el titular ni le copia todos sus perfiles globales.
@@ -1047,9 +1049,11 @@ request.provision.activity = request.staffList[0].reason
 5. `sg_apso.rut_usua` conserva el destinatario original de la tarea y `sg_apso.rut_autori` debe registrar al subrogante que efectivamente decidio.
 6. Consultar la bandeja no debe reasignar ni modificar tareas. La autorizacion efectiva debe comprobarse nuevamente dentro de la transaccion de aprobacion.
 
-### 10.2 PA propuesto para resolver representaciones
+### 10.2 PA de representaciones descartado
 
-Crear y certificar el PA de solo lectura `Analisis2.sp_ordesSecgen01`. El nombre sigue la convencion `<tabla><operacion><base><correlativo>`: tabla conductora `sp_orde`, operacion `s`, base de ejecucion `Secgen`, correlativo `01`.
+Esta propuesta no se implementa. `Analisis2.sp_ordesSecgen01` queda solamente
+como consulta personal compatible y no resuelve representaciones ni autoriza
+operaciones.
 
 ```text
 entrada:
@@ -1084,7 +1088,7 @@ obtiene desde `sp_aufi`.
 
 El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()` cuando exista mas de una representacion aplicable con igual prioridad.
 
-### 10.3 Matriz de alcance recomendada
+### 10.3 Matriz de alcance evaluada y descartada
 
 | Operacion | Alcance inicial recomendado | Regla |
 | :--- | :--- | :--- |
@@ -1093,11 +1097,11 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 | Aprobar/rechazar/devolver como subrogante | Si | Validacion transaccional; `rut_autori = RUT JWT`; conservar titular/cargo representado. |
 | Firmar resolucion como subrogante | Si | Registrar firmante real, cargo representado, fuente y vigencia. |
 | Crear una solicitud propia | Si | El creador sigue siendo el RUT JWT. |
-| Crear por cuenta del titular | Si | Selector explicito; backend revalida contexto, conserva principal y registra ejecutor JWT. |
-| Editar borrador del titular | Si | Solo con representacion vigente, estado editable y trazabilidad del editor real. |
+| Crear por cuenta del titular | No | Alternativa descartada; el solicitante siempre es el RUT JWT. |
+| Editar borrador del titular | No | Alternativa descartada; solo edita el solicitante persistido. |
 | Ver todo el historial personal del titular | No | Mostrar solo expedientes vinculados al cargo/tarea representada. |
 
-### 10.4 PA y endpoints afectados
+### 10.4 PA y endpoints de la alternativa descartada
 
 1. `sg_prsesSecgen13`: bandeja pendiente. Debe devolver tareas directas y tareas institucionales que el RUT puede resolver como subrogante, con `tipo_acceso`, `rut_titular`, cargo representado y fuente.
 2. `sg_prsesSecgen18`: acceso contextual. Debe distinguir acceso directo, subrogado y solo lectura; `puede_editar` no debe derivarse automaticamente de una subrogancia institucional.
@@ -1108,7 +1112,7 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 7. `sg_etasSecgen01` conserva la tarea asignada al titular institucional. No debe reasignarla al subrogante ni duplicarla al crear la etapa.
 8. La representacion y su metadata se resuelven dinamicamente al listar, consultar y decidir la tarea mediante `sp_ordesSecgen01`, `sg_prsesSecgen13`, `sg_apsosSecgen03` y `sg_apsouSecgen03`. Asi, una designacion que comienza o vence no exige reescribir `sg_apso`.
 
-### 10.5 Cambios backend
+### 10.5 Cambios backend descartados
 
 1. Crear un servicio central `ServiceProvisionRepresentationService` que resuelva el contexto desde el PA y nunca desde datos enviados por frontend.
 2. Reemplazar la busqueda estricta `solicitud + estado + rut_usua = JWT` por una autorizacion de tarea efectiva basada en `nro_aproba + RUT JWT`.
@@ -1118,7 +1122,7 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 6. Revalidar vigencia y estado pendiente inmediatamente antes de actualizar `sg_apso`, evitando decisiones posteriores al termino de la subrogancia.
 7. Deduplicar una tarea que pudiera aparecer simultaneamente como directa y subrogada usando `nro_aproba`.
 
-### 10.6 Cambios frontend
+### 10.6 Cambios frontend descartados
 
 1. La sesion sigue mostrando la identidad real del usuario conectado.
 2. La bandeja puede combinar tareas directas y subrogadas, pero cada fila debe indicar `Asignacion directa` o `En subrogancia de <titular>`.
@@ -1126,7 +1130,7 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 4. No enviar `rut_titular`, `rut_actor` ni permisos efectivos como fuente de autorizacion; son datos informativos resueltos por backend.
 5. Solo si se aprueba la creacion por cuenta de otro usuario, agregar un selector explicito `Actuar por cuenta de`, nunca una seleccion automatica al iniciar sesion.
 
-### 10.7 Casos de prueba obligatorios
+### 10.7 Casos de prueba historicos de la alternativa descartada
 
 1. Usuario sin subrogancia ve y decide solo sus tareas.
 2. Subrogante vigente ve sus tareas directas y las tareas institucionales del cargo representado.
@@ -1139,7 +1143,7 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 9. Al finalizar la subrogancia desaparecen las tareas no autorizadas sin alterar decisiones ya registradas.
 10. Legacy conserva su comportamiento hasta definir una estrategia de compatibilidad separada.
 
-### 10.8 Decisiones aplicadas en la implementacion
+### 10.8 Supuestos descartados de esa alternativa
 
 1. La vigencia operativa de un ocupante se determina por `sp_orco.vigente = 'S'` o `sp_orde.vigente = 'S'`.
 2. La subrogancia entre cargos se obtiene desde `sp_aufi.cod_organi -> sp_aufi.cod_organ2`, respetando su prioridad. Un cruce ORCO/ORDE dentro del mismo cargo no acredita por si solo una subrogancia.
@@ -1160,7 +1164,7 @@ El PA debe rechazar resultados ambiguos. No debe escoger un RUT mediante `MIN()`
 | C. Duplicar tareas | Crear una tarea para titular y otra para subrogante. | Ambos ven la solicitud. | Permite dos decisiones para una etapa y complica el cierre de flujo. | Descartada. |
 | D. Ambito de gestion contextual | Mantener el JWT real, resolver representaciones por PA y autorizar cada lectura/escritura segun contexto vigente. | Conserva identidad, titular, cargo y auditoria; no requiere columnas nuevas. | Requiere modificar PAs de bandeja/acceso y guards backend. | Recomendada. |
 
-### 10.10 Flujo recomendado de ambito de gestion
+### 10.10 Flujo de ambito de gestion descartado
 
 #### Ingreso a la aplicacion
 
@@ -1234,7 +1238,7 @@ La posibilidad de crear y aprobar bajo la misma representacion debe controlarse 
 3. Recomendacion: aplicar separacion de funciones y exigir un revisor distinto al ejecutor que creo la solicitud.
 4. El PA de autorizacion debe comparar el RUT JWT con los eventos iniciales `DRAFT`/`SUBMISSION` de `sg_hist` antes de habilitar la decision.
 
-### 10.12 Impacto concreto sobre la implementacion actual
+### 10.12 Impacto propuesto y descartado
 
 1. `serviceProvisionPost` hoy fuerza `request.applicantDni = RUT JWT`; debe aceptar un principal representado solo despues de validar el contexto.
 2. `serviceProvisionUpdate` hoy vuelve a forzar `request.applicantDni = RUT JWT`; debe recuperar y conservar `sg_soli.rut_solici`.
@@ -1246,16 +1250,13 @@ La posibilidad de crear y aprobar bajo la misma representacion debe controlarse 
 8. Desplegar en orden PA, backend y frontend.
 9. Realizar prueba de humo posterior al despliegue.
 
-### 10.13 Resultado implementado
+### 10.13 Resultado descartado
 
-1. PA nuevo `sp_ordesSecgen01` para retornar ambitos personales y representados con capacidades, normalizado sobre su tabla conductora `sp_orde`.
-2. PA ajustados: `sg_prsesSecgen08`, `sg_prsesSecgen13`, `sg_prsesSecgen17`, `sg_prsesSecgen18`, `sg_apsosSecgen03`, `sg_apsouSecgen03` y `sg_usacsSecgen01`.
-3. Backend con `ServiceProvisionRepresentationService`, endpoint `GET /users/me/management-contexts`, preservacion del principal al editar y actor separado en historial.
-4. Los borradores DU288 registran `DRAFT`; las ediciones de borrador registran `REQUEST_EDIT` con el RUT JWT.
-5. Frontend con selector explicito al crear, bandejas filtrables por ambito, columna de origen y aviso de representacion en el modal de decision.
-6. La representacion se limita a DU288. El flujo legacy mantiene autorizacion directa.
-7. Validaciones locales ejecutadas: build backend, 66 pruebas unitarias, ESLint focalizado frontend y build Nuxt.
-8. El despliegue fue intentado el 17-08-2026 con la cuenta de aplicacion del ambiente de desarrollo. Sybase rechazo `CREATE PROCEDURE` por falta de `sa_role`; no se alteraron tablas ni se reemplazaron los PA existentes. Los scripts deben ser ejecutados por DBA y luego someterse a la prueba funcional con una designacion real.
+La implementacion de contextos representados descrita en esta seccion fue
+retirada. No existe selector de titular, endpoint de ambitos ni acceso dinamico
+a solicitudes personales del titular. La implementacion vigente es la de la
+seccion 11: el resolver asigna cada tarea al responsable efectivo y conserva la
+identidad JWT del ejecutor.
 
 ---
 
@@ -1275,7 +1276,7 @@ Para una etapa institucional, `sg_eta1.cod_organi` identifica el cargo que debe
 aprobar. El PA debe aplicar el siguiente orden:
 
 1. ORCO directo: una persona unica con `vigente = 'S'` y `ausente <> 'S'`.
-2. ORDE directo: si no existe ORCO disponible, una persona unica del mismo cargo con `vigente = 'S'` y `ausente <> 'S'`.
+2. ORDE directo: si no existe ORCO disponible, una persona unica del mismo cargo con `vigente = 'S'`.
 3. AUFI: si el cargo sigue sin ocupante disponible, recorrer exclusivamente todas las relaciones directas `sp_aufi.cod_organi = cargo requerido`, en orden ascendente de `prioridad`, sin un tope fijo.
 4. En cada prioridad se deben reunir y deduplicar todos los ocupantes ORCO/ORDE disponibles de los `cod_organ2` configurados en ese nivel.
 5. Si un nivel no posee ocupantes, continuar con el siguiente. Si posee una persona unica, seleccionarla y detener la busqueda. Si posee mas de una persona distinta, bloquear como `AMBIGUO`; no escoger mediante `MIN(rut_person)`.
@@ -1295,8 +1296,8 @@ debe provenir directamente de `sp_aufi.cod_organi = cargo requerido`.
 
 La disponibilidad del ocupante se comparte, pero el recorrido no:
 
-1. Ambos resolutores deben considerar disponible solamente a quien tenga
-   `vigente = 'S'` y `ausente <> 'S'`.
+1. Ambos resolutores exigen `vigente = 'S'`. Para ORCO tambien exigen
+   `ausente <> 'S'`; `sp_orde` no posee ese indicador.
 2. Jefe directo (`sg_fupssSecgen16`) parte desde la unidad contractual del
    funcionario. En cada cargo de jefatura resuelve ORCO, ORDE y AUFI; solo si
    ese cargo no posee ningun responsable efectivo avanza por
@@ -1306,16 +1307,12 @@ La disponibilidad del ocupante se comparte, pero el recorrido no:
 4. Jefe Directo y las autoridades institucionales pueden reutilizar el mismo
    resolvedor de ocupante efectivo de un cargo. La diferencia es que solo Jefe
    Directo puede intentar otro cargo mediante `cod_orgjef`.
-5. La version actual de `sg_fupssSecgen16` filtra por `vigente`, pero todavia no
-   excluye `ausente = 'S'`; por lo tanto, esa validacion debe corregirse tambien.
-6. El recorrido jerarquico actual de Jefe Directo se conserva, pero debe dejar
-   de elegir mediante `MIN(rut_person)`: en cada fuente y nivel debe contar RUT
-   distintos y retornar `AMBIGUO` cuando exista mas de uno.
-7. Antes de consultar cada nivel deben reiniciarse las variables del candidato
-   y del cargo siguiente, evitando reutilizar el valor de una iteracion anterior.
-8. La eleccion inicial de un cargo de jefatura dentro de la unidad tampoco debe
-   resolverse silenciosamente con `MIN(cod_organi)` cuando existan varios cargos
-   equivalentes configurados.
+5. `sg_fupssSecgen16` excluye ORCO ausentes, cuenta RUT distintos y retorna
+   `AMBIGUO` cuando corresponde.
+6. Las variables de candidato y cargo siguiente se reinician en cada nivel y
+   el recorrido mantiene control de ciclos.
+7. La eleccion inicial de jefatura bloquea cuando existen varios cargos
+   equivalentes configurados en la unidad.
 
 ### 11.3 Diferencia entre ORDE y AUFI
 
@@ -1370,6 +1367,11 @@ Si el Vicerrector `13158007K` esta marcado como ausente:
    ausente, la fuente y la prioridad.
 5. La condicion de subrogancia se muestra al previsualizar el avance, en la
    bandeja y en el modal de decision, y se conserva en el historial al decidir.
+6. Antes de aprobar, rechazar o devolver, el modal identifica al titular
+   subrogado, su RUT, el cargo y la prioridad AUFI. La misma informacion se
+   muestra en la linea de tiempo y en las pantallas de firmantes. Como no se
+   agregan columnas, `sg_apso.comentario` conserva una fotografia estructurada
+   de esos datos y `rut_autori` registra al actor efectivo que tomo la decision.
 
 ### 11.6 Componentes que deben corregirse
 
@@ -1399,7 +1401,22 @@ Si el Vicerrector `13158007K` esta marcado como ausente:
 8. Frontend: retirar el selector `Crear por cuenta de`; mostrar en bandeja,
    previsualizacion y modal `Actua como subrogante de <cargo/titular>` solo para
    asignaciones AUFI. No presentar la subrogancia como visacion automatica.
-9. Etapas de decretacion, firma u otra autoridad configurada: deben utilizar el
+9. La bandeja pendiente obtiene la marca desde `sg_apso.comentario`, muestra
+   `Subrogante`, el titular, su RUT y el cargo subrogado antes de abrir la tarea.
+   Una asignacion ordinaria se presenta como `Directa`. El detalle, el modal de
+   decision, la linea de tiempo y la firma reutilizan el mismo snapshot.
+   La interfaz separa el cargo y unidad efectivos del subrogante del cargo que
+   ejerce por subrogancia. Si no existe titular identificable, informa esa
+   condicion sin reemplazarla por el texto generico `autoridad titular`.
+10. En el flujo Facultad, la etapa Decano deriva el cargo desde la unidad
+   financiera de la solicitud (`<prefijo>010000`) y `es_orga`; no utiliza un
+   RUT, un `cod_organi` unico ni una tabla CASE estatica para todas las
+   facultades. Debe existir exactamente un cargo Decano/Decana vigente.
+11. Ningun ocupante ORCO, ORDE o AUFI cuyo RUT corresponda al funcionario de
+   la prestacion puede revisar esa solicitud. Para Decano funcionario se busca
+   el siguiente responsable valido por ORDE/AUFI; sin reemplazo la etapa queda
+   bloqueada y nunca se omite ni se autoaprueba.
+12. Etapas de decretacion, firma u otra autoridad configurada: deben utilizar el
    mismo resolver por `sg_eta1.cod_organi`. Cualquier rama legacy que resuelva
    firmantes por otra consulta debe adaptarse al resolver antes de crear su
    tarea, sin cambiar el comportamiento del flujo legacy no DU288.
@@ -1414,6 +1431,9 @@ Si el Vicerrector `13158007K` esta marcado como ausente:
 6. La busqueda continua por todas las prioridades AUFI configuradas hasta encontrar la primera prioridad efectiva.
 7. Dos personas distintas en la prioridad efectiva, considerando conjuntamente ORCO y ORDE, bloquean la asignacion como ambigua.
 8. No se encadena AUFI ni se utiliza `es_orga.cod_orgjef` para encontrar otro cargo.
+9. Cada Facultad resuelve su propio cargo Decano desde la unidad financiera.
+10. Si el Decano titular es el funcionario, se asigna un reemplazo ORDE/AUFI.
+11. Si el Decano funcionario no tiene reemplazo, no se crea tarea ni autoaprobacion.
 9. Sin ORCO, ORDE ni AUFI disponible despues de agotar las prioridades configuradas, la etapa queda `NO_ENCONTRADO`.
 10. El subrogante ve solo la tarea asignada, no las solicitudes personales del titular.
 11. La decision conserva `rut_usua`, registra `rut_autori` y genera historial indicando subrogancia.
@@ -1501,3 +1521,36 @@ prestacion fuera de jornada nunca habilitan el ascenso jerarquico.
 8. La cadena futura se vuelve a validar inmediatamente antes de confirmar el
    avance. La omision queda como una fotografia de la resolucion vigente en ese
    momento; la etapa posterior vuelve a resolver vigencia cuando sea activada.
+
+### 11.10 Estado de implementacion al 18-08-2026
+
+La implementacion local del alcance DU288 quedo aplicada en los siguientes
+componentes:
+
+1. PA de resolucion: `sg_fupssSecgen16` para Jefe Directo y
+   `sg_etasSecgen01` para etapas institucionales aplican ORCO, ORDE y todas las
+   prioridades AUFI, con deteccion de ambiguedad y metadata de subrogancia.
+2. PA de tareas y acceso: `sg_apsoiSecgen01`, `sg_apsouSecgen03`,
+   `sg_apsosSecgen03`, `sg_prsesSecgen08`, `sg_prsesSecgen13`,
+   `sg_prsesSecgen18` y `sg_usacsSecgen01` trabajan con el destinatario efectivo
+   de la tarea y el actor JWT, sin habilitar gestion general por el titular.
+3. Backend: se retiro la seleccion de contextos representados, se propaga la
+   subrogancia en la previsualizacion y asignacion, y una etapa omitida no crea
+   ni autoaprueba un registro `sg_apso`.
+4. Frontend: se retiro la opcion de crear o filtrar por representacion y el
+   modal identifica al responsable efectivo, el cargo subrogado y la prioridad
+   AUFI sin presentarlo como visacion automatica.
+5. DU288 mantiene exactamente un funcionario al guardar y sincroniza la
+   actividad principal del funcionario con la actividad de la prestacion.
+
+Verificacion local ejecutada:
+
+- backend: compilacion correcta y 64 pruebas unitarias aprobadas;
+- frontend: ESLint focalizado sin errores y compilacion de produccion correcta;
+- SQL: revision estatica de contratos y resultados. No fue posible ejecutar los
+  PA contra Sybase desde este entorno.
+
+Los archivos SQL estan listos para despliegue, pero no debe declararse la base
+de datos actualizada hasta que un DBA ejecute los scripts en el esquema objetivo
+y complete los casos de prueba de la seccion 11.7 con datos reales de ORCO,
+ORDE, AUFI, `sg_eta1` y `sg_eta2`.

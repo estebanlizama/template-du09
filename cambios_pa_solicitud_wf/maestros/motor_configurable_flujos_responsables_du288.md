@@ -29,13 +29,13 @@ No se consulta `bd_pri2`.
 | Prefijo de unidad | Flujo |
 |---|---|
 | `06`, `07`, `08`, `09`, `17`, `18` | Facultad (`1`) |
-| `10`, `14`, `15` | Instituto (`4`) |
+| `161`, `162` | Instituto (`4`) |
 | `03` | VRAF (`5`) |
 | `02` | VRAC (`6`) |
 | `19` | VIPRE (`7`) |
-| `16` | VRIP (`8`) |
+| `16` (resto) | VRIP (`8`) |
 
-Investigación (`2`) y DITT (`3`) no pueden distinguirse de forma segura con el prefijo de `cod_unidad` disponible. Para habilitarlos sin crear tablas se debe identificar un atributo existente y estable del Centro de Costo o unidad; no corresponde inferirlos por descripción, nombre de persona o RUT.
+Investigación (`2`) y DITT (`3`) no se diferencian por ahora y se resuelven bajo el flujo general de VRIP (`8`).
 
 ## Resolución del responsable
 
@@ -61,11 +61,14 @@ Cuando una etapa institucional existente no tiene `cod_organi` en `sg_eta1`, el 
 | `17` | `602` | `586` |
 | `18` | `642` | `623` |
 
-| Prefijo de Instituto | Dirección |
+| Unidad de Instituto | Dirección |
 |---|---:|
-| `10` | `268` |
-| `14` | `297` |
-| `15` | `457` |
+| `16100000` (Agroindustria) | `268` |
+| `16110000` (Medio Ambiente - IMA) | `35` |
+| `16120000` (Informática Educativa - IIE) | `297` |
+| `16130000` (Estudios Indígenas - IEI) | `37` |
+| `16200100` (BIOREN) | `769` |
+| `16200200` (Cs. Sociales) | `771` |
 
 ### Organizaciones institucionales fijas
 

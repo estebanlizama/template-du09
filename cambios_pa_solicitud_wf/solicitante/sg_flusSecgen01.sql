@@ -89,10 +89,10 @@ BEGIN
     SELECT @prefijo = SUBSTRING(@cod_unidad, 1, 2)
     SELECT @unidad_mayor = @prefijo + '000000'
 
-    /* Correspondencia soportada exclusivamente por la codificacion vigente. */
+    /* Correspondencia soportada por la estructura institucional UFRO */
     SELECT @cod_flusol = CASE
         WHEN @prefijo IN ('06', '07', '08', '09', '17', '18') THEN 1
-        WHEN @prefijo IN ('10', '14', '15') THEN 4
+        WHEN SUBSTRING(@cod_unidad, 1, 3) IN ('161', '162') THEN 4
         WHEN @prefijo = '03' THEN 5
         WHEN @prefijo = '02' THEN 6
         WHEN @prefijo = '19' THEN 7

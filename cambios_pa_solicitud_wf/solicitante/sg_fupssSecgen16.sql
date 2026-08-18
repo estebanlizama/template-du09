@@ -2,245 +2,327 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-    FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid
-      AND a.type = 'P'
-      AND b.name = 'Analisis2'
-      AND a.name = 'sg_fupssSecgen16'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_fupssSecgen16'
 )
     DROP PROCEDURE Analisis2.sg_fupssSecgen16
 GO
 
 /*
-Procedimiento : Analisis2.sg_fupssSecgen16
-Objetivo      : Resolver la jefatura de un funcionario a partir de la unidad
-                del contrato seleccionado y de la jerarquia formal definida
-                en ufro_db.dbo.es_orga.
-
-Recorrido     :
-    1. Validar que @cod_contra pertenezca a @rut_person y obtener su unidad.
-    2. Obtener los cargos de jefatura de la unidad en es_orga.
-    3. Buscar ocupante vigente en sp_orco para el cod_organi actual.
-    4. Si ORCO no resuelve, buscar en sp_orde con el mismo cod_organi.
-    5. Si tampoco resuelve, avanzar al cod_orgjef de es_orga mientras la
-       organizacion superior pertenezca a la misma unidad institucional raiz.
-    6. Repetir ORCO -> ORDE -> cod_orgjef hasta resolver o alcanzar el limite
-       de la unidad superior (por ejemplo, Decanato).
-
-Reglas        :
-    - ORCO tiene prioridad sobre ORDE en cada nivel.
-    - ORCO aplica solamente cuando es_orga.por_contra = 'S'.
-    - ORDE aplica solamente cuando es_orga.por_desig = 'S'.
-    - El funcionario no puede quedar asignado como su propia jefatura.
-    - Un RUT distinto encontrado retorna ENCONTRADO.
-    - Mas de un RUT distinto en el mismo nivel retorna AMBIGUO.
-    - El recorrido no cruza a Rectoría ni a otra raiz institucional. Para ello,
-      el prefijo de dos digitos de cod_unidad debe mantenerse en cada salto.
-      Ejemplo: 07051100 -> 07010000 es valido; 07010000 -> 01010000 no.
-    - Sin ocupante dentro de la unidad superior retorna NO_ENCONTRADO.
-    - El recorrido se limita a 10 niveles y no permite ciclos.
-
-Importante    : El PA no inserta tareas en sg_apso. La aplicacion debe crear
-                la tarea solamente cuando estado_resolucion = ENCONTRADO.
-
-Parametros    :
-    @rut_person char(9) : RUT sin puntos ni guion.
-    @cod_contra int     : Contrato seleccionado para el funcionario.
-
-nivel_jefatura:
-    0 : cargo de jefatura asociado directamente a la unidad contractual.
-    1 o superior : cantidad de saltos realizados mediante es_orga.cod_orgjef.
+Resuelve la jefatura efectiva del funcionario.
+En cada cargo evalua ORCO -> ORDE -> todas las prioridades AUFI. Solamente si
+no existe candidato sube por cod_orgjef dentro de la misma raiz institucional.
+AUFI identifica una subrogancia; ORDE del mismo cargo es designacion directa.
 */
-
 CREATE PROCEDURE Analisis2.sg_fupssSecgen16
     @rut_person char(9),
     @cod_contra int
 AS
 BEGIN
-    DECLARE @cod_unidad char(8)
-    DECLARE @prefijo_unidad char(2)
-    DECLARE @des_unidad varchar(100)
-    DECLARE @nivel tinyint
-    DECLARE @cantidad int
-    DECLARE @cantidad_rut int
-    DECLARE @cantidad_siguiente int
+    DECLARE @cod_unidad char(8), @des_unidad varchar(100), @prefijo char(2)
+    DECLARE @cod_actual int, @cod_siguiente int, @cod_actor int
+    DECLARE @rut_jefe char(9), @fuente varchar(20), @nivel tinyint
+    DECLARE @cantidad int, @prioridad int, @prioridad_anterior int
+    DECLARE @es_subrogante char(1), @rut_titular char(9)
+    DECLARE @nombre_titular varchar(255), @cargo_titular varchar(100)
+    DECLARE @cargo_actor varchar(100), @unidad_actor char(8), @departamento_actor varchar(100)
 
-    SELECT
-        @cod_unidad = cont.cod_unidad,
-        @des_unidad = unid.des_unidad
+    SELECT @cod_unidad = cont.cod_unidad, @des_unidad = unid.des_unidad
     FROM sisper_db.dbo.sp_cont cont
-    INNER JOIN sisper_db.dbo.sp_pers pers
-        ON pers.cod_ficha = cont.cod_ficha
-    LEFT JOIN ufro_db.dbo.es_unid unid
-        ON unid.cod_unidad = cont.cod_unidad
-    WHERE cont.cod_contra = @cod_contra
-      AND pers.rut_person = @rut_person
+    INNER JOIN sisper_db.dbo.sp_pers pers ON pers.cod_ficha = cont.cod_ficha
+    LEFT JOIN ufro_db.dbo.es_unid unid ON unid.cod_unidad = cont.cod_unidad
+    WHERE cont.cod_contra = @cod_contra AND pers.rut_person = @rut_person
 
     IF @cod_unidad IS NULL
     BEGIN
-        SELECT
-            @rut_person AS rut_funcionario,
-            @cod_contra AS cod_contra,
-            CONVERT(char(8), NULL) AS cod_unidad_funcionario,
-            CONVERT(varchar(100), NULL) AS des_unidad_funcionario,
-            CONVERT(char(9), NULL) AS rut_jefe,
-            CONVERT(varchar(200), NULL) AS nombre_jefe,
-            CONVERT(int, NULL) AS cod_organi_jefe,
-            CONVERT(varchar(100), NULL) AS cargo_jefe,
-            CONVERT(char(8), NULL) AS cod_unidad_jefe,
-            CONVERT(varchar(100), NULL) AS departamento_jefe,
-            CONVERT(varchar(10), NULL) AS fuente_jefatura,
-            CONVERT(tinyint, NULL) AS nivel_jefatura,
-            'NO_ENCONTRADO' AS estado_resolucion,
-            'El contrato no existe o no pertenece al funcionario informado.' AS mensaje
+        SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+            convert(char(8), NULL) cod_unidad_funcionario,
+            convert(varchar(100), NULL) des_unidad_funcionario,
+            convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+            convert(int, NULL) cod_organi_jefe, convert(varchar(100), NULL) cargo_jefe,
+            convert(char(8), NULL) cod_unidad_jefe, convert(varchar(100), NULL) departamento_jefe,
+            convert(varchar(20), NULL) fuente_jefatura, convert(tinyint, NULL) nivel_jefatura,
+            'NO_ENCONTRADO' estado_resolucion,
+            'El contrato no existe o no pertenece al funcionario informado.' mensaje,
+            convert(int, NULL) cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+            'N' es_subrogante, convert(int, NULL) prioridad_aufi,
+            convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+            convert(varchar(100), NULL) cargo_titular
         RETURN
     END
 
-    SELECT @prefijo_unidad = SUBSTRING(@cod_unidad, 1, 2)
-
-    DECLARE @cod_organi_actual int
-    DECLARE @cod_organi_siguiente int
-    DECLARE @rut_jefe char(9)
-    DECLARE @fuente_jefatura varchar(10)
-    DECLARE @cod_organi_jefe int
-    DECLARE @cargo_jefe varchar(100)
-    DECLARE @cod_unidad_jefe char(8)
-    DECLARE @departamento_jefe varchar(100)
-    DECLARE @nivel_jefatura tinyint
-
-    SELECT @nivel_jefatura = 0
-    SELECT @rut_jefe = NULL
-
-    /* Punto inicial: primer cargo organizacional de jefatura en la unidad contractual */
-    SELECT @cod_organi_actual = min(orga.cod_organi)
+    SELECT @prefijo = substring(@cod_unidad, 1, 2), @nivel = 0
+    SELECT @cantidad = count(DISTINCT orga.cod_organi)
     FROM ufro_db.dbo.es_orga orga
-    WHERE orga.cod_unidad = @cod_unidad
-      AND orga.cod_tiporg = 1
+    WHERE orga.cod_unidad = @cod_unidad AND orga.cod_tiporg = 1
       AND (orga.por_contra = 'S' OR orga.por_desig = 'S')
 
-    IF @cod_organi_actual IS NULL
+    IF isnull(@cantidad, 0) <> 1
     BEGIN
-        SELECT
-            @rut_person AS rut_funcionario,
-            @cod_contra AS cod_contra,
-            @cod_unidad AS cod_unidad_funcionario,
-            RTRIM(@des_unidad) AS des_unidad_funcionario,
-            CONVERT(char(9), NULL) AS rut_jefe,
-            CONVERT(varchar(200), NULL) AS nombre_jefe,
-            CONVERT(int, NULL) AS cod_organi_jefe,
-            CONVERT(varchar(100), NULL) AS cargo_jefe,
-            CONVERT(char(8), NULL) AS cod_unidad_jefe,
-            CONVERT(varchar(100), NULL) AS departamento_jefe,
-            CONVERT(varchar(10), NULL) AS fuente_jefatura,
-            CONVERT(tinyint, NULL) AS nivel_jefatura,
-            'NO_ENCONTRADO' AS estado_resolucion,
-            'La unidad contractual no posee un cargo de jefatura configurado en es_orga.' AS mensaje
+        SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+            @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+            convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+            convert(int, NULL) cod_organi_jefe, convert(varchar(100), NULL) cargo_jefe,
+            convert(char(8), NULL) cod_unidad_jefe, convert(varchar(100), NULL) departamento_jefe,
+            'CONFIGURACION' fuente_jefatura, convert(tinyint, NULL) nivel_jefatura,
+            CASE WHEN isnull(@cantidad, 0) = 0 THEN 'NO_ENCONTRADO' ELSE 'AMBIGUO' END estado_resolucion,
+            CASE WHEN isnull(@cantidad, 0) = 0
+                 THEN 'La unidad contractual no posee un cargo de jefatura configurado.'
+                 ELSE 'La unidad contractual posee mas de un cargo de jefatura posible.' END mensaje,
+            convert(int, NULL) cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+            'N' es_subrogante, convert(int, NULL) prioridad_aufi,
+            convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+            convert(varchar(100), NULL) cargo_titular
         RETURN
     END
 
-    WHILE @nivel_jefatura <= 10 AND @rut_jefe IS NULL AND @cod_organi_actual IS NOT NULL
+    SELECT @cod_actual = min(orga.cod_organi)
+    FROM ufro_db.dbo.es_orga orga
+    WHERE orga.cod_unidad = @cod_unidad AND orga.cod_tiporg = 1
+      AND (orga.por_contra = 'S' OR orga.por_desig = 'S')
+
+    CREATE TABLE #visitados (cod_organi int NOT NULL)
+    CREATE TABLE #candidatos (
+        rut_person char(9) NOT NULL,
+        cod_organi_actor int NOT NULL,
+        fuente varchar(20) NOT NULL
+    )
+
+    WHILE @cod_actual IS NOT NULL AND @nivel < 32 AND @rut_jefe IS NULL
     BEGIN
-        /* 1. Probar Titular (ORCO) */
-        SELECT @rut_jefe = min(orco.rut_person)
+        IF EXISTS (SELECT 1 FROM #visitados WHERE cod_organi = @cod_actual)
+            BREAK
+        INSERT INTO #visitados VALUES (@cod_actual)
+
+        SELECT @cantidad = count(DISTINCT orco.rut_person)
         FROM sisper_db.dbo.sp_orco orco
-        INNER JOIN ufro_db.dbo.es_orga orga
-            ON orga.cod_organi = @cod_organi_actual
-        WHERE orco.cod_organi = @cod_organi_actual
-          AND orga.por_contra = 'S'
-          AND orco.vigente = 'S'
+        WHERE orco.cod_organi = @cod_actual AND orco.vigente = 'S'
+          AND upper(ltrim(rtrim(isnull(orco.ausente, 'N')))) <> 'S'
           AND orco.rut_person <> @rut_person
+          AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
+                      WHERE orga.cod_organi = @cod_actual AND orga.por_contra = 'S')
 
-        IF @rut_jefe IS NOT NULL
+        IF @cantidad > 1
         BEGIN
-            SELECT @fuente_jefatura = 'ORCO'
-            SELECT @cod_organi_jefe = @cod_organi_actual
-            BREAK
+            DROP TABLE #candidatos
+            DROP TABLE #visitados
+            SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+                @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+                convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+                @cod_actual cod_organi_jefe, rtrim(orga.des_organi) cargo_jefe,
+                orga.cod_unidad cod_unidad_jefe, rtrim(unid.des_unidad) departamento_jefe,
+                'ORCO' fuente_jefatura, @nivel nivel_jefatura, 'AMBIGUO' estado_resolucion,
+                'El cargo de jefatura posee mas de un titular vigente y presente.' mensaje,
+                @cod_actual cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+                'N' es_subrogante, convert(int, NULL) prioridad_aufi,
+                convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+                rtrim(orga.des_organi) cargo_titular
+            FROM ufro_db.dbo.es_orga orga
+            LEFT JOIN ufro_db.dbo.es_unid unid ON unid.cod_unidad = orga.cod_unidad
+            WHERE orga.cod_organi = @cod_actual
+            RETURN
         END
 
-        /* 2. Probar Subrogante (ORDE) */
-        SELECT @rut_jefe = min(orde.rut_person)
-        FROM sisper_db.dbo.sp_orde orde
-        INNER JOIN ufro_db.dbo.es_orga orga
-            ON orga.cod_organi = @cod_organi_actual
-        WHERE orde.cod_organi = @cod_organi_actual
-          AND orga.por_desig = 'S'
-          AND orde.vigente = 'S'
-          AND orde.rut_person <> @rut_person
-
-        IF @rut_jefe IS NOT NULL
+        IF @cantidad = 1
         BEGIN
-            SELECT @fuente_jefatura = 'ORDE'
-            SELECT @cod_organi_jefe = @cod_organi_actual
-            BREAK
+            SELECT @rut_jefe = min(orco.rut_person)
+            FROM sisper_db.dbo.sp_orco orco
+            WHERE orco.cod_organi = @cod_actual AND orco.vigente = 'S'
+              AND upper(ltrim(rtrim(isnull(orco.ausente, 'N')))) <> 'S'
+              AND orco.rut_person <> @rut_person
+              AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
+                          WHERE orga.cod_organi = @cod_actual AND orga.por_contra = 'S')
+            SELECT @fuente = 'ORCO', @cod_actor = @cod_actual, @es_subrogante = 'N'
         END
 
-        /* 3. Avanzar al siguiente cargo superior por es_orga.cod_orgjef */
-        SELECT @cod_organi_siguiente = min(superior.cod_organi)
-        FROM ufro_db.dbo.es_orga orga
-        INNER JOIN ufro_db.dbo.es_orga superior
-            ON superior.cod_organi = orga.cod_orgjef
-        WHERE orga.cod_organi = @cod_organi_actual
-          AND orga.cod_orgjef IS NOT NULL
-          AND orga.cod_orgjef <> orga.cod_organi
-          AND SUBSTRING(superior.cod_unidad, 1, 2) = @prefijo_unidad
+        IF @rut_jefe IS NULL
+        BEGIN
+            SELECT @cantidad = count(DISTINCT orde.rut_person)
+            FROM sisper_db.dbo.sp_orde orde
+            WHERE orde.cod_organi = @cod_actual AND orde.vigente = 'S'
+              AND orde.rut_person <> @rut_person
+              AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
+                          WHERE orga.cod_organi = @cod_actual AND orga.por_desig = 'S')
 
-        IF @cod_organi_siguiente IS NULL OR @cod_organi_siguiente = @cod_organi_actual
-            BREAK
+            IF @cantidad > 1
+            BEGIN
+                DROP TABLE #candidatos
+                DROP TABLE #visitados
+                SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+                    @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+                    convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+                    @cod_actual cod_organi_jefe, rtrim(orga.des_organi) cargo_jefe,
+                    orga.cod_unidad cod_unidad_jefe, rtrim(unid.des_unidad) departamento_jefe,
+                    'ORDE' fuente_jefatura, @nivel nivel_jefatura, 'AMBIGUO' estado_resolucion,
+                    'El cargo de jefatura posee mas de una designacion vigente.' mensaje,
+                    @cod_actual cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+                    'N' es_subrogante, convert(int, NULL) prioridad_aufi,
+                    convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+                    rtrim(orga.des_organi) cargo_titular
+                FROM ufro_db.dbo.es_orga orga
+                LEFT JOIN ufro_db.dbo.es_unid unid ON unid.cod_unidad = orga.cod_unidad
+                WHERE orga.cod_organi = @cod_actual
+                RETURN
+            END
 
-        SELECT @cod_organi_actual = @cod_organi_siguiente
-        SELECT @nivel_jefatura = @nivel_jefatura + 1
+            IF @cantidad = 1
+            BEGIN
+                SELECT @rut_jefe = min(orde.rut_person)
+                FROM sisper_db.dbo.sp_orde orde
+                WHERE orde.cod_organi = @cod_actual AND orde.vigente = 'S'
+                  AND orde.rut_person <> @rut_person
+                  AND EXISTS (SELECT 1 FROM ufro_db.dbo.es_orga orga
+                              WHERE orga.cod_organi = @cod_actual AND orga.por_desig = 'S')
+                SELECT @fuente = 'ORDE', @cod_actor = @cod_actual, @es_subrogante = 'N'
+            END
+        END
+
+        IF @rut_jefe IS NULL
+        BEGIN
+            SELECT @prioridad_anterior = -1, @prioridad = NULL
+            SELECT @prioridad = min(aufi.prioridad)
+            FROM sisper_db.dbo.sp_aufi aufi
+            WHERE aufi.cod_organi = @cod_actual
+
+            WHILE @prioridad IS NOT NULL AND @rut_jefe IS NULL
+            BEGIN
+                DELETE FROM #candidatos
+                INSERT INTO #candidatos
+                SELECT orco.rut_person, aufi.cod_organ2, 'AUFI_ORCO'
+                FROM sisper_db.dbo.sp_aufi aufi
+                INNER JOIN sisper_db.dbo.sp_orco orco
+                  ON orco.cod_organi = aufi.cod_organ2 AND orco.vigente = 'S'
+                 AND upper(ltrim(rtrim(isnull(orco.ausente, 'N')))) <> 'S'
+                INNER JOIN ufro_db.dbo.es_orga actor_org
+                  ON actor_org.cod_organi = aufi.cod_organ2 AND actor_org.por_contra = 'S'
+                WHERE aufi.cod_organi = @cod_actual AND aufi.prioridad = @prioridad
+                  AND orco.rut_person <> @rut_person
+                UNION
+                SELECT orde.rut_person, aufi.cod_organ2, 'AUFI_ORDE'
+                FROM sisper_db.dbo.sp_aufi aufi
+                INNER JOIN sisper_db.dbo.sp_orde orde
+                  ON orde.cod_organi = aufi.cod_organ2 AND orde.vigente = 'S'
+                INNER JOIN ufro_db.dbo.es_orga actor_org
+                  ON actor_org.cod_organi = aufi.cod_organ2 AND actor_org.por_desig = 'S'
+                WHERE aufi.cod_organi = @cod_actual AND aufi.prioridad = @prioridad
+                  AND orde.rut_person <> @rut_person
+
+                SELECT @cantidad = count(DISTINCT rut_person) FROM #candidatos
+                IF @cantidad > 1
+                BEGIN
+                    DROP TABLE #candidatos
+                    DROP TABLE #visitados
+                    SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+                        @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+                        convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+                        @cod_actual cod_organi_jefe, rtrim(orga.des_organi) cargo_jefe,
+                        orga.cod_unidad cod_unidad_jefe, rtrim(unid.des_unidad) departamento_jefe,
+                        'AUFI' fuente_jefatura, @nivel nivel_jefatura, 'AMBIGUO' estado_resolucion,
+                        'AUFI posee mas de un responsable disponible en la misma prioridad.' mensaje,
+                        @cod_actual cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+                        'S' es_subrogante, @prioridad prioridad_aufi,
+                        convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+                        rtrim(orga.des_organi) cargo_titular
+                    FROM ufro_db.dbo.es_orga orga
+                    LEFT JOIN ufro_db.dbo.es_unid unid ON unid.cod_unidad = orga.cod_unidad
+                    WHERE orga.cod_organi = @cod_actual
+                    RETURN
+                END
+
+                IF @cantidad = 1
+                BEGIN
+                    SELECT @rut_jefe = min(rut_person) FROM #candidatos
+                    SELECT @cod_actor = min(cod_organi_actor) FROM #candidatos
+                    WHERE rut_person = @rut_jefe
+                    SELECT @fuente = CASE WHEN EXISTS (
+                        SELECT 1 FROM #candidatos
+                        WHERE rut_person = @rut_jefe AND fuente = 'AUFI_ORCO'
+                    ) THEN 'AUFI_ORCO' ELSE 'AUFI_ORDE' END
+                    SELECT @es_subrogante = 'S'
+                    BREAK
+                END
+
+                SELECT @prioridad_anterior = @prioridad, @prioridad = NULL
+                SELECT @prioridad = min(aufi.prioridad)
+                FROM sisper_db.dbo.sp_aufi aufi
+                WHERE aufi.cod_organi = @cod_actual
+                  AND aufi.prioridad > @prioridad_anterior
+            END
+        END
+
+        IF @rut_jefe IS NULL
+        BEGIN
+            SELECT @cod_siguiente = NULL
+            SELECT @cod_siguiente = superior.cod_organi
+            FROM ufro_db.dbo.es_orga actual
+            INNER JOIN ufro_db.dbo.es_orga superior
+              ON superior.cod_organi = actual.cod_orgjef
+            WHERE actual.cod_organi = @cod_actual
+              AND actual.cod_orgjef IS NOT NULL
+              AND actual.cod_orgjef <> actual.cod_organi
+              AND substring(superior.cod_unidad, 1, 2) = @prefijo
+              AND NOT EXISTS (
+                  SELECT 1 FROM #visitados v WHERE v.cod_organi = superior.cod_organi
+              )
+            SELECT @cod_actual = @cod_siguiente, @nivel = @nivel + 1
+        END
     END
 
     IF @rut_jefe IS NULL
     BEGIN
-        SELECT
-            @rut_person AS rut_funcionario,
-            @cod_contra AS cod_contra,
-            @cod_unidad AS cod_unidad_funcionario,
-            RTRIM(@des_unidad) AS des_unidad_funcionario,
-            CONVERT(char(9), NULL) AS rut_jefe,
-            CONVERT(varchar(200), NULL) AS nombre_jefe,
-            CONVERT(int, NULL) AS cod_organi_jefe,
-            CONVERT(varchar(100), NULL) AS cargo_jefe,
-            CONVERT(char(8), NULL) AS cod_unidad_jefe,
-            CONVERT(varchar(100), NULL) AS departamento_jefe,
-            CONVERT(varchar(10), NULL) AS fuente_jefatura,
-            CONVERT(tinyint, NULL) AS nivel_jefatura,
-            'NO_ENCONTRADO' AS estado_resolucion,
-            'No se encontro un ocupante vigente en ORCO u ORDE dentro de la unidad superior. El recorrido no escala a Rectoria ni cambia la raiz institucional.' AS mensaje
+        DROP TABLE #candidatos
+        DROP TABLE #visitados
+        SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+            @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+            convert(char(9), NULL) rut_jefe, convert(varchar(255), NULL) nombre_jefe,
+            convert(int, NULL) cod_organi_jefe, convert(varchar(100), NULL) cargo_jefe,
+            convert(char(8), NULL) cod_unidad_jefe, convert(varchar(100), NULL) departamento_jefe,
+            'JERARQUIA' fuente_jefatura, @nivel nivel_jefatura, 'NO_ENCONTRADO' estado_resolucion,
+            'No existe un ocupante vigente y unico dentro de la raiz institucional.' mensaje,
+            convert(int, NULL) cod_organi_requerido, convert(int, NULL) cod_organi_actor,
+            'N' es_subrogante, convert(int, NULL) prioridad_aufi,
+            convert(char(9), NULL) rut_titular, convert(varchar(255), NULL) nombre_titular,
+            convert(varchar(100), NULL) cargo_titular
         RETURN
     END
 
-    /* Obtener metadata de la jefatura resuelta */
-    SELECT
-        @cargo_jefe = RTRIM(orga.des_organi),
-        @cod_unidad_jefe = orga.cod_unidad,
-        @departamento_jefe = RTRIM(unid.des_unidad)
-    FROM ufro_db.dbo.es_orga orga
-    LEFT JOIN ufro_db.dbo.es_unid unid
-        ON unid.cod_unidad = orga.cod_unidad
-    WHERE orga.cod_organi = @cod_organi_jefe
+    SELECT @cargo_titular = rtrim(des_organi) FROM ufro_db.dbo.es_orga
+    WHERE cod_organi = @cod_actual
+    SELECT @cantidad = count(DISTINCT rut_person) FROM sisper_db.dbo.sp_orco
+    WHERE cod_organi = @cod_actual AND vigente = 'S'
+    IF @cantidad = 1
+        SELECT @rut_titular = min(rut_person) FROM sisper_db.dbo.sp_orco
+        WHERE cod_organi = @cod_actual AND vigente = 'S'
+    IF @rut_titular IS NOT NULL
+        SELECT @nombre_titular = ltrim(rtrim(isnull(nom_nombre, '') + ' ' +
+            isnull(nom_appate, '') + ' ' + isnull(nom_apmate, '')))
+        FROM sisper_db.dbo.sp_pers WHERE rut_person = @rut_titular
 
-    SELECT
-        @rut_person AS rut_funcionario,
-        @cod_contra AS cod_contra,
-        @cod_unidad AS cod_unidad_funcionario,
-        RTRIM(@des_unidad) AS des_unidad_funcionario,
-        @rut_jefe AS rut_jefe,
-        LTRIM(RTRIM(
-            ISNULL(pers.nom_nombre, '') + ' ' +
-            ISNULL(pers.nom_appate, '') + ' ' +
-            ISNULL(pers.nom_apmate, '')
-        )) AS nombre_jefe,
-        @cod_organi_jefe AS cod_organi_jefe,
-        @cargo_jefe AS cargo_jefe,
-        @cod_unidad_jefe AS cod_unidad_jefe,
-        @departamento_jefe AS departamento_jefe,
-        @fuente_jefatura AS fuente_jefatura,
-        @nivel_jefatura AS nivel_jefatura,
-        'ENCONTRADO' AS estado_resolucion,
-        CONVERT(varchar(255), NULL) AS mensaje
+    SELECT @cargo_actor = rtrim(orga.des_organi), @unidad_actor = orga.cod_unidad,
+           @departamento_actor = rtrim(unid.des_unidad)
+    FROM ufro_db.dbo.es_orga orga
+    LEFT JOIN ufro_db.dbo.es_unid unid ON unid.cod_unidad = orga.cod_unidad
+    WHERE orga.cod_organi = @cod_actor
+
+    DROP TABLE #candidatos
+    DROP TABLE #visitados
+
+    SELECT @rut_person rut_funcionario, @cod_contra cod_contra,
+        @cod_unidad cod_unidad_funcionario, rtrim(@des_unidad) des_unidad_funcionario,
+        @rut_jefe rut_jefe,
+        ltrim(rtrim(isnull(pers.nom_nombre, '') + ' ' + isnull(pers.nom_appate, '') + ' ' +
+                    isnull(pers.nom_apmate, ''))) nombre_jefe,
+        @cod_actual cod_organi_jefe, @cargo_actor cargo_jefe,
+        @unidad_actor cod_unidad_jefe, @departamento_actor departamento_jefe,
+        @fuente fuente_jefatura, @nivel nivel_jefatura,
+        'ENCONTRADO' estado_resolucion, convert(varchar(255), NULL) mensaje,
+        @cod_actual cod_organi_requerido, @cod_actor cod_organi_actor,
+        @es_subrogante es_subrogante,
+        CASE WHEN @es_subrogante = 'S' THEN @prioridad ELSE NULL END prioridad_aufi,
+        CASE WHEN @es_subrogante = 'S' THEN @rut_titular ELSE NULL END rut_titular,
+        CASE WHEN @es_subrogante = 'S' THEN @nombre_titular ELSE NULL END nombre_titular,
+        CASE WHEN @es_subrogante = 'S' THEN @cargo_titular ELSE NULL END cargo_titular
     FROM sisper_db.dbo.sp_pers pers
     WHERE pers.rut_person = @rut_jefe
 END

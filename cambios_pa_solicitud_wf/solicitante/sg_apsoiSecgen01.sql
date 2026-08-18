@@ -27,6 +27,7 @@ CREATE PROCEDURE Analisis2.sg_apsoiSecgen01
     @rut_usua char(9) = NULL,
     @cod_estapr tinyint = NULL,
     @id_funprse int = NULL,
+    @comentario varchar(255) = NULL,
     @exige_flujo tinyint = 0
 AS
 BEGIN
@@ -169,7 +170,8 @@ BEGIN
         cod_flusol,
         cod_etapa,
         rut_autori,
-        id_funprse
+        id_funprse,
+        comentario
     ) VALUES (
         @nro_aproba,
         @nro_solici,
@@ -181,7 +183,11 @@ BEGIN
         @cod_flusol,
         @cod_etapa,
         NULL,
-        @id_funprse
+        @id_funprse,
+        CASE
+            WHEN LTRIM(RTRIM(ISNULL(@comentario, ''))) = '' THEN NULL
+            ELSE @comentario
+        END
     )
 
     SELECT @error = @@error, @filas = @@rowcount
