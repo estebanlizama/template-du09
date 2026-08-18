@@ -125,7 +125,7 @@ BEGIN
         FROM ufro_db.dbo.es_orga orga
         WHERE orga.cod_unidad = @prefijo + '010000'
           AND orga.cod_tiporg = 1
-          AND orga.cod_estame = 1
+          AND orga.cod_estame = '1'
           AND orga.por_contra = 'S'
           AND UPPER(LTRIM(RTRIM(orga.des_organi))) LIKE 'DECAN%FACULTAD%'
 
@@ -134,7 +134,7 @@ BEGIN
             FROM ufro_db.dbo.es_orga orga
             WHERE orga.cod_unidad = @prefijo + '010000'
               AND orga.cod_tiporg = 1
-              AND orga.cod_estame = 1
+              AND orga.cod_estame = '1'
               AND orga.por_contra = 'S'
               AND UPPER(LTRIM(RTRIM(orga.des_organi))) LIKE 'DECAN%FACULTAD%'
 
