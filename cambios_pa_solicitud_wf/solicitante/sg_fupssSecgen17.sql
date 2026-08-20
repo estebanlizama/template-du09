@@ -24,8 +24,16 @@ Parametros    :
 Retorna       :
     Una fila por cada PDS previa del funcionario: actividad, periodo,
     fechas de ejecucion, centro de costo, montos, cuotas, cargo, resolucion
-    y estado de la solicitud.
+    (incluye numero externo y documento), etapa actual (si la solicitud
+    previa aun esta en tramite) y estado de la solicitud.
 Creacion      : 2026/08/19
+Modificacion  : 2026/08/20 - se agregan cod_etapa_act/des_etapa_act (etapa
+                actual segun sg_prse + sg_eta1, igual criterio que
+                sg_eta1sSecgen02) y num_resolu_ext/id_docum (segun sg_rslc,
+                igual criterio que selectResolutionLinkDirect) para que el
+                backend no deba resolverlos con consultas adicionales por
+                cada fila. El estado de firma del documento (que vive en
+                MySecGen, fuera de Sybase) sigue resolviendose aparte.
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen17
@@ -59,7 +67,11 @@ BEGIN
         soli.cod_estsol,
         rtrim(isnull(esol.des_estsol, '')) AS des_estsol,
         soli.f_solicit,
-        soli.ano_proces
+        soli.ano_proces,
+        prse.cod_etapa AS cod_etapa_act,
+        rtrim(isnull(etapaAct.des_etapa, '')) AS des_etapa_act,
+        rslc.num_resolu AS num_resolu_ext,
+        rslc.id_docum
     FROM secgen_db.dbo.sg_fups fu
     INNER JOIN secgen_db.dbo.sg_prse prse
         ON prse.nro_solici = fu.nro_solici
@@ -72,6 +84,12 @@ BEGIN
        AND ccto.cod_unifin = prse.cod_unifin
     LEFT JOIN sisper_db.dbo.sp_carg carg
         ON carg.cod_cargo = fu.cod_cargo
+    LEFT JOIN secgen_db.dbo.sg_eta1 etapaAct
+        ON etapaAct.cod_flusol = prse.cod_flusol
+       AND etapaAct.cod_etapa = prse.cod_etapa
+       AND isnull(etapaAct.vigente, 'S') = 'S'
+    LEFT JOIN secgen_db.dbo.sg_rslc rslc
+        ON rslc.nro_resolu = soli.nro_resolu
     WHERE fu.rut = @rut_person
       AND (@nro_solici_excluir IS NULL OR fu.nro_solici <> @nro_solici_excluir)
     ORDER BY soli.f_solicit DESC
