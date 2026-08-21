@@ -22,10 +22,11 @@ Parametros    :
     @nro_solici_excluir int     : Solicitud actual a excluir del historial
                                    (NULL = no excluye ninguna).
 Retorna       :
-    Una fila por cada PDS previa del funcionario: actividad, periodo,
-    fechas de ejecucion, centro de costo, montos, cuotas, cargo, resolucion
-    (incluye numero externo y documento), etapa actual (si la solicitud
-    previa aun esta en tramite) y estado de la solicitud.
+    Una fila por cada combinacion PDS/cuota/compensacion efectiva. El backend
+    agrupa estas filas en una PDS con cuotas y compensaciones anidadas. Incluye
+    informacion de cualquier etapa de la solicitud, resolucion, tope aplicado,
+    jornada, estado y fechas de pago, validaciones, horario de ejecucion y
+    compensaciones planificadas/efectivas.
 Creacion      : 2026/08/19
 Modificacion  : 2026/08/20 - se agregan cod_etapa_act/des_etapa_act (etapa
                 actual segun sg_prse + sg_eta1, igual criterio que
@@ -34,6 +35,10 @@ Modificacion  : 2026/08/20 - se agregan cod_etapa_act/des_etapa_act (etapa
                 backend no deba resolverlos con consultas adicionales por
                 cada fila. El estado de firma del documento (que vive en
                 MySecGen, fuera de Sybase) sigue resolviendose aparte.
+                2026/08/20 - se incorpora trazabilidad financiera por cuota
+                (sg_fume/sg_ecuo), compensacion efectiva (sg_fuc2), y resumen
+                de horario/compensacion registrada (sg_fuho/sg_fuco). No se
+                filtra por estado ni etapa: el historial es institucional.
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen17
@@ -48,6 +53,7 @@ BEGIN
     END
 
     SELECT
+        fu.id_funprse,
         fu.nro_solici,
         prse.actividad,
         fu.motivo AS motivo_funcionario,
@@ -59,9 +65,22 @@ BEGIN
         prse.cod_ccto,
         rtrim(isnull(ccto.nom_ab_cct, '')) AS nom_ab_cct,
         fu.mto_total,
+        fu.monto_mes,
         fu.tot_cuotas,
+        fu.periodos,
+        fu.cod_sitm,
+        fu.itm_global,
         fu.cod_cargo,
         rtrim(isnull(carg.nom_cargo, '')) AS nom_cargo,
+        fu.cod_estfun,
+        rtrim(isnull(efun.des_estfun, '')) AS des_estfun,
+        fu.dentro_jor,
+        fu.cod_contra,
+        fu.mes_haber,
+        fu.ano_haber,
+        fu.mto_haber,
+        fu.mto_tope,
+        fu.f_cal_tope,
         soli.nro_resolu,
         soli.ano_resolu,
         soli.cod_estsol,
@@ -71,7 +90,44 @@ BEGIN
         prse.cod_etapa AS cod_etapa_act,
         rtrim(isnull(etapaAct.des_etapa, '')) AS des_etapa_act,
         rslc.num_resolu AS num_resolu_ext,
-        rslc.id_docum
+        rslc.id_docum,
+
+        /* Cuota y estado financiero. LEFT JOIN conserva PDS sin cuotas. */
+        fume.nro_cuota,
+        fume.ano_prop,
+        fume.mes_prop,
+        fume.cod_estcuo,
+        rtrim(isnull(ecuo.des_estcuo, '')) AS des_estcuo,
+        fume.ano_ejec,
+        fume.mes_ejec,
+        fume.mto_apagar,
+        fume.id_evidenc,
+        fume.val_licmed,
+        fume.val_inabili,
+        fume.val_singoce,
+        fume.val_ciecc,
+        fume.fec_valida,
+        fume.rut_autori,
+        fume.fec_autori,
+        fume.fec_envrem,
+        fume.fec_pago,
+        fume.ano_pago,
+        fume.mes_pago,
+
+        /* Compensacion efectiva vinculada a la cuota pagada/en pago. */
+        fuc2.fec_comrea,
+        fuc2.hora_ini AS hora_ini_comrea,
+        fuc2.hora_ter AS hora_ter_comrea,
+
+        /* Resumen de lo originalmente registrado para la PDS. */
+        isnull(fuho.cant_horarios, 0) AS cant_horarios,
+        fuho.hora_ini_min AS hora_ejec_ini,
+        fuho.hora_ter_max AS hora_ejec_ter,
+        isnull(fuco.cant_compensa, 0) AS cant_compensa_plan,
+        fuco.fec_compro_min,
+        fuco.fec_compro_max,
+        fuco.hora_ini_min AS hora_comp_ini,
+        fuco.hora_ter_max AS hora_comp_ter
     FROM secgen_db.dbo.sg_fups fu
     INNER JOIN secgen_db.dbo.sg_prse prse
         ON prse.nro_solici = fu.nro_solici
@@ -84,15 +140,46 @@ BEGIN
        AND ccto.cod_unifin = prse.cod_unifin
     LEFT JOIN sisper_db.dbo.sp_carg carg
         ON carg.cod_cargo = fu.cod_cargo
+    LEFT JOIN secgen_db.dbo.sg_efun efun
+        ON efun.cod_estfun = fu.cod_estfun
     LEFT JOIN secgen_db.dbo.sg_eta1 etapaAct
         ON etapaAct.cod_flusol = prse.cod_flusol
        AND etapaAct.cod_etapa = prse.cod_etapa
        AND isnull(etapaAct.vigente, 'S') = 'S'
     LEFT JOIN secgen_db.dbo.sg_rslc rslc
         ON rslc.nro_resolu = soli.nro_resolu
+    LEFT JOIN secgen_db.dbo.sg_fume fume
+        ON fume.id_funprse = fu.id_funprse
+    LEFT JOIN secgen_db.dbo.sg_ecuo ecuo
+        ON ecuo.cod_estcuo = fume.cod_estcuo
+    LEFT JOIN secgen_db.dbo.sg_fuc2 fuc2
+        ON fuc2.id_funprse = fume.id_funprse
+       AND fuc2.nro_cuota = fume.nro_cuota
+    LEFT JOIN (
+        SELECT
+            id_funprse,
+            count(*) AS cant_horarios,
+            min(hora_ini) AS hora_ini_min,
+            max(hora_ter) AS hora_ter_max
+        FROM secgen_db.dbo.sg_fuho
+        GROUP BY id_funprse
+    ) fuho
+        ON fuho.id_funprse = fu.id_funprse
+    LEFT JOIN (
+        SELECT
+            id_funprse,
+            count(*) AS cant_compensa,
+            min(fec_compro) AS fec_compro_min,
+            max(fec_compro) AS fec_compro_max,
+            min(hora_ini) AS hora_ini_min,
+            max(hora_ter) AS hora_ter_max
+        FROM secgen_db.dbo.sg_fuco
+        GROUP BY id_funprse
+    ) fuco
+        ON fuco.id_funprse = fu.id_funprse
     WHERE fu.rut = @rut_person
       AND (@nro_solici_excluir IS NULL OR fu.nro_solici <> @nro_solici_excluir)
-    ORDER BY soli.f_solicit DESC
+    ORDER BY soli.f_solicit DESC, fu.id_funprse, fume.nro_cuota, fuc2.fec_comrea
 END
 GO
 
