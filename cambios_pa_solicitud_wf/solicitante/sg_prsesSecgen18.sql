@@ -12,7 +12,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen18
 GO
 
-/* Autoriza por identidad JWT: titular, tarea efectiva o participacion previa. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Seleccionar detalle de una solicitud PDS especifica asociada a un usuario
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_prsesSecgen18
     @nro_solici int = NULL,
     @rut_usua char(9) = NULL

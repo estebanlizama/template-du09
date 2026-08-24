@@ -7,8 +7,15 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_fucoiSecgen01
 GO
 
-/* Inserta un tramo FUCO. No abre ni confirma transacciones para respetar
-   la transaccion atomica iniciada por el backend. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Insertar o registrar compromisos horarios de un funcionario
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_fucoiSecgen01
     @id_funprse int = NULL,
     @fec_compro datetime = NULL,

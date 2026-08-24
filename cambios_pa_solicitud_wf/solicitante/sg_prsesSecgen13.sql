@@ -9,7 +9,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen13
 GO
 
-/* Lista tareas PDS pendientes asignadas al RUT efectivo autenticado. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Obtener las solicitudes de prestacion de servicios asignadas o pendientes para un usuario
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_prsesSecgen13
     @rut_solici varchar(9) = NULL
 AS

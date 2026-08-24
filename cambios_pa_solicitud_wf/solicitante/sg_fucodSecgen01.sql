@@ -7,8 +7,15 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_fucodSecgen01
 GO
 
-/* Elimina todos los tramos FUCO de un funcionario. La atomicidad del
-   reemplazo completo es administrada por la transaccion del backend. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Eliminar un funcionario asociado a una prestacion de servicios
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_fucodSecgen01
     @id_funprse int = NULL
 AS

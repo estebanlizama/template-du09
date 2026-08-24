@@ -12,7 +12,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen08
 GO
 
-/* Lista exclusivamente las solicitudes activas creadas por el RUT JWT. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL
 AS

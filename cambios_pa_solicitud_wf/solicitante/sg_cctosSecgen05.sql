@@ -8,30 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /*
-================================================================================
-Procedimiento : Analisis2.sg_cctosSecgen05
-Base de Datos : secgen_db
-Objetivo      : Listar los centros de costo habilitados y vigentes asociados a 
-                un RUT según la modalidad de prestación.
-                - Modprse = 1 (Legacy): Centros asociados a la unidad del usuario.
-                - Modprse = 2 (DU288): Centros donde el RUT es jefe/responsable vigente.
+    Entrada  :
+    
+    Salida   :
 
-Parámetros    :
-    @rut         char(9)    : RUT del usuario/funcionario a consultar (obligatorio).
-    @id_modprse  tinyint    : Modalidad de prestación (1: Legacy, 2: DU288/DU09).
-
-Historial de Modificaciones:
-    Fecha        Autor             Descripción
-    ----------   ---------------   ---------------------------------------------
-    2026-06-10   Ecosistema UFRO   - Adición de modalidad DU288 (id_modprse = 2).
-                                   - Incorporación de flags de validación (vigente_ccto,
-                                     vigente_responsable, ind_financiamiento_du288,
-                                     ind_decreto_afecto).
-                                   - Determinación estricta de Formación Continua
-                                     (ind_formacion_continua) usando decreto afecto (DU 305).
-================================================================================
+    Objetivo : Obtener lista de centros de costo disponibles para un rut
+    Creacion : ELA 2026/08/24
+    Modificacion :
 */
-
 CREATE PROCEDURE Analisis2.sg_cctosSecgen05
     @rut char(9) = NULL,
     @id_modprse tinyint = 1 -- 1 Legacy, 2 DU288/Fase 2

@@ -9,7 +9,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_apsosSecgen03
 GO
 
-/* Obtiene la tarea pendiente asignada al RUT efectivo autenticado. */
+/*
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Seleccionar el historial o datos de aprobacion de una solicitud
+    Creacion : ELA 2026/08/24
+    Modificacion :
+*/
 CREATE PROCEDURE Analisis2.sg_apsosSecgen03
     @nro_solici int = NULL,
     @cod_estapr int = NULL,

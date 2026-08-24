@@ -10,10 +10,13 @@ IF EXISTS (
 GO
 
 /*
-Resuelve la jefatura efectiva del funcionario.
-En cada cargo evalua ORCO -> ORDE -> todas las prioridades AUFI. Solamente si
-no existe candidato sube por cod_orgjef dentro de la misma raiz institucional.
-AUFI identifica una subrogancia; ORDE del mismo cargo es designacion directa.
+    Entrada  :
+    
+    Salida   :
+
+    Objetivo : Obtener informacion de un funcionario y su contrato activo
+    Creacion : ELA 2026/08/24
+    Modificacion :
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen16
     @rut_person char(9),
