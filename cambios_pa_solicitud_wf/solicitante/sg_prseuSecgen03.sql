@@ -21,7 +21,7 @@ GO
    Objetivo : Aplicar una transicion configurada en sg_eta2 y actualizar la etapa actual de una solicitud PDS.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: Sin registro
+   Actualizacion: ELA 2026/08/24
 */
 CREATE PROCEDURE Analisis2.sg_prseuSecgen03
     @nro_solici int = NULL,
@@ -134,7 +134,7 @@ BEGIN
           )
 
         IF @cod_etapa_resol IS NOT NULL
-           AND @cod_etapa_devol >= @cod_etapa_resol
+           AND @cod_etapa_devol > @cod_etapa_resol
         BEGIN
             SELECT @cod_etapa2 = @cod_etapa_resol
             SELECT @cod_etapa_reingreso = @cod_etapa_resol
@@ -183,7 +183,7 @@ BEGIN
 
     IF @abr_accion IS NULL
     BEGIN
-        SELECT 0 AS status, 'La accion no existe en el catalogo sg_tacc' AS mensaje
+        SELECT 0 AS status, 'La accion no existe o no esta configurada' AS mensaje
         RETURN
     END
 
