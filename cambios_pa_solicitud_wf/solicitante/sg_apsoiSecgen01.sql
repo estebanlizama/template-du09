@@ -22,9 +22,9 @@ GO
    @comentario          -> Comentario de la accion. (Opcional)
    @exige_flujo         -> Parametro de entrada. (Obligatorio)
 
-   Objetivo : Crear una tarea de aprobacion asociada al flujo y etapa actuales de la solicitud. Compatibilidad: Mantiene compatibles los tres parametros legacy. Los nuevos parametros son opcionales. @exige_flujo debe enviarse en 1 desde el motor DU288 para impedir tareas sin flujo o etapa; los consumidores legacy pueden omitirlo.
+   Objetivo : Crear una tarea de aprobacion asociada al flujo y etapa actuales de la solicitud.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_apsoiSecgen01

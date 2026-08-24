@@ -25,7 +25,7 @@ go
 
    Objetivo : insertar Registro de históricos de resolución
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

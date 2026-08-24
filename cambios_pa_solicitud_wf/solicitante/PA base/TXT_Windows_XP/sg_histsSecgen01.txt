@@ -21,7 +21,7 @@ go
 
    Objetivo : Obtener lista de una accion realizada un por perfil
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

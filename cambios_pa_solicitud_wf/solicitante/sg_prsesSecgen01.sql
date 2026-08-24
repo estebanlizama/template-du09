@@ -19,7 +19,7 @@ GO
 
    Objetivo : Consultar una solicitud de Prestacion de Servicios con su modalidad, flujo y etapa actuales.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen01

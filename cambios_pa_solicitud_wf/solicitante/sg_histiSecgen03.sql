@@ -25,9 +25,8 @@ GO
    @id_perfil           -> Parametro de entrada. (Opcional)
 
    Objetivo : Registrar el historial funcional de la solicitud.
-Salida        : Una fila con status, id_histor y msg. Este contrato es obligatorio para confirmar atomicamente la escritura desde el backend.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_histiSecgen03

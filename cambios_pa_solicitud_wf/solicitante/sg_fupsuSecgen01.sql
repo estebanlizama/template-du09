@@ -34,9 +34,9 @@ GO
    @cod_estfun          -> Parametro de entrada. (Opcional)
    @rut_visado          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Actualizar datos de un funcionario prestación de servicios (sg_fups), compatible con DU288 y legacy. Entrada       : @id_funprse  int @rut         char(9) @cod_cargo   smallint @cod_sitm    varchar(5) @itm_global  varchar(15) @motivo      varchar(255) @periodos    tinyint @monto_mes   decimal(19,2) @mto_total   decimal(19,2) @cod_moneda  tinyint @dentro_jor  char(1) = NULL (NUEVO DU288) @cod_contra  int = NULL (NUEVO DU288) @mes_haber   tinyint = NULL (NUEVO DU288) @ano_haber   smallint = NULL (NUEVO DU288) @mto_haber   int = NULL (NUEVO DU288) @mto_tope    int = NULL (NUEVO DU288) @f_cal_tope  datetime = NULL (NUEVO DU288) @tot_cuotas  tinyint = NULL (NUEVO DU288)
+   Objetivo : Actualizar datos de un funcionario prestacion de servicios (sg_fups), compatible con DU288 y legacy.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupsuSecgen01

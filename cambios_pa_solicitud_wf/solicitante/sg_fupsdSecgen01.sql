@@ -12,9 +12,9 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atómica. Entrada       : @id_funprse int
+   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atómica.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupsdSecgen01

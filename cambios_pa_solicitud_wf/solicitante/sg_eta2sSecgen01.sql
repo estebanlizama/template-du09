@@ -22,7 +22,7 @@ GO
 
    Objetivo : Resolver una transicion configurada en sg_eta2 o listar las acciones disponibles para la etapa actual de una solicitud.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_eta2sSecgen01

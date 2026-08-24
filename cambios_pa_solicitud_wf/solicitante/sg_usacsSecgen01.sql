@@ -20,11 +20,9 @@ GO
    @cod_modulo          -> Codigo del modulo. (Obligatorio)
    @fecha_eval          -> Fecha de evaluacion. (Opcional)
 
-   Objetivo : Obtener perfiles y privilegios dinamicos de acceso a PDS. El perfil solicitante se obtiene por contrato vigente. Los perfiles
-aprobadores se obtienen exclusivamente desde tareas pendientes cuyo rut_usua
-ya corresponde al responsable efectivo resuelto por el flujo.
+   Objetivo : Obtener perfiles y privilegios dinamicos de acceso a PDS.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_usacsSecgen01

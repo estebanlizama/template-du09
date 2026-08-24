@@ -18,9 +18,9 @@ GO
    @cod_unifin          -> Unidad financiera. (Opcional)
    @cod_ccto            -> Centro de costo. (Opcional)
 
-   Objetivo : Resolver el flujo DU288 con los datos existentes del Centro de Costo y los maestros sg_tfls/sg_eta1. Restricciones del modelo actual: - No crea ni consulta tablas adicionales de configuracion. - La unidad institucional se obtiene desde fin21_db..es_ccto/es_ufin. - El prefijo institucional determina los flujos identificables con los datos actualmente disponibles. - Investigacion y DITT deben contar con un dato diferenciador existente antes de incorporarse; no se infieren por nombre ni por RUT.
+   Objetivo : Resolver el flujo DU288 con los datos existentes del Centro de Costo y los maestros sg_tfls/sg_eta1.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_flusSecgen01

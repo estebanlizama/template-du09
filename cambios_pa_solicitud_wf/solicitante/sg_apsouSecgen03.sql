@@ -21,9 +21,9 @@ GO
    @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
    @comentario          -> Comentario de la accion. (Opcional)
 
-   Objetivo : Registrar de forma atomica la decision de una tarea DU288. Reglas: - La tarea debe estar pendiente y pertenecer al RUT autenticado. - La tarea debe corresponder a la etapa actual de sg_prse. - rut_autori identifica a quien ejecuto realmente la accion.
+   Objetivo : Registrar de forma atomica la decision de una tarea DU288.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_apsouSecgen03

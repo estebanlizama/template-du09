@@ -11,9 +11,9 @@ GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen15
 
-   Objetivo : Seleccionar las solicitudes pendientes para ser archivadas en prestación de servicios con modalidad y nombre del solicitante
+   Objetivo : Seleccionar las solicitudes pendientes para ser archivadas en prestacion de servicios con modalidad y nombre del solicitante
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

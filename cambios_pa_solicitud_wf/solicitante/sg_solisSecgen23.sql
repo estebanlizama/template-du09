@@ -17,20 +17,9 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Obtener el detalle de aprobaciones (sg_apso) de una solicitud, para armar el flujo organizacional completo en el frontend (historial por etapa). Cambio (2026-08-21): se agregan apso.cod_flusol y apso.cod_etapa al
-SELECT. Ambas columnas ya existen en sg_apso (ver diagrama_secgen), pero
-la version anterior no las traia. Sin ellas, el frontend
-(service-provision-request.controller.ts, RequestApproval.model.ts) no
-podia enlazar cada registro de aprobacion con su etapa real, y caia a un
-respaldo posicional por orden cronologico. Ese respaldo se desalinea
-cuando una solicitud vuelve a pasar por la misma etapa tras ser devuelta
-a correccion (queda una fila de sg_apso adicional por cada ciclo), lo
-que hacia aparecer el comentario de una devolucion anterior pegado a una
-etapa que en el ciclo actual esta "Aprobada". Con cod_etapa/cod_flusol
-disponibles, el match correcto por etapa vuelve a funcionar y ese
-respaldo deja de ser necesario en el caso normal. Compatibilidad: Sybase ASE 12.5.
+   Objetivo : Obtener el detalle de aprobaciones (sg_apso) de una solicitud, para armar el flujo organizacional completo en el frontend (historial por etapa).
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_solisSecgen23

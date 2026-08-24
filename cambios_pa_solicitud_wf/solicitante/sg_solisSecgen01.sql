@@ -18,9 +18,8 @@ GO
    @nro_solici          -> Numero de solicitud. (Opcional)
 
    Objetivo : Obtener una unica cabecera de solicitud, incluyendo la identidad del solicitante original para el flujo de retorno.
-Compatibilidad: Sybase ASE 12.5.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_solisSecgen01

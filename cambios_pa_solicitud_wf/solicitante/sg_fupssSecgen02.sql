@@ -12,9 +12,9 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Listar los funcionarios asociados a una solicitud de PDS, incluyendo campos legacy y nuevos campos DU288 de sg_fups. Entrada       : @nro_solici int
+   Objetivo : Listar los funcionarios asociados a una solicitud de PDS, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen02

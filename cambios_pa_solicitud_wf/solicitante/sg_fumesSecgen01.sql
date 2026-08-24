@@ -12,9 +12,9 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Obtiene la lista de meses de ejecución vigentes para los funcionarios de una solicitud. Entrada       : @nro_solici   int
+   Objetivo : Obtiene la lista de meses de ejecucion vigentes para los funcionarios de una solicitud.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fumesSecgen01

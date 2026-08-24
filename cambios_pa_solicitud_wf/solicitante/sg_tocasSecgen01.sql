@@ -19,7 +19,7 @@ GO
    @id_contrato         -> Identificador del contrato. (Opcional)
    @fecha_eval          -> Fecha de evaluacion. (Opcional)
 
-   Objetivo : Validar si el contrato evaluado de un funcionario posee un tope especial configurado en sg_toca. Fuente        : secgen_db.dbo.sg_toca Regla         : - sg_toca se usa solo para topes especiales por cargo + unidad. - En esta fase contiene Directores/as de Institutos Independientes. - No valida inhabilidad por cargo. - No reemplaza el calculo general de sg_fupssSecgen13. - Si existe regla vigente para cod_cargo + cod_unidad, se debe usar ese mto_tope como tope mensual aplicable.
+   Objetivo : Validar si el contrato evaluado de un funcionario posee un tope especial configurado en sg_toca.
 
    Creacion: 2026/07/06
    Actualizacion: Sin registro

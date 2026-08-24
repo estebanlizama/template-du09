@@ -19,7 +19,7 @@ GO
 
    Objetivo : Listar solicitudes PDS finalizadas creadas por el RUT.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen17

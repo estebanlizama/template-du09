@@ -14,9 +14,9 @@ GO
    @meses_csv           -> Parametro de entrada. (Opcional)
    @cod_estcuo          -> Parametro de entrada. (Obligatorio)
 
-   Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario. Entrada       : @id_funprse int @meses_csv  varchar(500) -- Formato: '2026:7;2026:8' @cod_estcuo int
+   Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fumeuSecgen01

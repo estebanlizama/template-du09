@@ -21,7 +21,7 @@ go
 
    Objetivo : Cambiar el estado de una resolución
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

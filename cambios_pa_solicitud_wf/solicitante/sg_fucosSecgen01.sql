@@ -12,9 +12,9 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud. Entrada       : @nro_solici int Salida        : id_funprse  int fec_compro  datetime hora_ini    time hora_ter    time
+   Objetivo : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fucosSecgen01

@@ -14,15 +14,11 @@ GO
 
 /* Procedimiento : Analisis2.sg_eapriSecgen01
 
-   Entrada :
-   @descripcion         -> Parametro de entrada. (Obligatorio)
-   @error               -> Parametro de entrada. (Obligatorio)
-   @descripcion         -> Parametro de entrada. (Obligatorio)
-   @descripcion         -> Parametro de entrada. (Obligatorio)
+   Entrada : Ninguna.
 
    Objetivo : Asegurar el estado tecnico usado para cerrar tareas pendientes hermanas cuando una etapa paralela se rechaza o devuelve.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_eapriSecgen01
@@ -50,7 +46,7 @@ BEGIN
     END
 
     INSERT INTO secgen_db.dbo.sg_eapr (cod_estapr, des_estapr)
-    VALUES (11, 'CANCELADA POR CIERRE ETAPA')
+    VALUES (11, 'Cancelada por cierre etapa')
 
     SELECT @error = @@error
 

@@ -21,7 +21,7 @@ go
 
    Objetivo : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

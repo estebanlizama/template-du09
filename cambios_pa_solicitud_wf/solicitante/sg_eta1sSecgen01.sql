@@ -16,7 +16,7 @@ GO
 
    Objetivo : Sin descripcion
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_eta1sSecgen01

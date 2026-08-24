@@ -15,7 +15,7 @@ GO
 
    Objetivo : Verificar si el funcionario tiene parentesco activo con el jefe de proyecto.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

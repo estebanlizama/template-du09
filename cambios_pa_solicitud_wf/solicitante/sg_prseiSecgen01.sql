@@ -23,7 +23,7 @@ GO
 
    Objetivo : Insertar la cabecera especifica de una Prestacion de Servicios en sg_prse, incluyendo la modalidad de prestacion.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 

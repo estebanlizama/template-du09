@@ -13,9 +13,9 @@ GO
    @nro_solici          -> Numero de solicitud. (Opcional)
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Retorna la distribución de horarios de ejecución de prestación (sg_fuho) para los funcionarios de una solicitud o por funcionario especifico. Entrada       : @nro_solici int (opcional) @id_funprse int (opcional) Salida        : id_funprse  int cod_diasem  tinyint correlativ  tinyint hora_ini    varchar(8) hora_ter    varchar(8)
+   Objetivo : Retorna la distribucion de horarios de ejecucion de prestacion (sg_fuho) para los funcionarios de una solicitud o por funcionario especifico.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fuhosSecgen01

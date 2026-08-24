@@ -12,9 +12,9 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Seleccionar un funcionario específico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups. Entrada       : @id_funprse int
+   Objetivo : Seleccionar un funcionario específico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen01

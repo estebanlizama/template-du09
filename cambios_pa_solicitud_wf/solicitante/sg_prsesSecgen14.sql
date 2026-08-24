@@ -14,9 +14,9 @@ GO
    Entrada :
    @rut_solici          -> RUT del solicitante. (Opcional)
 
-   Objetivo : Seleccionar las solicitudes pendientes de firma en prestación de servicios con su modalidad y nombre del solicitante
+   Objetivo : Seleccionar las solicitudes pendientes de firma en prestacion de servicios con su modalidad y nombre del solicitante
 
-   Creacion: Sin registro
+   Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
 
