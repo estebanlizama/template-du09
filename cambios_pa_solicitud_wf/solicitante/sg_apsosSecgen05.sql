@@ -10,7 +10,15 @@ IF EXISTS (
 GO
 
 /* Procedimiento : Analisis2.sg_apsosSecgen05
-   Objetivo      : Contar las tareas pendientes de la etapa actual. */
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Sin descripcion
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
+*/
 CREATE PROCEDURE Analisis2.sg_apsosSecgen05
     @nro_solici int = NULL
 AS

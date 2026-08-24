@@ -11,13 +11,13 @@ go
 
 /* Procedimiento : sg_histsSecgen05
 
-    Entrada  :
-        @nro_solici         -> Número de solicitud
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
-    Objetivo : Obtener el registro de la última devolución a observación (id_tipacc = 4)
-               para una solicitud de prestación de servicios.
+   Objetivo : Obtener el registro de la última devolución a observación (id_tipacc = 4) para una solicitud de prestación de servicios. Creación: UFRO 2026
 
-    Creación: UFRO 2026
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_histsSecgen05
@@ -39,7 +39,3 @@ go
 
 grant execute on Analisis2.sg_histsSecgen05 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_histsSecgen05 @nro_solici = 233
- */

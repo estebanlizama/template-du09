@@ -14,15 +14,15 @@ go
 
 /* Procedimiento : sg_rslcuSecgen03
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
-   @rut_archiv          -> Parámetro de entrada. (Opcional)
-   @cod_estres          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @rut_archiv          -> Parametro de entrada. (Opcional)
+   @cod_estres          -> Parametro de entrada. (Opcional)
 
    Objetivo : Cambiar el estado de una resolución
 
-   Creacion: AI 2023/02/23
-   Actualizacion: AI 2023/04/10
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_rslcuSecgen03

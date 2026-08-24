@@ -8,9 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fumesSecgen01
-   Objetivo      : Obtiene la lista de meses de ejecución vigentes para los funcionarios de una solicitud.
-   Entrada       :
-       @nro_solici   int
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Obtiene la lista de meses de ejecución vigentes para los funcionarios de una solicitud. Entrada       : @nro_solici   int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fumesSecgen01
     @nro_solici int = NULL

@@ -10,8 +10,11 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen15
-    Entrada      :
-    Objetivo     : Seleccionar las solicitudes pendientes para ser archivadas en prestación de servicios con modalidad y nombre del solicitante
+
+   Objetivo : Seleccionar las solicitudes pendientes para ser archivadas en prestación de servicios con modalidad y nombre del solicitante
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_prsesSecgen15

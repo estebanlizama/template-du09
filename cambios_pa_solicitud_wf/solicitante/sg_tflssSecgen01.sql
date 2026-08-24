@@ -10,7 +10,12 @@ IF EXISTS (
 GO
 
 /* Procedimiento : Analisis2.sg_tflssSecgen01
-   Objetivo      : Listar los flujos de solicitud vigentes. */
+
+   Objetivo : Sin descripcion
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
+*/
 CREATE PROCEDURE Analisis2.sg_tflssSecgen01
 AS
 BEGIN

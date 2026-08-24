@@ -8,10 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fupssSecgen02
-   Objetivo      : Listar los funcionarios asociados a una solicitud de PDS,
-                   incluyendo campos legacy y nuevos campos DU288 de sg_fups.
-   Entrada       :
-       @nro_solici int
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Listar los funcionarios asociados a una solicitud de PDS, incluyendo campos legacy y nuevos campos DU288 de sg_fups. Entrada       : @nro_solici int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen02
     @nro_solici int = NULL

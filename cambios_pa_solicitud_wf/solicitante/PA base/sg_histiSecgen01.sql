@@ -11,18 +11,17 @@ go
 
 /* Procedimiento : sg_histiSecgen01
 
-    Entrada  :
-        @id_histor         -> Id Registro de históricos de solicitud, resolución
-        @cod_tipsol         -> Codigo Tipo de Solicitud
-        @nro_solici         -> Numero Solicitud
-        @id_tipacc         -> Id Tipo de Resolucion
-        @rut_accion         -> RUT Accion
-        @id_perfil         -> Id Perfil
+   Entrada :
+   @cod_tipsol          -> Tipo de solicitud. (Opcional)
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @id_tipacc           -> Identificador tipo de accion. (Opcional)
+   @rut_accion          -> Parametro de entrada. (Opcional)
+   @id_perfil           -> Parametro de entrada. (Opcional)
 
-    Objetivo : insertar Registro de históricos de solicitud
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/03/15
+   Objetivo : insertar Registro de históricos de solicitud
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/03/15
 */
 
 create procedure  Analisis2.sg_histiSecgen01
@@ -116,11 +115,3 @@ go
 grant execute on Analisis2.sg_histiSecgen01 to UsuaVrac
 
 go
-/*
-execute secgen_db.Analisis2.sg_histiSecgen01
-        @cod_tipsol = 4,
-        @nro_solici = 88,
-        @id_tipacc = 1,
-        @rut_accion = '092867439',
-        @id_perfil = 1
- */

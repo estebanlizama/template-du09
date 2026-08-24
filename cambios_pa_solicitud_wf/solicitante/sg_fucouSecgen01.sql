@@ -8,17 +8,15 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fucouSecgen01
-   Objetivo      : Reemplaza las compensaciones FUCO de un funcionario DU288.
-   Compatibilidad: Sybase ASE 12.5. No crea tablas temporales y respeta la
-                   transaccion iniciada por el proceso llamador.
-   Entrada       :
-       @id_funprse         int,
-       @compensaciones_csv varchar(2000) = NULL
-       Formato: YYYY-MM-DD|HH:MM|HH:MM;YYYY-MM-DD|HH:MM|HH:MM
-   Salida        :
-       id_funprse            int,
-       registros_insertados int,
-       msg                   varchar(255)
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+   @compensaciones_csv  -> Parametro de entrada. (Opcional)
+
+   Objetivo : Reemplaza las compensaciones FUCO de un funcionario DU288. Compatibilidad: Sybase ASE 12.5. No crea tablas temporales y respeta la transaccion iniciada por el proceso llamador. Entrada       : @id_funprse         int, @compensaciones_csv varchar(2000) = NULL Formato: YYYY-MM-DD|HH:MM|HH:MM;YYYY-MM-DD|HH:MM|HH:MM Salida        : id_funprse            int, registros_insertados int, msg                   varchar(255)
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fucouSecgen01
     @id_funprse int = NULL,

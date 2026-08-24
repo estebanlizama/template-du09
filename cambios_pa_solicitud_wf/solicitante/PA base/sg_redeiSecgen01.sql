@@ -11,23 +11,19 @@ go
 
 /* Procedimiento : sg_redeiSecgen01
 
-    Entrada  :
-        @id_resdet         -> Id Detalle Resolucion
-        @ano_resolu         -> Año Resolucion
-        @nro_resolu         -> Numero Resolucion
-        @id_pladet         -> Id Plantilla Detalle
-        @cod_tipsec         -> Codigo Tipo Secccion
-        @nombre         -> Nombre
-        @valor         -> Valor
-        @editable         -> Editable
-        @orden         -> Orden
-        @f_creacion         -> Fecha Creacion
-        @f_ultmodif         -> Fecha Ultima Modificacion
-    Objetivo : insertar Detalle de resolución
+   Entrada :
+   @ano_resolu          -> Parametro de entrada. (Obligatorio)
+   @nro_resolu          -> Parametro de entrada. (Obligatorio)
+   @id_pladet           -> Parametro de entrada. (Obligatorio)
+   @cod_tipsec          -> Parametro de entrada. (Opcional)
+   @nombre              -> Parametro de entrada. (Opcional)
+   @editable            -> Parametro de entrada. (Opcional)
+   @orden               -> Parametro de entrada. (Obligatorio)
 
-    Creacion: CHL 2022/12/13
-    Actualizacion:
+   Objetivo : insertar Detalle de resolución
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_redeiSecgen01
@@ -140,14 +136,3 @@ go
 
 grant execute on Analisis2.sg_redeiSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_redeiSecgen01
-        @ano_resolu = 2023
-        @nro_resolu = 2
-        @id_pladet = 3
-        @cod_tipsec = 1
-        @nombre = ''
-        @editable = 'S'
-        @orden = 1
- */

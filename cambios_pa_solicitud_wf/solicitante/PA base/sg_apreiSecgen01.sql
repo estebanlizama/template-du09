@@ -11,18 +11,17 @@ go
 
 /* Procedimiento : sg_apreiSecgen01
 
-    Entrada  :
-        @ano_resolu         -> Año Resolucion
-        @nro_resolu         -> Numero Resolucion
-        @rut_aprob         -> RUT Aprobacion
-        @cod_estapr         -> Codigo Estado Aprobacion
-        @id_perfil         -> Id Perfil
-        @observacio         -> Observacion
-    Objetivo : insertar Aprobación de resoluciones
+   Entrada :
+   @ano_resolu          -> Parametro de entrada. (Opcional)
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @rut_aprob           -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+   @id_perfil           -> Parametro de entrada. (Opcional)
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/22
+   Objetivo : insertar Aprobación de resoluciones
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/22
 */
 
 create procedure  Analisis2.sg_apreiSecgen01
@@ -112,7 +111,3 @@ go
 
 grant execute on Analisis2.sg_apreiSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_apreiSecgen01 @ano_resolu = 2023, @nro_resolu = 28, @cod_estapr = 6, @id_perfil = 19, @rut_aprob = '000000027'
- */

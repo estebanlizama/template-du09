@@ -12,28 +12,18 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_fupssSecgen15
 GO
 
-/*
-Procedimiento : Analisis2.sg_fupssSecgen15
-Objetivo      : Obtener asignaciones/designaciones vigentes del funcionario
-                y evaluar si alguna inhabilita DU288.
-Parametros    :
-    @rut_person  char(9)  : RUT del funcionario.
-    @id_contrato int      : Contrato seleccionado en DU288. Solo contexto.
-    @fecha_eval datetime  : Fecha de evaluacion. Default getdate().
-    @ind_anid   char(1)   : Indicador ANID/externo ('S'/'N'). Default 'N'.
+/* Procedimiento : Analisis2.sg_fupssSecgen15
 
-Retorna       :
-    Lista de asignaciones vigentes y habilitado_du288 ('S'/'N').
+   Entrada :
+   @rut_person          -> RUT de la persona. (Obligatorio)
+   @id_contrato         -> Identificador del contrato. (Obligatorio)
+   @fecha_eval          -> Fecha de evaluacion. (Opcional)
+   @ind_anid            -> Parametro de entrada. (Obligatorio)
 
-Regla         :
-    - cod_tipcar = 5 corresponde a cargo directivo formal.
-    - cod_tipcar = 3 corresponde a una funcion. No se bloquea por el tipo
-      solamente; se resuelve la funcion vigente mediante sp_orde/sp_desg y
-      se clasifica por el nombre oficial del cargo de SISPER.
-    - Las funciones directivas identificadas en SISPER se bloquean dentro
-      del PA. El frontend y backend no deben inferirlas por texto.
+   Objetivo : Obtener asignaciones/designaciones vigentes del funcionario y evaluar si alguna inhabilita DU288.
 
-Creacion      : 2026/07/10
+   Creacion: 2026/07/10
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen15

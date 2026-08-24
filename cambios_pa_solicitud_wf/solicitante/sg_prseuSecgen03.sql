@@ -12,13 +12,17 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prseuSecgen03
 GO
 
-/*
-Procedimiento : Analisis2.sg_prseuSecgen03
-Objetivo      : Aplicar una transicion configurada en sg_eta2 y actualizar
-                la etapa actual de una solicitud PDS.
+/* Procedimiento : Analisis2.sg_prseuSecgen03
 
-El PA no actualiza sg_soli, sg_apso ni sg_hist. Esas operaciones forman parte
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @id_tipacc           -> Identificador tipo de accion. (Opcional)
+
+   Objetivo : Aplicar una transicion configurada en sg_eta2 y actualizar la etapa actual de una solicitud PDS. El PA no actualiza sg_soli, sg_apso ni sg_hist. Esas operaciones forman parte
 de la transaccion coordinada por el servicio de workflow.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prseuSecgen03
     @nro_solici int = NULL,

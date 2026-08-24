@@ -11,13 +11,10 @@ go
 
 /* Procedimiento : sg_prsesSecgen16
 
-    Entrada  :
+   Objetivo : Seleccionar las solicitudes listas para marcar como ingresada en prestación de servicios
 
-    Objetivo : Seleccionar las solicitudes listas para marcar como ingresada en prestación de servicios
-
-    Creacion: AI 2023/05/11
-    Actualizacion:
-
+   Creacion: AI 2023/05/11
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_prsesSecgen16
@@ -43,7 +40,3 @@ create procedure  Analisis2.sg_prsesSecgen16
 go
 grant execute on Analisis2.sg_prsesSecgen16 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_prsesSecgen16
- */

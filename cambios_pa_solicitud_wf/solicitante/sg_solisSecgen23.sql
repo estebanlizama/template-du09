@@ -12,13 +12,12 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_solisSecgen23
 GO
 
-/*
-Procedimiento : Analisis2.sg_solisSecgen23
-Objetivo      : Obtener el detalle de aprobaciones (sg_apso) de una
-                solicitud, para armar el flujo organizacional completo
-                en el frontend (historial por etapa).
+/* Procedimiento : Analisis2.sg_solisSecgen23
 
-Cambio (2026-08-21): se agregan apso.cod_flusol y apso.cod_etapa al
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Obtener el detalle de aprobaciones (sg_apso) de una solicitud, para armar el flujo organizacional completo en el frontend (historial por etapa). Cambio (2026-08-21): se agregan apso.cod_flusol y apso.cod_etapa al
 SELECT. Ambas columnas ya existen en sg_apso (ver diagrama_secgen), pero
 la version anterior no las traia. Sin ellas, el frontend
 (service-provision-request.controller.ts, RequestApproval.model.ts) no
@@ -29,9 +28,10 @@ a correccion (queda una fila de sg_apso adicional por cada ciclo), lo
 que hacia aparecer el comentario de una devolucion anterior pegado a una
 etapa que en el ciclo actual esta "Aprobada". Con cod_etapa/cod_flusol
 disponibles, el match correcto por etapa vuelve a funcionar y ese
-respaldo deja de ser necesario en el caso normal.
+respaldo deja de ser necesario en el caso normal. Compatibilidad: Sybase ASE 12.5.
 
-Compatibilidad: Sybase ASE 12.5.
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_solisSecgen23
     @nro_solici int = NULL
@@ -66,7 +66,3 @@ GO
 
 GRANT EXECUTE ON Analisis2.sg_solisSecgen23 TO UsuaVrac
 GO
-
-/*
-execute secgen_db.Analisis2.sg_solisSecgen23 @nro_solici = 739
-*/

@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_prsesSecgen12
 
-      Entrada :
+   Entrada :
    @rut_solici          -> RUT del solicitante. (Opcional)
 
    Objetivo : Seleccionar solicitudes historicas prestación de servicios listas para aprobar por rut
 
-   Creacion: AI 2023/05/11
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

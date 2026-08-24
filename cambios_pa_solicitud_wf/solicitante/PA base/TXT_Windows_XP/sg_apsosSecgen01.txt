@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_apsosSecgen01
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Obligatorio)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Obligatorio)
 
    Objetivo : Seleccionar comentario de solicitud
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/15
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_apsosSecgen01 @nro_solici int = None

@@ -10,8 +10,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen14
-    Entrada      : @rut_solici --> rut del firmante/solicitante
-    Objetivo     : Seleccionar las solicitudes pendientes de firma en prestación de servicios con su modalidad y nombre del solicitante
+
+   Entrada :
+   @rut_solici          -> RUT del solicitante. (Opcional)
+
+   Objetivo : Seleccionar las solicitudes pendientes de firma en prestación de servicios con su modalidad y nombre del solicitante
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_prsesSecgen14

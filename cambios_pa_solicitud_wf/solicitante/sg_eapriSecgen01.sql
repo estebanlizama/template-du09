@@ -12,13 +12,18 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_eapriSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_eapriSecgen01
-Objetivo      : Asegurar el estado tecnico usado para cerrar tareas pendientes
-                hermanas cuando una etapa paralela se rechaza o devuelve.
+/* Procedimiento : Analisis2.sg_eapriSecgen01
 
-Uso           : Ejecutar una vez durante el despliegue, antes de habilitar el
-                motor DU288. No se ejecuta al procesar solicitudes.
+   Entrada :
+   @descripcion         -> Parametro de entrada. (Obligatorio)
+   @error               -> Parametro de entrada. (Obligatorio)
+   @descripcion         -> Parametro de entrada. (Obligatorio)
+   @descripcion         -> Parametro de entrada. (Obligatorio)
+
+   Objetivo : Asegurar el estado tecnico usado para cerrar tareas pendientes hermanas cuando una etapa paralela se rechaza o devuelve.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_eapriSecgen01
 AS

@@ -8,10 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fupssSecgen01
-   Objetivo      : Seleccionar un funcionario específico por id_funprse,
-                   incluyendo campos legacy y nuevos campos DU288 de sg_fups.
-   Entrada       :
-       @id_funprse int
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+
+   Objetivo : Seleccionar un funcionario específico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups. Entrada       : @id_funprse int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen01
     @id_funprse int = NULL

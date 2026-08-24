@@ -7,14 +7,17 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_cctosSecgen06
 GO
 
-/*
-Procedimiento : Analisis2.sg_cctosSecgen06
-Objetivo      : Obtener el saldo disponible consolidado por item presupuestario y general de un Centro de Costo.
-Parametros    :
-    @cod_unifin int : Unidad financiera del centro de costo.
-    @cod_ccto   int : Codigo del centro de costo.
+/* Procedimiento : Analisis2.sg_cctosSecgen06
 
-Creacion: EL 2026/07/10
+   Entrada :
+   @cod_unifin          -> Unidad financiera. (Opcional)
+   @cod_ccto            -> Centro de costo. (Opcional)
+   @fecha_eval          -> Fecha de evaluacion. (Opcional)
+
+   Objetivo : Obtener el saldo disponible consolidado por item presupuestario y general de un Centro de Costo.
+
+   Creacion: EL 2026/07/10
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_cctosSecgen06

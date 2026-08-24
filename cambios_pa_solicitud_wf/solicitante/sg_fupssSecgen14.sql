@@ -12,23 +12,20 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_fupssSecgen14
 GO
 
-/*
-Procedimiento : Analisis2.sg_fupssSecgen14
-Objetivo      : Validar si el contrato evaluado para DU288 queda habilitado o no
-                segun calidad juridica, cargo y contexto ANID/externo.
-Parametros    :
-    @rut_person  char(9)   : RUT del funcionario.
-    @id_contrato int       : Contrato evaluado desde sg_fupssSecgen13.
-    @cod_cargo   int       : Codigo del cargo evaluado.
-    @cod_unidad  varchar(8): Unidad del contrato evaluado.
-    @cod_calida  varchar(2): Calidad juridica del contrato evaluado.
-    @ind_anid    char(1)   : Indicador ANID/externo ('S'/'N'). Default 'N'.
+/* Procedimiento : Analisis2.sg_fupssSecgen14
 
-Retorna       :
-    habilitado_du288 : 'S' = habilitado, 'N' = inhabilitado
+   Entrada :
+   @rut_person          -> RUT de la persona. (Obligatorio)
+   @id_contrato         -> Identificador del contrato. (Obligatorio)
+   @cod_cargo           -> Codigo del cargo. (Obligatorio)
+   @cod_unidad          -> Parametro de entrada. (Obligatorio)
+   @cod_calida          -> Parametro de entrada. (Obligatorio)
+   @ind_anid            -> Parametro de entrada. (Obligatorio)
 
-Creacion      : EL 2026/07/03
-Normalizacion : 2026/07/03
+   Objetivo : Validar si el contrato evaluado para DU288 queda habilitado o no segun calidad juridica, cargo y contexto ANID/externo.
+
+   Creacion: EL 2026/07/03
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen14

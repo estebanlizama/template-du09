@@ -11,15 +11,15 @@ go
 
 /* Procedimiento : sg_apsouSecgen01
 
-    Entrada  :
-        @nro_solici         -> Numero Resolucion
-        @rut_usua         -> RUT Usuario
-        @cod_estapr         -> Codigo Estado Aprobacion
-    Objetivo : update Aprobación de solicitudes
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Obligatorio)
+   @rut_usua            -> RUT del usuario. (Obligatorio)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Obligatorio)
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/09
+   Objetivo : update Aprobación de solicitudes
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/09
 */
 
 create procedure  Analisis2.sg_apsouSecgen01
@@ -58,7 +58,3 @@ go
 
 grant execute on Analisis2.sg_apsouSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_apsouSecgen01 @nro_solici = 397, @rut_usua = '135155535', @cod_estapr = 4
-*/

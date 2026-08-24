@@ -11,15 +11,15 @@ go
 
 /* Procedimiento : sg_histsSecgen01
 
-    Entrada  :
-        @id_perfil         -> Id Registro de históricos de solicitud, resolución
-        @id_tipacc         -> Codigo Tipo de Solicitud
-        @nro_resolu
+   Entrada :
+   @id_perfil           -> Parametro de entrada. (Opcional)
+   @id_tipacc           -> Identificador tipo de accion. (Opcional)
+   @nro_resolu          -> Parametro de entrada. (Opcional)
 
-    Objetivo : Obtener lista de una accion realizada un por perfil
-    Creacion: SSY 31/03/2023
-    Actualizacion:
+   Objetivo : Obtener lista de una accion realizada un por perfil
 
+   Creacion: SSY 31/03/2023
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_histsSecgen01
@@ -66,9 +66,3 @@ go
 grant execute on Analisis2.sg_histsSecgen01 to UsuaVrac
 
 go
-/*
-execute secgen_db.Analisis2.sg_histsSecgen01
-        @id_perfil = 8,
-        @id_tipacc = 13,
-        @nro_resolu = 8
- */

@@ -12,13 +12,19 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prseuSecgen02
 GO
 
-/*
-Procedimiento : Analisis2.sg_prseuSecgen02
-Objetivo      : Inicializar el flujo y la etapa vigente de una solicitud PDS.
+/* Procedimiento : Analisis2.sg_prseuSecgen02
 
-La configuracion maestra de sg_eta2 debe cargarse previamente mediante
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
+   @reemplazar          -> Parametro de entrada. (Obligatorio)
+
+   Objetivo : Inicializar el flujo y la etapa vigente de una solicitud PDS. La configuracion maestra de sg_eta2 debe cargarse previamente mediante
 maestros/carga_sg_eta2_desde_eta1.sql. Este PA no modifica tablas maestras
 del flujo.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prseuSecgen02
     @nro_solici int = NULL,

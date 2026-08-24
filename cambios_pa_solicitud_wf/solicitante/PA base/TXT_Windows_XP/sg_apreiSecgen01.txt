@@ -14,17 +14,17 @@ go
 
 /* Procedimiento : sg_apreiSecgen01
 
-      Entrada :
-   @ano_resolu          -> Parámetro de entrada. (Opcional)
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
-   @rut_aprob           -> Parámetro de entrada. (Opcional)
-   @cod_estapr          -> Parámetro de entrada. (Opcional)
-   @id_perfil           -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @ano_resolu          -> Parametro de entrada. (Opcional)
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @rut_aprob           -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+   @id_perfil           -> Parametro de entrada. (Opcional)
 
    Objetivo : insertar Aprobación de resoluciones
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/22
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_apreiSecgen01

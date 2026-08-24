@@ -14,14 +14,14 @@ go
 
 /* Procedimiento : sg_soliuSecgen05
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
-   @ano_resolu          -> Parámetro de entrada. (Opcional)
-   @cod_estsol          -> Código de estado de solicitud. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @ano_resolu          -> Parametro de entrada. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
 
    Objetivo : Actualizar solicitudes agrupadas por numero y año de resolucion
 
-   Creacion: GE 2023/03/08
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

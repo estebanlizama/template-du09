@@ -8,26 +8,36 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fupsuSecgen01
-   Objetivo      : Actualizar datos de un funcionario prestación de servicios (sg_fups), compatible con DU288 y legacy.
-   Entrada       :
-       @id_funprse  int
-       @rut         char(9)
-       @cod_cargo   smallint
-       @cod_sitm    varchar(5)
-       @itm_global  varchar(15)
-       @motivo      varchar(255)
-       @periodos    tinyint
-       @monto_mes   decimal(19,2)
-       @mto_total   decimal(19,2)
-       @cod_moneda  tinyint
-       @dentro_jor  char(1) = NULL (NUEVO DU288)
-       @cod_contra  int = NULL (NUEVO DU288)
-       @mes_haber   tinyint = NULL (NUEVO DU288)
-       @ano_haber   smallint = NULL (NUEVO DU288)
-       @mto_haber   int = NULL (NUEVO DU288)
-       @mto_tope    int = NULL (NUEVO DU288)
-       @f_cal_tope  datetime = NULL (NUEVO DU288)
-       @tot_cuotas  tinyint = NULL (NUEVO DU288)
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+   @rut                 -> RUT del funcionario. (Opcional)
+   @cod_cargo           -> Codigo del cargo. (Opcional)
+   @cod_sitm            -> Parametro de entrada. (Opcional)
+   @itm_global          -> Parametro de entrada. (Opcional)
+   @motivo              -> Parametro de entrada. (Opcional)
+   @periodos            -> Parametro de entrada. (Opcional)
+   @monto_mes           -> Parametro de entrada. (Obligatorio)
+   @mto_total           -> Parametro de entrada. (Obligatorio)
+   @cod_moneda          -> Parametro de entrada. (Opcional)
+   @cod_tpps            -> Parametro de entrada. (Opcional)
+   @f_inicio            -> Parametro de entrada. (Opcional)
+   @f_termino           -> Parametro de entrada. (Opcional)
+   @dentro_jor          -> Parametro de entrada. (Opcional)
+   @cod_contra          -> Parametro de entrada. (Opcional)
+   @mes_haber           -> Parametro de entrada. (Opcional)
+   @ano_haber           -> Parametro de entrada. (Opcional)
+   @mto_haber           -> Parametro de entrada. (Opcional)
+   @mto_tope            -> Parametro de entrada. (Opcional)
+   @f_cal_tope          -> Parametro de entrada. (Opcional)
+   @tot_cuotas          -> Parametro de entrada. (Opcional)
+   @cod_estfun          -> Parametro de entrada. (Opcional)
+   @rut_visado          -> Parametro de entrada. (Opcional)
+
+   Objetivo : Actualizar datos de un funcionario prestación de servicios (sg_fups), compatible con DU288 y legacy. Entrada       : @id_funprse  int @rut         char(9) @cod_cargo   smallint @cod_sitm    varchar(5) @itm_global  varchar(15) @motivo      varchar(255) @periodos    tinyint @monto_mes   decimal(19,2) @mto_total   decimal(19,2) @cod_moneda  tinyint @dentro_jor  char(1) = NULL (NUEVO DU288) @cod_contra  int = NULL (NUEVO DU288) @mes_haber   tinyint = NULL (NUEVO DU288) @ano_haber   smallint = NULL (NUEVO DU288) @mto_haber   int = NULL (NUEVO DU288) @mto_tope    int = NULL (NUEVO DU288) @f_cal_tope  datetime = NULL (NUEVO DU288) @tot_cuotas  tinyint = NULL (NUEVO DU288)
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupsuSecgen01
     @id_funprse int = NULL,

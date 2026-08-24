@@ -14,18 +14,18 @@ go
 
 /* Procedimiento : sg_redeiSecgen01
 
-      Entrada :
-   @ano_resolu          -> Parámetro de entrada. (Obligatorio)
-   @nro_resolu          -> Parámetro de entrada. (Obligatorio)
-   @id_pladet           -> Parámetro de entrada. (Obligatorio)
-   @cod_tipsec          -> Parámetro de entrada. (Opcional)
-   @nombre              -> Parámetro de entrada. (Opcional)
-   @editable            -> Parámetro de entrada. (Opcional)
-   @orden               -> Parámetro de entrada. (Obligatorio)
+   Entrada :
+   @ano_resolu          -> Parametro de entrada. (Obligatorio)
+   @nro_resolu          -> Parametro de entrada. (Obligatorio)
+   @id_pladet           -> Parametro de entrada. (Obligatorio)
+   @cod_tipsec          -> Parametro de entrada. (Opcional)
+   @nombre              -> Parametro de entrada. (Opcional)
+   @editable            -> Parametro de entrada. (Opcional)
+   @orden               -> Parametro de entrada. (Obligatorio)
 
    Objetivo : insertar Detalle de resolución
 
-   Creacion: CHL 2022/12/13
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

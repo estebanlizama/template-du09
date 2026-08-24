@@ -14,14 +14,14 @@ go
 
 /* Procedimiento : sg_apreuSecgen01
 
-      Entrada :
-   @id_aprbres          -> Parámetro de entrada. (Opcional)
-   @cod_estapr          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @id_aprbres          -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
 
    Objetivo : update Aprobación de resoluciones
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/22
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_apreuSecgen01

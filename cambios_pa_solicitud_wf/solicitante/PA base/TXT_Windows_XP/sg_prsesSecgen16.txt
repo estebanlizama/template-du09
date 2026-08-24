@@ -14,12 +14,9 @@ go
 
 /* Procedimiento : sg_prsesSecgen16
 
-      Entrada :
-   Sin parámetros de entrada.
-
    Objetivo : Seleccionar las solicitudes listas para marcar como ingresada en prestación de servicios
 
-   Creacion: AI 2023/05/11
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

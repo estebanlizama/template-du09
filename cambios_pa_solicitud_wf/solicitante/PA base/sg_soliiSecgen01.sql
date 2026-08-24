@@ -15,16 +15,16 @@ go
 go
     /* Procedimiento : sg_soliiSecgen01
 
-     Entrada  :
-     @cod_tipsol         -> Tipo de solicitud
-     @rut_solici         -> Rut  de solicitante
-     @cod_estsol         -> Codigo Estado de solicitud
-     Objetivo : insertar Solicitudes
+   Entrada :
+   @rut_solici          -> RUT del solicitante. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
+   @cod_tipsol          -> Tipo de solicitud. (Opcional)
 
-     Creacion: CHL 2022/12/13
-     Actualizacion: AI 2023/01/27
+   Objetivo : insertar Solicitudes
 
-     */
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/01/27
+*/
     create procedure Analisis2.sg_soliiSecgen01 @rut_solici char(9) = NULL,
     @cod_estsol tinyint = NULL,
     @cod_tipsol tinyint = NULL
@@ -93,7 +93,4 @@ end commit tran
 go
     grant execute on Analisis2.sg_soliiSecgen01 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_soliiSecgen01    @cod_tipsol = 4,
-     @rut_solici = '000000027',    @cod_estsol = 1
-     */
+    

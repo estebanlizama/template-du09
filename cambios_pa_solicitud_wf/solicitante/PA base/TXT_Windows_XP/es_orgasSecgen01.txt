@@ -14,12 +14,9 @@ go
 
 /* Procedimiento : es_orgasSecgen01
 
-      Entrada :
-   Sin parámetros de entrada.
-
    Objetivo : Firmantes y subrogantes para resoluciones excentas
 
-   Creacion: JLRS 19/06/2024
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

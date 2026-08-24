@@ -11,12 +11,17 @@ go
 
 /* Procedimiento : ar_doc1sSecgen01
 
-     Entrada : @cod_tipdoc,@cod_emisor,@ano,@nro_docum
-     Objetivo : Busqueda de archivos universitarios
+   Entrada :
+   @cod_tipdoc          -> Codigo del tipo de documento. (Opcional)
+   @cod_emisor          -> Codigo del emisor. (Opcional)
+   @ano                 -> Ano del registro. (Opcional)
+   @nro_docum           -> Numero de documento. (Opcional)
 
-     Creacion: ELA 2024 / 08 / 29
+   Objetivo : Busqueda de archivos universitarios
 
-     */
+   Creacion: ELA 2024 / 08 / 29
+   Actualizacion: Sin registro
+*/
 create procedure  Analisis2.ar_doc1sSecgen01
     @cod_tipdoc tinyint = NULL,
     @cod_emisor smallint = NULL,

@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_rslcsSecgen01
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
 
    Objetivo : seleccionar datos de resolución
 
-   Creacion: AI 2023/02/28
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

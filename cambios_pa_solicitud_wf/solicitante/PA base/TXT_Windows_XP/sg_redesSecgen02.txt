@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_redesSecgen02
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
-   @cod_tipsec          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @cod_tipsec          -> Parametro de entrada. (Opcional)
 
    Objetivo : select Detalle de resolución
 
-   Creacion: AI 2023/05/29
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

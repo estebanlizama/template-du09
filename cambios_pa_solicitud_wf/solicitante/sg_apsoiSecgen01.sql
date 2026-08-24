@@ -12,15 +12,20 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_apsoiSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_apsoiSecgen01
-Objetivo      : Crear una tarea de aprobacion asociada al flujo y etapa
-                actuales de la solicitud.
+/* Procedimiento : Analisis2.sg_apsoiSecgen01
 
-Compatibilidad:
-    Mantiene compatibles los tres parametros legacy. Los nuevos parametros
-    son opcionales. @exige_flujo debe enviarse en 1 desde el motor DU288 para
-    impedir tareas sin flujo o etapa; los consumidores legacy pueden omitirlo.
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @rut_usua            -> RUT del usuario. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+   @comentario          -> Comentario de la accion. (Opcional)
+   @exige_flujo         -> Parametro de entrada. (Obligatorio)
+
+   Objetivo : Crear una tarea de aprobacion asociada al flujo y etapa actuales de la solicitud. Compatibilidad: Mantiene compatibles los tres parametros legacy. Los nuevos parametros son opcionales. @exige_flujo debe enviarse en 1 desde el motor DU288 para impedir tareas sin flujo o etapa; los consumidores legacy pueden omitirlo.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_apsoiSecgen01
     @nro_solici int = NULL,

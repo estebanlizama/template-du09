@@ -13,14 +13,13 @@ go
 
 /* Procedimiento : sg_prsesSecgen07
 
-    Entrada  :
-        @rut_solici         -> Rut Funcionario Solicitud
+   Entrada :
+   @cod_estsol          -> Codigo de estado de solicitud. (Obligatorio)
 
-    Objetivo : select Prestación de servicios
+   Objetivo : select Prestación de servicios
 
-    Creacion: CHL 2022/12/27
-    Actualizacion: AI 2023/01/24 -- Se agrega nuevo join con tabla sg_apcc, para obtener nombre de centro de costo
-
+   Creacion: CHL 2022/12/27
+   Actualizacion: AI 2023/01/24 -- Se agrega nuevo join con tabla sg_apcc, para obtener nombre de centro de costo
 */
 
 create procedure  Analisis2.sg_prsesSecgen07
@@ -88,7 +87,3 @@ go
 
 grant execute on Analisis2.sg_prsesSecgen07 to UsuaVrac
 go
-
-/*
-EXECUTE secgen_db.Analisis2.sg_prsesSecgen07 @cod_estsol = 2
- */

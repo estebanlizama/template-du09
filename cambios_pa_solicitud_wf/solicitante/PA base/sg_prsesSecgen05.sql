@@ -12,14 +12,13 @@ go
 
 /* Procedimiento : sg_prsesSecgen05
 
-    Entrada  :
-        @rut_solici         -> Rut Funcionario Solicitud
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
-    Objetivo : select Prestación de servicios
+   Objetivo : select Prestación de servicios
 
-    Creacion: CHL 2022/12/27
-    Actualizacion:
-
+   Creacion: CHL 2022/12/27
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_prsesSecgen05
@@ -68,7 +67,3 @@ go
 
 grant execute on Analisis2.sg_prsesSecgen05 to UsuaVrac
 go
-
-/*
-EXECUTE secgen_db.Analisis2.sg_prsesSecgen05 @nro_solici = 607
- */

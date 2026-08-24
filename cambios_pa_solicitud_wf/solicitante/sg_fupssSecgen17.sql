@@ -12,33 +12,16 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_fupssSecgen17
 GO
 
-/*
-Procedimiento : Analisis2.sg_fupssSecgen17
-Objetivo      : Listar el historial de Prestaciones de Servicio (PDS) previas
-                de un funcionario (por RUT), para apoyo de auditoria normativa
-                DGDP (comparar la solicitud actual contra labores anteriores).
-Parametros    :
-    @rut_person         char(9) : RUT del funcionario prestador.
-    @nro_solici_excluir int     : Solicitud actual a excluir del historial
-                                   (NULL = no excluye ninguna).
-Retorna       :
-    Una fila por cada combinacion PDS/cuota/compensacion efectiva. El backend
-    agrupa estas filas en una PDS con cuotas y compensaciones anidadas. Incluye
-    informacion de cualquier etapa de la solicitud, resolucion, tope aplicado,
-    jornada, estado y fechas de pago, validaciones, horario de ejecucion y
-    compensaciones planificadas/efectivas.
-Creacion      : 2026/08/19
-Modificacion  : 2026/08/20 - se agregan cod_etapa_act/des_etapa_act (etapa
-                actual segun sg_prse + sg_eta1, igual criterio que
-                sg_eta1sSecgen02) y num_resolu_ext/id_docum (segun sg_rslc,
-                igual criterio que selectResolutionLinkDirect) para que el
-                backend no deba resolverlos con consultas adicionales por
-                cada fila. El estado de firma del documento (que vive en
-                MySecGen, fuera de Sybase) sigue resolviendose aparte.
-                2026/08/20 - se incorpora trazabilidad financiera por cuota
-                (sg_fume/sg_ecuo), compensacion efectiva (sg_fuc2), y resumen
-                de horario/compensacion registrada (sg_fuho/sg_fuco). No se
-                filtra por estado ni etapa: el historial es institucional.
+/* Procedimiento : Analisis2.sg_fupssSecgen17
+
+   Entrada :
+   @rut_person          -> RUT de la persona. (Opcional)
+   @nro_solici_excluir  -> Parametro de entrada. (Opcional)
+
+   Objetivo : Listar el historial de Prestaciones de Servicio (PDS) previas de un funcionario (por RUT), para apoyo de auditoria normativa DGDP (comparar la solicitud actual contra labores anteriores).
+
+   Creacion: 2026/08/19
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen17

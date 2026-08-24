@@ -8,12 +8,16 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fumeuSecgen01
-   Objetivo      : Sincronizar de forma transaccional los meses de ejecucion
-                   aprobados de un funcionario.
-   Entrada       :
-       @id_funprse int
-       @meses_csv  varchar(500) -- Formato: '2026:7;2026:8'
-       @cod_estcuo int
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+   @meses_csv           -> Parametro de entrada. (Opcional)
+   @cod_estcuo          -> Parametro de entrada. (Obligatorio)
+
+   Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario. Entrada       : @id_funprse int @meses_csv  varchar(500) -- Formato: '2026:7;2026:8' @cod_estcuo int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fumeuSecgen01
     @id_funprse int = NULL,

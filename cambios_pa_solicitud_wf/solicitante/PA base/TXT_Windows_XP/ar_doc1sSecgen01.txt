@@ -14,15 +14,15 @@ go
 
 /* Procedimiento : ar_doc1sSecgen01
 
-      Entrada :
-   @cod_tipdoc          -> Código del tipo de documento. (Opcional)
-   @cod_emisor          -> Código del emisor. (Opcional)
-   @ano                 -> Año del registro. (Opcional)
-   @nro_docum           -> Número de documento. (Opcional)
+   Entrada :
+   @cod_tipdoc          -> Codigo del tipo de documento. (Opcional)
+   @cod_emisor          -> Codigo del emisor. (Opcional)
+   @ano                 -> Ano del registro. (Opcional)
+   @nro_docum           -> Numero de documento. (Opcional)
 
    Objetivo : Busqueda de archivos universitarios
 
-   Creacion: ELA 2024 / 08 / 29
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

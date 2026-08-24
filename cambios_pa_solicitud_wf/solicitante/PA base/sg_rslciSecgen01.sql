@@ -11,18 +11,17 @@ go
 
 /* Procedimiento : sg_rslciSecgen01
 
-    Entrada  :
-        @ano_resolu         -> Año Resolucion
-        @nro_resolu         -> Numero Resolucion
-        @respon_res         -> Responsable Resolucion
-        @id_planti         -> Id Plantilla
-        @cod_estres         -> Codigo Estado Resolucion
-        @id_docum         -> Id Documento
-    Objetivo : insertar Resoluciones
+   Entrada :
+   @ano_resolu          -> Parametro de entrada. (Obligatorio)
+   @respon_res          -> Parametro de entrada. (Opcional)
+   @id_planti           -> Parametro de entrada. (Opcional)
+   @cod_estres          -> Parametro de entrada. (Obligatorio)
+   @id_docum            -> Parametro de entrada. (Opcional)
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/09
+   Objetivo : insertar Resoluciones
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/09
 */
 
 create procedure  Analisis2.sg_rslciSecgen01
@@ -103,12 +102,3 @@ go
 
 grant execute on Analisis2.sg_rslciSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_rslciSecgen01
-        @ano_resolu = 2023,
-        @respon_res = '',
-        @id_planti = 3,
-        @cod_estres = 1,
-        @id_docum = 3595
- */

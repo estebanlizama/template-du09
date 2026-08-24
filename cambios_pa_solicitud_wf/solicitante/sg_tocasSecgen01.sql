@@ -12,39 +12,17 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_tocasSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_tocasSecgen01
-Objetivo      : Validar si el contrato evaluado de un funcionario posee
-                un tope especial configurado en sg_toca.
+/* Procedimiento : Analisis2.sg_tocasSecgen01
 
-Fuente        : secgen_db.dbo.sg_toca
+   Entrada :
+   @rut_person          -> RUT de la persona. (Opcional)
+   @id_contrato         -> Identificador del contrato. (Opcional)
+   @fecha_eval          -> Fecha de evaluacion. (Opcional)
 
-Regla         :
-    - sg_toca se usa solo para topes especiales por cargo + unidad.
-    - En esta fase contiene Directores/as de Institutos Independientes.
-    - No valida inhabilidad por cargo.
-    - No reemplaza el calculo general de sg_fupssSecgen13.
-    - Si existe regla vigente para cod_cargo + cod_unidad, se debe usar
-      ese mto_tope como tope mensual aplicable.
+   Objetivo : Validar si el contrato evaluado de un funcionario posee un tope especial configurado en sg_toca. Fuente        : secgen_db.dbo.sg_toca Regla         : - sg_toca se usa solo para topes especiales por cargo + unidad. - En esta fase contiene Directores/as de Institutos Independientes. - No valida inhabilidad por cargo. - No reemplaza el calculo general de sg_fupssSecgen13. - Si existe regla vigente para cod_cargo + cod_unidad, se debe usar ese mto_tope como tope mensual aplicable.
 
-Parametros    :
-    @rut_person  char(9)  : RUT del funcionario.
-    @id_contrato int      : Contrato evaluado. Si viene 0 o NULL, se usa
-                            el contrato principal vigente/en tramite.
-    @fecha_eval  datetime : Fecha de evaluacion de vigencia de sg_toca.
-                            Si viene NULL, usa getdate().
-
-Retorna       :
-    tiene_tope_cargo char(1)  : 'S' si existe tope especial, 'N' si no.
-    mto_tope         int      : Tope mensual encontrado en sg_toca.
-    cod_cargo        int      : Cargo del contrato evaluado.
-    nom_cargo        varchar  : Descripción del cargo evaluado.
-    cod_unidad       char(8)  : Unidad del contrato evaluado.
-    des_unidad       varchar  : Descripción de la unidad evaluada.
-    f_inicio         datetime : Inicio de vigencia del tope encontrado.
-    f_termino        datetime : Termino de vigencia del tope encontrado.
-
-Creacion      : 2026/07/06
+   Creacion: 2026/07/06
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_tocasSecgen01

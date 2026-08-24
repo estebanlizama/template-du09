@@ -43,6 +43,3 @@ where
 go
 grant execute on Analisis2.sg_apsosSecgen01 to UsuaVrac
 go
-/*
- execute secgen_db.Analisis2.sg_apsosSecgen01 @nro_solici = 18
- */

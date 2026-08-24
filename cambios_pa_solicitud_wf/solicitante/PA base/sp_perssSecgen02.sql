@@ -11,14 +11,13 @@ go
 
 /* Procedimiento : sp_perssSecgen02
 
-    Entrada  :
-    @rut_person --> rut de usuario
+   Entrada :
+   @rut_person          -> RUT de la persona. (Opcional)
 
-    Objetivo : Obtener datos de usuario nombre, unidad y apellidos por rut.
+   Objetivo : Obtener datos de usuario nombre, unidad y apellidos por rut.
 
-    Creacion:  AI 2023/05/11
-    Actualizacion:
-
+   Creacion: AI 2023/05/11
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sp_perssSecgen02

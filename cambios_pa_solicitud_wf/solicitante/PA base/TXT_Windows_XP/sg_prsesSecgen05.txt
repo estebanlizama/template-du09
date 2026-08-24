@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_prsesSecgen05
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
    Objetivo : select Prestación de servicios
 
-   Creacion: CHL 2022/12/27
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

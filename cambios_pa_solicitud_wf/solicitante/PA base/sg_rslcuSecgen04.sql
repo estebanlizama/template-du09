@@ -15,17 +15,15 @@ go
 go
     /* Procedimiento : sg_rslcuSecgen04
 
-     Entrada  :
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @cod_estres          -> Parametro de entrada. (Opcional)
 
-     @nro_resolu         -> Numero Resolucion
-     @cod_estres         -> Código de estado de resolución
+   Objetivo : Marcar una resolución como ingresada
 
-     Objetivo : Marcar una resolución como ingresada
-
-     Creacion: AI 2023/03/14
-     Actualizacion:
-
-     */
+   Creacion: AI 2023/03/14
+   Actualizacion: 
+*/
     create procedure Analisis2.sg_rslcuSecgen04
         @nro_resolu int = null,
     @cod_estres int = null
@@ -62,6 +60,4 @@ end
 go
     grant execute on Analisis2.sg_rslcuSecgen04 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_rslcuSecgen04 @nro_resolu = 56, @cod_estres = 7
-     */
+    

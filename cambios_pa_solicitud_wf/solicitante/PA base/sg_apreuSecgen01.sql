@@ -15,15 +15,14 @@ go
 
 /* Procedimiento : sg_apreuSecgen01
 
-    Entrada  :
-        @id_aprbres         -> Id Aprobacion
-        @cod_estapr         -> Codigo Estado Aprobacion
+   Entrada :
+   @id_aprbres          -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
 
-    Objetivo : update Aprobación de resoluciones
+   Objetivo : update Aprobación de resoluciones
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/22
-
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/22
 */
 
 create procedure  Analisis2.sg_apreuSecgen01
@@ -62,7 +61,3 @@ go
 
 grant execute on Analisis2.sg_apreuSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_apreuSecgen01 @id_aprbres = 9, @cod_estapr = 1
- */

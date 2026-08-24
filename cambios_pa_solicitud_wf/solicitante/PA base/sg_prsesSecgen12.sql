@@ -11,14 +11,13 @@ go
 
 /* Procedimiento : sg_prsesSecgen12
 
-    Entrada  :
-        @rut_solici         -> Rut Funcionario Solicitud
+   Entrada :
+   @rut_solici          -> RUT del solicitante. (Opcional)
 
-    Objetivo : Seleccionar solicitudes historicas prestación de servicios listas para aprobar por rut
+   Objetivo : Seleccionar solicitudes historicas prestación de servicios listas para aprobar por rut
 
-    Creacion: AI 2023/05/11
-    Actualizacion:
-
+   Creacion: AI 2023/05/11
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_prsesSecgen12
@@ -53,7 +52,3 @@ go
 
 grant execute on Analisis2.sg_prsesSecgen12 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_prsesSecgen12 @rut_solici = '092867439'
- */

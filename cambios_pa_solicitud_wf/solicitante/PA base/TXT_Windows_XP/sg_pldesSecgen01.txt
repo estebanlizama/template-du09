@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_pldesSecgen01
 
-      Entrada :
-   @id_planti           -> Parámetro de entrada. (Obligatorio)
+   Entrada :
+   @id_planti           -> Parametro de entrada. (Obligatorio)
 
    Objetivo : select Plantilla Detalle
 
-   Creacion: CHL 2022/12/13
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_apresSecgen02
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
 
    Objetivo : seleccionar la cantidad de aprocaciones de una resolución
 
-   Creacion: AI 2023/02/24
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

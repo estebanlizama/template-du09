@@ -14,14 +14,14 @@ go
 
 /* Procedimiento : sg_soliuSecgen02
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
-   @cod_estsol          -> Código de estado de solicitud. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
 
    Objetivo : Update estado de solicitudes
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/03
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_soliuSecgen02

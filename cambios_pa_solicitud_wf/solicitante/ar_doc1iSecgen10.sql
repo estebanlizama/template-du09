@@ -1,5 +1,19 @@
-/* Procedimiento ar_doc1iSecgen10 
- 
+/* Procedimiento ar_doc1iSecgen10
+   Entrada :
+   @rut                 -> RUT del funcionario. (Opcional)
+   @cod_tipdoc          -> Codigo del tipo de documento. (Opcional)
+   @ano                 -> Ano del registro. (Opcional)
+   @cod_emisor          -> Codigo del emisor. (Opcional)
+   @nro_docum           -> Numero de documento. (Opcional)
+   @f_docum             -> Parametro de entrada. (Opcional)
+   @mensaje             -> Parametro de entrada. (Opcional)
+   @observacio          -> Parametro de entrada. (Opcional)
+   @ubi_fisica          -> Parametro de entrada. (Opcional)
+   @cod_estdoc          -> Parametro de entrada. (Opcional)
+   @cod_privac          -> Parametro de entrada. (Opcional)
+   @f_tramitot          -> Parametro de entrada. (Opcional)
+   @mensaje2            -> Parametro de entrada. (Opcional)
+
    Objetivo: Grabar datos de un Documento
              Considera numeración única en 2 modalidades
              Junio 2011 - Diciembre 2011 por Tipo de documento, año y unidad emisora.

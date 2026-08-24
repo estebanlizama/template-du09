@@ -14,16 +14,15 @@ go
     ) drop procedure Analisis2.sg_apsosSecgen04
 go
     /* Procedimiento : sg_apsosSecgen04
-     
-     Entrada  :
-     @nro_solici  -> Numero de solicitud
 
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
-     Objetivo : Trae los aprobadores de una solicitud
-     
-     Creacion: AI 2023/06/01
-     
-     */
+   Objetivo : Trae los aprobadores de una solicitud
+
+   Creacion: AI 2023/06/01
+   Actualizacion: Sin registro
+*/
     create procedure Analisis2.sg_apsosSecgen04 
     @nro_solici int = null
  as 
@@ -47,6 +46,4 @@ end
 go
     grant execute on Analisis2.sg_apsosSecgen04 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_apsosSecgen04 @nro_solici = 739
-     */
+    

@@ -14,17 +14,17 @@ go
 
 /* Procedimiento : valida_saldo_cc_cs
 
-      Entrada :
-   @cod_unifin          -> Parámetro de entrada. (Obligatorio)
-   @cod_ccto            -> Parámetro de entrada. (Obligatorio)
-   @cod_sitm            -> Parámetro de entrada. (Obligatorio)
-   @cod_tipmov          -> Parámetro de entrada. (Obligatorio)
-   @valor               -> Parámetro de entrada. (Obligatorio)
-   @Afecta              -> Parámetro de entrada. (Obligatorio)
+   Entrada :
+   @cod_unifin          -> Unidad financiera. (Obligatorio)
+   @cod_ccto            -> Centro de costo. (Obligatorio)
+   @cod_sitm            -> Parametro de entrada. (Obligatorio)
+   @cod_tipmov          -> Parametro de entrada. (Obligatorio)
+   @valor               -> Parametro de entrada. (Obligatorio)
+   @Afecta              -> Parametro de entrada. (Obligatorio)
 
    Objetivo : Validar saldo presupuestario y coherencia entre item y centro de costo.
 
-   Creacion: No informada
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

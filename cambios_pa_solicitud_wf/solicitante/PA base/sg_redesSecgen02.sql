@@ -11,16 +11,14 @@ go
 
 /* Procedimiento : sg_redesSecgen02
 
-    Entrada  :
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @cod_tipsec          -> Parametro de entrada. (Opcional)
 
-        @nro_resolu         -> Numero Resolucion
-        @cod_tipsec        -> Codigo de tipo de seccion
+   Objetivo : select Detalle de resolución
 
-    Objetivo : select Detalle de resolución
-
-    Creacion: AI 2023/05/29
-    Actualizacion: 
-
+   Creacion: AI 2023/05/29
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_redesSecgen02
@@ -61,7 +59,3 @@ go
 
 grant execute on Analisis2.sg_redesSecgen02 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_redesSecgen02 @nro_resolu = 14, @cod_tipsec = 14
- */

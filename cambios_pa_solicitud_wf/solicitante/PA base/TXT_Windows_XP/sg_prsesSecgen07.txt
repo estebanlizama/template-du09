@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_prsesSecgen07
 
-      Entrada :
-   @cod_estsol          -> Código de estado de solicitud. (Obligatorio)
+   Entrada :
+   @cod_estsol          -> Codigo de estado de solicitud. (Obligatorio)
 
    Objetivo : select Prestación de servicios
 
-   Creacion: CHL 2022/12/27
-   Actualizacion: AI 2023/01/24 -- Se agrega nuevo join con tabla sg_apcc, para obtener nombre de centro de costo
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_prsesSecgen07

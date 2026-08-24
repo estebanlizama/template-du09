@@ -14,14 +14,14 @@ go
 
 /* Procedimiento : bd_pri2sSecgen01
 
-      Entrada :
-   @des_perfil          -> Parámetro de entrada. (Opcional)
-   @cod_sistem          -> Parámetro de entrada. (Opcional)
-   @cod_modulo          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @des_perfil          -> Descripcion del perfil de usuario. (Opcional)
+   @cod_sistem          -> Codigo del sistema. (Opcional)
+   @cod_modulo          -> Codigo del modulo. (Opcional)
 
    Objetivo : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
 
-   Creacion: SSY 2023/04/18
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

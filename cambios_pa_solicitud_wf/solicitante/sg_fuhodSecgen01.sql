@@ -8,9 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fuhodSecgen01
-   Objetivo      : Elimina los tramos horarios de ejecucion en sg_fuho para un funcionario.
-   Entrada       :
-       @id_funprse int
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Obligatorio)
+
+   Objetivo : Elimina los tramos horarios de ejecucion en sg_fuho para un funcionario. Entrada       : @id_funprse int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fuhodSecgen01
     @id_funprse int

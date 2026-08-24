@@ -1,6 +1,8 @@
 /* 
 	Procedimiento es_orgasSecgen01
-	Objetivo:   Firmantes y subrogantes para resoluciones excentas
+	
+   
+   Objetivo:   Firmantes y subrogantes para resoluciones excentas
     Servidor:   CHE
 	Autor:      JLRS 
     Fecha :     19/06/2024

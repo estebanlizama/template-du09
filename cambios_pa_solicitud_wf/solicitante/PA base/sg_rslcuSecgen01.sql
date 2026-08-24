@@ -15,18 +15,17 @@ go
 go
     /* Procedimiento : sg_rslcuSecgen01
 
-     Entrada  :
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @num_resolu          -> Parametro de entrada. (Opcional)
+   @codigo_sdg          -> Parametro de entrada. (Opcional)
+   @f_resolucio         -> Parametro de entrada. (Obligatorio)
 
-     @nro_resolu         -> Numero Resolucion
-     @f_resolucio         -> Fecha Resolucion
-     @codigo_sdg ->         código de secretaria general de decretación
-     @num_resolu -> número externo de resolución
-     Objetivo : update Resoluciones
+   Objetivo : update Resoluciones
 
-     Creacion: CHL 2022/12/13
-     Actualizacion: AI 2023/02/21
-
-     */
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/21
+*/
     create procedure Analisis2.sg_rslcuSecgen01
     @nro_resolu int = NULL,
     @num_resolu int = NULL,
@@ -57,6 +56,4 @@ where
 go
     grant execute on Analisis2.sg_rslcuSecgen01 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_rslcuSecgen01 @nro_resolu = 28 @num_resolu = 4701, @codigo_sdg = 'RHA', @f_resolucio = '2023-02-21'
-     */
+    

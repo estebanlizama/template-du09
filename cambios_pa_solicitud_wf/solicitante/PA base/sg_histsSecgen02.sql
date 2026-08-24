@@ -11,13 +11,13 @@ go
 
 /* Procedimiento : sg_histsSecgen02
 
-    Entrada  :
-        @nro_solici         -> Numero solicitud
-    Objetivo : select Registro de históricos de solicitud, resolución
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
-    Creacion: AI 2023/03/15
-    Actualizacion:SSY 2023/03/21
+   Objetivo : select Registro de históricos de solicitud, resolución
 
+   Creacion: AI 2023/03/15
+   Actualizacion: SSY 2023/03/21
 */
 
 create procedure  Analisis2.sg_histsSecgen02
@@ -38,7 +38,3 @@ go
 
 grant execute on Analisis2.sg_histsSecgen02 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_histsSecgen02 @nro_solici = 98
- */

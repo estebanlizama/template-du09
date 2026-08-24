@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_apsosSecgen02
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
    Objetivo : Trae los aprobadores para revisar estado
 
-   Creacion: GE 2023/04/23
-   Actualizacion: AI 2023/04/25
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_apsosSecgen02

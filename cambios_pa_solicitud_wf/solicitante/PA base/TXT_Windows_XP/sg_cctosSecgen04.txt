@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_cctosSecgen04
 
-      Entrada :
+   Entrada :
    @rut                 -> RUT del funcionario. (Opcional)
 
    Objetivo : Lista de centros de costo por rut y asociados a la unidad de usuario
 
-   Creacion: ELA 2024 / 08 / 29
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

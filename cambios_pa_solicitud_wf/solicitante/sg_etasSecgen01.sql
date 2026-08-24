@@ -12,15 +12,19 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_etasSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_etasSecgen01
-Objetivo      : Resolver los responsables de cualquier etapa DU288 usando
-                solo sg_eta1 y los maestros institucionales existentes, sin
-                consultar bd_pri2 ni requerir nuevas tablas.
+/* Procedimiento : Analisis2.sg_etasSecgen01
 
-El PA resuelve una etapa y no crea tareas. La navegacion entre etapas, la
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Obligatorio)
+   @cod_etapa           -> Parametro de entrada. (Obligatorio)
+   @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
+
+   Objetivo : Resolver los responsables de cualquier etapa DU288 usando solo sg_eta1 y los maestros institucionales existentes, sin consultar bd_pri2 ni requerir nuevas tablas. El PA resuelve una etapa y no crea tareas. La navegacion entre etapas, la
 omision por coincidencia con una etapa posterior y el registro de trazabilidad
 son responsabilidad del backend.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_etasSecgen01
     @nro_solici int,

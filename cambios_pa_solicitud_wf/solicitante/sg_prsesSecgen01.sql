@@ -12,10 +12,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_prsesSecgen01
-Objetivo      : Consultar una solicitud de Prestacion de Servicios con su
-                modalidad, flujo y etapa actuales.
+/* Procedimiento : Analisis2.sg_prsesSecgen01
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Consultar una solicitud de Prestacion de Servicios con su modalidad, flujo y etapa actuales.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen01
     @nro_solici int = NULL

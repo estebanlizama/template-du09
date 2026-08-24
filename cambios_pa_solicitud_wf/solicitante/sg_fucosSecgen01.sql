@@ -8,14 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fucosSecgen01
-   Objetivo      : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud.
-   Entrada       :
-       @nro_solici int
-   Salida        :
-       id_funprse  int
-       fec_compro  datetime
-       hora_ini    time
-       hora_ter    time
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+
+   Objetivo : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud. Entrada       : @nro_solici int Salida        : id_funprse  int fec_compro  datetime hora_ini    time hora_ter    time
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fucosSecgen01
     @nro_solici int = NULL

@@ -10,7 +10,15 @@ IF EXISTS (
 GO
 
 /* Procedimiento : Analisis2.sg_eta1sSecgen01
-   Objetivo      : Listar las etapas vigentes de un flujo. */
+
+   Entrada :
+   @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
+
+   Objetivo : Sin descripcion
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
+*/
 CREATE PROCEDURE Analisis2.sg_eta1sSecgen01
     @cod_flusol tinyint = NULL
 AS

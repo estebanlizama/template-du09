@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_rslcuSecgen04
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
-   @cod_estres          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @cod_estres          -> Parametro de entrada. (Opcional)
 
    Objetivo : Marcar una resolución como ingresada
 
-   Creacion: AI 2023/03/14
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

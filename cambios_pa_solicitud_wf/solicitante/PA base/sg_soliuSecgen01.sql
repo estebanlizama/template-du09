@@ -11,15 +11,15 @@ go
 
 /* Procedimiento : sg_soliuSecgen01
 
-    Entrada  :
-        @nro_solici -> Numero Solicitud
-        @cod_estsol -> Codigo de estado de solicitud
-        @rut_solici -> Rut del solicitante
-    Objetivo : Update solicitud
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
+   @rut_solici          -> RUT del solicitante. (Opcional)
 
-    Creacion: GE 2023/03/08
-    Actualizacion:
+   Objetivo : Update solicitud
 
+   Creacion: GE 2023/03/08
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_soliuSecgen01
@@ -65,7 +65,3 @@ go
 
 grant execute on Analisis2.sg_soliuSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_soliuSecgen01 @nro_solici = 5, @cod_estsol = 1
- */

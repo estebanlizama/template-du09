@@ -11,15 +11,15 @@ go
 
 /* Procedimiento : bd_pri2sSecgen01
 
-    Entrada  :
-        @des_perfil         ->nombre Perfil de Usuario
-        @cod_sistem         -> Codigo del sistema
-        @cod_modulo         -> Codigo del modulo del sistema
-    Objetivo : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
+   Entrada :
+   @des_perfil          -> Descripcion del perfil de usuario. (Opcional)
+   @cod_sistem          -> Codigo del sistema. (Opcional)
+   @cod_modulo          -> Codigo del modulo. (Opcional)
 
-    Creacion: SSY 2023/04/18
-    Actualizacion:
+   Objetivo : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
 
+   Creacion: SSY 2023/04/18
+   Actualizacion: 
 */
 
 create procedure  Analisis2.bd_pri2sSecgen01
@@ -60,7 +60,3 @@ go
 
 grant execute on Analisis2.bd_pri2sSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.bd_pri2sSecgen01 @cod_sistem = 'SG', @cod_modulo = 'SISSOLIC', @des_perfil = 'recruitment_professional';
- */

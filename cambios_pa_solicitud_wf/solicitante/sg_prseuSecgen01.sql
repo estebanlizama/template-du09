@@ -8,7 +8,23 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : sg_prseuSecgen01
-    Objetivo : Actualizar Prestación de servicios con soporte de modalidad.
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @actividad           -> Parametro de entrada. (Opcional)
+   @per_desde           -> Parametro de entrada. (Opcional)
+   @per_hasta           -> Parametro de entrada. (Opcional)
+   @rut_jefpro          -> Parametro de entrada. (Opcional)
+   @cod_unifin          -> Unidad financiera. (Opcional)
+   @cod_ccto            -> Centro de costo. (Opcional)
+   @cc_global           -> Parametro de entrada. (Opcional)
+   @pry_global          -> Parametro de entrada. (Opcional)
+   @cod_modprs          -> Parametro de entrada. (Opcional)
+
+   Objetivo : Actualizar Prestación de servicios con soporte de modalidad.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prseuSecgen01
     @nro_solici int = NULL,
@@ -89,7 +105,7 @@ BEGIN
         WHERE cod_modprs = @cod_modprs
     )
     BEGIN
-        SELECT 'Modalidad de prestacion no existe en sg_tmod' msg
+        SELECT 'Modalidad de prestacion no existe' msg
         RETURN
     END
 

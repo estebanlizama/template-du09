@@ -15,16 +15,14 @@ go
 go
     /* Procedimiento : sg_rslcsSecgen01
 
-     Entrada  :
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
 
-     @nro_resolu         -> Numero Resolucion
+   Objetivo : seleccionar datos de resolución
 
-     Objetivo : seleccionar datos de resolución
-
-     Creacion: AI 2023/02/28
-     Actualizacion:
-
-     */
+   Creacion: AI 2023/02/28
+   Actualizacion: 
+*/
     create procedure Analisis2.sg_rslcsSecgen01
         @nro_resolu int = null
      as
@@ -45,7 +43,4 @@ commit tran
 go
     grant execute on Analisis2.sg_rslcsSecgen01 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_rslcsSecgen01 @nro_resolu = 32
-     */
-   
+    

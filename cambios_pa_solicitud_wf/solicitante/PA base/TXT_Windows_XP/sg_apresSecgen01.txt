@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_apresSecgen01
 
-      Entrada :
-   @nro_resolu          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
 
    Objetivo : seleccionar todos los aprobadores de resoluciones
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/22
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_apresSecgen01 @nro_resolu int = null as if @nro_resolu is null begin

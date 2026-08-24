@@ -12,13 +12,20 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_usacsSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_usacsSecgen01
-Objetivo      : Obtener perfiles y privilegios dinamicos de acceso a PDS.
+/* Procedimiento : Analisis2.sg_usacsSecgen01
 
-El perfil solicitante se obtiene por contrato vigente. Los perfiles
+   Entrada :
+   @rut                 -> RUT del funcionario. (Opcional)
+   @cod_sistem          -> Codigo del sistema. (Obligatorio)
+   @cod_modulo          -> Codigo del modulo. (Obligatorio)
+   @fecha_eval          -> Fecha de evaluacion. (Opcional)
+
+   Objetivo : Obtener perfiles y privilegios dinamicos de acceso a PDS. El perfil solicitante se obtiene por contrato vigente. Los perfiles
 aprobadores se obtienen exclusivamente desde tareas pendientes cuyo rut_usua
 ya corresponde al responsable efectivo resuelto por el flujo.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_usacsSecgen01
     @rut         char(9) = NULL,

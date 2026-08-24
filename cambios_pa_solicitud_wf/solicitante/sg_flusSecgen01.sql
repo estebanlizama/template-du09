@@ -12,18 +12,16 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_flusSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_flusSecgen01
-Objetivo      : Resolver el flujo DU288 con los datos existentes del Centro
-                de Costo y los maestros sg_tfls/sg_eta1.
+/* Procedimiento : Analisis2.sg_flusSecgen01
 
-Restricciones del modelo actual:
-    - No crea ni consulta tablas adicionales de configuracion.
-    - La unidad institucional se obtiene desde fin21_db..es_ccto/es_ufin.
-    - El prefijo institucional determina los flujos identificables con los
-      datos actualmente disponibles.
-    - Investigacion y DITT deben contar con un dato diferenciador existente
-      antes de incorporarse; no se infieren por nombre ni por RUT.
+   Entrada :
+   @cod_unifin          -> Unidad financiera. (Opcional)
+   @cod_ccto            -> Centro de costo. (Opcional)
+
+   Objetivo : Resolver el flujo DU288 con los datos existentes del Centro de Costo y los maestros sg_tfls/sg_eta1. Restricciones del modelo actual: - No crea ni consulta tablas adicionales de configuracion. - La unidad institucional se obtiene desde fin21_db..es_ccto/es_ufin. - El prefijo institucional determina los flujos identificables con los datos actualmente disponibles. - Investigacion y DITT deben contar con un dato diferenciador existente antes de incorporarse; no se infieren por nombre ni por RUT.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_flusSecgen01
     @cod_unifin smallint = NULL,
@@ -141,7 +139,7 @@ BEGIN
                 ELSE 'AMBIGUO'
             END AS estado_resolucion,
             CASE WHEN ISNULL(@cantidad_flujos, 0) = 0
-                THEN 'El flujo determinado no existe o no esta vigente en sg_tfls.'
+                THEN 'El flujo determinado no existe o no esta vigente.'
                 ELSE 'Existe mas de un flujo vigente para el codigo determinado.'
             END AS mensaje
         RETURN
@@ -173,7 +171,7 @@ BEGIN
             @abr_flujo AS abr_flusol,
             0 AS status,
             'NO_CONFIGURADO' AS estado_resolucion,
-            'El flujo correspondiente no posee etapas vigentes en sg_eta1.' AS mensaje
+            'El flujo correspondiente no posee etapas vigentes.' AS mensaje
         RETURN
     END
 

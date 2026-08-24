@@ -7,12 +7,16 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_fupssSecgen12
 GO
 
-/*
-Procedimiento : Analisis2.sg_fupssSecgen12
-Objetivo      : Verificar si el funcionario tiene parentesco activo con el jefe de proyecto.
-Parametros    :
-    @rut_funcionario char(9) : RUT del funcionario.
-    @rut_jefpro      char(9) : RUT del jefe de proyecto.
+/* Procedimiento : Analisis2.sg_fupssSecgen12
+
+   Entrada :
+   @rut_funcionario     -> Parametro de entrada. (Opcional)
+   @rut_jefpro          -> Parametro de entrada. (Opcional)
+
+   Objetivo : Verificar si el funcionario tiene parentesco activo con el jefe de proyecto.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen12

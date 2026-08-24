@@ -8,9 +8,14 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fupsdSecgen01
-   Objetivo      : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atómica.
-   Entrada       :
-       @id_funprse int
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
+
+   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atómica. Entrada       : @id_funprse int
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupsdSecgen01
     @id_funprse int = NULL

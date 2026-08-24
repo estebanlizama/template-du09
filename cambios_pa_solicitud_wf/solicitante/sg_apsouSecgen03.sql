@@ -12,14 +12,19 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_apsouSecgen03
 GO
 
-/*
-Procedimiento : Analisis2.sg_apsouSecgen03
-Objetivo      : Registrar de forma atomica la decision de una tarea DU288.
+/* Procedimiento : Analisis2.sg_apsouSecgen03
 
-Reglas:
-    - La tarea debe estar pendiente y pertenecer al RUT autenticado.
-    - La tarea debe corresponder a la etapa actual de sg_prse.
-    - rut_autori identifica a quien ejecuto realmente la accion.
+   Entrada :
+   @nro_aproba          -> Numero de aprobacion. (Opcional)
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @rut_usua            -> RUT del usuario. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+   @comentario          -> Comentario de la accion. (Opcional)
+
+   Objetivo : Registrar de forma atomica la decision de una tarea DU288. Reglas: - La tarea debe estar pendiente y pertenecer al RUT autenticado. - La tarea debe corresponder a la etapa actual de sg_prse. - rut_autori identifica a quien ejecuto realmente la accion.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_apsouSecgen03
     @nro_aproba int = NULL,

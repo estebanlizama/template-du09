@@ -11,13 +11,13 @@ go
 
 /* Procedimiento : sg_apsosSecgen02
 
-    Entrada  :
-        @nro_solici  -> Numero de solicitud
-    Objetivo : Trae los aprobadores para revisar estado
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
-    Creacion: GE 2023/04/23
-    Actualizacion: AI 2023/04/25
+   Objetivo : Trae los aprobadores para revisar estado
 
+   Creacion: GE 2023/04/23
+   Actualizacion: AI 2023/04/25
 */
 
 create procedure  Analisis2.sg_apsosSecgen02
@@ -44,7 +44,3 @@ go
 
 grant execute on Analisis2.sg_apsosSecgen02 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_apsosSecgen02 @nro_solici = 331;
- */

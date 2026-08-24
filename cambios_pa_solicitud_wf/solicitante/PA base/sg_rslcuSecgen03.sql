@@ -15,18 +15,16 @@ go
 go
     /* Procedimiento : sg_rslcuSecgen03
 
-     Entrada  :
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @rut_archiv          -> Parametro de entrada. (Opcional)
+   @cod_estres          -> Parametro de entrada. (Opcional)
 
-     @nro_resolu         -> Numero Resolucion
-     @rut_archiv         -> Rut del archivador
-     @cod_estres         -> código de estado de la resolución
+   Objetivo : Cambiar el estado de una resolución
 
-     Objetivo : Cambiar el estado de una resolución
-
-     Creacion: AI 2023/02/23
-     Actualizacion: AI 2023/04/10
-
-     */
+   Creacion: AI 2023/02/23
+   Actualizacion: AI 2023/04/10
+*/
     create procedure Analisis2.sg_rslcuSecgen03
     @nro_resolu int = null,
     @rut_archiv character(9) = null,
@@ -59,6 +57,4 @@ where
 go
     grant execute on Analisis2.sg_rslcuSecgen03 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_rslcuSecgen03 @nro_resolu = 28,  @rut_archiv = '175842314', @cod_estres = 7
-     */
+    

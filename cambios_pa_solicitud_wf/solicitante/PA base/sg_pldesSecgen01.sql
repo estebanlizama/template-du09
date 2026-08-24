@@ -11,21 +11,13 @@ go
 
 /* Procedimiento : sg_pldesSecgen01
 
-    Entrada  :
-        @id_pladet         -> Id Plantilla Detalle
-        @id_planti         -> Id Plantilla
-        @cod_tipsec         -> Codigo Tipo Sec
-        @nombre         -> Nombre
-        @valor         -> Valor
-        @editable         -> Es Editable
-        @orden         -> Orden
-        @f_creacion         -> Fecha Creacion
-        @f_ultmodif         -> Fecha Ultima Modificacion
-    Objetivo : select Plantilla Detalle
+   Entrada :
+   @id_planti           -> Parametro de entrada. (Obligatorio)
 
-    Creacion: CHL 2022/12/13
-    Actualizacion:
+   Objetivo : select Plantilla Detalle
 
+   Creacion: CHL 2022/12/13
+   Actualizacion: 
 */
 
 create procedure  Analisis2.sg_pldesSecgen01
@@ -57,7 +49,3 @@ go
 
 grant execute on Analisis2.sg_pldesSecgen01 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_pldesSecgen01 @id_planti = 3
- */

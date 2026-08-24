@@ -1,11 +1,13 @@
 /* Procedimiento : sg_cctosSecgen04
 
-     Entrada : @rut
-     Objetivo : Lista de centros de costo por rut y asociados a la unidad de usuario 
+   Entrada :
+   @rut                 -> RUT del funcionario. (Opcional)
 
-     Creacion: ELA 2024 / 08 / 29
+   Objetivo : Lista de centros de costo por rut y asociados a la unidad de usuario
 
-     */
+   Creacion: ELA 2024 / 08 / 29
+   Actualizacion: Sin registro
+*/
     create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as if @rut is null
 begin
 	select

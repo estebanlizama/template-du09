@@ -7,13 +7,15 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_fupssSecgen13
 GO
 
-/*
-Procedimiento : Analisis2.sg_fupssSecgen13
-Objetivo      : Obtener el contrato principal, haberes calculados y tope DU288 asignado para un funcionario.
-Parametros    :
-    @rut_person char(9) : RUT del funcionario.
+/* Procedimiento : Analisis2.sg_fupssSecgen13
 
-Creacion: EL 2026/07/01
+   Entrada :
+   @rut_person          -> RUT de la persona. (Opcional)
+
+   Objetivo : Obtener el contrato principal, haberes calculados y tope DU288 asignado para un funcionario.
+
+   Creacion: EL 2026/07/01
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_fupssSecgen13

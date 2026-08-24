@@ -14,14 +14,14 @@ go
 
 /* Procedimiento : sg_soliuSecgen01
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
-   @cod_estsol          -> Código de estado de solicitud. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
    @rut_solici          -> RUT del solicitante. (Opcional)
 
    Objetivo : Update solicitud
 
-   Creacion: GE 2023/03/08
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 

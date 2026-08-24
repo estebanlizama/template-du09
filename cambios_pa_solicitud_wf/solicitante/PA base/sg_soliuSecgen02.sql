@@ -11,15 +11,14 @@ go
 
 /* Procedimiento : sg_soliuSecgen02
 
-    Entrada  :
-        @nro_solici         -> Numero Solicitud
-        @cod_estsol         -> Codigo Estado de solicitud
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
 
-    Objetivo : Update estado de solicitudes
+   Objetivo : Update estado de solicitudes
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/03
-
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/03
 */
 
 create procedure  Analisis2.sg_soliuSecgen02
@@ -65,7 +64,3 @@ go
 
 grant execute on Analisis2.sg_soliuSecgen02 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sg_soliuSecgen02   @nro_solici = 18  @cod_estsol = 3
- */

@@ -14,13 +14,13 @@ go
 
 /* Procedimiento : sg_histsSecgen02
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
    Objetivo : select Registro de históricos de solicitud, resolución
 
-   Creacion: AI 2023/03/15
-   Actualizacion: SSY 2023/03/21
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 create procedure Analisis2.sg_histsSecgen02

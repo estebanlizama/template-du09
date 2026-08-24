@@ -10,7 +10,18 @@ IF EXISTS (
 GO
 
 /* Procedimiento : Analisis2.sg_apsouSecgen02
-   Objetivo      : Cerrar las tareas pendientes de una etapa del flujo. */
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
+   @cod_etapa           -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+
+   Objetivo : Sin descripcion
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
+*/
 CREATE PROCEDURE Analisis2.sg_apsouSecgen02
     @nro_solici int = NULL,
     @cod_flusol tinyint = NULL,

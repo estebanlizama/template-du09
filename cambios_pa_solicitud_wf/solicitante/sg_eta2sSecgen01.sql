@@ -12,16 +12,18 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_eta2sSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_eta2sSecgen01
-Objetivo      : Resolver una transicion configurada en sg_eta2 o listar las
-                acciones disponibles para la etapa actual de una solicitud.
+/* Procedimiento : Analisis2.sg_eta2sSecgen01
 
-Uso inicial  : informar @cod_flusol y dejar @nro_solici NULL.
-Uso solicitud: informar @nro_solici; el flujo y etapa se leen desde sg_prse.
-Uso acciones : informar @nro_solici y dejar @id_tipacc NULL.
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
+   @id_tipacc           -> Identificador tipo de accion. (Opcional)
+   @cod_etaori          -> Codigo etapa de origen. (Opcional)
 
-El PA solo consulta y valida. No modifica sg_prse, sg_soli ni sg_apso.
+   Objetivo : Resolver una transicion configurada en sg_eta2 o listar las acciones disponibles para la etapa actual de una solicitud.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_eta2sSecgen01
     @nro_solici int = NULL,

@@ -14,13 +14,15 @@ go
     ) drop procedure Analisis2.sg_apresSecgen01
 go
     /* Procedimiento : sg_apresSecgen01
-     
-     Objetivo : seleccionar todos los aprobadores de resoluciones
-     
-     Creacion: CHL 2022/12/13
-     Actualizacion: AI 2023/02/22
-     
-     */
+
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+
+   Objetivo : seleccionar todos los aprobadores de resoluciones
+
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/22
+*/
     create procedure Analisis2.sg_apresSecgen01 @nro_resolu int = null as if @nro_resolu is null begin
 select
     'Falta campo numero de resolucion, se abortara el procedimiento.' msg return
@@ -57,6 +59,4 @@ where
 go
     grant execute on Analisis2.sg_apresSecgen01 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_apresSecgen01 @nro_resolu = 32
-     */
+    

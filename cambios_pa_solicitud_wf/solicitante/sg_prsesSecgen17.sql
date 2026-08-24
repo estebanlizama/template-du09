@@ -12,9 +12,15 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen17
 GO
 
-/*
-Procedimiento : Analisis2.sg_prsesSecgen17
-Objetivo      : Listar solicitudes PDS finalizadas creadas por el RUT.
+/* Procedimiento : Analisis2.sg_prsesSecgen17
+
+   Entrada :
+   @rut_solici          -> RUT del solicitante. (Opcional)
+
+   Objetivo : Listar solicitudes PDS finalizadas creadas por el RUT.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen17
     @rut_solici varchar(9) = NULL

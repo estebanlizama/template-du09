@@ -12,12 +12,23 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_histiSecgen03
 GO
 
-/*
-Procedimiento : Analisis2.sg_histiSecgen03
-Objetivo      : Registrar el historial funcional de la solicitud.
-Salida        : Una fila con status, id_histor y msg. Este contrato es
-                obligatorio para confirmar atomicamente la escritura desde
-                el backend.
+/* Procedimiento : Analisis2.sg_histiSecgen03
+
+   Entrada :
+   @cod_tipsol          -> Tipo de solicitud. (Opcional)
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @ano_resolu          -> Parametro de entrada. (Opcional)
+   @id_tipacc           -> Identificador tipo de accion. (Opcional)
+   @observaci           -> Parametro de entrada. (Opcional)
+   @rut_accion          -> Parametro de entrada. (Opcional)
+   @id_perfil           -> Parametro de entrada. (Opcional)
+
+   Objetivo : Registrar el historial funcional de la solicitud.
+Salida        : Una fila con status, id_histor y msg. Este contrato es obligatorio para confirmar atomicamente la escritura desde el backend.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_histiSecgen03
     @cod_tipsol tinyint = NULL,

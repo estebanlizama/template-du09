@@ -8,13 +8,18 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
 GO
 
 /* Procedimiento : Analisis2.sg_fuhosiSecgen01
-   Objetivo      : Inserta un tramo de horario de ejecución de prestación en sg_fuho.
-   Entrada       :
-       @id_funprse int
-       @cod_diasem tinyint
-       @correlativ tinyint
-       @hora_ini   varchar(8)  (ej: '08:30:00')
-       @hora_ter   varchar(8)  (ej: '12:30:00')
+
+   Entrada :
+   @id_funprse          -> Identificador de la funcion/prestacion. (Obligatorio)
+   @cod_diasem          -> Parametro de entrada. (Obligatorio)
+   @correlativ          -> Parametro de entrada. (Obligatorio)
+   @hora_ini            -> Parametro de entrada. (Obligatorio)
+   @hora_ter            -> Parametro de entrada. (Obligatorio)
+
+   Objetivo : Inserta un tramo de horario de ejecución de prestación en sg_fuho. Entrada       : @id_funprse int @cod_diasem tinyint @correlativ tinyint @hora_ini   varchar(8)  (ej: '08:30:00') @hora_ter   varchar(8)  (ej: '12:30:00')
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fuhosiSecgen01
     @id_funprse int,

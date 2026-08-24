@@ -7,21 +7,24 @@ IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
     DROP PROCEDURE Analisis2.sg_prseiSecgen01
 GO
 
-/*
-Procedimiento : Analisis2.sg_prseiSecgen01
-Objetivo      : Insertar la cabecera especifica de una Prestacion de Servicios
-                en sg_prse, incluyendo la modalidad de prestacion.
-Parametros    :
-    @nro_solici  int          : Numero de solicitud.
-    @actividad   varchar(255) : Actividad o servicio a realizar.
-    @per_desde   datetime     : Fecha inicio del periodo de prestacion.
-    @per_hasta   datetime     : Fecha termino del periodo de prestacion.
-    @rut_jefpro  char(9)      : RUT jefe de proyecto.
-    @cod_unifin  smallint     : Codigo unidad financiera.
-    @cod_ccto    smallint     : Codigo centro de costo.
-    @cc_global   varchar(9)   : Centro de costo global, si aplica.
-    @pry_global  varchar(12)  : Proyecto global, si aplica.
-    @cod_modprs  tinyint      : Modalidad PDS. 1 legacy, 2 DU288-D09/2026.
+/* Procedimiento : Analisis2.sg_prseiSecgen01
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @actividad           -> Parametro de entrada. (Opcional)
+   @per_desde           -> Parametro de entrada. (Opcional)
+   @per_hasta           -> Parametro de entrada. (Opcional)
+   @rut_jefpro          -> Parametro de entrada. (Opcional)
+   @cod_unifin          -> Unidad financiera. (Opcional)
+   @cod_ccto            -> Centro de costo. (Opcional)
+   @cc_global           -> Parametro de entrada. (Opcional)
+   @pry_global          -> Parametro de entrada. (Opcional)
+   @cod_modprs          -> Parametro de entrada. (Opcional)
+
+   Objetivo : Insertar la cabecera especifica de una Prestacion de Servicios en sg_prse, incluyendo la modalidad de prestacion.
+
+   Creacion: Sin registro
+   Actualizacion: Sin registro
 */
 
 CREATE PROCEDURE Analisis2.sg_prseiSecgen01
@@ -94,7 +97,7 @@ BEGIN
         WHERE cod_modprs = @cod_modprs
     )
     BEGIN
-        SELECT 'Modalidad de prestacion no existe en sg_tmod' msg
+        SELECT 'Modalidad de prestacion no existe' msg
         RETURN
     END
 

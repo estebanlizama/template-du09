@@ -14,13 +14,15 @@ go
     ) drop procedure Analisis2.sg_apresSecgen02
 go
     /* Procedimiento : sg_apresSecgen02
-     
-     Objetivo : seleccionar la cantidad de aprocaciones de una resolución
-     
-     Creacion: AI 2023/02/24
-     Actualizacion:
-     
-     */
+
+   Entrada :
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+
+   Objetivo : seleccionar la cantidad de aprocaciones de una resolución
+
+   Creacion: AI 2023/02/24
+   Actualizacion: 
+*/
     create procedure Analisis2.sg_apresSecgen02 @nro_resolu int = null as declare @cant_aprobaciones tinyint
 select
     @cant_aprobaciones = count(nro_resolu)
@@ -34,6 +36,4 @@ select
 go
     grant execute on Analisis2.sg_apresSecgen02 to UsuaVrac
 go
-    /*
-     execute secgen_db.Analisis2.sg_apresSecgen02 @nro_resolu = 32
-     */
+    

@@ -14,12 +14,12 @@ go
 
 /* Procedimiento : sg_apsosSecgen04
 
-      Entrada :
-   @nro_solici          -> Parámetro de entrada. (Opcional)
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
 
    Objetivo : Trae los aprobadores de una solicitud
 
-   Creacion: AI 2023/06/01
+   Creacion: Sin registro
    Actualizacion: Sin registro
 */
 
