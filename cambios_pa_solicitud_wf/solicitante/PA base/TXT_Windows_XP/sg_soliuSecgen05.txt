@@ -1,0 +1,64 @@
+use secgen_db
+go
+
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sg_soliuSecgen05')
+begin
+    drop procedure Analisis2.sg_soliuSecgen05
+end
+go
+
+/* Procedimiento : sg_soliuSecgen05
+
+      Entrada :
+   @nro_resolu          -> Parámetro de entrada. (Opcional)
+   @ano_resolu          -> Parámetro de entrada. (Opcional)
+   @cod_estsol          -> Código de estado de solicitud. (Opcional)
+
+   Objetivo : Actualizar solicitudes agrupadas por numero y año de resolucion
+
+   Creacion: GE 2023/03/08
+   Actualizacion: Sin registro
+*/
+
+create procedure Analisis2.sg_soliuSecgen05
+    @nro_resolu int = NULL,
+    @ano_resolu int = NULL,
+    @cod_estsol tinyint = NULL
+    as
+
+    if @nro_resolu is null
+    begin
+        select 'Falta campo Numero de resolucion' msg
+        return
+    end
+
+    if @ano_resolu is null
+    begin
+        select 'Falta campo Id Tipo de Devolucion' msg
+        return
+    end
+
+    begin tran
+
+    update sg_soli
+             set cod_estsol = @cod_estsol
+             WHERE nro_resolu = @nro_resolu and ano_resolu = @ano_resolu
+
+    if @@transtate = 2 or @@transtate = 3
+        begin
+            select 'Error al actualizar información de solicitud. Se aborta el procedimiento' msg
+            if @@transtate = 2
+                rollback  tran
+                return
+        end
+
+        commit tran
+go
+
+grant execute on Analisis2.sg_soliuSecgen05 to UsuaVrac
+go

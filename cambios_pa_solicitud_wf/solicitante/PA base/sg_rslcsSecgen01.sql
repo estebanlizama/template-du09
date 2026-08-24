@@ -1,0 +1,51 @@
+use secgen_db
+go
+    if exists (
+        select
+            1
+        from
+            sysobjects a,
+            sysusers b
+        where
+            a.uid = b.uid
+            and a.type = 'P'
+            and b.name = 'Analisis2'
+            and a.name = 'sg_rslcsSecgen01'
+    ) drop procedure Analisis2.sg_rslcsSecgen01
+go
+    /* Procedimiento : sg_rslcsSecgen01
+
+     Entrada  :
+
+     @nro_resolu         -> Numero Resolucion
+
+     Objetivo : seleccionar datos de resolución
+
+     Creacion: AI 2023/02/28
+     Actualizacion:
+
+     */
+    create procedure Analisis2.sg_rslcsSecgen01
+        @nro_resolu int = null
+     as
+        if @nro_resolu is null
+        begin
+            select
+            'Falta campo Numero Resolucion' msg
+            return
+        end
+
+begin tran
+select  rslc.num_resolu,
+   rslc.codigo_sdg,
+   rslc.f_resolucio
+from sg_rslc as rslc
+where rslc.nro_resolu = @nro_resolu
+commit tran
+go
+    grant execute on Analisis2.sg_rslcsSecgen01 to UsuaVrac
+go
+    /*
+     execute secgen_db.Analisis2.sg_rslcsSecgen01 @nro_resolu = 32
+     */
+   

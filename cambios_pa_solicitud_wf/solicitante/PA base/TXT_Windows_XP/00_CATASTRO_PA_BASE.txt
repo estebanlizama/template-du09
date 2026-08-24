@@ -1,0 +1,305 @@
+CATASTRO PA BASE - SOLICITUD PDS DU288
+======================================
+
+Reglas aplicadas:
+- Nombre PA: tabla principal + accion + aplicacion de 6 caracteres + correlativo de 2 digitos.
+- Acciones validas: s=SELECT, i=INSERT, u=UPDATE, d=DELETE.
+- Envoltura: USE/GO, DROP condicional/GO, cabecera, CREATE/GO, GRANT/GO.
+- Codificacion: Windows-1252 (ANSI), sin BOM, saltos CRLF y extension .txt.
+- Los autores y fechas disponibles se conservan en la cabecera normalizada.
+
+Excepcion obligatoria:
+- valida_saldo_cc_cs queda en fin21_db.Analisis. El backend lo invoca con ese nombre calificado.
+  Cambiarlo a secgen_db sin modificar el backend y la BDD romperia la validacion de saldo.
+
+Total PA normalizados: 38
+
+DETALLE
+-------
+01. ar_doc1sSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : ar_doc1 / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+02. bd_pri2sSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : bd_pri2 / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+03. es_orgasSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : es_orga / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=No; DROP=No; CABECERA=No; GRANT=No; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+04. sg_apreiSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apre / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+05. sg_apresSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apre / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+06. sg_apresSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apre / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+07. sg_apreuSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apre / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+08. sg_apsosSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apso / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=No; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+    Observacion  : Revisar el valor por defecto None; se mantuvo el cuerpo original.
+
+09. sg_apsosSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apso / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+10. sg_apsosSecgen04
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apso / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=04
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+11. sg_apsouSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_apso / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+    Observacion  : Revisar el valor por defecto None; se mantuvo el cuerpo original.
+
+12. sg_cctosSecgen04
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_ccto / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=04
+    Origen       : USE=No; DROP=No; CABECERA=Si; GRANT=No; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+13. sg_histiSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_hist / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+14. sg_histiSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_hist / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+15. sg_histsSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_hist / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+16. sg_histsSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_hist / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+17. sg_pldesSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_plde / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+18. sg_prsesSecgen05
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=05
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+19. sg_prsesSecgen06
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=06
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+20. sg_prsesSecgen07
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=07
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+21. sg_prsesSecgen10
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=10
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+22. sg_prsesSecgen12
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=12
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+23. sg_prsesSecgen16
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_prse / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=16
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+24. sg_redeiSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rede / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+25. sg_redesSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rede / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+26. sg_redesSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rede / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+27. sg_rslciSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rslc / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+28. sg_rslcsSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rslc / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+29. sg_rslcuSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rslc / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+30. sg_rslcuSecgen03
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rslc / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=03
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+31. sg_rslcuSecgen04
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_rslc / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=04
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+32. sg_soliiSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_soli / INSERT
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+33. sg_soliuSecgen01
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_soli / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=01
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+34. sg_soliuSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_soli / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+35. sg_soliuSecgen03
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_soli / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=03
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+36. sg_soliuSecgen05
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sg_soli / UPDATE
+    Nombre       : Cumple; app=Secgen; correlativo=05
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+37. sp_perssSecgen02
+    Base/Esquema : secgen_db.Analisis2
+    Tabla/CRUD   : sp_pers / SELECT
+    Nombre       : Cumple; app=Secgen; correlativo=02
+    Origen       : USE=Si; DROP=Si; CABECERA=Si; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+
+38. valida_saldo_cc_cs
+    Base/Esquema : fin21_db.Analisis
+    Tabla/CRUD   : es_ccto / saldos FIN21 / SELECT
+    Nombre       : Excepcion externa documentada; app=Externo; correlativo=--
+    Origen       : USE=No; DROP=Si; CABECERA=No; GRANT=Si; GO_FINAL=No
+    Entrega      : USE + GO + DROP + GO + CABECERA + CREATE + GO + GRANT + GO
+    Observacion  : Dependencia externa: el backend llama fin21_db.Analisis.valida_saldo_cc_cs.
+
+PA REFERENCIADOS SIN SCRIPT FUENTE EN EL WORKSPACE
+--------------------------------------------------
+- ar_doc1sSecgen02
+- bd_per1sSecgen01
+- bd_pri2sSecgen04
+- bd_pri2sztools01
+- sg_apresSecgen03
+- sg_cctosSecgen03
+- sg_ecuosiSecgen01
+- sg_ecuossSecgen01
+- sg_ecuossSecgen02
+- sg_ecuouSecgen01
+
+RECOMENDACION DE ENVIO
+----------------------
+- Enviar la carpeta comprimida como ZIP para conservar bytes, nombres y saltos de linea.
+- No abrir y volver a guardar los TXT con un editor configurado en UTF-8.
+- En Windows XP, abrir como ANSI/Windows-1252. Los archivos no contienen BOM.

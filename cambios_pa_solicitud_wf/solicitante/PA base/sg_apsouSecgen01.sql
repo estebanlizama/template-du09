@@ -1,0 +1,64 @@
+use secgen_db
+go
+
+if exists (select 1 from sysobjects a, sysusers b
+      where a.uid  = b.uid
+        and a.type = 'P'
+        and b.name = 'Analisis2'
+        and a.name = 'sg_apsouSecgen01')
+   drop procedure Analisis2.sg_apsouSecgen01
+go
+
+/* Procedimiento : sg_apsouSecgen01
+
+    Entrada  :
+        @nro_solici         -> Numero Resolucion
+        @rut_usua         -> RUT Usuario
+        @cod_estapr         -> Codigo Estado Aprobacion
+    Objetivo : update Aprobación de solicitudes
+
+    Creacion: CHL 2022/12/13
+    Actualizacion: AI 2023/02/09
+
+*/
+
+create procedure  Analisis2.sg_apsouSecgen01
+    @nro_solici int = None,
+    @rut_usua char(9) = None,
+    @cod_estapr tinyint = None
+
+    as
+
+    if @nro_solici is null
+    begin
+        select 'Falta campo Numero Resolucion' msg
+        return
+    end
+
+    if @rut_usua is null
+    begin
+        select 'Falta campo RUT Usuario' msg
+        return
+    end
+
+    if @cod_estapr is null
+    begin
+        select 'Falta campo Codigo Estado Aprobacion' msg
+        return
+    end
+
+    begin tran
+
+    update sg_apso set rut_usua = @rut_usua, cod_estapr = @cod_estapr,
+                       f_aprobac = getDate(), f_ultmodif = getDate()
+                       where nro_solici = @nro_solici and rut_usua = @rut_usua
+
+        commit tran
+go
+
+grant execute on Analisis2.sg_apsouSecgen01 to UsuaVrac
+go
+
+/*
+execute secgen_db.Analisis2.sg_apsouSecgen01 @nro_solici = 397, @rut_usua = '135155535', @cod_estapr = 4
+*/

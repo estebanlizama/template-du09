@@ -1,0 +1,78 @@
+use secgen_db
+go
+
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sg_cctosSecgen04')
+begin
+    drop procedure Analisis2.sg_cctosSecgen04
+end
+go
+
+/* Procedimiento : sg_cctosSecgen04
+
+      Entrada :
+   @rut                 -> RUT del funcionario. (Opcional)
+
+   Objetivo : Lista de centros de costo por rut y asociados a la unidad de usuario
+
+   Creacion: ELA 2024 / 08 / 29
+   Actualizacion: Sin registro
+*/
+
+create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as if @rut is null
+begin
+	select
+	'Falta el rut. Se aborta el procedimiento' msg return
+end
+
+DECLARE @unidad_mayor CHAR(8)
+
+SELECT 
+    @unidad_mayor = substring(uni.cod_unidad, 1, 2) + '000000'
+FROM 
+    sisper_db..sp_pers pers
+INNER JOIN 
+    ufro_db..es_unid uni 
+    ON uni.cod_unidad = pers.u_original
+WHERE 
+    pers.rut_person = @rut
+AND 
+    uni.vigente = 'S'
+
+SELECT
+    pers.rut_person,
+    ccto.cod_ccto,
+    ccto.cod_unifin,
+    ccto.cod_tfinan,
+    ccto.cod_tcsald,
+    ccto.f_creacion,
+    ecct.rut,
+    ccto.nom_ccto,
+    ccto.nom_ab_cct,
+    pers.nom_nombre,
+    pers.nom_appate,
+    pers.nom_apmate
+FROM
+    fin21_db..es_ccto ccto
+LEFT JOIN 
+    fin21_db..es_ecct ecct 
+    ON ecct.cod_ccto = ccto.cod_ccto
+    AND ecct.cod_unifin = ccto.cod_unifin
+LEFT JOIN 
+    sisper_db..sp_pers pers
+    ON ecct.rut = pers.rut_person
+LEFT JOIN 
+    ufro_db..es_unid uni 
+    ON uni.cod_unidad = pers.u_original
+WHERE
+    uni.cod_unidad LIKE LEFT(@unidad_mayor, 2) + '%'
+AND 
+    ecct.vigente = 'S'
+go
+
+grant execute on Analisis2.sg_cctosSecgen04 to UsuaVrac
+go

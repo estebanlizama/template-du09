@@ -1,0 +1,59 @@
+use secgen_db
+go
+
+if exists (select 1 from sysobjects a, sysusers b
+      where a.uid  = b.uid
+        and a.type = 'P'
+        and b.name = 'Analisis2'
+        and a.name = 'sg_prsesSecgen12')
+   drop procedure Analisis2.sg_prsesSecgen12
+go
+
+/* Procedimiento : sg_prsesSecgen12
+
+    Entrada  :
+        @rut_solici         -> Rut Funcionario Solicitud
+
+    Objetivo : Seleccionar solicitudes historicas prestación de servicios listas para aprobar por rut
+
+    Creacion: AI 2023/05/11
+    Actualizacion:
+
+*/
+
+create procedure  Analisis2.sg_prsesSecgen12
+    @rut_solici varchar(9) = NULL
+    as
+
+    if @rut_solici is null
+    begin
+        select 'Falta campo Rut solicitante' msg
+        return
+    end
+             SELECT soli.nro_solici, actividad, per_desde, per_hasta, rut_jefpro, cod_unifin,
+            cod_ccto, cc_global, pry_global, rut_solici, nro_resolu, soli.cod_estsol,
+            soli.cod_tipsol, f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol, SUM(funps.mto_total) as total
+        FROM secgen_db.dbo.sg_prse prse
+        JOIN secgen_db.dbo.sg_soli soli
+            ON (prse.nro_solici = soli.nro_solici)
+        JOIN secgen_db.dbo.sg_tsol tiposol
+            ON (soli.cod_tipsol = tiposol.cod_tipsol)
+        JOIN secgen_db.dbo.sg_esol estsol
+            ON (soli.cod_estsol = estsol.cod_estsol) AND (soli.cod_estsol IN (1,2,5))
+        JOIN secgen_db.dbo.sg_fups funps
+            ON (soli.nro_solici = funps.nro_solici)
+        JOIN secgen_db.dbo.sg_apso apso
+            ON (soli.nro_solici = apso.nro_solici) AND (apso.cod_estapr IN (1,2,3))
+        WHERE soli.rut_solici = @rut_solici OR (apso.rut_usua = @rut_solici)
+        GROUP BY soli.nro_solici, actividad, per_desde, per_hasta, rut_jefpro, cod_unifin,
+            cod_ccto, cc_global, pry_global, rut_solici, nro_resolu, soli.cod_estsol,
+            soli.cod_tipsol, f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol
+        ORDER BY soli.f_creacion DESC
+go
+
+grant execute on Analisis2.sg_prsesSecgen12 to UsuaVrac
+go
+
+/*
+execute secgen_db.Analisis2.sg_prsesSecgen12 @rut_solici = '092867439'
+ */
