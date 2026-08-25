@@ -42,6 +42,8 @@ BEGIN
         fu.f_termino,
         prse.cod_unifin,
         prse.cod_ccto,
+        ccto.cod_ftfn,
+        rtrim(isnull(ftfn.des_ftfn, '')) AS des_ftfn,
         rtrim(isnull(ccto.nom_ab_cct, '')) AS nom_ab_cct,
         fu.mto_total,
         fu.monto_mes,
@@ -117,6 +119,8 @@ BEGIN
     LEFT JOIN fin21_db..es_ccto ccto
         ON ccto.cod_ccto = prse.cod_ccto
        AND ccto.cod_unifin = prse.cod_unifin
+    LEFT JOIN fin21_db..sf_ftfn ftfn
+        ON ftfn.cod_ftfn = ccto.cod_ftfn
     LEFT JOIN sisper_db.dbo.sp_carg carg
         ON carg.cod_cargo = fu.cod_cargo
     LEFT JOIN secgen_db.dbo.sg_efun efun
@@ -158,13 +162,6 @@ BEGIN
         ON fuco.id_funprse = fu.id_funprse
     WHERE fu.rut = @rut_person
       AND (@nro_solici_excluir IS NULL OR fu.nro_solici <> @nro_solici_excluir)
-      /* Una PDS rechazada (4) o con resolucion rechazada por un firmante
-         (7) no representa una labor real ni un compromiso vigente -- no
-         debe contar como coincidencia/conflicto contra la solicitud
-         actual. Se filtra aca (no solo en el codigo que consume este PA)
-         para que cualquier consumidor futuro quede protegido igual, y
-         para no traer ni unir cuotas/horarios de solicitudes que ya no
-         importan. */
       AND soli.cod_estsol NOT IN (4, 7)
     ORDER BY soli.f_solicit DESC, fu.id_funprse, fume.nro_cuota, fuc2.fec_comrea
 END

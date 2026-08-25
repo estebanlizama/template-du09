@@ -35,6 +35,8 @@ BEGIN
             ccto.cod_ccto,
             ccto.cod_unifin,
             ccto.cod_tfinan,
+            ccto.cod_ftfn,
+            ftfn.des_ftfn AS fuente_financiamiento,
             ccto.cod_tcsald,
             ccto.f_creacion,
             ccto.nom_ccto,
@@ -64,6 +66,8 @@ BEGIN
                 ON tfin.cod_tfinan = ccto.cod_tfinan
         INNER JOIN fin21_db..es_ufin ufin
                 ON ufin.cod_unifin = ccto.cod_unifin
+        LEFT JOIN fin21_db..sf_ftfn ftfn
+               ON ftfn.cod_ftfn = ccto.cod_ftfn
         LEFT JOIN fin21_db..sf_deaf deaf
                ON deaf.decr_afect = ccto.decr_afect
         LEFT JOIN sisper_db..sp_pers pers
@@ -91,6 +95,8 @@ BEGIN
             ccto.cod_ccto,
             ccto.cod_unifin,
             ccto.cod_tfinan,
+            ccto.cod_ftfn,
+            ftfn.des_ftfn AS fuente_financiamiento,
             ccto.cod_tcsald,
             ccto.f_creacion,
             ecct.rut,
@@ -103,6 +109,8 @@ BEGIN
         LEFT JOIN fin21_db..es_ecct ecct
                ON ecct.cod_ccto = ccto.cod_ccto
               AND ecct.cod_unifin = ccto.cod_unifin
+        LEFT JOIN fin21_db..sf_ftfn ftfn
+               ON ftfn.cod_ftfn = ccto.cod_ftfn
         LEFT JOIN sisper_db..sp_pers pers
                ON ecct.rut = pers.rut_person
         LEFT JOIN ufro_db..es_unid uni

@@ -42,6 +42,8 @@ BEGIN
         fu.f_termino,
         prse.cod_unifin,
         prse.cod_ccto,
+        ccto.cod_ftfn,
+        rtrim(isnull(ftfn.des_ftfn, '')) AS des_ftfn,
         rtrim(isnull(ccto.nom_ab_cct, '')) AS nom_ab_cct,
         fu.mto_total,
         fu.monto_mes,
@@ -117,6 +119,8 @@ BEGIN
     LEFT JOIN fin21_db..es_ccto ccto
         ON ccto.cod_ccto = prse.cod_ccto
        AND ccto.cod_unifin = prse.cod_unifin
+    LEFT JOIN fin21_db..sf_ftfn ftfn
+        ON ftfn.cod_ftfn = ccto.cod_ftfn
     LEFT JOIN sisper_db.dbo.sp_carg carg
         ON carg.cod_cargo = fu.cod_cargo
     LEFT JOIN secgen_db.dbo.sg_efun efun

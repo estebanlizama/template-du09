@@ -37,6 +37,8 @@ BEGIN
         p.rut_jefpro,
         p.cod_unifin,
         p.cod_ccto,
+        c.cod_ftfn,
+        ftfn.des_ftfn AS fuente_financiamiento,
         rtrim(c.nom_ccto) AS nom_ccto,
         p.cc_global,
         p.pry_global,
@@ -50,6 +52,8 @@ BEGIN
     LEFT JOIN fin21_db..es_ccto c
         ON c.cod_unifin = p.cod_unifin
        AND c.cod_ccto = p.cod_ccto
+    LEFT JOIN fin21_db..sf_ftfn ftfn
+        ON ftfn.cod_ftfn = c.cod_ftfn
     LEFT JOIN secgen_db.dbo.sg_tmod m
         ON m.cod_modprs = p.cod_modprs
     LEFT JOIN secgen_db.dbo.sg_eta1 e

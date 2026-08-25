@@ -45,6 +45,8 @@ SELECT
     ccto.cod_ccto,
     ccto.cod_unifin,
     ccto.cod_tfinan,
+    ccto.cod_ftfn,
+    ftfn.des_ftfn AS fuente_financiamiento,
     ccto.cod_tcsald,
     ccto.f_creacion,
     ecct.rut,
@@ -60,6 +62,9 @@ LEFT JOIN
     ON ecct.cod_ccto = ccto.cod_ccto
     AND ecct.cod_unifin = ccto.cod_unifin
 LEFT JOIN 
+    fin21_db..sf_ftfn ftfn
+    ON ftfn.cod_ftfn = ccto.cod_ftfn
+LEFT JOIN 
     sisper_db..sp_pers pers
     ON ecct.rut = pers.rut_person
 LEFT JOIN 
@@ -69,6 +74,7 @@ WHERE
     uni.cod_unidad LIKE LEFT(@unidad_mayor, 2) + '%'
 AND 
     ecct.vigente = 'S'
+
 
 GRANT EXECUTE ON Analisis2.sg_cctosSecgen04 TO UsuaVrac
 GO
