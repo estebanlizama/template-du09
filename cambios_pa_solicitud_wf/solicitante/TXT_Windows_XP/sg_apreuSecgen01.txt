@@ -1,0 +1,63 @@
+
+
+
+
+use secgen_db
+go
+
+if exists (select 1 from sysobjects a, sysusers b
+      where a.uid  = b.uid
+        and a.type = 'P'
+        and b.name = 'Analisis2'
+        and a.name = 'sg_apreuSecgen01')
+   drop procedure Analisis2.sg_apreuSecgen01
+go
+
+/* Procedimiento : sg_apreuSecgen01
+
+   Entrada :
+   @id_aprbres          -> Parametro de entrada. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+
+   Objetivo : update Aprobación de resoluciones
+
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/22
+*/
+
+create procedure  Analisis2.sg_apreuSecgen01
+    @id_aprbres int = null,
+    @cod_estapr tinyint = null
+    as
+
+    if @id_aprbres is null
+    begin
+        select 'Falta campo Id Aprobacion' msg
+        return
+    end
+
+    if @cod_estapr is null
+    begin
+        select 'Falta campo Codigo Estado Aprobacion' msg
+        return
+    end
+
+    begin tran
+
+    update sg_apre
+    set cod_estapr = @cod_estapr
+    where id_aprbres = @id_aprbres
+
+    if @@transtate = 2 or @@transtate = 3
+        begin
+            select 'Error al actualizar información. Se aborta el procedimiento' msg
+            if @@transtate = 2
+                rollback  tran
+                return
+        end
+
+        commit tran
+go
+
+grant execute on Analisis2.sg_apreuSecgen01 to UsuaVrac
+go
