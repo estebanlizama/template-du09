@@ -1,23 +1,22 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_prsesSecgen16')
-   drop procedure Analisis2.sg_prsesSecgen16
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen16'
+)
+    DROP PROCEDURE Analisis2.sg_prsesSecgen16
+GO
 
-/* Procedimiento : sg_prsesSecgen16
+/* Procedimiento : Analisis2.sg_prsesSecgen16
 
-   Objetivo : Seleccionar las solicitudes listas para marcar como ingresada en prestación de servicios
+   Objetivo : Seleccionar las solicitudes listas para marcar como ingresada en prestacion de servicios.
 
    Creacion: AI 2023/05/11
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_prsesSecgen16
+CREATE PROCEDURE Analisis2.sg_prsesSecgen16
     as
                SELECT soli.nro_solici, prse.actividad, prse.per_desde, prse.per_hasta, prse.rut_jefpro, prse.cod_unifin,
         prse.cod_ccto, prse.cc_global, prse.pry_global, soli.rut_solici, rslc.nro_resolu, soli.cod_estsol,
@@ -38,5 +37,5 @@ create procedure  Analisis2.sg_prsesSecgen16
         soli.cod_tipsol, soli.f_solicit, soli.f_creacion, soli.f_ultmodif, tiposol.des_tipsol, estsol.des_estsol
     ORDER BY soli.f_creacion DESC
 go
-grant execute on Analisis2.sg_prsesSecgen16 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen16 TO UsuaVrac
 go

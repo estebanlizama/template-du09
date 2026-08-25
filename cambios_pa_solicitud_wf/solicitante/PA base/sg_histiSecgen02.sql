@@ -1,15 +1,15 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_histiSecgen02')
-   drop procedure Analisis2.sg_histiSecgen02
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_histiSecgen02'
+)
+    DROP PROCEDURE Analisis2.sg_histiSecgen02
+GO
 
-/* Procedimiento : sg_histiSecgen02
+/* Procedimiento : Analisis2.sg_histiSecgen02
 
    Entrada :
    @cod_tipsol          -> Tipo de solicitud. (Opcional)
@@ -20,13 +20,12 @@ go
    @rut_accion          -> Parametro de entrada. (Opcional)
    @id_perfil           -> Parametro de entrada. (Opcional)
 
-   Objetivo : insertar Registro de hist√≥ricos de resoluci√≥n
+   Objetivo : insertar Registro de histA≥ricos de resoluciA≥n
 
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/03/15
 */
-
-create procedure  Analisis2.sg_histiSecgen02
+CREATE PROCEDURE Analisis2.sg_histiSecgen02
     @cod_tipsol tinyint = NULL,
     @nro_solici int = NULL,
     @nro_resolu int = NULL,
@@ -132,6 +131,6 @@ create procedure  Analisis2.sg_histiSecgen02
         commit tran
 go
 
-grant execute on Analisis2.sg_histiSecgen02 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_histiSecgen02 TO UsuaVrac
 
 go

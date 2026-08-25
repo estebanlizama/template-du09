@@ -2,12 +2,9 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-    FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid
-      AND a.type = 'P'
-      AND b.name = 'Analisis2'
-      AND a.name = 'sg_solisSecgen23'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_solisSecgen23'
 )
     DROP PROCEDURE Analisis2.sg_solisSecgen23
 GO

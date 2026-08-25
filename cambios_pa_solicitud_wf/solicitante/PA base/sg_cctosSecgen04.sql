@@ -1,4 +1,15 @@
-/* Procedimiento : sg_cctosSecgen04
+USE secgen_db
+GO
+
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_cctosSecgen04'
+)
+    DROP PROCEDURE Analisis2.sg_cctosSecgen04
+GO
+
+/* Procedimiento : Analisis2.sg_cctosSecgen04
 
    Entrada :
    @rut                 -> RUT del funcionario. (Opcional)
@@ -8,7 +19,7 @@
    Creacion: ELA 2024 / 08 / 29
    Actualizacion: Sin registro
 */
-create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as
+CREATE PROCEDURE Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as
     if @rut is null
 begin
 	select
@@ -58,3 +69,6 @@ WHERE
     uni.cod_unidad LIKE LEFT(@unidad_mayor, 2) + '%'
 AND 
     ecct.vigente = 'S'
+
+GRANT EXECUTE ON Analisis2.sg_cctosSecgen04 TO UsuaVrac
+GO

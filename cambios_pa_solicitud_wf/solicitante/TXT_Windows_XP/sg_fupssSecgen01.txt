@@ -1,9 +1,11 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_fupssSecgen01')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_fupssSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_fupssSecgen01
 GO
 
@@ -12,7 +14,7 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Seleccionar un funcionario espec√≠fico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
+   Objetivo : Seleccionar un funcionario especA≠fico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

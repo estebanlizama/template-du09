@@ -2,12 +2,9 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-      FROM sysobjects a, sysusers b
-     WHERE a.uid = b.uid
-       AND a.type = 'P'
-       AND b.name = 'Analisis2'
-       AND a.name = 'sg_fupssSecgen15'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_fupssSecgen15'
 )
     DROP PROCEDURE Analisis2.sg_fupssSecgen15
 GO
@@ -25,7 +22,6 @@ GO
    Creacion: 2026/07/10
    Actualizacion: Sin registro
 */
-
 CREATE PROCEDURE Analisis2.sg_fupssSecgen15
     @rut_person  char(9),
     @id_contrato int = 0,

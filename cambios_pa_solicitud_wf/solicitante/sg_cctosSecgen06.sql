@@ -1,9 +1,11 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_cctosSecgen06')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_cctosSecgen06'
+)
     DROP PROCEDURE Analisis2.sg_cctosSecgen06
 GO
 
@@ -19,7 +21,6 @@ GO
    Creacion: EL 2026/07/10
    Actualizacion: Sin registro
 */
-
 CREATE PROCEDURE Analisis2.sg_cctosSecgen06
     @cod_unifin int = NULL,
     @cod_ccto   int = NULL,

@@ -9,14 +9,12 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_apsosSecgen03
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_apsosSecgen03
 
-    Objetivo : Seleccionar el historial o datos de aprobacion de una solicitud
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Seleccionar el historial o datos de aprobacion de una solicitud
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_apsosSecgen03
     @nro_solici int = NULL,

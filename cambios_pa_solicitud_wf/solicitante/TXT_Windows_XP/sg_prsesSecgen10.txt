@@ -1,26 +1,25 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_prsesSecgen10')
-   drop procedure Analisis2.sg_prsesSecgen10
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen10'
+)
+    DROP PROCEDURE Analisis2.sg_prsesSecgen10
+GO
 
-/* Procedimiento : sg_prsesSecgen10
+/* Procedimiento : Analisis2.sg_prsesSecgen10
 
    Entrada :
    @cod_tipsol          -> Tipo de solicitud. (Opcional)
 
-   Objetivo : select Prestación de servicios
+   Objetivo : Consultar detalle de prestacion de servicios para seguimiento.
 
    Creacion: CHL 2022/12/27
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_prsesSecgen10
+CREATE PROCEDURE Analisis2.sg_prsesSecgen10
     @cod_tipsol tinyint = NULL
     as
 
@@ -49,7 +48,7 @@ create procedure  Analisis2.sg_prsesSecgen10
 
 go
 
-grant execute on Analisis2.sg_prsesSecgen10 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen10 TO UsuaVrac
 go
 
 --grant execute on Analisis2.sg_prsesSecgen10 to UsuaVrac2

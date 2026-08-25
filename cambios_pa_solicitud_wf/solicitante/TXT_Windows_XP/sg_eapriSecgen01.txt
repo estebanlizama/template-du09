@@ -2,19 +2,14 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-    FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid
-      AND a.type = 'P'
-      AND b.name = 'Analisis2'
-      AND a.name = 'sg_eapriSecgen01'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_eapriSecgen01'
 )
     DROP PROCEDURE Analisis2.sg_eapriSecgen01
 GO
 
 /* Procedimiento : Analisis2.sg_eapriSecgen01
-
-   Entrada : Ninguna.
 
    Objetivo : Asegurar el estado tecnico usado para cerrar tareas pendientes hermanas cuando una etapa paralela se rechaza o devuelve.
 

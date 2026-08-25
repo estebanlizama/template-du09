@@ -1,9 +1,11 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_fupsdSecgen01')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_fupsdSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_fupsdSecgen01
 GO
 
@@ -12,7 +14,7 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma at√≥mica.
+   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atA≥mica.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

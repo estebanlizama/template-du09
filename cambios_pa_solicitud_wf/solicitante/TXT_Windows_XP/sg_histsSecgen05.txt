@@ -1,26 +1,25 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_histsSecgen05')
-   drop procedure Analisis2.sg_histsSecgen05
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_histsSecgen05'
+)
+    DROP PROCEDURE Analisis2.sg_histsSecgen05
+GO
 
-/* Procedimiento : sg_histsSecgen05
+/* Procedimiento : Analisis2.sg_histsSecgen05
 
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Obtener el registro de la √∫ltima devoluci√≥n a observaci√≥n (id_tipacc = 4) para una solicitud de prestacion de servicios. Creaci√≥n: UFRO 2026
+   Objetivo : Obtener el registro de la A∫ltima devoluciA≥n a observaciA≥n (id_tipacc = 4) para una solicitud de prestacion de servicios. CreaciA≥n: UFRO 2026
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
-
-create procedure Analisis2.sg_histsSecgen05
+CREATE PROCEDURE Analisis2.sg_histsSecgen05
     @nro_solici int = null
     as
         SELECT
@@ -37,5 +36,5 @@ create procedure Analisis2.sg_histsSecgen05
         ORDER BY hist.f_creacion DESC, hist.id_histor DESC
 go
 
-grant execute on Analisis2.sg_histsSecgen05 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_histsSecgen05 TO UsuaVrac
 go

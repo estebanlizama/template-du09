@@ -1,13 +1,15 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_prseuSecgen01')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prseuSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_prseuSecgen01
 GO
 
-/* Procedimiento : sg_prseuSecgen01
+/* Procedimiento : Analisis2.sg_prseuSecgen01
 
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
@@ -21,7 +23,7 @@ GO
    @pry_global          -> Parametro de entrada. (Opcional)
    @cod_modprs          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Actualizar Prestaci√≥n de servicios con soporte de modalidad.
+   Objetivo : Actualizar PrestaciA≥n de servicios con soporte de modalidad.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

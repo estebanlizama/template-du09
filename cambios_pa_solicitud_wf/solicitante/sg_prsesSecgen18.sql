@@ -2,24 +2,19 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-    FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid
-      AND a.type = 'P'
-      AND b.name = 'Analisis2'
-      AND a.name = 'sg_prsesSecgen18'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen18'
 )
     DROP PROCEDURE Analisis2.sg_prsesSecgen18
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_prsesSecgen18
 
-    Objetivo : Seleccionar detalle de una solicitud PDS especifica asociada a un usuario
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Seleccionar detalle de una solicitud PDS especifica asociada a un usuario
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen18
     @nro_solici int = NULL,

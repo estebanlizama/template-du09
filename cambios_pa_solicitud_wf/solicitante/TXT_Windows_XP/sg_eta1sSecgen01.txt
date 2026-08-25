@@ -14,7 +14,7 @@ GO
    Entrada :
    @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
 
-   Objetivo : Sin descripcion
+   Objetivo : Listar las etapas vigentes configuradas para un flujo de solicitud especifico.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

@@ -1,27 +1,25 @@
-use secgen_db
+USE secgen_db
+GO
 
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen05'
+)
+    DROP PROCEDURE Analisis2.sg_prsesSecgen05
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_prsesSecgen05')
-   drop procedure Analisis2.sg_prsesSecgen05
-go
-
-/* Procedimiento : sg_prsesSecgen05
+/* Procedimiento : Analisis2.sg_prsesSecgen05
 
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : select Prestación de servicios
+   Objetivo : Consultar la informacion principal de una prestacion de servicios por numero de solicitud.
 
    Creacion: CHL 2022/12/27
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_prsesSecgen05
+CREATE PROCEDURE Analisis2.sg_prsesSecgen05
     @nro_solici int = Null
     as
 
@@ -65,5 +63,5 @@ create procedure  Analisis2.sg_prsesSecgen05
 
 go
 
-grant execute on Analisis2.sg_prsesSecgen05 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen05 TO UsuaVrac
 go

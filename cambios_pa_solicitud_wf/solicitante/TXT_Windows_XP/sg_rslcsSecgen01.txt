@@ -1,29 +1,25 @@
-use secgen_db
-go
-    if exists (
-        select
-            1
-        from
-            sysobjects a,
-            sysusers b
-        where
-            a.uid = b.uid
-            and a.type = 'P'
-            and b.name = 'Analisis2'
-            and a.name = 'sg_rslcsSecgen01'
-    ) drop procedure Analisis2.sg_rslcsSecgen01
-go
-    /* Procedimiento : sg_rslcsSecgen01
+USE secgen_db
+GO
+
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_rslcsSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_rslcsSecgen01
+GO
+
+/* Procedimiento : Analisis2.sg_rslcsSecgen01
 
    Entrada :
    @nro_resolu          -> Parametro de entrada. (Opcional)
 
-   Objetivo : seleccionar datos de resoluci√≥n
+   Objetivo : seleccionar datos de resoluciA≥n
 
    Creacion: AI 2023/02/28
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-    create procedure Analisis2.sg_rslcsSecgen01
+CREATE PROCEDURE Analisis2.sg_rslcsSecgen01
         @nro_resolu int = null
      as
         if @nro_resolu is null
@@ -41,6 +37,6 @@ from sg_rslc as rslc
 where rslc.nro_resolu = @nro_resolu
 commit tran
 go
-    grant execute on Analisis2.sg_rslcsSecgen01 to UsuaVrac
+    GRANT EXECUTE ON Analisis2.sg_rslcsSecgen01 TO UsuaVrac
 go
     

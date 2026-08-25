@@ -11,7 +11,7 @@ GO
 
 /* Procedimiento : Analisis2.sg_tflssSecgen01
 
-   Objetivo : Sin descripcion
+   Objetivo : Listar los tipos de flujos de solicitud (tfls) vigentes en el sistema.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

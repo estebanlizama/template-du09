@@ -1,31 +1,26 @@
+USE secgen_db
+GO
 
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_apreuSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_apreuSecgen01
+GO
 
-
-
-use secgen_db
-go
-
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_apreuSecgen01')
-   drop procedure Analisis2.sg_apreuSecgen01
-go
-
-/* Procedimiento : sg_apreuSecgen01
+/* Procedimiento : Analisis2.sg_apreuSecgen01
 
    Entrada :
    @id_aprbres          -> Parametro de entrada. (Opcional)
    @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
 
-   Objetivo : update Aprobaci√≥n de resoluciones
+   Objetivo : update AprobaciA≥n de resoluciones
 
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/02/22
 */
-
-create procedure  Analisis2.sg_apreuSecgen01
+CREATE PROCEDURE Analisis2.sg_apreuSecgen01
     @id_aprbres int = null,
     @cod_estapr tinyint = null
     as
@@ -59,5 +54,5 @@ create procedure  Analisis2.sg_apreuSecgen01
         commit tran
 go
 
-grant execute on Analisis2.sg_apreuSecgen01 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_apreuSecgen01 TO UsuaVrac
 go

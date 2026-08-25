@@ -1,15 +1,15 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_histsSecgen01')
-   drop procedure Analisis2.sg_histsSecgen01
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_histsSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_histsSecgen01
+GO
 
-/* Procedimiento : sg_histsSecgen01
+/* Procedimiento : Analisis2.sg_histsSecgen01
 
    Entrada :
    @id_perfil           -> Parametro de entrada. (Opcional)
@@ -19,10 +19,9 @@ go
    Objetivo : Obtener lista de una accion realizada un por perfil
 
    Creacion: SSY 31/03/2023
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_histsSecgen01
+CREATE PROCEDURE Analisis2.sg_histsSecgen01
     @id_perfil tinyint = NULL,
     @id_tipacc tinyint = NULL,
     @nro_resolu tinyint = NULL
@@ -63,6 +62,6 @@ create procedure  Analisis2.sg_histsSecgen01
         commit tran
 go
 
-grant execute on Analisis2.sg_histsSecgen01 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_histsSecgen01 TO UsuaVrac
 
 go

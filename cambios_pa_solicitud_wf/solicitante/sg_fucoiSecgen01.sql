@@ -1,20 +1,20 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_fucoiSecgen01')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_fucoiSecgen01'
+)
     DROP PROCEDURE Analisis2.sg_fucoiSecgen01
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_fucoiSecgen01
 
-    Objetivo : Insertar o registrar compromisos horarios de un funcionario
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Insertar o registrar compromisos horarios de un funcionario
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_fucoiSecgen01
     @id_funprse int = NULL,

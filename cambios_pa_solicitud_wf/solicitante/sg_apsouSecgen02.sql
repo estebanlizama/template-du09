@@ -17,7 +17,7 @@ GO
    @cod_etapa           -> Parametro de entrada. (Opcional)
    @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
 
-   Objetivo : Sin descripcion
+   Objetivo : Cerrar o actualizar las tareas pendientes de una etapa de solicitud, asignando un nuevo estado de aprobacion.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

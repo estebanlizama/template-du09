@@ -1,26 +1,25 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-           where a.uid  = b.uid
-             and a.type = 'P'
-             and b.name = 'Analisis2'
-             and a.name = 'sg_apsosSecgen01')
-    drop procedure Analisis2.sg_apsosSecgen01
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_apsosSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_apsosSecgen01
+GO
 
-/*
-    Entrada  :
+/* Procedimiento : Analisis2.sg_apsosSecgen01
 
-    @nro_solici         -> Numero Resolucion
+   Entrada :
+   @nro_solici         -> Numero Resolucion
 
-    Objetivo : Seleccionar comentario de solicitud
+   Objetivo : Seleccionar comentario de solicitud
 
-    Creacion: CHL 2022/12/13
-    Actualizacion: AI 2023/02/15
-
-    */
-create procedure Analisis2.sg_apsosSecgen01 @nro_solici int = None
+   Creacion: CHL 2022/12/13
+   Actualizacion: AI 2023/02/15
+*/
+CREATE PROCEDURE Analisis2.sg_apsosSecgen01 @nro_solici int = None
 as
     if @nro_solici is null
         begin
@@ -41,5 +40,5 @@ where
         apso.nro_solici = @nro_solici and apso.comentario like '%'
     commit tran
 go
-grant execute on Analisis2.sg_apsosSecgen01 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_apsosSecgen01 TO UsuaVrac
 go

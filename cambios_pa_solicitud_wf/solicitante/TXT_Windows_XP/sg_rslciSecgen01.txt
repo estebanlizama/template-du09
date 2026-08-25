@@ -1,15 +1,15 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_rslciSecgen01')
-   drop procedure Analisis2.sg_rslciSecgen01
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_rslciSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_rslciSecgen01
+GO
 
-/* Procedimiento : sg_rslciSecgen01
+/* Procedimiento : Analisis2.sg_rslciSecgen01
 
    Entrada :
    @ano_resolu          -> Parametro de entrada. (Obligatorio)
@@ -23,8 +23,7 @@ go
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/02/09
 */
-
-create procedure  Analisis2.sg_rslciSecgen01
+CREATE PROCEDURE Analisis2.sg_rslciSecgen01
     @ano_resolu smallint = None,
     @respon_res varchar(40) = NULL,
     @id_planti smallint = NULL,
@@ -100,5 +99,5 @@ select @nro_resolu as nro_resolu
 go
 
 
-grant execute on Analisis2.sg_rslciSecgen01 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_rslciSecgen01 TO UsuaVrac
 go

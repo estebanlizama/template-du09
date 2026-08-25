@@ -1,26 +1,25 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_prsesSecgen12')
-   drop procedure Analisis2.sg_prsesSecgen12
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen12'
+)
+    DROP PROCEDURE Analisis2.sg_prsesSecgen12
+GO
 
-/* Procedimiento : sg_prsesSecgen12
+/* Procedimiento : Analisis2.sg_prsesSecgen12
 
    Entrada :
    @rut_solici          -> RUT del solicitante. (Opcional)
 
-   Objetivo : Seleccionar solicitudes historicas prestaci√≥n de servicios listas para aprobar por rut
+   Objetivo : Seleccionar solicitudes historicas prestaciA≥n de servicios listas para aprobar por rut
 
    Creacion: AI 2023/05/11
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_prsesSecgen12
+CREATE PROCEDURE Analisis2.sg_prsesSecgen12
     @rut_solici varchar(9) = NULL
     as
 
@@ -50,5 +49,5 @@ create procedure  Analisis2.sg_prsesSecgen12
         ORDER BY soli.f_creacion DESC
 go
 
-grant execute on Analisis2.sg_prsesSecgen12 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_prsesSecgen12 TO UsuaVrac
 go

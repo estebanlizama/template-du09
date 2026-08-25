@@ -9,14 +9,12 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_fupssSecgen16
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_fupssSecgen16
 
-    Objetivo : Obtener informacion de un funcionario y su contrato activo
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Obtener informacion de un funcionario y su contrato activo
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen16
     @rut_person char(9),

@@ -1,28 +1,27 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_soliuSecgen03')
-   drop procedure Analisis2.sg_soliuSecgen03
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_soliuSecgen03'
+)
+    DROP PROCEDURE Analisis2.sg_soliuSecgen03
+GO
 
-/* Procedimiento : sg_soliuSecgen03
+/* Procedimiento : Analisis2.sg_soliuSecgen03
 
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
    @nro_resolu          -> Parametro de entrada. (Opcional)
    @ano_resolu          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Update datos de resoluci√≥n
+   Objetivo : Update datos de resoluciA≥n
 
    Creacion: AI 2023/02/03
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_soliuSecgen03
+CREATE PROCEDURE Analisis2.sg_soliuSecgen03
     @nro_solici int = NULL,
     @nro_resolu int = NULL,
     @ano_resolu smallint = NULL
@@ -68,5 +67,5 @@ create procedure  Analisis2.sg_soliuSecgen03
         commit tran
 go
 
-grant execute on Analisis2.sg_soliuSecgen03 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_soliuSecgen03 TO UsuaVrac
 go

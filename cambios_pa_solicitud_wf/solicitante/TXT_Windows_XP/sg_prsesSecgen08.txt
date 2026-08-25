@@ -2,24 +2,19 @@ USE secgen_db
 GO
 
 IF EXISTS (
-    SELECT 1
-    FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid
-      AND a.type = 'P'
-      AND b.name = 'Analisis2'
-      AND a.name = 'sg_prsesSecgen08'
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen08'
 )
     DROP PROCEDURE Analisis2.sg_prsesSecgen08
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_prsesSecgen08
 
-    Objetivo : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL

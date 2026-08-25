@@ -1,15 +1,15 @@
-use secgen_db
-go
+USE secgen_db
+GO
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'sg_pldesSecgen01')
-   drop procedure Analisis2.sg_pldesSecgen01
-go
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_pldesSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_pldesSecgen01
+GO
 
-/* Procedimiento : sg_pldesSecgen01
+/* Procedimiento : Analisis2.sg_pldesSecgen01
 
    Entrada :
    @id_planti           -> Parametro de entrada. (Obligatorio)
@@ -17,10 +17,9 @@ go
    Objetivo : select Plantilla Detalle
 
    Creacion: CHL 2022/12/13
-   Actualizacion: 
+   Actualizacion: Sin registro
 */
-
-create procedure  Analisis2.sg_pldesSecgen01
+CREATE PROCEDURE Analisis2.sg_pldesSecgen01
     @id_planti smallint = None
     as
 
@@ -47,5 +46,5 @@ create procedure  Analisis2.sg_pldesSecgen01
         commit tran
 go
 
-grant execute on Analisis2.sg_pldesSecgen01 to UsuaVrac
+GRANT EXECUTE ON Analisis2.sg_pldesSecgen01 TO UsuaVrac
 go

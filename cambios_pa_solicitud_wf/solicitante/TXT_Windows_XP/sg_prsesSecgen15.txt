@@ -1,12 +1,12 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-      WHERE a.uid  = b.uid
-        AND a.type = 'P'
-        AND b.name = 'Analisis2'
-        AND a.name = 'sg_prsesSecgen15')
-   DROP PROCEDURE Analisis2.sg_prsesSecgen15
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_prsesSecgen15'
+)
+    DROP PROCEDURE Analisis2.sg_prsesSecgen15
 GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen15
@@ -16,7 +16,6 @@ GO
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
 */
-
 CREATE PROCEDURE Analisis2.sg_prsesSecgen15
 AS
 BEGIN

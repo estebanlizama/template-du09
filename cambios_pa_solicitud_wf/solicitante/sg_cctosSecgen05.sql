@@ -1,20 +1,20 @@
 USE secgen_db
 GO
 
-IF EXISTS (SELECT 1 FROM sysobjects a, sysusers b
-           WHERE a.uid = b.uid AND a.type = 'P'
-           AND b.name = 'Analisis2' AND a.name = 'sg_cctosSecgen05')
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_cctosSecgen05'
+)
     DROP PROCEDURE Analisis2.sg_cctosSecgen05
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_cctosSecgen05
 
-    Objetivo : Obtener lista de centros de costo disponibles para un rut
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Obtener lista de centros de costo disponibles para un rut
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_cctosSecgen05
     @rut char(9) = NULL,

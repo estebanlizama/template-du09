@@ -9,14 +9,12 @@ IF EXISTS (
     DROP PROCEDURE Analisis2.sg_prsesSecgen13
 GO
 
-/*
-    Entrada  :
-    
-    Salida   :
+/* Procedimiento : Analisis2.sg_prsesSecgen13
 
-    Objetivo : Obtener las solicitudes de prestacion de servicios asignadas o pendientes para un usuario
-    Creacion : ELA 2026/08/24
-    Modificacion :
+   Objetivo : Obtener las solicitudes de prestacion de servicios asignadas o pendientes para un usuario
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: :
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen13
     @rut_solici varchar(9) = NULL

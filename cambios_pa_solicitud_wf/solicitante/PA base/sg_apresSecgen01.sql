@@ -1,19 +1,15 @@
-use secgen_db
-go
-    if exists (
-        select
-            1
-        from
-            sysobjects a,
-            sysusers b
-        where
-            a.uid = b.uid
-            and a.type = 'P'
-            and b.name = 'Analisis2'
-            and a.name = 'sg_apresSecgen01'
-    ) drop procedure Analisis2.sg_apresSecgen01
-go
-    /* Procedimiento : sg_apresSecgen01
+USE secgen_db
+GO
+
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_apresSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_apresSecgen01
+GO
+
+/* Procedimiento : Analisis2.sg_apresSecgen01
 
    Entrada :
    @nro_resolu          -> Parametro de entrada. (Opcional)
@@ -23,7 +19,7 @@ go
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/02/22
 */
-    create procedure Analisis2.sg_apresSecgen01 @nro_resolu int = null as\r\n    if @nro_resolu is null begin
+CREATE PROCEDURE Analisis2.sg_apresSecgen01 @nro_resolu int = null as\r\n    if @nro_resolu is null begin
 select
     'Falta campo numero de resolucion, se abortara el procedimiento.' msg return
 end
@@ -57,6 +53,6 @@ from
 where
     apre.nro_resolu = @nro_resolu
 go
-    grant execute on Analisis2.sg_apresSecgen01 to UsuaVrac
+    GRANT EXECUTE ON Analisis2.sg_apresSecgen01 TO UsuaVrac
 go
     

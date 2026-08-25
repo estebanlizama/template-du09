@@ -14,7 +14,7 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Sin descripcion
+   Objetivo : Listar las etapas configuradas y vigentes para el flujo asociado a una solicitud, indicando la etapa actual.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

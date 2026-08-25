@@ -1,19 +1,15 @@
-use secgen_db
-go
-    if exists (
-        select
-            1
-        from
-            sysobjects a,
-            sysusers b
-        where
-            a.uid = b.uid
-            and a.type = 'P'
-            and b.name = 'Analisis2'
-            and a.name = 'sg_soliiSecgen01'
-    ) drop procedure Analisis2.sg_soliiSecgen01
-go
-    /* Procedimiento : sg_soliiSecgen01
+USE secgen_db
+GO
+
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_soliiSecgen01'
+)
+    DROP PROCEDURE Analisis2.sg_soliiSecgen01
+GO
+
+/* Procedimiento : Analisis2.sg_soliiSecgen01
 
    Entrada :
    @rut_solici          -> RUT del solicitante. (Opcional)
@@ -25,7 +21,7 @@ go
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/01/27
 */
-    create procedure Analisis2.sg_soliiSecgen01 @rut_solici char(9) = NULL,
+CREATE PROCEDURE Analisis2.sg_soliiSecgen01 @rut_solici char(9) = NULL,
     @cod_estsol tinyint = NULL,
     @cod_tipsol tinyint = NULL
     as
@@ -91,6 +87,6 @@ select
     'Error al actualizar información de validación de proceso. Se aborta el procedimiento' msg if @@transtate = 2 rollback tran return
 end commit tran
 go
-    grant execute on Analisis2.sg_soliiSecgen01 to UsuaVrac
+    GRANT EXECUTE ON Analisis2.sg_soliiSecgen01 TO UsuaVrac
 go
     
