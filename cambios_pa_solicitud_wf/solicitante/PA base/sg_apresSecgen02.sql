@@ -23,7 +23,8 @@ go
    Creacion: AI 2023/02/24
    Actualizacion: 
 */
-    create procedure Analisis2.sg_apresSecgen02 @nro_resolu int = null as declare @cant_aprobaciones tinyint
+create procedure Analisis2.sg_apresSecgen02 @nro_resolu int = null as
+    declare @cant_aprobaciones tinyint
 select
     @cant_aprobaciones = count(nro_resolu)
 from

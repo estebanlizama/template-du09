@@ -8,7 +8,8 @@
    Creacion: ELA 2024 / 08 / 29
    Actualizacion: Sin registro
 */
-    create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as if @rut is null
+create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as
+    if @rut is null
 begin
 	select
 	'Falta el rut. Se aborta el procedimiento' msg return

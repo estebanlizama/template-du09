@@ -23,7 +23,7 @@ go
    Creacion: CHL 2022/12/13
    Actualizacion: AI 2023/02/22
 */
-    create procedure Analisis2.sg_apresSecgen01 @nro_resolu int = null as if @nro_resolu is null begin
+    create procedure Analisis2.sg_apresSecgen01 @nro_resolu int = null as\r\n    if @nro_resolu is null begin
 select
     'Falta campo numero de resolucion, se abortara el procedimiento.' msg return
 end
