@@ -32,7 +32,9 @@ CREATE TABLE #roles_du288 (
 )
 
 INSERT INTO #roles_du288 VALUES (6,  'prse_applicant',              'Solicitante prestacion de servicio')
+INSERT INTO #roles_du288 VALUES (7,  'vicechancellor_of_investigation', 'Vicerrector de investigación y postgrado')
 INSERT INTO #roles_du288 VALUES (8,  'finance_manager',             'Director/Encargado de finanzas unidad')
+INSERT INTO #roles_du288 VALUES (9,  'financial_officer',            'Secretaría de Finanzas')
 INSERT INTO #roles_du288 VALUES (10, 'finance_director',            'Director de Finanzas')
 INSERT INTO #roles_du288 VALUES (12, 'head_decreeing',              'Jefe de decretación')
 INSERT INTO #roles_du288 VALUES (13, 'human_resources_director',    'Director DGDP')
@@ -41,12 +43,18 @@ INSERT INTO #roles_du288 VALUES (15, 'rector',                      'Rector')
 INSERT INTO #roles_du288 VALUES (16, 'legality_director',           'Director de Legalidad')
 INSERT INTO #roles_du288 VALUES (17, 'university_comptroller',      'Contralor Universitario')
 INSERT INTO #roles_du288 VALUES (18, 'university_archive_head',     'Jefe de archivo Universitario')
+INSERT INTO #roles_du288 VALUES (21, 'chief_person',                'Jefe de división de personal y remuneraciones')
 INSERT INTO #roles_du288 VALUES (22, 'academic_vice_rector',        'Vicerrector Académico')
 INSERT INTO #roles_du288 VALUES (23, 'vraf',                        'Vicerrector de Administración y Finanzas')
+INSERT INTO #roles_du288 VALUES (24, 'applicant_head',              'Jefe coordinador')
 INSERT INTO #roles_du288 VALUES (25, 'project_head',                'Jefe de Proyecto')
 INSERT INTO #roles_du288 VALUES (26, 'project_department_head',     'Jefe de Departamento del Jefe de Proyecto')
 INSERT INTO #roles_du288 VALUES (27, 'dean',                        'Decano / Decanatura')
 INSERT INTO #roles_du288 VALUES (28, 'comptroller_officer',         'Profesional Contraloria Universitaria')
+INSERT INTO #roles_du288 VALUES (29, 'vipre',                       'Vicerrectoría de Pregrado')
+INSERT INTO #roles_du288 VALUES (30, 'ditt_director',               'Director DITT')
+INSERT INTO #roles_du288 VALUES (31, 'institute_director',          'Director de Instituto')
+INSERT INTO #roles_du288 VALUES (32, 'research_director',           'Director de Investigación')
 GO
 
 UPDATE sistema_db.dbo.bd_per1
@@ -92,6 +100,7 @@ INSERT INTO #privilegios_du288 VALUES (83, 'provision-request-resolution-create'
 INSERT INTO #privilegios_du288 VALUES (84, 'provision-request-resolution-read')
 INSERT INTO #privilegios_du288 VALUES (85, 'provision-request-resolution-send-to-sign')
 INSERT INTO #privilegios_du288 VALUES (86, 'provision-request-resolution-update')
+INSERT INTO #privilegios_du288 VALUES (87, 'provision-request-resolution-mark')
 INSERT INTO #privilegios_du288 VALUES (91, 'provision-request-resolution-document-sign-with-scope')
 GO
 
@@ -135,12 +144,23 @@ INSERT INTO #perfil_privilegio_du288 VALUES (6, 68)
 INSERT INTO #perfil_privilegio_du288 VALUES (6, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (6, 81)
 
+/* Vicerrectoria de Investigacion y Postgrado / VRIP. */
+INSERT INTO #perfil_privilegio_du288 VALUES (7, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (7, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (7, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (7, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (7, 81)
+
 /* Finanzas de unidad y Direccion de Finanzas. */
 INSERT INTO #perfil_privilegio_du288 VALUES (8, 65)
 INSERT INTO #perfil_privilegio_du288 VALUES (8, 67)
 INSERT INTO #perfil_privilegio_du288 VALUES (8, 68)
 INSERT INTO #perfil_privilegio_du288 VALUES (8, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (8, 81)
+INSERT INTO #perfil_privilegio_du288 VALUES (9, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (9, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (9, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (9, 81)
 INSERT INTO #perfil_privilegio_du288 VALUES (10, 65)
 INSERT INTO #perfil_privilegio_du288 VALUES (10, 67)
 INSERT INTO #perfil_privilegio_du288 VALUES (10, 68)
@@ -176,7 +196,9 @@ INSERT INTO #perfil_privilegio_du288 VALUES (15, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (15, 71)
 INSERT INTO #perfil_privilegio_du288 VALUES (15, 81)
 INSERT INTO #perfil_privilegio_du288 VALUES (16, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (16, 65)
 INSERT INTO #perfil_privilegio_du288 VALUES (16, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (16, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (16, 71)
 INSERT INTO #perfil_privilegio_du288 VALUES (16, 81)
 INSERT INTO #perfil_privilegio_du288 VALUES (16, 91)
@@ -193,6 +215,12 @@ INSERT INTO #perfil_privilegio_du288 VALUES (18, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (18, 70)
 INSERT INTO #perfil_privilegio_du288 VALUES (18, 81)
 
+/* Marcacion documental del flujo PDS base/compatibilidad. */
+INSERT INTO #perfil_privilegio_du288 VALUES (21, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (21, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (21, 81)
+INSERT INTO #perfil_privilegio_du288 VALUES (21, 87)
+
 /* Autoridades de facultad/vicerrectoria. */
 INSERT INTO #perfil_privilegio_du288 VALUES (22, 65)
 INSERT INTO #perfil_privilegio_du288 VALUES (22, 67)
@@ -205,8 +233,15 @@ INSERT INTO #perfil_privilegio_du288 VALUES (23, 67)
 INSERT INTO #perfil_privilegio_du288 VALUES (23, 68)
 INSERT INTO #perfil_privilegio_du288 VALUES (23, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (23, 70)
+INSERT INTO #perfil_privilegio_du288 VALUES (23, 71)
 INSERT INTO #perfil_privilegio_du288 VALUES (23, 81)
 INSERT INTO #perfil_privilegio_du288 VALUES (23, 91)
+
+/* Jefatura solicitante del flujo PDS base/compatibilidad. */
+INSERT INTO #perfil_privilegio_du288 VALUES (24, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (24, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (24, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (24, 81)
 
 /* Perfiles nuevos definidos para DU288. */
 INSERT INTO #perfil_privilegio_du288 VALUES (25, 65)
@@ -231,6 +266,28 @@ INSERT INTO #perfil_privilegio_du288 VALUES (28, 69)
 INSERT INTO #perfil_privilegio_du288 VALUES (28, 71)
 INSERT INTO #perfil_privilegio_du288 VALUES (28, 81)
 INSERT INTO #perfil_privilegio_du288 VALUES (28, 91)
+
+/* Autoridades especificas de las ramas DU288. */
+INSERT INTO #perfil_privilegio_du288 VALUES (29, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (29, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (29, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (29, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (29, 81)
+INSERT INTO #perfil_privilegio_du288 VALUES (30, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (30, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (30, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (30, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (30, 81)
+INSERT INTO #perfil_privilegio_du288 VALUES (31, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (31, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (31, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (31, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (31, 81)
+INSERT INTO #perfil_privilegio_du288 VALUES (32, 65)
+INSERT INTO #perfil_privilegio_du288 VALUES (32, 67)
+INSERT INTO #perfil_privilegio_du288 VALUES (32, 68)
+INSERT INTO #perfil_privilegio_du288 VALUES (32, 69)
+INSERT INTO #perfil_privilegio_du288 VALUES (32, 81)
 GO
 
 INSERT INTO sistema_db.dbo.bd_pepr

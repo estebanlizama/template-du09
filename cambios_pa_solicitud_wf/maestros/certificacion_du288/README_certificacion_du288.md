@@ -10,7 +10,8 @@ Paquete de ambientación limitado a la Prestación de Servicios DU288. Los datos
 | 2 | Catálogos y estados SECGEN | `02_catalogos_estados_du288.sql` | `sg_tsol`, `sg_tmod`, `sg_tpps`, `sg_esol`, `sg_eapr`, `sg_efun`, `sg_ersl`, `sg_tacc` |
 | 3 | Topes normativos 2026 | `03_topes_cargo_du288.sql` | `sg_toca` |
 | 4 | Plantilla de resolución | `04_plantilla_resolucion_du288.sql` | `sg_plse`, `sg_plre`, `sg_plde` |
-| 5 | Transiciones de workflow | `05_transiciones_flujo_du288.sql` | `sg_eta2` |
+| 5 | Flujos y etapas | `05_flujos_etapas_du288.sql` | `sg_tfls`, `sg_eta1` |
+| 6 | Transiciones de workflow | `06_transiciones_flujo_du288.sql` | `sg_eta2` |
 
 Los archivos `.txt` tienen el mismo nombre base y deben conservarse junto al SQL correspondiente para la entrega a certificación.
 
@@ -20,7 +21,11 @@ Los archivos `.txt` tienen el mismo nombre base y deben conservarse junto al SQL
 
 Se ambientan únicamente los perfiles DU288 de `SG/SISSOLIC`:
 
-`6`, `8`, `10`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `22`, `23`, `25`, `26`, `27` y `28`.
+`6`, `7`, `8`, `9`, `10`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`, `30`, `31` y `32`.
+
+Los perfiles `9 financial_officer`, `21 chief_person` y `24 applicant_head`
+se conservan como base de compatibilidad PDS, aunque no representen una etapa
+propia dentro de las 99 etapas del motor DU288.
 
 Los perfiles nuevos mantienen los IDs definidos:
 
@@ -30,14 +35,22 @@ Los perfiles nuevos mantienen los IDs definidos:
 | 26 | `project_department_head` |
 | 27 | `dean` |
 | 28 | `comptroller_officer` |
+| 29 | `vipre` |
+| 30 | `ditt_director` |
+| 31 | `institute_director` |
+| 32 | `research_director` |
 
 ### Privilegios
 
 Se ambientan solamente los privilegios PDS utilizados por DU288:
 
-`65`, `66`, `67`, `68`, `69`, `70`, `71`, `81`, `83`, `84`, `85`, `86` y `91`.
+`65`, `66`, `67`, `68`, `69`, `70`, `71`, `81`, `83`, `84`, `85`, `86`, `87` y `91`.
 
 El script carga la matriz completa esperada por rol. No elimina permisos institucionales que ya existan.
+
+El privilegio `72` no se carga ni se asigna: en la base vigente corresponde a
+`scientific-productivity-incentives-document-read`, por lo que pertenece a otro
+ámbito funcional y no a Prestación de Servicios DU288.
 
 ### Catálogos SECGEN
 
@@ -61,7 +74,7 @@ El script carga la matriz completa esperada por rol. No elimina permisos institu
 
 ### Workflow
 
-`05_transiciones_flujo_du288` conserva los identificadores definidos para los ocho flujos:
+`05_flujos_etapas_du288` carga los ocho flujos y sus 99 etapas. `06_transiciones_flujo_du288` carga las 265 transiciones correspondientes:
 
 | Flujo | Ámbito |
 |---:|---|
@@ -74,7 +87,7 @@ El script carga la matriz completa esperada por rol. No elimina permisos institu
 | 7 | VIPRE |
 | 8 | VRIP |
 
-La carga de `sg_eta2` exige que las filas institucionales correspondientes ya existan en `sg_tfls` y `sg_eta1`. El repositorio no contiene una carga aprobada y completa para recrear esas dos tablas desde cero; por eso no se inventaron perfiles, cargos ni etapas. Antes de ejecutar el archivo 05 se debe respaldar y validar esa configuración en certificación.
+Las etapas conservan sus IDs y perfiles definidos. Los actores dinámicos `6`, `25` y `26`, junto con las autoridades dependientes de la unidad, mantienen `cod_organi = NULL`. Las autoridades institucionales fijas se cargan con los códigos vigentes documentados. El archivo 05 debe ejecutarse antes del 06.
 
 ## Exclusiones deliberadas
 
@@ -91,8 +104,8 @@ En DU288, el actor dinámico se determina por la etapa y el RUT asignado en `sg_
 ## Comportamiento de los scripts
 
 - Los catálogos, roles, privilegios, topes y plantilla se actualizan cuando el ID ya existe y se insertan cuando falta.
-- Las asociaciones de permisos y transiciones se insertan solo si no existen.
+- Las asociaciones de permisos se insertan solo si no existen.
+- Los flujos, etapas y transiciones se actualizan cuando existen y se insertan cuando faltan.
 - No se crean ni modifican estructuras de tablas.
 - No se eliminan registros.
 - Todos los scripts están preparados para Sybase ASE y usan los IDs previamente definidos para DU288.
-
