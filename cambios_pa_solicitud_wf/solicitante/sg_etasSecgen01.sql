@@ -108,8 +108,67 @@ BEGIN
         ELSE 'ORGANIZACION_FIJA'
     END
 
-    /* Solo Jefe Directo puede omitirse por repeticion de responsable. */
-    SELECT @perm_omitir = CASE WHEN @cod_perfil = 26 THEN 'S' ELSE 'N' END
+    /*
+       Omision por responsable repetido.
+
+       Una misma persona no debe visar dos veces la misma solicitud: si vuelve
+       a aparecer como responsable en una etapa posterior, la etapa temprana se
+       omite y la revision queda en la etapa mas avanzada, que es la que tiene
+       el expediente completo.
+
+       Aplica a cualquier perfil (Jefe Directo, Jefe de Proyecto, DGDP, Decano,
+       Directores de Instituto, Finanzas y etapas de firma). Antes solo se
+       permitia para Jefe Directo (cod_perfil = 26), por lo que una persona con
+       doble rol institucional -- por ejemplo Jefe de Proyecto que ademas es
+       DGDP, o Director de Instituto que ademas es Decano -- terminaba firmando
+       dos veces el mismo tramite.
+
+       Unica excepcion: el Solicitante (cod_perfil = 6) nunca se omite. No es un
+       revisor sino quien presenta la solicitud, y omitir su etapa saltaria la
+       devolucion a correccion.
+
+       El backend solo omite cuando ADEMAS encuentra a la misma persona en una
+       etapa posterior real (ver getFutureApproversByStage y
+       assignWorkflowApprovalsWithSkips). Este campo habilita la evaluacion, no
+       la fuerza.
+
+       Perfiles formales que NUNCA se omiten. Cada uno ejecuta un acto propio
+       -- firma, control de legalidad, decretacion o archivo -- que no queda
+       cubierto porque la persona revise en otra etapa:
+
+           6  Solicitante                     (presenta, no revisa)
+          12  Jefe de Decretacion
+          13  DGDP
+          14  Secretario General              (firma)
+          16  Director de Legalidad
+          17  Contralor Universitario
+          18  Jefe Archivo Universitario
+          23  VRAF                            (firma)
+
+       Cualquier otro perfil -- Jefe de Proyecto, Jefe de Departamento, Decano,
+       Directores de Instituto, DITT o Investigacion, encargados de finanzas --
+       si puede omitirse cuando la misma persona reaparece mas adelante.
+
+       El Jefe de Proyecto (25) es omitible a proposito: el mismo cargo puede
+       recaer en cualquiera de los roles posteriores del flujo (Director de
+       Investigacion, DITT, Decano, DGDP, VRIP, VRAF o Secretario General). En
+       esos casos la revision queda en la etapa mas avanzada, que es la que
+       tiene el expediente completo. La politica documentada en
+       motor_configurable_flujos_responsables_du288.md lo listaba como fijo;
+       se excluye de esa lista por decision de negocio.
+
+       Se usa cod_perfil y no el nombre de la etapa: des_etapa es texto libre y
+       puede escribirse distinto en cada flujo, mientras que cod_perfil es la
+       llave real contra sistema_db..bd_per1.
+
+       Politica definida en
+       maestros/motor_configurable_flujos_responsables_du288.md, seccion
+       "Regla de omision".
+    */
+    SELECT @perm_omitir = CASE
+        WHEN @cod_perfil IN (6, 12, 13, 14, 16, 17, 18, 23) THEN 'N'
+        ELSE 'S'
+    END
 
     /*
        El Decano del flujo Facultad depende de la unidad financiera de la

@@ -25,40 +25,141 @@ sg_tfls -> sg_eta1 -> sg_eta2 -> sg_prse -> sg_apso
 
 Tampoco se consulta `bd_pri2`. Los permisos se resuelven con `sistema_db.dbo.bd_per1`, `bd_prvg` y `bd_pepr`.
 
-## 2. Vista general de relaciones
+## 2. Qué hacer según lo que necesite actualizar
 
-```mermaid
-erDiagram
-    sg_tsol ||--o{ sg_soli : clasifica
-    sg_esol ||--o{ sg_soli : estado
-    sg_soli ||--|| sg_prse : contiene
-    sg_tmod ||--o{ sg_prse : modalidad
-    sg_tfls ||--o{ sg_eta1 : define
-    sg_eta1 ||--o{ sg_eta2 : origen
-    sg_eta1 ||--o{ sg_eta2 : destino
-    sg_tacc ||--o{ sg_eta2 : accion
-    sg_esol ||--o{ sg_eta2 : resultado
-    sg_eta1 ||--o{ sg_prse : etapa_actual
-    sg_prse ||--o{ sg_fups : funcionarios
-    sg_efun ||--o{ sg_fups : estado
-    sg_fups ||--o{ sg_fuho : horario_ejecucion
-    sg_fups ||--o{ sg_fuco : compensaciones
-    sg_fups ||--o{ sg_his2 : historial_funcionario
-    sg_soli ||--o{ sg_apso : tareas
-    sg_eta1 ||--o{ sg_apso : etapa_asignada
-    sg_fups o|--o{ sg_apso : alcance_funcionario
-    sg_eapr ||--o{ sg_apso : estado_tarea
-    sg_soli ||--o{ sg_hist : trazabilidad
-    sg_tacc ||--o{ sg_hist : accion
-    sg_plse ||--o{ sg_plde : seccion
-    sg_tsol ||--o{ sg_plre : plantilla
-    sg_plre ||--o{ sg_plde : detalle_plantilla
-    sg_plre ||--o{ sg_rslc : materializa
-    sg_ersl ||--o{ sg_rslc : estado_resolucion
-    sg_rslc ||--o{ sg_rede : detalle
-    sg_rslc ||--o{ sg_apre : firmantes
-    sg_rslc o|--o{ sg_soli : formaliza
+Esta sección responde las preguntas más frecuentes. Cada tarea indica **qué tablas tocar y en qué orden**, y cómo confirmar que quedó bien.
+
+Antes de empezar, una advertencia que explica casi todos los problemas de certificación:
+
+> **Estas tablas no tienen FK entre bases.** La base lo deja cargar en cualquier orden sin reclamar nada. Pero los procedimientos las cruzan con `INNER JOIN`, y si falta la fila padre **el registro completo desaparece de la pantalla**, no solo ese campo. Por eso un dato puede estar bien cargado y aun así no aparecer.
+
+| Necesito... | Vaya a |
+|---|---|
+| Habilitar o corregir un funcionario | §2.1 |
+| Crear o corregir un centro de costo | §2.2 |
+| Dejar ítems y saldos al día | §2.3 |
+| Que las etapas tengan quién apruebe | §2.4 |
+| Saber qué NO se carga a mano | §2.5 |
+
+---
+
+### 2.1 Actualizar un funcionario
+
+| Paso | Tabla | Qué debe quedar |
+|---|---|---|
+| 1 | `sisper_db.sp_pers` | La persona existe con su RUT. Si no está acá, nada más va a resolver. |
+| 2 | `sisper_db`: `sp_carg`, `sp_cali`, `sp_estm`, `sp_jorn`, `sp_jpfu`, `sp_nigr`, `sp_sede`, `sp_vigc` | Existen el cargo, calidad, estamento, jornada, jerarquía, nivel, sede y vigencia que va a usar el contrato. |
+| 3 | `ufro_db.es_unid` | Existe la unidad donde trabaja. |
+| 4 | `sisper_db.sp_cont` | El contrato, **vigente y cubriendo el período** de la solicitud de prueba. Si no cubre las fechas, el contrato no aparece como elegible. |
+| 5 | `sisper_db.ss_habe` y `ss_hrem` | Haberes del **mes inmediatamente anterior** a la fecha de la solicitud. Sin ese mes exacto, el tope falla con `REMUNERACION_MES_NO_DISPONIBLE`. |
+| 6 | `sisper_db.sp_par1`, `sp_par2` | Parentesco, solo si va a probar esa validación. Vacías no rompen nada, pero tampoco prueban nada. |
+| 7 | `sisper_db.sp_asng`, `sp_orde`, `sp_desg` | Asignaciones y designaciones, si va a probar carga horaria o inhabilidades por cargo. |
+
+**Cómo saber si quedó bien:** busque el funcionario en el formulario de solicitud. Debe aparecer con su contrato, cargo y un tope mensual calculado, no en blanco ni con error.
+
+---
+
+### 2.2 Actualizar un centro de costo
+
+El orden acá es estricto: los tres primeros entran por `INNER JOIN`, así que sin ellos **el centro no aparece** aunque esté cargado.
+
+| Paso | Tabla | Qué debe quedar |
+|---|---|---|
+| 1 | `fin21_db.es_ufin` | La unidad financiera. Obligatoria. |
+| 2 | `fin21_db.es_ecct` | El estado del centro. Obligatoria. |
+| 3 | `fin21_db.es_tfin` | El tipo de financiamiento. Obligatoria. |
+| 4 | `fin21_db.sf_ftfn`, `sf_deaf` | Fuente de financiamiento y decreto. Opcionales: si faltan, el centro aparece igual pero esos campos salen vacíos. |
+| 5 | `sisper_db.sp_pers` + `ufro_db.es_unid` | El responsable del centro y su unidad deben existir. |
+| 6 | `fin21_db.es_ccto` | El centro de costo. Su unidad debe permitir determinar un flujo vigente, o la solicitud no encuentra workflow. |
+
+**Cómo saber si quedó bien:** el centro aparece en el selector de la solicitud, con nombre, proyecto y jefe de proyecto resueltos.
+
+---
+
+### 2.3 Actualizar ítems y saldos
+
+Va **después** de §2.2: todo acá depende de que el centro ya exista.
+
+Los ítems son una jerarquía de cuatro niveles. Cárguelos de arriba hacia abajo: si falta un nivel, la validación de saldo no encuentra la cuenta y **no devuelve nada**, sin avisar.
+
+| Paso | Tabla | Qué debe quedar |
+|---|---|---|
+| 1 | `fin21_db.pt_ticp` | Tipo de cuenta. Es la raíz de la jerarquía. |
+| 2 | `fin21_db.pt_titl` | Subtítulos. Se enlazan a `pt_ticp` por `cod_cuenta`. |
+| 3 | `fin21_db.pt_item` | Los ítems presupuestarios. Se enlazan a `pt_titl` por `cod_subtitulo`. |
+| 4 | `fin21_db.pt_sitm` | Los subítems. Se enlazan a `pt_item` por `cod_item`. |
+| 5 | `fin21_db.pt_depr` | Los movimientos presupuestarios. |
+| 6 | `fin21_db.sf_docf` | Los documentos financieros. |
+| 7 | `fin21_db.sf_pfoc` | El enlace entre documento y movimiento. |
+| 8 | `sisper_db.wf_sol2` y `wf_tra1` | Los compromisos de personal del centro. **Descuentan saldo**: si faltan, el centro muestra más plata disponible de la que realmente tiene. |
+
+La cadena completa de la jerarquía es:
+
+```text
+pt_sitm.cod_item      -> pt_item.cod_item
+pt_item.cod_subtitulo -> pt_titl.cod_subtitulo
+pt_titl.cod_cuenta    -> pt_ticp.cod_cuenta
 ```
+
+`valida_saldo_cc_cs` recorre esa cadena completa para obtener el tipo de cuenta y el subtítulo del ítem. Usa el cruce antiguo por comas, que se comporta como `INNER JOIN`: **si falta cualquiera de los cuatro niveles, la consulta no devuelve fila** y la validación de saldo queda sin datos.
+
+`pt_depr`, `sf_docf` y `sf_pfoc` se cruzan entre sí por `pt_depr.numero` ↔ `sf_docf.numero` ↔ `sf_pfoc.sf_numero`. Si carga movimientos sin su documento, o al revés, **el saldo sale incompleto sin dar ningún error**.
+
+`wf_sol2` y `wf_tra1` no son solo dato laboral: `valida_saldo_cc_cs` las suma al saldo del centro como gasto comprometido de personal (ítem `30700`). Van siempre juntas, enlazadas por `ano` + `nro_folio`, y filtradas por `cod_est_cc in (0,1,3)`. Si carga una sin la otra, el compromiso no se descuenta.
+
+**Cómo saber si quedó bien:** al elegir el centro en la solicitud, la tabla de saldos muestra montos reales, no ceros ni "sin información". Si el saldo disponible se ve más alto de lo esperado, revise `wf_sol2`/`wf_tra1`: probablemente falten los compromisos de personal.
+
+---
+
+### 2.4 Actualizar los aprobadores de las etapas
+
+Este es el caso que más veces deja una solicitud detenida sin explicación aparente.
+
+| Paso | Tabla | Qué debe quedar |
+|---|---|---|
+| 1 | `ufro_db.es_unid` | Las unidades. |
+| 2 | `ufro_db.es_orga` | El árbol organizacional. **Cargue las unidades padre antes que las hijas**: la búsqueda de jefatura sube por `cod_orgjef` y se corta si falta un eslabón. |
+| 3 | `sisper_db.sp_orco` | Ocupantes de cargos organizacionales. |
+| 4 | `sisper_db.sp_aufi` | Autoridades y subrogancias, para cuando no hay ocupante en ORCO. |
+
+**Cómo saber si quedó bien:** envíe una solicitud de prueba y confirme que la tarea le llega al RUT esperado en cada etapa. Si una etapa queda sin actor, el problema está acá, no en `sg_eta1`.
+
+---
+
+### 2.5 Qué NO se carga a mano
+
+Estas tablas aparecen más adelante en el documento porque forman parte del módulo, pero **no se cargan manualmente**. Si las llena a mano, en el mejor caso el trabajo se pierde y en el peor deja IDs duplicados.
+
+**Se crean solas al usar la aplicación.** No las copie desde desarrollo: genere una solicitud de prueba real y el sistema las escribe en el orden correcto.
+
+```text
+sg_soli    la solicitud
+sg_prse    la prestación
+sg_fups    los funcionarios de la solicitud
+sg_fuho    el horario de ejecución
+sg_fuco    las compensaciones
+sg_apso    las tareas de cada etapa
+sg_hist    la trazabilidad
+sg_his2    el historial por funcionario
+sg_rslc    la resolución
+sg_rede    el detalle de la resolución
+sg_apre    los firmantes
+```
+
+Los procedimientos calculan el siguiente ID desde `sg_parm`. Una carga manual que no actualice ese correlativo provoca claves duplicadas más adelante.
+
+**No pertenecen a este flujo.** No las toque aunque existan:
+
+```text
+sg_fume, sg_ecuo    solo pagos, no se usan al crear una solicitud DU288
+bd_pri2             reemplazada; el flujo vigente no la consulta
+sg_wflu, sg_wfet, sg_wfin, sg_wfei, sg_apsa, sg_apsf, sg_hiap
+                    propuestas que nunca se implementaron
+```
+
+**Lo único que sí se revisa a mano en `secgen_db`** son los catálogos y la configuración del flujo, y solo para confirmar que existan los códigos que va a usar: `sg_tsol`, `sg_esol`, `sg_tmod`, `sg_efun`, `sg_eapr`, `sg_tacc`, `sg_tpps`, `sg_ersl`, más `sg_tfls` → `sg_eta1` → `sg_eta2` en ese orden, `sg_toca` para topes y `sg_plre` → `sg_plde` para la plantilla. El detalle está en §5 y §11.
+
+---
 
 ## 3. Clasificación de tablas
 
@@ -230,7 +331,10 @@ archivo_db..ar_adm1
 archivo_db..ar_parm
 archivo_db..ar_prm2
 archivo_db..ar_prm3
+archivo_db..ar_edoc
 ```
+
+`ar_edoc` (estado del documento) solo aparece en el PA base `ar_doc1sSecgen01.sql`. Verificar si el flujo DU288 vigente lo requiere antes de cargarlo.
 
 Orden de creación de una resolución:
 
@@ -265,8 +369,9 @@ Estas tablas no deben replicarse como tablas PDS. Sin datos coherentes en certif
 | `es_ufin` | Unidad financiera. |
 | `es_ecct` | Estado del centro de costo. |
 | `es_tfin` | Tipo de financiamiento. |
+| `sf_ftfn` | Fuente de financiamiento (`cod_ftfn`/`des_ftfn`). Distinta de `es_tfin`: se muestra en el comparador de PDS previas y en el detalle del centro de costo. |
 | `sf_deaf` | Decreto/afectación asociado al centro. |
-| `pt_item`, `pt_sitm` | Ítems y subítems presupuestarios. |
+| `pt_ticp`, `pt_titl`, `pt_item`, `pt_sitm` | Jerarquía presupuestaria completa: tipo de cuenta → subtítulo → ítem → subítem. `valida_saldo_cc_cs` la recorre entera para resolver el tipo de cuenta del ítem. |
 | `pt_depr`, `sf_docf`, `sf_pfoc` | Movimientos y documentos usados para determinar saldo. |
 
 ### 8.2 Personas y contratos (`sisper_db`)
@@ -301,6 +406,50 @@ contrato -> unidad -> es_orga.cod_organi
          -> si no existe, subir por es_orga.cod_orgjef
          -> detener según límite organizacional definido
 ```
+
+### 8.4 Referencia por tabla
+
+Si ya sabe qué tabla va a tocar y solo necesita confirmar sus dependencias, use estas tablas. Para saber por dónde empezar según la tarea, vea §2.
+
+#### `ufro_db` — organización
+
+| Tabla | Qué carga | Antes necesita | Habilita | Ojo con |
+|---|---|---|---|---|
+| `es_unid` | Unidades institucionales. | Nada. Es de las primeras. | `es_orga`, `sp_cont`, responsable del centro de costo. | — |
+| `es_orga` | Árbol organizacional y su jefatura (`cod_orgjef`). | `es_unid`. | `sp_orco`, `sp_aufi`, resolución de jefe directo. | Se apunta a sí misma: cargue las unidades padre antes que las hijas, o el escalamiento de jefatura se corta. |
+
+#### `sisper_db` — personas y contratos
+
+| Tabla | Qué carga | Antes necesita | Habilita | Ojo con |
+|---|---|---|---|---|
+| `sp_carg`, `sp_cali`, `sp_estm`, `sp_jorn`, `sp_jpfu`, `sp_nigr`, `sp_sede`, `sp_vigc`, `sp_para` | Catálogos laborales: cargo, calidad, estamento, jornada, jerarquía/planta, nivel de grado, sede, vigencia, parámetros. | Nada. | `sp_cont`. | `sp_carg` además lo necesita la regla de tope `sg_toca`. |
+| `sp_pers` | Identidad y nombre de la persona. | Nada formal, pero es la base de todo lo laboral. | Contratos, parentesco, haberes, actores. | Si el RUT de prueba no está aquí, nada más de esta base va a resolver. |
+| `sp_cont` | Contrato: cargo, unidad, jornada, jerarquía. | `sp_pers`, los catálogos laborales de arriba, `es_unid`. | Cálculo de tope, validación de jornada, jefe directo. | Debe estar **vigente y cubrir el período** de la solicitud de prueba, o el contrato no aparece como elegible. |
+| `sp_orco` | Ocupantes de cargos organizacionales. | `sp_pers`, `es_orga`. | **Resuelve quién aprueba cada etapa.** | Si falta, la etapa queda sin actor y la solicitud se detiene aunque `sg_eta1` esté bien configurada. |
+| `sp_aufi` | Autoridades y subrogancias. | `sp_pers`, `es_orga`. | Actores cuando no hay ocupante en ORCO. | Igual que `sp_orco`: sin datos, no hay a quién asignar la tarea. |
+| `sp_par1`, `sp_par2` | Parentesco. | `sp_pers`. | Validación de parentesco con el jefe de proyecto. | Si están vacías, la validación pasa sin detectar nada — no falla, pero tampoco prueba nada. |
+| `sp_orde`, `sp_desg` | Designaciones y funciones vigentes. | `sp_pers`, `sp_cont`. | Inhabilidades por cargo, actores alternativos. | — |
+| `sp_asng` | Asignaciones. | `sp_cont`. | Carga horaria acumulada. | — |
+| `ss_habe`, `ss_hrem` | Haberes y remuneración. | `sp_pers`, `sp_cont`. | Cálculo de tope por haber efectivo. | Debe existir el **mes inmediatamente anterior** a la fecha de la solicitud; si no, el tope devuelve `REMUNERACION_MES_NO_DISPONIBLE`. |
+| `wf_sol2`, `wf_tra1` | Movimientos laborales. | `sp_pers`, `sp_cont`. | Consultas de saldo y carga. | — |
+
+#### `fin21_db` — finanzas
+
+| Tabla | Qué carga | Antes necesita | Habilita | Ojo con |
+|---|---|---|---|---|
+| `es_ufin` | Unidad financiera. | Nada. | `es_ccto`. | **INNER JOIN**: sin esta fila el centro de costo no aparece. |
+| `es_ecct` | Estado del centro de costo. | Nada. | `es_ccto`. | **INNER JOIN**: mismo efecto. |
+| `es_tfin` | Tipo de financiamiento. | Nada. | `es_ccto`. | **INNER JOIN**: mismo efecto. |
+| `sf_ftfn` | Fuente de financiamiento (`cod_ftfn`/`des_ftfn`). | Nada. | Dato de financiamiento en el comparador de PDS previas. | LEFT JOIN: si falta, el centro igual aparece pero el financiamiento sale vacío. |
+| `sf_deaf` | Decreto/afectación. | Nada. | Dato de decreto del centro. | LEFT JOIN: mismo caso. |
+| `pt_item` | Ítems presupuestarios. | Nada. | `pt_sitm`, movimientos de saldo. | — |
+| `pt_sitm` | Subítems presupuestarios. | `pt_item`. | Movimientos de saldo, ítem del funcionario. | — |
+| `es_ccto` | Centro de costo, responsable y datos de proyecto. | `es_ufin`, `es_ecct`, `es_tfin` (obligatorios) + `sf_ftfn`, `sf_deaf` (opcionales) + `sp_pers` del responsable + `es_unid`. | Toda la solicitud: sin centro no hay dónde imputar. | Su unidad debe permitir determinar un flujo vigente (`sg_flusSecgen01`), o la solicitud no encuentra workflow. |
+| `pt_depr`, `sf_docf`, `sf_pfoc` | Movimientos y documentos de saldo. | `es_ccto`, `pt_item`, `pt_sitm`. | Cálculo de saldo disponible. | Van al final: dependen de que el centro ya exista. |
+
+Verificado en `sg_cctosSecgen05.sql`: `es_ecct`, `es_tfin` y `es_ufin` entran por `INNER JOIN`; `sf_ftfn` y `sf_deaf` por `LEFT JOIN`.
+
+> Las dependencias de arriba están tomadas de los `JOIN` reales de los PA, no de FK declaradas en el esquema. Si va a cargar en producción o certificación, confirme la restricción real con `sp_helpconstraint <tabla>`, igual que se indica para `sg_eta2` en §4.2.
 
 ## 9. Matriz “si agrego X, qué más debo agregar”
 
