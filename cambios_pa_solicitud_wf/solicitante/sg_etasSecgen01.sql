@@ -48,6 +48,9 @@ BEGIN
     DECLARE @estado_configuracion varchar(20)
     DECLARE @mensaje_configuracion varchar(255)
     DECLARE @conflicto_funcionario char(1)
+    DECLARE @cod_organi_conflicto int
+    DECLARE @cod_organi_escalado int
+    DECLARE @escalado char(1)
 
     SELECT @cod_flusol1 = ISNULL(@cod_flusol, prse.cod_flusol)
     FROM dbo.sg_prse prse
@@ -144,10 +147,19 @@ BEGIN
           17  Contralor Universitario
           18  Jefe Archivo Universitario
           23  VRAF                            (firma)
+          10  Director de Finanzas            (control presupuestario)
 
-       Cualquier otro perfil -- Jefe de Proyecto, Jefe de Departamento, Decano,
-       Directores de Instituto, DITT o Investigacion, encargados de finanzas --
-       si puede omitirse cuando la misma persona reaparece mas adelante.
+       Director de Finanzas se agrega al bloque formal: ejecuta el control
+       de disponibilidad presupuestaria del centro de costo, que no queda
+       cubierto porque la misma persona haya revisado antes con otro rol.
+       Con esto el tronco comun queda parejo: ninguna de sus ocho etapas
+       se omite.
+
+       Cualquier otro perfil si puede omitirse cuando la misma persona
+       reaparece mas adelante: Jefe de Proyecto (25), Jefe Directo (26),
+       Director o Encargado de Facultad (8), Decano (27), Director de
+       Investigacion (32), Director DITT (30), Director de Instituto (31),
+       VRIP (7), VRAC (22) y VIPRE (29).
 
        El Jefe de Proyecto (25) es omitible a proposito: el mismo cargo puede
        recaer en cualquiera de los roles posteriores del flujo (Director de
@@ -166,7 +178,7 @@ BEGIN
        "Regla de omision".
     */
     SELECT @perm_omitir = CASE
-        WHEN @cod_perfil IN (6, 12, 13, 14, 16, 17, 18, 23) THEN 'N'
+        WHEN @cod_perfil IN (6, 10, 12, 13, 14, 16, 17, 18, 23) THEN 'N'
         ELSE 'S'
     END
 
@@ -255,6 +267,16 @@ BEGIN
 
     IF @estrategia = 'SOLICITANTE'
     BEGIN
+        /*
+           Esta rama NO filtra contra sg_fups, a proposito. El solicitante no
+           revisa: presenta, y su etapa es la via de devolucion a correccion.
+           Descartarlo por conflicto dejaria la solicitud sin nadie que pueda
+           corregirla.
+
+           Que el solicitante no sea funcionario se garantiza aguas arriba, al
+           incorporarlo: validateNormativeRequestStaff rechaza esa combinacion
+           con DU288_APPLICANT_IS_STAFF.
+        */
         SELECT @rut_responsable = soli.rut_solici
         FROM dbo.sg_soli soli
         WHERE soli.nro_solici = @nro_solici
@@ -280,9 +302,26 @@ BEGIN
 
     IF @estrategia = 'JEFE_PROYECTO'
     BEGIN
+        /*
+           El Jefe de Proyecto se excluye si es funcionario de la prestacion,
+           igual que en las etapas de organizacion. Antes se devolvia el RUT
+           sin filtrar y el bloqueo lo hacia el backend, que no distingue esta
+           causa de un dato faltante: la pantalla decia lo mismo si no habia
+           jefe de proyecto cargado que si el jefe era el propio prestador.
+        */
+        SELECT @conflicto_funcionario = 'N'
         SELECT @rut_responsable = prse.rut_jefpro
         FROM dbo.sg_prse prse
         WHERE prse.nro_solici = @nro_solici
+
+        IF @rut_responsable IS NOT NULL
+           AND EXISTS (SELECT 1 FROM dbo.sg_fups f
+                       WHERE f.nro_solici = @nro_solici
+                         AND f.rut = @rut_responsable)
+        BEGIN
+            SELECT @conflicto_funcionario = 'S'
+            SELECT @rut_responsable = NULL
+        END
 
         SELECT
             @cod_flusol1 AS cod_flusol,
@@ -296,7 +335,12 @@ BEGIN
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             CASE WHEN @rut_responsable IS NULL THEN 'NO_ENCONTRADO' ELSE 'ENCONTRADO' END AS estado_resolucion,
-            CASE WHEN @rut_responsable IS NULL THEN 'La solicitud no posee Jefe de Proyecto.' ELSE NULL END AS mensaje,
+            CASE
+                WHEN @conflicto_funcionario = 'S'
+                THEN 'El Jefe de Proyecto es el funcionario de la prestacion y no puede revisar su propia solicitud.'
+                WHEN @rut_responsable IS NULL
+                THEN 'La solicitud no posee Jefe de Proyecto.'
+                ELSE NULL END AS mensaje,
             @estrategia AS estrategia_resolucion,
             @perm_omitir AS permite_omision,
             @cod_unidad AS cod_unidad_contexto
@@ -363,6 +407,7 @@ BEGIN
     END
 
     SELECT @conflicto_funcionario = 'N'
+    SELECT @escalado = 'N'
     IF EXISTS (
         SELECT 1
         FROM sisper_db.dbo.sp_orco orco
@@ -372,6 +417,81 @@ BEGIN
           AND orco.vigente = 'S'
     )
         SELECT @conflicto_funcionario = 'S'
+
+    /*
+       Escalamiento por conflicto de interes.
+
+       El titular de la organizacion es el funcionario de la prestacion. No
+       puede visar su propia solicitud, y buscar su reemplazo por AUFI
+       devolveria a un subordinado -- para un decanato, el Vicedecano.
+
+       Cuando existe una regla de escalamiento vigente, la etapa se resuelve
+       contra la organizacion revisora en lugar de la original. A partir de
+       ahi corre la cadena ORCO -> ORDE -> AUFI normal de esa organizacion.
+
+       El escalamiento no se encadena: si la organizacion escalada tampoco
+       resuelve, la etapa queda bloqueada. Nunca se autoaprueba ni se omite.
+
+       Sobre las columnas de salida: cod_organi_requerido sigue siendo la
+       organizacion contra la que se resolvio, y cod_organi_actor de donde
+       proviene la persona. Esa semantica es la que usa la subrogancia AUFI y
+       no se toca. La organizacion en conflicto se informa aparte, en
+       cod_organi_conflicto, para no perder ningun eslabon de la cadena
+       cuando ademas hay subrogancia: decanato -> VRAC -> subrogante del VRAC.
+    */
+    /*
+       Equivalencias de escalamiento.
+
+       Antes vivian en una tabla propia (secgen_db.dbo.sg_escl) que habia que
+       crear y cargar aparte. Son cuatro filas que no cambian: los cuatro
+       decanatos escalan al VRAC (organizacion 17). Se resuelven aca para no
+       agregar una tabla al esquema por un dato fijo.
+
+       Se listan explicitamente y no por patron de codigo: una facultad nueva
+       debe agregarse a mano y quedar visible en este CASE, no resolverse por
+       coincidencia de prefijo.
+
+       Aplica SOLO a esta etapa (la de Decano). La etapa de Jefe Directo
+       Funcionario -- sg_fupssSecgen16 -- no escala: ahi es correcto que la
+       visacion la haga un subordinado (el Vicedecano por AUFI). El superior
+       estricto del decano es el VRAC y eso se resuelve aca.
+
+       Tras escalar, corre la cadena ORCO -> ORDE -> AUFI normal del VRAC: si
+       no hay titular vigente, AUFI entrega su subrogante.
+
+       Si se agrega una facultad, agregarla a este CASE. Es el unico lugar
+       donde vive la regla.
+    */
+    IF @conflicto_funcionario = 'S'
+    BEGIN
+        SELECT @cod_organi_escalado = CASE @cod_organi
+            WHEN 82  THEN 17   /* Decano Facultad de Medicina                        -> VRAC */
+            WHEN 135 THEN 17   /* Decano Facultad de Ingenieria, Ciencias y Admin.   -> VRAC */
+            WHEN 204 THEN 17   /* Decano Facultad de Educacion y Humanidades         -> VRAC */
+            WHEN 248 THEN 17   /* Decano Facultad de Ciencias Agropecuarias          -> VRAC */
+            ELSE NULL
+        END
+
+        IF @cod_organi_escalado IS NOT NULL AND @cod_organi_escalado <> @cod_organi
+        BEGIN
+            SELECT @cod_organi_conflicto = @cod_organi
+            SELECT @cod_organi = @cod_organi_escalado
+            SELECT @escalado = 'S'
+
+            /* Se reevalua el conflicto contra la organizacion escalada: si el
+               funcionario tambien fuera su titular, no hay a quien recurrir. */
+            SELECT @conflicto_funcionario = 'N'
+            IF EXISTS (
+                SELECT 1
+                FROM sisper_db.dbo.sp_orco orco
+                INNER JOIN dbo.sg_fups f
+                  ON f.nro_solici = @nro_solici AND f.rut = orco.rut_person
+                WHERE orco.cod_organi = @cod_organi
+                  AND orco.vigente = 'S'
+            )
+                SELECT @conflicto_funcionario = 'S'
+        END
+    END
 
     /* Titular vigente de la organizacion. */
     SELECT @cantidad = COUNT(DISTINCT orco.rut_person)
@@ -567,7 +687,10 @@ BEGIN
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             'NO_ENCONTRADO' AS estado_resolucion,
-            CASE WHEN @conflicto_funcionario = 'S'
+            CASE
+                 WHEN @escalado = 'S'
+                 THEN 'El titular del cargo es el funcionario de la prestacion. Se escalo a la jefatura definida, que tampoco tiene responsable vigente para revisar.'
+                 WHEN @conflicto_funcionario = 'S'
                  THEN 'El titular del cargo es el funcionario de la prestacion y no existe otro responsable vigente para revisar.'
                  ELSE 'No existe titular ni subrogante vigente para la organizacion.' END AS mensaje,
             @estrategia AS estrategia_resolucion,
@@ -624,12 +747,16 @@ BEGIN
         org.cod_unidad AS cod_unidad_responsable,
         RTRIM(unid.des_unidad) AS departamento_responsable,
         'ENCONTRADO' AS estado_resolucion,
-        CONVERT(varchar(255), NULL) AS mensaje,
+        CASE WHEN @escalado = 'S'
+             THEN 'El titular del cargo es el funcionario de la prestacion. Revisa la jefatura definida para ese cargo.'
+             ELSE CONVERT(varchar(255), NULL) END AS mensaje,
         @estrategia AS estrategia_resolucion,
         @perm_omitir AS permite_omision,
         @cod_unidad AS cod_unidad_contexto,
         @cod_organi AS cod_organi_requerido,
         @cod_organi_actor AS cod_organi_actor,
+        @cod_organi_conflicto AS cod_organi_conflicto,
+        @escalado AS es_escalado,
         ISNULL(@es_subrogante, 'N') AS es_subrogante,
         CASE WHEN @es_subrogante = 'S' THEN @prioridad ELSE NULL END AS prioridad_aufi,
         CASE WHEN @es_subrogante = 'S' THEN @rut_titular ELSE NULL END AS rut_titular,
