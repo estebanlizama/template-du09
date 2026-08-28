@@ -481,6 +481,10 @@ Verificado en `sg_cctosSecgen05.sql`: `es_ecct`, `es_tfin` y `es_ufin` entran po
 7. Sincronizar plantilla `sg_plre` y después `sg_plde`.
 8. Verificar filas de control en `sg_parm` contra máximos reales.
 9. Instalar PA Sybase ASE 12.5 y otorgar `GRANT EXECUTE` al usuario de aplicación.
+   La resolución de responsables quedó separada en tres procedimientos; instalarlos **antes** de `sg_etasSecgen01`, que los orquesta:
+   - `sg_prsesSecgen20` — contexto de la solicitud (flujo, centro de costo, unidad y solicitante). Es el único que necesita `nro_solici`.
+   - `sg_eta1sSecgen03` — política de la etapa (perfil, organización, estrategia y `permite_omision`). Solo lee configuración.
+   - `sp_orcosSecgen01` — resolución del responsable por la cadena ORCO → ORDE → AUFI. Recibe los RUT a excluir como lista, no los lee de la solicitud.
 10. Verificar datos externos de prueba en Finanzas, SISPER, UFRO, Sistema y Archivo.
 11. Generar una solicitud nueva desde la aplicación; no copiar una solicitud transaccional de desarrollo como prueba principal.
 12. Ejecutar el flujo completo hasta resolución, firma, corrección y archivo.

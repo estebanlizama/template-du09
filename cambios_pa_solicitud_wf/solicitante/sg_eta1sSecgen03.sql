@@ -1,0 +1,189 @@
+USE secgen_db
+GO
+
+IF EXISTS (
+    SELECT 1 FROM sysobjects a, sysusers b
+    WHERE a.uid = b.uid AND a.type = 'P'
+      AND b.name = 'Analisis2' AND a.name = 'sg_eta1sSecgen03'
+)
+    DROP PROCEDURE Analisis2.sg_eta1sSecgen03
+GO
+
+/* Procedimiento : Analisis2.sg_eta1sSecgen03
+
+   Entrada :
+   @cod_flusol          -> Codigo de flujo de solicitud. (Obligatorio)
+   @cod_etapa           -> Codigo de etapa. (Obligatorio)
+
+   Objetivo : Entregar la POLITICA de una etapa: que tipo de responsable la
+              atiende, contra que organizacion se resuelve y si admite omitirse
+              cuando la misma persona reaparece mas adelante.
+
+   Solo lee configuracion (sg_eta1). No consulta la solicitud, por lo que puede
+   invocarse antes de que exista: eso permite previsualizar el flujo mientras el
+   usuario todavia esta llenando el formulario.
+
+   Extraido de sg_etasSecgen01, que resolvia politica y actor en un mismo
+   procedimiento y por eso exigia nro_solici incluso para la parte que no lo
+   necesita.
+
+   Salida :
+   cod_perfil            -> Perfil configurado para la etapa.
+   cod_organi            -> Organizacion configurada, cuando la etapa la fija.
+   des_etapa             -> Nombre de la etapa.
+   estrategia_resolucion -> SOLICITANTE, JEFE_PROYECTO, JEFE_DIRECTO u
+                            ORGANIZACION_FIJA.
+   permite_omision       -> S/N. Habilita evaluar la omision por responsable
+                            repetido; no la fuerza.
+   estado_resolucion     -> ENCONTRADO o NO_CONFIGURADO.
+   mensaje               -> Detalle cuando no se pudo resolver.
+   mensaje               -> Detalle cuando no se pudo resolver.
+
+   Los mismos valores se entregan por parametros OUTPUT. Cuando se invoca con
+   @solo_parametros = 'S' el procedimiento NO emite el resultset y responde
+   solo por esos parametros: asi puede usarse como subrutina desde
+   sg_etasSecgen01 sin ensuciar su salida. ASE 12.5 no admite INSERT ... EXEC
+   -- se incorporo recien en ASE 15 -- de modo que OUTPUT es la unica via para
+   que un procedimiento consuma a otro.
+
+   Creacion: 2026/08/27
+   Actualizacion: 2026/08/28 Parametros OUTPUT para uso como subrutina.
+*/
+CREATE PROCEDURE Analisis2.sg_eta1sSecgen03
+    @cod_flusol       tinyint,
+    @cod_etapa        tinyint,
+    @cod_perfil       smallint     = NULL OUTPUT,
+    @cod_organi       int          = NULL OUTPUT,
+    @des_etapa        varchar(100) = NULL OUTPUT,
+    @estrategia       varchar(30)  = NULL OUTPUT,
+    @perm_omitir      char(1)      = NULL OUTPUT,
+    @estado           varchar(20)  = NULL OUTPUT,
+    @mensaje          varchar(255) = NULL OUTPUT,
+    @solo_parametros  char(1)      = 'N'
+AS
+BEGIN
+    SELECT @cod_perfil = NULL, @cod_organi = NULL, @des_etapa = NULL
+    SELECT @estrategia = NULL, @perm_omitir = NULL
+
+    IF @cod_flusol IS NULL OR @cod_etapa IS NULL
+    BEGIN
+        SELECT @estado = 'NO_CONFIGURADO',
+               @mensaje = 'Debe informar el flujo y la etapa.'
+
+        IF @solo_parametros <> 'S'
+            SELECT
+                CONVERT(tinyint, @cod_flusol) AS cod_flusol,
+                CONVERT(tinyint, @cod_etapa) AS cod_etapa,
+                CONVERT(smallint, NULL) AS cod_perfil,
+                CONVERT(int, NULL) AS cod_organi,
+                CONVERT(varchar(100), NULL) AS des_etapa,
+                CONVERT(varchar(30), NULL) AS estrategia_resolucion,
+                CONVERT(char(1), NULL) AS permite_omision,
+                @estado AS estado_resolucion,
+                @mensaje AS mensaje
+        RETURN
+    END
+
+    SELECT
+        @cod_perfil = eta.cod_perfil,
+        @cod_organi = eta.cod_organi,
+        @des_etapa  = eta.des_etapa
+    FROM dbo.sg_eta1 eta
+    WHERE eta.cod_flusol = @cod_flusol
+      AND eta.cod_etapa = @cod_etapa
+      AND ISNULL(eta.vigente, 'S') = 'S'
+
+    IF @cod_perfil IS NULL
+    BEGIN
+        SELECT @estado = 'NO_CONFIGURADO',
+               @mensaje = 'La etapa no esta vigente para el flujo indicado.'
+
+        IF @solo_parametros <> 'S'
+            SELECT
+                @cod_flusol AS cod_flusol,
+                @cod_etapa AS cod_etapa,
+                CONVERT(smallint, NULL) AS cod_perfil,
+                CONVERT(int, NULL) AS cod_organi,
+                CONVERT(varchar(100), NULL) AS des_etapa,
+                CONVERT(varchar(30), NULL) AS estrategia_resolucion,
+                CONVERT(char(1), NULL) AS permite_omision,
+                @estado AS estado_resolucion,
+                @mensaje AS mensaje
+        RETURN
+    END
+
+    /*
+       El tipo de responsable ya esta expresado por cod_perfil en sg_eta1. Las
+       etapas institucionales usan primero sg_eta1.cod_organi; solo cuando ese
+       dato no existe se completa desde ufro_db..es_orga.
+    */
+    SELECT @estrategia = CASE @cod_perfil
+        WHEN 6 THEN 'SOLICITANTE'
+        WHEN 25 THEN 'JEFE_PROYECTO'
+        WHEN 26 THEN 'JEFE_DIRECTO'
+        ELSE 'ORGANIZACION_FIJA'
+    END
+
+    /*
+       Omision por responsable repetido.
+
+       Una misma persona no debe visar dos veces la misma solicitud: si vuelve a
+       aparecer como responsable en una etapa posterior, la etapa temprana se
+       omite y la revision queda en la mas avanzada, que es la que tiene el
+       expediente completo.
+
+       Perfiles formales que NUNCA se omiten. Cada uno ejecuta un acto propio
+       -- firma, control de legalidad, decretacion o archivo -- que no queda
+       cubierto porque la persona revise en otra etapa:
+
+           6  Solicitante                     (presenta, no revisa)
+          10  Director de Finanzas            (control presupuestario)
+          12  Jefe de Decretacion
+          13  DGDP
+          14  Secretario General              (firma)
+          16  Director de Legalidad           (firma)
+          17  Contralor Universitario         (firma)
+          18  Jefe Archivo Universitario
+          23  VRAF                            (firma)
+
+       Director de Finanzas ejecuta el control de disponibilidad
+       presupuestaria del centro de costo, que no queda cubierto porque la
+       misma persona haya revisado antes con otro rol. Con esto el tronco
+       comun queda parejo: ninguna de sus ocho etapas se omite.
+
+       Cualquier otro perfil -- Jefe de Proyecto, Jefe de Departamento, Decano,
+       Directores de Instituto, DITT o Investigacion, encargados de finanzas --
+       si puede omitirse cuando la misma persona reaparece mas adelante.
+
+       El Jefe de Proyecto (25) es omitible a proposito: el mismo cargo puede
+       recaer en cualquiera de los roles posteriores del flujo. La politica
+       documentada en motor_configurable_flujos_responsables_du288.md lo listaba
+       como fijo; se excluye de esa lista por decision de negocio.
+
+       Este campo habilita la evaluacion, no la fuerza: el backend solo omite
+       cuando ADEMAS encuentra a la misma persona en una etapa posterior real
+       (ver getFutureApproversByStage y assignWorkflowApprovalsWithSkips).
+    */
+    SELECT @perm_omitir = CASE
+        WHEN @cod_perfil IN (6, 10, 12, 13, 14, 16, 17, 18, 23) THEN 'N'
+        ELSE 'S'
+    END
+
+    SELECT @estado = 'ENCONTRADO', @mensaje = NULL
+
+    IF @solo_parametros <> 'S'
+        SELECT
+            @cod_flusol AS cod_flusol,
+            @cod_etapa AS cod_etapa,
+            @cod_perfil AS cod_perfil,
+            @cod_organi AS cod_organi,
+            RTRIM(@des_etapa) AS des_etapa,
+            @estrategia AS estrategia_resolucion,
+            @perm_omitir AS permite_omision,
+            @estado AS estado_resolucion,
+            @mensaje AS mensaje
+END
+GO
+
+GRANT EXECUTE ON Analisis2.sg_eta1sSecgen03 TO UsuaVrac
+GO
