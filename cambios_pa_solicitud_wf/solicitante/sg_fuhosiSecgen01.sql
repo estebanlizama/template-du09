@@ -18,7 +18,8 @@ GO
    @hora_ini            -> Parametro de entrada. (Obligatorio)
    @hora_ter            -> Parametro de entrada. (Obligatorio)
 
-   Objetivo : Inserta un tramo de horario de ejecucion de prestacion en sg_fuho.
+   Objetivo : Registrar un tramo horario de ejecucion para una prestacion de
+              servicios.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

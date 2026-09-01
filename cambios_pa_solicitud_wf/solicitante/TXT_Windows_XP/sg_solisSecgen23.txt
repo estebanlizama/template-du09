@@ -14,7 +14,7 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Obtener el detalle de aprobaciones (sg_apso) de una solicitud, para armar el flujo organizacional completo en el frontend (historial por etapa).
+   Objetivo : Obtener el historial de aprobaciones por etapa de una solicitud.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

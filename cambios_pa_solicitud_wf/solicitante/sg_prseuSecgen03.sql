@@ -15,7 +15,8 @@ GO
    @nro_solici          -> Numero de solicitud. (Opcional)
    @id_tipacc           -> Identificador tipo de accion. (Opcional)
 
-   Objetivo : Aplicar una transicion configurada en sg_eta2 y actualizar la etapa actual de una solicitud PDS.
+   Objetivo : Aplicar una transicion configurada y actualizar la etapa actual
+              de una solicitud PDS.
 
    Creacion: ELA 2026/08/24
    Actualizacion: ELA 2026/08/24

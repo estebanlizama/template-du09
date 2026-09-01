@@ -14,7 +14,8 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud.
+   Objetivo : Listar las compensaciones horarias registradas para los
+              funcionarios de una solicitud.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

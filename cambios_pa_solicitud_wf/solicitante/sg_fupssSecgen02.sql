@@ -14,7 +14,8 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
 
-   Objetivo : Listar los funcionarios asociados a una solicitud de PDS, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
+   Objetivo : Listar los funcionarios asociados a una solicitud, incluyendo la
+              informacion requerida por DU288 y el flujo legado.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

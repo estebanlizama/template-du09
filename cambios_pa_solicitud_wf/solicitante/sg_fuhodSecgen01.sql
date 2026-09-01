@@ -14,7 +14,8 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Obligatorio)
 
-   Objetivo : Elimina los tramos horarios de ejecucion en sg_fuho para un funcionario.
+   Objetivo : Eliminar los tramos horarios de ejecucion asociados a un
+              funcionario.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

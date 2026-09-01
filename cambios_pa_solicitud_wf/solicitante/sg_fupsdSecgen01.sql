@@ -14,7 +14,7 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atA³mica.
+   Objetivo : Eliminar de forma transaccional un funcionario y sus
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
@@ -61,9 +61,6 @@ BEGIN
                'El unico funcionario DU288 no puede eliminarse. Debe actualizar o reemplazar el registro existente.' AS msg
         RETURN
     END
-
-    -- TODO Fase 2: eliminar meses de sg_fume cuando la tabla sea desplegada.
-
     -- 1. Eliminar de sg_fuco
     DELETE FROM secgen_db.dbo.sg_fuco 
     WHERE id_funprse = @id_funprse

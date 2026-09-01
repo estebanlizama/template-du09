@@ -17,7 +17,8 @@ GO
    @id_tipacc           -> Identificador tipo de accion. (Opcional)
    @cod_etaori          -> Codigo etapa de origen. (Opcional)
 
-   Objetivo : Resolver una transicion configurada en sg_eta2 o listar las acciones disponibles para la etapa actual de una solicitud.
+   Objetivo : Resolver una transicion configurada o listar las acciones
+              disponibles para la etapa actual de una solicitud.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

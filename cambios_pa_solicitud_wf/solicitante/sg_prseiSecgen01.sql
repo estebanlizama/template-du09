@@ -23,7 +23,8 @@ GO
    @pry_global          -> Parametro de entrada. (Opcional)
    @cod_modprs          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Insertar la cabecera especifica de una Prestacion de Servicios en sg_prse, incluyendo la modalidad de prestacion.
+   Objetivo : Registrar la cabecera de una prestacion de servicios y su
+              modalidad.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

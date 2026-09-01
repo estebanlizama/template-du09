@@ -15,7 +15,8 @@ GO
    @nro_solici          -> Numero de solicitud. (Opcional)
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Retorna la distribucion de horarios de ejecucion de prestacion (sg_fuho) para los funcionarios de una solicitud o por funcionario especifico.
+   Objetivo : Listar la distribucion horaria de una solicitud o de un
+              funcionario especifico.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

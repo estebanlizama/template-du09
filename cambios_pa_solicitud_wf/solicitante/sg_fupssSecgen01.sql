@@ -14,7 +14,8 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
 
-   Objetivo : Seleccionar un funcionario especA­fico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
+   Objetivo : Obtener un funcionario por su identificador, incluyendo la
+              informacion requerida por DU288 y el flujo legado.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

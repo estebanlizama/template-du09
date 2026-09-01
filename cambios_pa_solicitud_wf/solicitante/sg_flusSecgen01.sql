@@ -15,7 +15,8 @@ GO
    @cod_unifin          -> Unidad financiera. (Opcional)
    @cod_ccto            -> Centro de costo. (Opcional)
 
-   Objetivo : Resolver el flujo DU288 con los datos existentes del Centro de Costo y los maestros sg_tfls/sg_eta1.
+   Objetivo : Resolver el flujo DU288 a partir del centro de costo y la
+              configuracion institucional vigente.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro
