@@ -17,7 +17,7 @@ GO
    @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
    @comentario          -> Comentario de la accion. (Opcional)
-   @exige_flujo         -> Parametro de entrada. (Obligatorio)
+   @exige_flujo         -> Parametro de entrada. (Opcional)
 
    Objetivo : Crear una tarea de aprobacion asociada al flujo y etapa actuales de la solicitud.
 
@@ -145,7 +145,7 @@ BEGIN
     BEGIN
         IF @@transtate <> 0
             ROLLBACK TRAN
-        SELECT 0 AS status, 'Error al actualizar correlativo de sg_apso' AS msg
+        SELECT 0 AS status, 'Error al actualizar correlativo de aprobacion' AS msg
         RETURN
     END
 
@@ -157,7 +157,7 @@ BEGIN
     BEGIN
         IF @@transtate <> 0
             ROLLBACK TRAN
-        SELECT 0 AS status, 'No fue posible obtener correlativo de sg_apso' AS msg
+        SELECT 0 AS status, 'No fue posible obtener correlativo de aprobacion' AS msg
         RETURN
     END
 

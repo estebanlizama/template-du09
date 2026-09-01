@@ -15,9 +15,10 @@ GO
    @rut_person          -> RUT de la persona. (Opcional)
    @nro_solici_excluir  -> Parametro de entrada. (Opcional)
 
-   Objetivo : Listar el historial de Prestaciones de Servicio (PDS) previas de un funcionario (por RUT), para apoyo de auditoria normativa DGDP (comparar la solicitud actual contra labores anteriores).
+   Objetivo : Listar las prestaciones de servicio previas de un funcionario
+              para apoyar la revision normativa de una solicitud.
 
-   Creacion: 2026/08/19
+   Creacion: ELA 2026/08/19
    Actualizacion: ELA 2026/08/25
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen17

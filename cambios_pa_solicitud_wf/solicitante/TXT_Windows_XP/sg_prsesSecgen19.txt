@@ -29,11 +29,15 @@ BEGIN
         RETURN
     END
 
+    /* rut_solici viaja en el contexto porque el motor de omision necesita
+       saber quien presento la solicitud: una etapa omitible cuyo responsable
+       es el propio solicitante no requiere revision, ya autorizo al presentar. */
     SELECT
         prse.cod_modprs,
         prse.cod_flusol,
         prse.cod_etapa,
         soli.cod_estsol,
+        soli.rut_solici,
         estado.des_estsol
     FROM secgen_db.dbo.sg_prse prse
     INNER JOIN secgen_db.dbo.sg_soli soli

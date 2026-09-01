@@ -11,10 +11,15 @@ GO
 
 /* Procedimiento : Analisis2.sg_apsosSecgen03
 
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
+   @rut_usua            -> RUT del usuario. (Opcional)
+
    Objetivo : Seleccionar el historial o datos de aprobacion de una solicitud
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_apsosSecgen03
     @nro_solici int = NULL,

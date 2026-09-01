@@ -25,7 +25,7 @@ AS
 BEGIN
     IF @nro_solici IS NULL
     BEGIN
-        SELECT 'Falta campo Id Funcionarios prestaci√≥n de servicios' AS msg
+        SELECT 'Falta campo Id Funcionarios prestaciÛn de servicios' AS msg
         RETURN
     END
 
@@ -54,12 +54,12 @@ BEGIN
         fu.mto_tope,
         fu.f_cal_tope,
         fu.tot_cuotas,
-        
-        -- Datos din√°micos del funcionario
+
+        -- Datos din·micos del funcionario
         (pers.nom_nombre + ' ' + pers.nom_appate + ' ' + pers.nom_apmate) AS nombre,
         pers.uni_ctadi,
-        
-        -- Datos din√°micos del contrato (enlazado por fu.cod_contra)
+
+        -- Datos din·micos del contrato (enlazado por fu.cod_contra)
         isnull(cont.principal, '0') AS principal,
         cont.cod_unidad,
         rtrim(unid.des_unidad) AS des_unidad,

@@ -116,7 +116,7 @@ BEGIN
         IF @@transtate <> 0
             ROLLBACK TRAN
         SELECT 0 AS status, convert(int, NULL) AS id_histor,
-               'Error al actualizar correlativo de sg_hist' AS msg
+               'Error al actualizar correlativo del historial' AS msg
         RETURN
     END
 
@@ -129,7 +129,7 @@ BEGIN
         IF @@transtate <> 0
             ROLLBACK TRAN
         SELECT 0 AS status, convert(int, NULL) AS id_histor,
-               'No fue posible obtener correlativo de sg_hist' AS msg
+               'No fue posible obtener correlativo del historial' AS msg
         RETURN
     END
 

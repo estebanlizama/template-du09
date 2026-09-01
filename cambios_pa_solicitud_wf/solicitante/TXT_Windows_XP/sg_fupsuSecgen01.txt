@@ -19,8 +19,8 @@ GO
    @itm_global          -> Parametro de entrada. (Opcional)
    @motivo              -> Parametro de entrada. (Opcional)
    @periodos            -> Parametro de entrada. (Opcional)
-   @monto_mes           -> Parametro de entrada. (Obligatorio)
-   @mto_total           -> Parametro de entrada. (Obligatorio)
+   @monto_mes           -> Parametro de entrada. (Opcional)
+   @mto_total           -> Parametro de entrada. (Opcional)
    @cod_moneda          -> Parametro de entrada. (Opcional)
    @cod_tpps            -> Parametro de entrada. (Opcional)
    @f_inicio            -> Parametro de entrada. (Opcional)
@@ -87,7 +87,7 @@ BEGIN
 
     IF @id_funprse IS NULL
     BEGIN
-        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Id Funcionarios prestaci√≥n de servicios' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Id Funcionarios prestaciÛn de servicios' AS msg
         RETURN
     END
 
@@ -157,10 +157,10 @@ BEGIN
         RETURN
     END
 
-    -- Validar fechas de inicio y t√©rmino
+    -- Validar fechas de inicio y tÈrmino
     IF @f_inicio IS NOT NULL AND @f_termino IS NOT NULL AND @f_inicio > @f_termino
     BEGIN
-        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de t√©rmino' AS msg
+        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de tÈrmino' AS msg
         RETURN
     END
 
@@ -183,7 +183,7 @@ BEGIN
         -- Validar que el estado exista en sg_efun
         IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
         BEGIN
-            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el cat√°logo de estados' AS msg
+            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el cat·logo de estados' AS msg
             IF @@transtate <> 0
                 ROLLBACK TRAN
             RETURN
@@ -256,7 +256,7 @@ BEGIN
 
             IF @@error <> 0
             BEGIN
-                SELECT 0 AS status, 'STAFF_HISTORY_ERROR' AS code, 'Error al registrar historial de visaci√≥n del funcionario (sg_his2)' AS msg
+                SELECT 0 AS status, 'STAFF_HISTORY_ERROR' AS code, 'Error al registrar historial de visacion del funcionario' AS msg
                 IF @@transtate <> 0
                     ROLLBACK TRAN
                 RETURN
@@ -310,7 +310,7 @@ BEGIN
 
     IF @rows_updated = 0
     BEGIN
-        SELECT 0 AS status, 'STAFF_NOT_UPDATED' AS code, 'No se actualiz√≥ ning√∫n registro o no hubo cambios' AS msg
+        SELECT 0 AS status, 'STAFF_NOT_UPDATED' AS code, 'No se actualizÛ ning˙n registro o no hubo cambios' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN
@@ -318,7 +318,7 @@ BEGIN
 
     IF @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 0 AS status, 'STAFF_UPDATE_ERROR' AS code, 'Error al actualizar informaci√≥n de validaci√≥n de proceso. Se aborta el procedimiento' AS msg
+        SELECT 0 AS status, 'STAFF_UPDATE_ERROR' AS code, 'Error al actualizar informaciÛn de validaciÛn de proceso. Se aborta el procedimiento' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN

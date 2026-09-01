@@ -11,10 +11,13 @@ GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen13
 
+   Entrada :
+   @rut_solici          -> RUT del usuario. (Opcional)
+
    Objetivo : Obtener las solicitudes de prestacion de servicios asignadas o pendientes para un usuario
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen13
     @rut_solici varchar(9) = NULL

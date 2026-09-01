@@ -1,27 +1,31 @@
-USE secgen_db
-GO
+use secgen_db
+go
 
-IF EXISTS (
-    SELECT 1 FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid AND a.type = 'P'
-      AND b.name = 'Analisis2' AND a.name = 'sg_rslcuSecgen03'
-)
-    DROP PROCEDURE Analisis2.sg_rslcuSecgen03
-GO
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sg_rslcuSecgen03')
+begin
+    drop procedure Analisis2.sg_rslcuSecgen03
+end
+go
 
-/* Procedimiento : Analisis2.sg_rslcuSecgen03
+/* Procedimiento : sg_rslcuSecgen03
 
    Entrada :
    @nro_resolu          -> Parametro de entrada. (Opcional)
    @rut_archiv          -> Parametro de entrada. (Opcional)
    @cod_estres          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Cambiar el estado de una resoluciA³n
+   Objetivo : Cambiar el estado de una resolución
 
-   Creacion: AI 2023/02/23
-   Actualizacion: AI 2023/04/10
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
 */
-CREATE PROCEDURE Analisis2.sg_rslcuSecgen03
+
+create procedure Analisis2.sg_rslcuSecgen03
     @nro_resolu int = null,
     @rut_archiv character(9) = null,
     @cod_estres int = null
@@ -31,10 +35,10 @@ CREATE PROCEDURE Analisis2.sg_rslcuSecgen03
 select
     'Falta campo Numero Resolucion' msg return
 end
-        
+
              if @cod_estres is null begin
 select
-    'Falta campo cÃ³digo de estado de la resoluciÃ³n' msg return
+    'Falta campo código de estado de la resolución' msg return
 end
 
 begin tran
@@ -51,6 +55,6 @@ where
 
         commit tran
 go
-    GRANT EXECUTE ON Analisis2.sg_rslcuSecgen03 TO UsuaVrac
+
+grant execute on Analisis2.sg_rslcuSecgen03 to UsuaVrac
 go
-    

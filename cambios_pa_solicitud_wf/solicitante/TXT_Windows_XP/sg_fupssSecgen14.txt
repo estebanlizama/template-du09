@@ -13,11 +13,11 @@ GO
 
    Entrada :
    @rut_person          -> RUT de la persona. (Obligatorio)
-   @id_contrato         -> Identificador del contrato. (Obligatorio)
-   @cod_cargo           -> Codigo del cargo. (Obligatorio)
-   @cod_unidad          -> Parametro de entrada. (Obligatorio)
-   @cod_calida          -> Parametro de entrada. (Obligatorio)
-   @ind_anid            -> Parametro de entrada. (Obligatorio)
+   @id_contrato         -> Identificador del contrato. (Opcional)
+   @cod_cargo           -> Codigo del cargo. (Opcional)
+   @cod_unidad          -> Parametro de entrada. (Opcional)
+   @cod_calida          -> Parametro de entrada. (Opcional)
+   @ind_anid            -> Parametro de entrada. (Opcional)
 
    Objetivo : Validar si el contrato evaluado para DU288 queda habilitado o no segun calidad juridica, cargo y contexto ANID/externo.
 

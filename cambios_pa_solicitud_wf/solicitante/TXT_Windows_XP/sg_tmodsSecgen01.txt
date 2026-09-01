@@ -14,7 +14,7 @@ GO
    Objetivo : Listar los tipos de modalidades maestras de prestacion de servicios
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_tmodsSecgen01
 AS

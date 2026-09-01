@@ -15,14 +15,13 @@ go
 /* Procedimiento : sg_redeiSecgen01
 
    Entrada :
-   @ano_resolu          -> Parametro de entrada. (Obligatorio)
-   @nro_resolu          -> Parametro de entrada. (Obligatorio)
-   @id_pladet           -> Parametro de entrada. (Obligatorio)
+   @ano_resolu          -> Parametro de entrada. (Opcional)
+   @nro_resolu          -> Parametro de entrada. (Opcional)
+   @id_pladet           -> Parametro de entrada. (Opcional)
    @cod_tipsec          -> Parametro de entrada. (Opcional)
    @nombre              -> Parametro de entrada. (Opcional)
    @editable            -> Parametro de entrada. (Opcional)
-   @orden               -> Parametro de entrada. (Obligatorio)
-
+   @orden               -> Parametro de entrada. (Opcional)
    Objetivo : insertar Detalle de resolución
 
    Creacion: ELA 2026/08/24

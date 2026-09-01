@@ -65,9 +65,9 @@ BEGIN
     -- TODO Fase 2: eliminar meses de sg_fume cuando la tabla sea desplegada.
 
     -- 1. Eliminar de sg_fuco
-    DELETE FROM secgen_db.dbo.sg_fuco 
+    DELETE FROM secgen_db.dbo.sg_fuco
     WHERE id_funprse = @id_funprse
-    
+
     IF @@error <> 0
     BEGIN
         SELECT 0 AS status, 'STAFF_DELETE_ERROR' AS code, 'Error al eliminar compensaciones del funcionario' AS msg
@@ -76,7 +76,7 @@ BEGIN
     END
 
     -- 2. Eliminar de sg_fups
-    DELETE FROM secgen_db.dbo.sg_fups 
+    DELETE FROM secgen_db.dbo.sg_fups
     WHERE id_funprse = @id_funprse
 
     IF @@error <> 0

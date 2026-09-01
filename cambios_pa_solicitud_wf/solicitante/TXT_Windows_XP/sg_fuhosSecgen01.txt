@@ -31,7 +31,7 @@ BEGIN
         RETURN
     END
 
-    SELECT 
+    SELECT
         fh.id_funprse,
         fh.cod_diasem,
         fh.correlativ,

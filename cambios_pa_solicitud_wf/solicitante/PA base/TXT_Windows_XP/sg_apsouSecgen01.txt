@@ -15,10 +15,9 @@ go
 /* Procedimiento : sg_apsouSecgen01
 
    Entrada :
-   @nro_solici          -> Numero de solicitud. (Obligatorio)
-   @rut_usua            -> RUT del usuario. (Obligatorio)
-   @cod_estapr          -> Codigo de estado de aprobacion. (Obligatorio)
-
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @rut_usua            -> RUT del usuario. (Opcional)
+   @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
    Objetivo : update Aprobación de solicitudes
 
    Creacion: ELA 2026/08/24

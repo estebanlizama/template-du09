@@ -1,15 +1,18 @@
-USE secgen_db
-GO
+use secgen_db
+go
 
-IF EXISTS (
-    SELECT 1 FROM sysobjects a, sysusers b
-    WHERE a.uid = b.uid AND a.type = 'P'
-      AND b.name = 'Analisis2' AND a.name = 'sg_apreiSecgen01'
-)
-    DROP PROCEDURE Analisis2.sg_apreiSecgen01
-GO
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sg_apreiSecgen01')
+begin
+    drop procedure Analisis2.sg_apreiSecgen01
+end
+go
 
-/* Procedimiento : Analisis2.sg_apreiSecgen01
+/* Procedimiento : sg_apreiSecgen01
 
    Entrada :
    @ano_resolu          -> Parametro de entrada. (Opcional)
@@ -18,12 +21,13 @@ GO
    @cod_estapr          -> Codigo de estado de aprobacion. (Opcional)
    @id_perfil           -> Parametro de entrada. (Opcional)
 
-   Objetivo : insertar AprobaciA³n de resoluciones
+   Objetivo : insertar Aprobación de resoluciones
 
-   Creacion: CHL 2022/12/13
-   Actualizacion: AI 2023/02/22
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
 */
-CREATE PROCEDURE Analisis2.sg_apreiSecgen01
+
+create procedure Analisis2.sg_apreiSecgen01
     @ano_resolu smallint = Null,
     @nro_resolu int = Null,
     @rut_aprob char(9) = Null,
@@ -34,7 +38,7 @@ CREATE PROCEDURE Analisis2.sg_apreiSecgen01
 
     if @ano_resolu is null
     begin
-        select 'Falta campo AÃ±o Resolucion' msg
+        select 'Falta campo Año Resolucion' msg
         return
     end
 
@@ -98,15 +102,14 @@ CREATE PROCEDURE Analisis2.sg_apreiSecgen01
 
     if @@transtate = 2 or @@transtate = 3
         begin
-            select 'Error al insertar informaciÃ³n. Se aborta el procedimiento' msg
+            select 'Error al insertar información. Se aborta el procedimiento' msg
             if @@transtate = 2
                 rollback  tran
                 return
         end
 
         commit tran
-
 go
 
-GRANT EXECUTE ON Analisis2.sg_apreiSecgen01 TO UsuaVrac
+grant execute on Analisis2.sg_apreiSecgen01 to UsuaVrac
 go

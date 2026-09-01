@@ -23,9 +23,9 @@ go
    Actualizacion: Sin registro
 */
 
-create procedure Analisis2.sg_apsosSecgen04 
+create procedure Analisis2.sg_apsosSecgen04
     @nro_solici int = null
- as 
+ as
  if @nro_solici is null begin
 select
     'Falta campo numero de solicitud' msg return

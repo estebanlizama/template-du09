@@ -16,42 +16,11 @@ GO
    @cod_etapa           -> Parametro de entrada. (Obligatorio)
    @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
 
-   Objetivo : Resolver el responsable de cualquier etapa DU288 usando solo
-              sg_eta1 y los maestros institucionales existentes, sin consultar
-              bd_pri2 ni requerir nuevas tablas.
-
-   Desde 2026/08/28 este procedimiento ORQUESTA tres procedimientos y ya no
-   resuelve todo por si mismo:
-
-     1. sg_prsesSecgen20  Contexto de la solicitud: flujo, centro de costo,
-                          unidad institucional y prefijo. Es el unico que
-                          necesita la solicitud persistida.
-     2. sg_eta1sSecgen03  Politica de la etapa: perfil, organizacion
-                          configurada, estrategia y si admite omitirse.
-     3. sp_orcosSecgen01  Responsable vigente de una organizacion, recorriendo
-                          ORCO -> ORDE -> AUFI.
-
-   Lo que queda aca es lo que solo tiene sentido con la solicitud a la vista:
-   el mapeo de organizacion por flujo y etapa, las ramas SOLICITANTE /
-   JEFE_PROYECTO / JEFE_DIRECTO, la deteccion de conflicto de interes y el
-   escalamiento de decanato a VRAC.
-
-   El motivo de la separacion es que 2 y 3 no dependen de nro_solici: pueden
-   invocarse para previsualizar a quien le llegara la solicitud mientras el
-   usuario todavia llena el formulario. Antes toda la logica vivia aca y
-   exigia la solicitud guardada incluso para la parte que no la necesitaba.
-
-   Los tres se invocan con @solo_parametros = 'S' y devuelven por parametros
-   OUTPUT: ASE 12.5 no admite INSERT ... EXEC -- se incorporo recien en ASE 15
-   -- de modo que OUTPUT es la unica via para que un procedimiento consuma a
-   otro sin que el resultset del llamado se filtre al cliente. Invocados
-   directamente, sin esa bandera, los tres siguen entregando su resultset.
-
-   La firma y las columnas de salida no cambiaron: el backend
-   -- service-provision-request.ts -- la invoca igual que antes.
+   Objetivo : Resolver el responsable de una etapa DU288 y aplicar las reglas
+              institucionales de asignacion, omision y conflicto de interes.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: 2026/08/28 Separacion en tres procedimientos.
+   Actualizacion: ELA 2026/08/28
 */
 CREATE PROCEDURE Analisis2.sg_etasSecgen01
     @nro_solici int,

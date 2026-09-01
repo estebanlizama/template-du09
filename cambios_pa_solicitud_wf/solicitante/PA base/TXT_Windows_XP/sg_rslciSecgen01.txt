@@ -15,10 +15,10 @@ go
 /* Procedimiento : sg_rslciSecgen01
 
    Entrada :
-   @ano_resolu          -> Parametro de entrada. (Obligatorio)
+   @ano_resolu          -> Parametro de entrada. (Opcional)
    @respon_res          -> Parametro de entrada. (Opcional)
    @id_planti           -> Parametro de entrada. (Opcional)
-   @cod_estres          -> Parametro de entrada. (Obligatorio)
+   @cod_estres          -> Parametro de entrada. (Opcional)
    @id_docum            -> Parametro de entrada. (Opcional)
 
    Objetivo : insertar Resoluciones

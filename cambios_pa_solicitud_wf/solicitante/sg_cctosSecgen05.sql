@@ -11,10 +11,14 @@ GO
 
 /* Procedimiento : Analisis2.sg_cctosSecgen05
 
+   Entrada :
+   @rut                 -> RUT del usuario. (Opcional)
+   @id_modprse          -> Modalidad de prestacion de servicios. (Opcional)
+
    Objetivo : Obtener lista de centros de costo disponibles para un rut
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_cctosSecgen05
     @rut char(9) = NULL,

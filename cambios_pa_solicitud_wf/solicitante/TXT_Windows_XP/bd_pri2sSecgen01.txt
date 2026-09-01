@@ -1,12 +1,15 @@
 use secgen_db
 go
 
-if exists (select 1 from sysobjects a, sysusers b
-      where a.uid  = b.uid
-        and a.type = 'P'
-        and b.name = 'Analisis2'
-        and a.name = 'bd_pri2sSecgen01')
-   drop procedure Analisis2.bd_pri2sSecgen01
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'bd_pri2sSecgen01')
+begin
+    drop procedure Analisis2.bd_pri2sSecgen01
+end
 go
 
 /* Procedimiento : bd_pri2sSecgen01
@@ -18,11 +21,11 @@ go
 
    Objetivo : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
 
-   Creacion: SSY 2023/04/18
-   Actualizacion: 
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
 */
 
-create procedure  Analisis2.bd_pri2sSecgen01
+create procedure Analisis2.bd_pri2sSecgen01
     @des_perfil varchar(100) = null,
     @cod_sistem char(2) = null,
     @cod_modulo varchar(100) = null

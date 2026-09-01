@@ -11,10 +11,14 @@ GO
 
 /* Procedimiento : Analisis2.sg_fupssSecgen16
 
+   Entrada :
+   @rut_person          -> RUT del funcionario. (Obligatorio)
+   @cod_contra          -> Codigo del contrato. (Obligatorio)
+
    Objetivo : Obtener informacion de un funcionario y su contrato activo
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen16
     @rut_person char(9),

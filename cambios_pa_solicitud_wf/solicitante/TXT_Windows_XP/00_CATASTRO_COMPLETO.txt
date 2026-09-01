@@ -1,1 +1,478 @@
-==========================================================================\r\nCATASTRO DE PROCEDIMIENTOS ALMACENADOS - SOLICITANTE\r\nGenerado para Windows XP / Sybase (Codificacion ANSI/Latin1)\r\n==========================================================================\r\n\r\nArchivo: ar_doc1iSecgen10.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsoiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsosSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsosSecgen05.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsouSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsouSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_cctosSecgen05.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_cctosSecgen06.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_eapriSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_eta1sSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_eta1sSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_eta2sSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_etasSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_flusSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fucodSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fucoiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fucosSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fuhodSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fuhosiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fuhosSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fumesSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fumeuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupsdSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupsiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen12.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen13.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen14.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen15.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen16.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupssSecgen17.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_fupsuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histiSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histsSecgen05.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prseiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen08.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen13.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen14.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen15.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen17.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen18.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen19.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prseuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prseuSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prseuSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_solisSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_solisSecgen23.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_tflssSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_tmodsSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_tocasSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_usacsSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: ar_doc1sSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: bd_pri2sSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: es_orgasSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apreiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apresSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apresSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apreuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsosSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsosSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsosSecgen04.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_apsouSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_cctosSecgen04.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histiSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histsSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_histsSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_pldesSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen05.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen06.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen07.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen10.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen12.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_prsesSecgen16.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_redeiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_redesSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_redesSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_rslciSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_rslcsSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_rslcuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_rslcuSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_rslcuSecgen04.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_soliiSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_soliuSecgen01.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_soliuSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_soliuSecgen03.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sg_soliuSecgen05.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: sp_perssSecgen02.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------\r\nArchivo: valida_saldo_cc_cs.sql\r\nObjetivo: Sin objetivo definido\r\n--------------------------------------------------------------------------
+CATASTRO DE PROCEDIMIENTOS ALMACENADOS - SOLICITANTE
+=====================================================
+
+Formato aplicado a PA normalizados: Windows-1252 (ANSI), sin BOM, CRLF y extension .txt.
+Total PA: 94
+Excepciones preservadas: ar_doc1iSecgen10, ar_doc1sSecgen01 y valida_saldo_cc_cs.
+
+DETALLE
+-------
+01. ar_doc1iSecgen10.txt
+    Procedimiento : Analisis2.ar_doc1iSecgen10
+    Objetivo      : Archivo excluido de la normalizacion; se conserva sin modificaciones.
+    Origen        : Excepcion preservada
+
+02. ar_doc1sSecgen01.txt
+    Procedimiento : Analisis2.ar_doc1sSecgen01
+    Objetivo      : Archivo excluido de la normalizacion; se conserva sin modificaciones.
+    Origen        : Excepcion preservada
+
+03. bd_pri2sSecgen01.txt
+    Procedimiento : Analisis2.bd_pri2sSecgen01
+    Objetivo      : traer todos los usuarios de un sistema con un rol en especifico (des_perfil)
+    Origen        : PA base normalizado
+
+04. es_orgasSecgen01.txt
+    Procedimiento : Analisis2.es_orgasSecgen01
+    Objetivo      : Firmantes y subrogantes para resoluciones excentas
+    Origen        : PA base normalizado
+
+05. sg_apreiSecgen01.txt
+    Procedimiento : Analisis2.sg_apreiSecgen01
+    Objetivo      : insertar Aprobación de resoluciones
+    Origen        : PA base normalizado
+
+06. sg_apresSecgen01.txt
+    Procedimiento : Analisis2.sg_apresSecgen01
+    Objetivo      : seleccionar todos los aprobadores de resoluciones
+    Origen        : PA base normalizado
+
+07. sg_apresSecgen02.txt
+    Procedimiento : Analisis2.sg_apresSecgen02
+    Objetivo      : seleccionar la cantidad de aprocaciones de una resolución
+    Origen        : PA base normalizado
+
+08. sg_apreuSecgen01.txt
+    Procedimiento : Analisis2.sg_apreuSecgen01
+    Objetivo      : update Aprobación de resoluciones
+    Origen        : PA base normalizado
+
+09. sg_apsoiSecgen01.txt
+    Procedimiento : Analisis2.sg_apsoiSecgen01
+    Objetivo      : Crear una tarea de aprobacion asociada al flujo y etapa actuales de la solicitud.
+    Origen        : PA modificado o nuevo
+
+10. sg_apsosSecgen01.txt
+    Procedimiento : Analisis2.sg_apsosSecgen01
+    Objetivo      : Seleccionar comentario de solicitud
+    Origen        : PA base normalizado
+
+11. sg_apsosSecgen02.txt
+    Procedimiento : Analisis2.sg_apsosSecgen02
+    Objetivo      : Trae los aprobadores para revisar estado
+    Origen        : PA base normalizado
+
+12. sg_apsosSecgen03.txt
+    Procedimiento : Analisis2.sg_apsosSecgen03
+    Objetivo      : Seleccionar el historial o datos de aprobacion de una solicitud
+    Origen        : PA modificado o nuevo
+
+13. sg_apsosSecgen04.txt
+    Procedimiento : Analisis2.sg_apsosSecgen04
+    Objetivo      : Trae los aprobadores de una solicitud
+    Origen        : PA base normalizado
+
+14. sg_apsosSecgen05.txt
+    Procedimiento : Analisis2.sg_apsosSecgen05
+    Objetivo      : Obtener la cantidad de tareas pendientes (cod_estapr = 4) para una solicitud especifica.
+    Origen        : PA modificado o nuevo
+
+15. sg_apsouSecgen01.txt
+    Procedimiento : Analisis2.sg_apsouSecgen01
+    Objetivo      : update Aprobación de solicitudes
+    Origen        : PA base normalizado
+
+16. sg_apsouSecgen02.txt
+    Procedimiento : Analisis2.sg_apsouSecgen02
+    Objetivo      : Cerrar o actualizar las tareas pendientes de una etapa de solicitud, asignando un nuevo estado de aprobacion.
+    Origen        : PA modificado o nuevo
+
+17. sg_apsouSecgen03.txt
+    Procedimiento : Analisis2.sg_apsouSecgen03
+    Objetivo      : Registrar de forma atomica la decision de una tarea DU288.
+    Origen        : PA modificado o nuevo
+
+18. sg_cctosSecgen04.txt
+    Procedimiento : Analisis2.sg_cctosSecgen04
+    Objetivo      : Lista de centros de costo por rut y asociados a la unidad de usuario
+    Origen        : PA base normalizado
+
+19. sg_cctosSecgen05.txt
+    Procedimiento : Analisis2.sg_cctosSecgen05
+    Objetivo      : Obtener lista de centros de costo disponibles para un rut
+    Origen        : PA modificado o nuevo
+
+20. sg_cctosSecgen06.txt
+    Procedimiento : Analisis2.sg_cctosSecgen06
+    Objetivo      : Obtener el saldo disponible consolidado por item presupuestario y general de un Centro de Costo.
+    Origen        : PA modificado o nuevo
+
+21. sg_eapriSecgen01.txt
+    Procedimiento : Analisis2.sg_eapriSecgen01
+    Objetivo      : Asegurar el estado tecnico usado para cerrar tareas pendientes hermanas cuando una etapa paralela se rechaza o devuelve.
+    Origen        : PA modificado o nuevo
+
+22. sg_eta1sSecgen01.txt
+    Procedimiento : Analisis2.sg_eta1sSecgen01
+    Objetivo      : Listar las etapas vigentes configuradas para un flujo de solicitud especifico.
+    Origen        : PA modificado o nuevo
+
+23. sg_eta1sSecgen02.txt
+    Procedimiento : Analisis2.sg_eta1sSecgen02
+    Objetivo      : Listar las etapas configuradas y vigentes para el flujo asociado a una solicitud, indicando la etapa actual.
+    Origen        : PA modificado o nuevo
+
+24. sg_eta1sSecgen03.txt
+    Procedimiento : Analisis2.sg_eta1sSecgen03
+    Objetivo      : Obtener la politica de resolucion y omision configurada para una etapa del flujo de solicitud.
+    Origen        : PA modificado o nuevo
+
+25. sg_eta2sSecgen01.txt
+    Procedimiento : Analisis2.sg_eta2sSecgen01
+    Objetivo      : Resolver una transicion configurada en sg_eta2 o listar las acciones disponibles para la etapa actual de una solicitud.
+    Origen        : PA modificado o nuevo
+
+26. sg_etasSecgen01.txt
+    Procedimiento : Analisis2.sg_etasSecgen01
+    Objetivo      : Resolver el responsable de una etapa DU288 y aplicar las reglas institucionales de asignacion, omision y conflicto de interes.
+    Origen        : PA modificado o nuevo
+
+27. sg_flusSecgen01.txt
+    Procedimiento : Analisis2.sg_flusSecgen01
+    Objetivo      : Resolver el flujo DU288 con los datos existentes del Centro de Costo y los maestros sg_tfls/sg_eta1.
+    Origen        : PA modificado o nuevo
+
+28. sg_fucodSecgen01.txt
+    Procedimiento : Analisis2.sg_fucodSecgen01
+    Objetivo      : Eliminar un funcionario asociado a una prestacion de servicios
+    Origen        : PA modificado o nuevo
+
+29. sg_fucoiSecgen01.txt
+    Procedimiento : Analisis2.sg_fucoiSecgen01
+    Objetivo      : Insertar o registrar compromisos horarios de un funcionario
+    Origen        : PA modificado o nuevo
+
+30. sg_fucosSecgen01.txt
+    Procedimiento : Analisis2.sg_fucosSecgen01
+    Objetivo      : Retorna las compensaciones (fecha y rango horario) registradas en sg_fuco para los funcionarios de una solicitud.
+    Origen        : PA modificado o nuevo
+
+31. sg_fuhodSecgen01.txt
+    Procedimiento : Analisis2.sg_fuhodSecgen01
+    Objetivo      : Elimina los tramos horarios de ejecucion en sg_fuho para un funcionario.
+    Origen        : PA modificado o nuevo
+
+32. sg_fuhosiSecgen01.txt
+    Procedimiento : Analisis2.sg_fuhosiSecgen01
+    Objetivo      : Inserta un tramo de horario de ejecucion de prestacion en sg_fuho.
+    Origen        : PA modificado o nuevo
+
+33. sg_fuhosSecgen01.txt
+    Procedimiento : Analisis2.sg_fuhosSecgen01
+    Objetivo      : Retorna la distribucion de horarios de ejecucion de prestacion (sg_fuho) para los funcionarios de una solicitud o por funcionario especifico.
+    Origen        : PA modificado o nuevo
+
+34. sg_fumesSecgen01.txt
+    Procedimiento : Analisis2.sg_fumesSecgen01
+    Objetivo      : Obtiene la lista de meses de ejecucion vigentes para los funcionarios de una solicitud.
+    Origen        : PA modificado o nuevo
+
+35. sg_fumeuSecgen01.txt
+    Procedimiento : Analisis2.sg_fumeuSecgen01
+    Objetivo      : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
+    Origen        : PA modificado o nuevo
+
+36. sg_fupsdSecgen01.txt
+    Procedimiento : Analisis2.sg_fupsdSecgen01
+    Objetivo      : Eliminar de forma transaccional un funcionario de sg_fups y sus compensaciones en sg_fuco de forma atA³mica.
+    Origen        : PA modificado o nuevo
+
+37. sg_fupsiSecgen01.txt
+    Procedimiento : Analisis2.sg_fupsiSecgen01
+    Objetivo      : Insertar funcionarios prestacion de servicios (sg_fups), compatible con DU288 y flujo legacy.
+    Origen        : PA modificado o nuevo
+
+38. sg_fupssSecgen01.txt
+    Procedimiento : Analisis2.sg_fupssSecgen01
+    Objetivo      : Seleccionar un funcionario especA­fico por id_funprse, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
+    Origen        : PA modificado o nuevo
+
+39. sg_fupssSecgen02.txt
+    Procedimiento : Analisis2.sg_fupssSecgen02
+    Objetivo      : Listar los funcionarios asociados a una solicitud de PDS, incluyendo campos legacy y nuevos campos DU288 de sg_fups.
+    Origen        : PA modificado o nuevo
+
+40. sg_fupssSecgen12.txt
+    Procedimiento : Analisis2.sg_fupssSecgen12
+    Objetivo      : Verificar si el funcionario tiene parentesco activo con el jefe de proyecto.
+    Origen        : PA modificado o nuevo
+
+41. sg_fupssSecgen13.txt
+    Procedimiento : Analisis2.sg_fupssSecgen13
+    Objetivo      : Obtener el contrato principal, haberes calculados y tope DU288 asignado para un funcionario.
+    Origen        : PA modificado o nuevo
+
+42. sg_fupssSecgen14.txt
+    Procedimiento : Analisis2.sg_fupssSecgen14
+    Objetivo      : Validar si el contrato evaluado para DU288 queda habilitado o no segun calidad juridica, cargo y contexto ANID/externo.
+    Origen        : PA modificado o nuevo
+
+43. sg_fupssSecgen15.txt
+    Procedimiento : Analisis2.sg_fupssSecgen15
+    Objetivo      : Obtener asignaciones/designaciones vigentes del funcionario y evaluar si alguna inhabilita DU288.
+    Origen        : PA modificado o nuevo
+
+44. sg_fupssSecgen16.txt
+    Procedimiento : Analisis2.sg_fupssSecgen16
+    Objetivo      : Obtener informacion de un funcionario y su contrato activo
+    Origen        : PA modificado o nuevo
+
+45. sg_fupssSecgen17.txt
+    Procedimiento : Analisis2.sg_fupssSecgen17
+    Objetivo      : Listar las prestaciones de servicio previas de un funcionario para apoyar la revision normativa de una solicitud.
+    Origen        : PA modificado o nuevo
+
+46. sg_fupsuSecgen01.txt
+    Procedimiento : Analisis2.sg_fupsuSecgen01
+    Objetivo      : Actualizar datos de un funcionario prestacion de servicios (sg_fups), compatible con DU288 y legacy.
+    Origen        : PA modificado o nuevo
+
+47. sg_histiSecgen01.txt
+    Procedimiento : Analisis2.sg_histiSecgen01
+    Objetivo      : insertar Registro de históricos de solicitud
+    Origen        : PA base normalizado
+
+48. sg_histiSecgen02.txt
+    Procedimiento : Analisis2.sg_histiSecgen02
+    Objetivo      : insertar Registro de históricos de resolución
+    Origen        : PA base normalizado
+
+49. sg_histiSecgen03.txt
+    Procedimiento : Analisis2.sg_histiSecgen03
+    Objetivo      : Registrar el historial funcional de la solicitud.
+    Origen        : PA modificado o nuevo
+
+50. sg_histsSecgen01.txt
+    Procedimiento : Analisis2.sg_histsSecgen01
+    Objetivo      : Obtener lista de una accion realizada un por perfil
+    Origen        : PA base normalizado
+
+51. sg_histsSecgen02.txt
+    Procedimiento : Analisis2.sg_histsSecgen02
+    Objetivo      : select Registro de históricos de solicitud, resolución
+    Origen        : PA base normalizado
+
+52. sg_histsSecgen05.txt
+    Procedimiento : Analisis2.sg_histsSecgen05
+    Objetivo      : Obtener el registro de la Aºltima devoluciA³n a observaciA³n (id_tipacc = 4) para una solicitud de prestacion de servicios. CreaciA³n: UFRO 2026
+    Origen        : PA modificado o nuevo
+
+53. sg_pldesSecgen01.txt
+    Procedimiento : Analisis2.sg_pldesSecgen01
+    Objetivo      : select Plantilla Detalle
+    Origen        : PA base normalizado
+
+54. sg_prseiSecgen01.txt
+    Procedimiento : Analisis2.sg_prseiSecgen01
+    Objetivo      : Insertar la cabecera especifica de una Prestacion de Servicios en sg_prse, incluyendo la modalidad de prestacion.
+    Origen        : PA modificado o nuevo
+
+55. sg_prsesSecgen01.txt
+    Procedimiento : Analisis2.sg_prsesSecgen01
+    Objetivo      : Consultar una solicitud de Prestacion de Servicios con su modalidad, flujo y etapa actuales.
+    Origen        : PA modificado o nuevo
+
+56. sg_prsesSecgen05.txt
+    Procedimiento : Analisis2.sg_prsesSecgen05
+    Objetivo      : select Prestación de servicios
+    Origen        : PA base normalizado
+
+57. sg_prsesSecgen06.txt
+    Procedimiento : Analisis2.sg_prsesSecgen06
+    Objetivo      : select Prestación de servicios
+    Origen        : PA base normalizado
+
+58. sg_prsesSecgen07.txt
+    Procedimiento : Analisis2.sg_prsesSecgen07
+    Objetivo      : select Prestación de servicios
+    Origen        : PA base normalizado
+
+59. sg_prsesSecgen08.txt
+    Procedimiento : Analisis2.sg_prsesSecgen08
+    Objetivo      : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
+    Origen        : PA modificado o nuevo
+
+60. sg_prsesSecgen10.txt
+    Procedimiento : Analisis2.sg_prsesSecgen10
+    Objetivo      : select Prestación de servicios
+    Origen        : PA base normalizado
+
+61. sg_prsesSecgen12.txt
+    Procedimiento : Analisis2.sg_prsesSecgen12
+    Objetivo      : Seleccionar solicitudes historicas prestación de servicios listas para aprobar por rut
+    Origen        : PA base normalizado
+
+62. sg_prsesSecgen13.txt
+    Procedimiento : Analisis2.sg_prsesSecgen13
+    Objetivo      : Obtener las solicitudes de prestacion de servicios asignadas o pendientes para un usuario
+    Origen        : PA modificado o nuevo
+
+63. sg_prsesSecgen14.txt
+    Procedimiento : Analisis2.sg_prsesSecgen14
+    Objetivo      : Seleccionar las solicitudes pendientes de firma en prestacion de servicios con su modalidad y nombre del solicitante
+    Origen        : PA modificado o nuevo
+
+64. sg_prsesSecgen15.txt
+    Procedimiento : Analisis2.sg_prsesSecgen15
+    Objetivo      : Seleccionar las solicitudes pendientes para ser archivadas en prestacion de servicios con modalidad y nombre del solicitante
+    Origen        : PA modificado o nuevo
+
+65. sg_prsesSecgen16.txt
+    Procedimiento : Analisis2.sg_prsesSecgen16
+    Objetivo      : Seleccionar las solicitudes listas para marcar como ingresada en prestación de servicios
+    Origen        : PA base normalizado
+
+66. sg_prsesSecgen17.txt
+    Procedimiento : Analisis2.sg_prsesSecgen17
+    Objetivo      : Listar solicitudes PDS finalizadas creadas por el RUT.
+    Origen        : PA modificado o nuevo
+
+67. sg_prsesSecgen18.txt
+    Procedimiento : Analisis2.sg_prsesSecgen18
+    Objetivo      : Seleccionar detalle de una solicitud PDS especifica asociada a un usuario
+    Origen        : PA modificado o nuevo
+
+68. sg_prsesSecgen19.txt
+    Procedimiento : Analisis2.sg_prsesSecgen19
+    Objetivo      : Obtener la etapa actual, flujo, modulo y estado general de una solicitud especifica.
+    Origen        : PA modificado o nuevo
+
+69. sg_prsesSecgen20.txt
+    Procedimiento : Analisis2.sg_prsesSecgen20
+    Objetivo      : Obtener el contexto institucional de una solicitud requerido para resolver responsables y etapas del flujo.
+    Origen        : PA modificado o nuevo
+
+70. sg_prseuSecgen01.txt
+    Procedimiento : Analisis2.sg_prseuSecgen01
+    Objetivo      : Actualizar PrestaciA³n de servicios con soporte de modalidad.
+    Origen        : PA modificado o nuevo
+
+71. sg_prseuSecgen02.txt
+    Procedimiento : Analisis2.sg_prseuSecgen02
+    Objetivo      : Inicializar el flujo y la etapa vigente de una solicitud PDS.
+    Origen        : PA modificado o nuevo
+
+72. sg_prseuSecgen03.txt
+    Procedimiento : Analisis2.sg_prseuSecgen03
+    Objetivo      : Aplicar una transicion configurada en sg_eta2 y actualizar la etapa actual de una solicitud PDS.
+    Origen        : PA modificado o nuevo
+
+73. sg_redeiSecgen01.txt
+    Procedimiento : Analisis2.sg_redeiSecgen01
+    Objetivo      : insertar Detalle de resolución
+    Origen        : PA base normalizado
+
+74. sg_redesSecgen01.txt
+    Procedimiento : Analisis2.sg_redesSecgen01
+    Objetivo      : select Detalle de resolución
+    Origen        : PA base normalizado
+
+75. sg_redesSecgen02.txt
+    Procedimiento : Analisis2.sg_redesSecgen02
+    Objetivo      : select Detalle de resolución
+    Origen        : PA base normalizado
+
+76. sg_rslciSecgen01.txt
+    Procedimiento : Analisis2.sg_rslciSecgen01
+    Objetivo      : insertar Resoluciones
+    Origen        : PA base normalizado
+
+77. sg_rslcsSecgen01.txt
+    Procedimiento : Analisis2.sg_rslcsSecgen01
+    Objetivo      : seleccionar datos de resolución
+    Origen        : PA base normalizado
+
+78. sg_rslcuSecgen01.txt
+    Procedimiento : Analisis2.sg_rslcuSecgen01
+    Objetivo      : update Resoluciones
+    Origen        : PA base normalizado
+
+79. sg_rslcuSecgen03.txt
+    Procedimiento : Analisis2.sg_rslcuSecgen03
+    Objetivo      : Cambiar el estado de una resolución
+    Origen        : PA base normalizado
+
+80. sg_rslcuSecgen04.txt
+    Procedimiento : Analisis2.sg_rslcuSecgen04
+    Objetivo      : Marcar una resolución como ingresada
+    Origen        : PA base normalizado
+
+81. sg_soliiSecgen01.txt
+    Procedimiento : Analisis2.sg_soliiSecgen01
+    Objetivo      : insertar Solicitudes
+    Origen        : PA base normalizado
+
+82. sg_solisSecgen01.txt
+    Procedimiento : Analisis2.sg_solisSecgen01
+    Objetivo      : Obtener una unica cabecera de solicitud, incluyendo la identidad del solicitante original para el flujo de retorno.
+    Origen        : PA modificado o nuevo
+
+83. sg_solisSecgen23.txt
+    Procedimiento : Analisis2.sg_solisSecgen23
+    Objetivo      : Obtener el detalle de aprobaciones (sg_apso) de una solicitud, para armar el flujo organizacional completo en el frontend (historial por etapa).
+    Origen        : PA modificado o nuevo
+
+84. sg_soliuSecgen01.txt
+    Procedimiento : Analisis2.sg_soliuSecgen01
+    Objetivo      : Update solicitud
+    Origen        : PA base normalizado
+
+85. sg_soliuSecgen02.txt
+    Procedimiento : Analisis2.sg_soliuSecgen02
+    Objetivo      : Update estado de solicitudes
+    Origen        : PA base normalizado
+
+86. sg_soliuSecgen03.txt
+    Procedimiento : Analisis2.sg_soliuSecgen03
+    Objetivo      : Update datos de resolución
+    Origen        : PA base normalizado
+
+87. sg_soliuSecgen05.txt
+    Procedimiento : Analisis2.sg_soliuSecgen05
+    Objetivo      : Actualizar solicitudes agrupadas por numero y año de resolucion
+    Origen        : PA base normalizado
+
+88. sg_tflssSecgen01.txt
+    Procedimiento : Analisis2.sg_tflssSecgen01
+    Objetivo      : Listar los tipos de flujos de solicitud (tfls) vigentes en el sistema.
+    Origen        : PA modificado o nuevo
+
+89. sg_tmodsSecgen01.txt
+    Procedimiento : Analisis2.sg_tmodsSecgen01
+    Objetivo      : Listar los tipos de modalidades maestras de prestacion de servicios
+    Origen        : PA modificado o nuevo
+
+90. sg_tocasSecgen01.txt
+    Procedimiento : Analisis2.sg_tocasSecgen01
+    Objetivo      : Validar si el contrato de un funcionario posee un tope especial vigente para su cargo y unidad institucional.
+    Origen        : PA modificado o nuevo
+
+91. sg_usacsSecgen01.txt
+    Procedimiento : Analisis2.sg_usacsSecgen01
+    Objetivo      : Obtener perfiles y privilegios dinamicos de acceso a PDS.
+    Origen        : PA modificado o nuevo
+
+92. sp_orcosSecgen01.txt
+    Procedimiento : Analisis2.sp_orcosSecgen01
+    Objetivo      : Resolver el responsable vigente de una organizacion considerando titularidad, delegacion, subrogancia y exclusiones informadas.
+    Origen        : PA modificado o nuevo
+
+93. sp_perssSecgen02.txt
+    Procedimiento : Analisis2.sp_perssSecgen02
+    Objetivo      : Obtener datos de usuario nombre, unidad y apellidos por rut.
+    Origen        : PA base normalizado
+
+94. valida_saldo_cc_cs.txt
+    Procedimiento : Analisis.valida_saldo_cc_cs
+    Objetivo      : Archivo excluido de la normalizacion; se conserva sin modificaciones.
+    Origen        : Excepcion preservada

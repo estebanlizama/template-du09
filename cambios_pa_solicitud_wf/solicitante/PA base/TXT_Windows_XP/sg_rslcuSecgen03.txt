@@ -35,7 +35,7 @@ create procedure Analisis2.sg_rslcuSecgen03
 select
     'Falta campo Numero Resolucion' msg return
 end
-        
+
              if @cod_estres is null begin
 select
     'Falta campo código de estado de la resolución' msg return

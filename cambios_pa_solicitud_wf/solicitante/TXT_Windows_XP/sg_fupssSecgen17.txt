@@ -15,9 +15,10 @@ GO
    @rut_person          -> RUT de la persona. (Opcional)
    @nro_solici_excluir  -> Parametro de entrada. (Opcional)
 
-   Objetivo : Listar el historial de Prestaciones de Servicio (PDS) previas de un funcionario (por RUT), para apoyo de auditoria normativa DGDP (comparar la solicitud actual contra labores anteriores).
+   Objetivo : Listar las prestaciones de servicio previas de un funcionario
+              para apoyar la revision normativa de una solicitud.
 
-   Creacion: 2026/08/19
+   Creacion: ELA 2026/08/19
    Actualizacion: ELA 2026/08/25
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen17
@@ -162,13 +163,6 @@ BEGIN
         ON fuco.id_funprse = fu.id_funprse
     WHERE fu.rut = @rut_person
       AND (@nro_solici_excluir IS NULL OR fu.nro_solici <> @nro_solici_excluir)
-      /* Una PDS rechazada (4) o con resolucion rechazada por un firmante
-         (7) no representa una labor real ni un compromiso vigente -- no
-         debe contar como coincidencia/conflicto contra la solicitud
-         actual. Se filtra aca (no solo en el codigo que consume este PA)
-         para que cualquier consumidor futuro quede protegido igual, y
-         para no traer ni unir cuotas/horarios de solicitudes que ya no
-         importan. */
       AND soli.cod_estsol NOT IN (4, 7)
     ORDER BY soli.f_solicit DESC, fu.id_funprse, fume.nro_cuota, fuc2.fec_comrea
 END

@@ -25,11 +25,11 @@ AS
 BEGIN
     IF @nro_solici IS NULL
     BEGIN
-        SELECT 'Error: Falta nÃºmero de solicitud' AS msg
+        SELECT 'Error: Falta número de solicitud' AS msg
         RETURN
     END
 
-    SELECT 
+    SELECT
         fm.id_funprse,
         fm.nro_cuota,
         fm.ano_prop,

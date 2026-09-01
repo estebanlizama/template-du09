@@ -11,10 +11,13 @@ GO
 
 /* Procedimiento : Analisis2.sg_fucodSecgen01
 
+   Entrada :
+   @id_funprse          -> Identificador del funcionario. (Opcional)
+
    Objetivo : Eliminar un funcionario asociado a una prestacion de servicios
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fucodSecgen01
     @id_funprse int = NULL

@@ -14,7 +14,7 @@ GO
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
    @meses_csv           -> Parametro de entrada. (Opcional)
-   @cod_estcuo          -> Parametro de entrada. (Obligatorio)
+   @cod_estcuo          -> Parametro de entrada. (Opcional)
 
    Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
 

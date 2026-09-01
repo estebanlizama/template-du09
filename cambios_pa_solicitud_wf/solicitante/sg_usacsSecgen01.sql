@@ -13,8 +13,8 @@ GO
 
    Entrada :
    @rut                 -> RUT del funcionario. (Opcional)
-   @cod_sistem          -> Codigo del sistema. (Obligatorio)
-   @cod_modulo          -> Codigo del modulo. (Obligatorio)
+   @cod_sistem          -> Codigo del sistema. (Opcional)
+   @cod_modulo          -> Codigo del modulo. (Opcional)
    @fecha_eval          -> Fecha de evaluacion. (Opcional)
 
    Objetivo : Obtener perfiles y privilegios dinamicos de acceso a PDS.

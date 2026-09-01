@@ -15,8 +15,7 @@ go
 /* Procedimiento : sg_pldesSecgen01
 
    Entrada :
-   @id_planti           -> Parametro de entrada. (Obligatorio)
-
+   @id_planti           -> Parametro de entrada. (Opcional)
    Objetivo : select Plantilla Detalle
 
    Creacion: ELA 2026/08/24

@@ -11,10 +11,16 @@ GO
 
 /* Procedimiento : Analisis2.sg_fucoiSecgen01
 
+   Entrada :
+   @id_funprse          -> Identificador del funcionario. (Opcional)
+   @fec_compro          -> Fecha del compromiso horario. (Opcional)
+   @hora_ini            -> Hora de inicio del compromiso. (Opcional)
+   @hora_ter            -> Hora de termino del compromiso. (Opcional)
+
    Objetivo : Insertar o registrar compromisos horarios de un funcionario
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fucoiSecgen01
     @id_funprse int = NULL,

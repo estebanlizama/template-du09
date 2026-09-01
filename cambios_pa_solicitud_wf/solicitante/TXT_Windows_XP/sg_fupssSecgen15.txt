@@ -13,13 +13,13 @@ GO
 
    Entrada :
    @rut_person          -> RUT de la persona. (Obligatorio)
-   @id_contrato         -> Identificador del contrato. (Obligatorio)
+   @id_contrato         -> Identificador del contrato. (Opcional)
    @fecha_eval          -> Fecha de evaluacion. (Opcional)
-   @ind_anid            -> Parametro de entrada. (Obligatorio)
+   @ind_anid            -> Parametro de entrada. (Opcional)
 
    Objetivo : Obtener asignaciones/designaciones vigentes del funcionario y evaluar si alguna inhabilita DU288.
 
-   Creacion: 2026/07/10
+   Creacion: ELA 2026/07/10
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_fupssSecgen15

@@ -16,9 +16,10 @@ GO
    @id_contrato         -> Identificador del contrato. (Opcional)
    @fecha_eval          -> Fecha de evaluacion. (Opcional)
 
-   Objetivo : Validar si el contrato evaluado de un funcionario posee un tope especial configurado en sg_toca.
+   Objetivo : Validar si el contrato de un funcionario posee un tope especial
+              vigente para su cargo y unidad institucional.
 
-   Creacion: 2026/07/06
+   Creacion: ELA 2026/07/06
    Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_tocasSecgen01

@@ -14,7 +14,7 @@ GO
    Entrada :
    @nro_solici          -> Numero de solicitud. (Opcional)
    @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
-   @reemplazar          -> Parametro de entrada. (Obligatorio)
+   @reemplazar          -> Parametro de entrada. (Opcional)
 
    Objetivo : Inicializar el flujo y la etapa vigente de una solicitud PDS.
 

@@ -76,5 +76,3 @@ GO
 
 GRANT EXECUTE ON Analisis2.sg_prsesSecgen01 TO UsuaVrac
 GO
-|
- 

@@ -19,8 +19,8 @@ GO
    @itm_global          -> Parametro de entrada. (Opcional)
    @motivo              -> Parametro de entrada. (Opcional)
    @periodos            -> Parametro de entrada. (Opcional)
-   @monto_mes           -> Parametro de entrada. (Obligatorio)
-   @mto_total           -> Parametro de entrada. (Obligatorio)
+   @monto_mes           -> Parametro de entrada. (Opcional)
+   @mto_total           -> Parametro de entrada. (Opcional)
    @cod_moneda          -> Parametro de entrada. (Opcional)
    @cod_tpps            -> Parametro de entrada. (Opcional)
    @f_inicio            -> Parametro de entrada. (Opcional)
@@ -160,14 +160,14 @@ BEGIN
 
     IF @f_termino IS NULL
     BEGIN
-        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de t茅rmino' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de t閞mino' AS msg
         RETURN
     END
 
-    -- Validar fechas de inicio y t茅rmino
+    -- Validar fechas de inicio y t閞mino
     IF @f_inicio > @f_termino
     BEGIN
-        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de t茅rmino' AS msg
+        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de t閞mino' AS msg
         RETURN
     END
 
@@ -188,7 +188,7 @@ BEGIN
         -- Validar que el estado exista en sg_efun
         IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
         BEGIN
-            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el cat谩logo de estados' AS msg
+            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el cat醠ogo de estados' AS msg
             RETURN
         END
 
@@ -235,7 +235,7 @@ BEGIN
         RETURN
     END
 
-    -- Bifurcaci贸n seg煤n la modalidad
+    -- Bifurcaci髇 seg鷑 la modalidad
     IF @cod_modprs = 2
     BEGIN
         -- Flujo DU288: incluye todos los campos nuevos
@@ -291,7 +291,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        -- Flujo Legacy: mantiene estructura original de inserci贸n
+        -- Flujo Legacy: mantiene estructura original de inserci髇
         INSERT INTO sg_fups (
             id_funprse,
             nro_solici,
@@ -327,7 +327,7 @@ BEGIN
 
     IF @@error <> 0 OR @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 0 AS status, 'STAFF_INSERT_ERROR' AS code, 'Error al actualizar informaci贸n de validaci贸n de proceso. Se aborta el procedimiento' AS msg
+        SELECT 0 AS status, 'STAFF_INSERT_ERROR' AS code, 'Error al actualizar informaci髇 de validaci髇 de proceso. Se aborta el procedimiento' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN

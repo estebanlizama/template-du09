@@ -25,22 +25,22 @@ go
 
 create procedure Analisis2.sg_cctosSecgen04 @rut char(9) = NULL as if @rut is null
 begin
-	select
-	'Falta el rut. Se aborta el procedimiento' msg return
+    select
+    'Falta el rut. Se aborta el procedimiento' msg return
 end
 
 DECLARE @unidad_mayor CHAR(8)
 
-SELECT 
+SELECT
     @unidad_mayor = substring(uni.cod_unidad, 1, 2) + '000000'
-FROM 
+FROM
     sisper_db..sp_pers pers
-INNER JOIN 
-    ufro_db..es_unid uni 
+INNER JOIN
+    ufro_db..es_unid uni
     ON uni.cod_unidad = pers.u_original
-WHERE 
+WHERE
     pers.rut_person = @rut
-AND 
+AND
     uni.vigente = 'S'
 
 SELECT
@@ -60,22 +60,22 @@ SELECT
     pers.nom_apmate
 FROM
     fin21_db..es_ccto ccto
-LEFT JOIN 
-    fin21_db..es_ecct ecct 
+LEFT JOIN
+    fin21_db..es_ecct ecct
     ON ecct.cod_ccto = ccto.cod_ccto
     AND ecct.cod_unifin = ccto.cod_unifin
-LEFT JOIN 
+LEFT JOIN
     fin21_db..sf_ftfn ftfn
     ON ftfn.cod_ftfn = ccto.cod_ftfn
-LEFT JOIN 
+LEFT JOIN
     sisper_db..sp_pers pers
     ON ecct.rut = pers.rut_person
-LEFT JOIN 
-    ufro_db..es_unid uni 
+LEFT JOIN
+    ufro_db..es_unid uni
     ON uni.cod_unidad = pers.u_original
 WHERE
     uni.cod_unidad LIKE LEFT(@unidad_mayor, 2) + '%'
-AND 
+AND
     ecct.vigente = 'S'
 go
 

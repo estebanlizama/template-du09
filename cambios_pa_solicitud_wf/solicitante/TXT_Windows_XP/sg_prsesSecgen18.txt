@@ -11,10 +11,14 @@ GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen18
 
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @rut_usua            -> RUT del usuario. (Opcional)
+
    Objetivo : Seleccionar detalle de una solicitud PDS especifica asociada a un usuario
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen18
     @nro_solici int = NULL,

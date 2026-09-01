@@ -67,7 +67,7 @@ BEGIN
     SELECT @f_inicio = '31/12/' + convert(char(4), @ano - 1)
 
     /* 1. Obtener tipo de centro de costo y vigencia */
-    SELECT 
+    SELECT
         @tipo_cc = t.cod_tfondo,
         @f_cierre = es.f_cierre,
         @f_ven_sob = es.f_ven_sob,
@@ -137,105 +137,105 @@ BEGIN
 
     /* 2. Crear tablas temporales de movimientos */
     CREATE TABLE #depr (
-        numero int null, 
-        cod_unifin smallint null, 
-        cod_ccto smallint null, 
-        cod_sitm varchar(5) null, 
-        cod_tipmov tinyint null, 
-        cod_moneda smallint null,  
-        valor decimal(15,2) null, 
+        numero int null,
+        cod_unifin smallint null,
+        cod_ccto smallint null,
+        cod_sitm varchar(5) null,
+        cod_tipmov tinyint null,
+        cod_moneda smallint null,
+        valor decimal(15,2) null,
         valor_his decimal(15,2) null
     )
 
     CREATE TABLE #depr2 (
-        numero int null, 
-        cod_unifin smallint null, 
-        cod_ccto smallint null, 
-        cod_sitm varchar(5) null, 
-        cod_tipmov tinyint null, 
-        cod_moneda smallint null,  
-        valor decimal(15,2) null, 
+        numero int null,
+        cod_unifin smallint null,
+        cod_ccto smallint null,
+        cod_sitm varchar(5) null,
+        cod_tipmov tinyint null,
+        cod_moneda smallint null,
+        valor decimal(15,2) null,
         valor_his decimal(15,2) null
     )
 
     CREATE TABLE #depr3 (
-        numero int null, 
-        cod_unifin smallint null, 
-        cod_ccto smallint null, 
-        cod_sitm varchar(5) null, 
-        cod_tipmov tinyint null, 
-        cod_moneda smallint null,  
-        valor decimal(15,2) null, 
+        numero int null,
+        cod_unifin smallint null,
+        cod_ccto smallint null,
+        cod_sitm varchar(5) null,
+        cod_tipmov tinyint null,
+        cod_moneda smallint null,
+        valor decimal(15,2) null,
         valor_his decimal(15,2) null
     )
 
     CREATE TABLE #docs (
-        numero int null, 
-        f_ingreso datetime null,  
-        afect_sald char(1) null,  
-        valida char(1) null, 
-        cod_tipodoc smallint null, 
-        f_cierre datetime null, 
-        ano smallint null, 
-        mes smallint null, 
-        ano_docume smallint null, 
+        numero int null,
+        f_ingreso datetime null,
+        afect_sald char(1) null,
+        valida char(1) null,
+        cod_tipodoc smallint null,
+        f_cierre datetime null,
+        ano smallint null,
+        mes smallint null,
+        ano_docume smallint null,
         mes_docume smallint null
     )
 
     CREATE TABLE #docs2 (
-        numero int null, 
-        f_ingreso datetime null,  
-        afect_sald char(1) null,  
-        valida char(1) null, 
-        cod_tipodoc smallint null, 
-        f_cierre datetime null, 
-        ano smallint null, 
-        mes smallint null, 
-        ano_docume smallint null, 
+        numero int null,
+        f_ingreso datetime null,
+        afect_sald char(1) null,
+        valida char(1) null,
+        cod_tipodoc smallint null,
+        f_cierre datetime null,
+        ano smallint null,
+        mes smallint null,
+        ano_docume smallint null,
         mes_docume smallint null
     )
 
     CREATE TABLE #docs3 (
-        numero int null, 
-        f_ingreso datetime null,  
-        afect_sald char(1) null,  
-        valida char(1) null, 
-        cod_tipodoc smallint null, 
-        f_cierre datetime null, 
-        ano smallint null, 
-        mes smallint null, 
-        ano_docume smallint null, 
+        numero int null,
+        f_ingreso datetime null,
+        afect_sald char(1) null,
+        valida char(1) null,
+        cod_tipodoc smallint null,
+        f_cierre datetime null,
+        ano smallint null,
+        mes smallint null,
+        ano_docume smallint null,
         mes_docume smallint null
     )
 
     CREATE TABLE #pfoc (
-        numero int null, 
-        sf_numero int null, 
-        abono decimal(15,2) null, 
+        numero int null,
+        sf_numero int null,
+        abono decimal(15,2) null,
         afect_sald char(1) null
     )
 
     CREATE TABLE #pfoc3 (
-        numero int null, 
-        sf_numero int null, 
-        abono decimal(15,2) null, 
+        numero int null,
+        sf_numero int null,
+        abono decimal(15,2) null,
         afect_sald char(1) null
     )
 
     CREATE TABLE #resumen_saldos (
-        cod_sitm varchar(5) null, 
-        cod_unifin smallint null, 
-        cod_ccto smallint null,         
-        mes smallint null, 
-        ano smallint null, 
-        cod_moneda smallint null, 
-        f_cierre datetime null,        
-        saldo_mone decimal(20,4) null, 
-        saldo_prsp decimal(20,4) null, 
-        saldo_devg decimal(20,4) null,         
-        saldo_perc decimal(20,4) null, 
-        saldo_comp decimal(20,4) null, 
-        saldo_pago decimal(20,4) null,        
+        cod_sitm varchar(5) null,
+        cod_unifin smallint null,
+        cod_ccto smallint null,
+        mes smallint null,
+        ano smallint null,
+        cod_moneda smallint null,
+        f_cierre datetime null,
+        saldo_mone decimal(20,4) null,
+        saldo_prsp decimal(20,4) null,
+        saldo_devg decimal(20,4) null,
+        saldo_perc decimal(20,4) null,
+        saldo_comp decimal(20,4) null,
+        saldo_pago decimal(20,4) null,
         saldo decimal(20,4) null
     )
 
@@ -312,7 +312,7 @@ BEGIN
     GROUP BY p.numero, p.cod_unifin, p.cod_ccto, p.cod_sitm, p.cod_tipmov, p.cod_moneda
 
     /* 5. Insercion de movimientos en resumen_saldos */
-    
+
     /* Compromisos (mov 21) */
     INSERT INTO #resumen_saldos (cod_sitm, cod_unifin, cod_ccto, mes, ano, cod_moneda, f_cierre, saldo_mone, saldo_prsp, saldo_devg, saldo_perc, saldo_comp, saldo_pago, saldo)
     SELECT p.cod_sitm, p.cod_unifin, p.cod_ccto, d.mes, d.ano, p.cod_moneda, getdate(), p.valor, 0, 0, 0, p.valor, 0, 0
@@ -623,7 +623,7 @@ BEGIN
       AND p.cod_unifin = @cod_unifin1
       AND p.cod_ccto = @cod_ccto1
       AND isnull(d.valida, '1') <> '0'
-      AND d.numero = pp.numero 
+      AND d.numero = pp.numero
       AND pp.cod_tipmov = 21
       AND pp.cod_unifin = @cod_unifin1
       AND pp.cod_ccto = @cod_ccto1
@@ -645,7 +645,7 @@ BEGIN
       AND p.cod_unifin = @cod_unifin1
       AND p.cod_ccto = @cod_ccto1
       AND isnull(d.valida, '1') <> '0'
-      AND d.numero = pp.numero 
+      AND d.numero = pp.numero
       AND pp.cod_tipmov = 24
       AND pp.cod_unifin = @cod_unifin1
       AND pp.cod_ccto = @cod_ccto1
@@ -695,21 +695,21 @@ BEGIN
     INSERT INTO #resumen_saldos (cod_sitm, cod_unifin, cod_ccto, mes, ano, cod_moneda, f_cierre, saldo_mone, saldo_prsp, saldo_devg, saldo_perc, saldo_comp, saldo_pago, saldo)
     SELECT p.cod_sitm, p.cod_unifin, p.cod_ccto, d.mes, d.ano, p.cod_moneda, getdate(), 0, 0, 0, 0, -pp.valor, 0, 0
     FROM #depr3 p, #docs3 d, fin21_db..sf_pfoc ref, fin21_db..sf_docf dd, #depr pp
-    WHERE ref.numero = d.numero                
-      AND ref.sf_numero = dd.numero                
-      AND isnull(d.afect_sald, '1') = '1'              
-      AND d.cod_tipodoc in (55)                
-      AND dd.cod_tipodoc in (65,66)              
-      AND isnull(dd.afect_sald, '1') = '1'              
-      AND dd.numero = p.numero               
-      AND d.f_ingreso <= convert(datetime, @fecha_val, 103)       
-      AND d.f_ingreso > convert(datetime, @f_inicio, 103)       
-      AND p.cod_unifin = @cod_unifin1  
-      AND p.cod_tipmov = 21                
-      AND p.cod_ccto = @cod_ccto1 
-      AND isnull(d.valida, '1') <> '0'               
-      AND d.numero = pp.numero               
-      AND pp.cod_unifin = @cod_unifin1 
+    WHERE ref.numero = d.numero
+      AND ref.sf_numero = dd.numero
+      AND isnull(d.afect_sald, '1') = '1'
+      AND d.cod_tipodoc in (55)
+      AND dd.cod_tipodoc in (65,66)
+      AND isnull(dd.afect_sald, '1') = '1'
+      AND dd.numero = p.numero
+      AND d.f_ingreso <= convert(datetime, @fecha_val, 103)
+      AND d.f_ingreso > convert(datetime, @f_inicio, 103)
+      AND p.cod_unifin = @cod_unifin1
+      AND p.cod_tipmov = 21
+      AND p.cod_ccto = @cod_ccto1
+      AND isnull(d.valida, '1') <> '0'
+      AND d.numero = pp.numero
+      AND pp.cod_unifin = @cod_unifin1
       AND pp.cod_ccto = @cod_ccto1
 
     /* 6. Consulta Consolidada Final: saldo general y detalle por item */
@@ -761,7 +761,7 @@ BEGIN
 
     UNION ALL
 
-    SELECT 
+    SELECT
         'ITEM' AS tipo_registro,
         convert(int, st.cod_unifin) AS cod_unifin,
         convert(int, st.cod_ccto) AS cod_ccto,
@@ -771,7 +771,7 @@ BEGIN
         sum(isnull(st.saldo_prsp, 0)) AS saldo_presupuesto,
         sum(isnull(st.saldo_perc, 0)) AS saldo_percibido,
         sum(isnull(st.saldo_comp, 0)) AS saldo_compromiso,
-        CASE 
+        CASE
             WHEN @tipo_cc = 1 THEN sum(isnull(st.saldo_prsp, 0)) - sum(isnull(st.saldo_comp, 0))
             ELSE sum(isnull(st.saldo_prsp, 0)) + sum(isnull(st.saldo_perc, 0)) - sum(isnull(st.saldo_comp, 0))
         END AS saldo_disponible,

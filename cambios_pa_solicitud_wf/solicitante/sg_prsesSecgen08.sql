@@ -11,10 +11,13 @@ GO
 
 /* Procedimiento : Analisis2.sg_prsesSecgen08
 
+   Entrada :
+   @rut_solici          -> RUT del solicitante. (Opcional)
+
    Objetivo : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: :
+   Actualizacion: Sin registro
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL

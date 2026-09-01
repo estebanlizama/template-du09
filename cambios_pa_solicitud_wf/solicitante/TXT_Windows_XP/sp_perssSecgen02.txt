@@ -1,12 +1,15 @@
 use secgen_db
 go
 
-if exists (select 1 from sysobjects a, sysusers b
-              where a.uid  = b.uid
-                and a.type = 'P'
-                and b.name = 'Analisis2'
-                and a.name = 'sp_perssSecgen02')
-   drop procedure Analisis2.sp_perssSecgen02
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sp_perssSecgen02')
+begin
+    drop procedure Analisis2.sp_perssSecgen02
+end
 go
 
 /* Procedimiento : sp_perssSecgen02
@@ -16,11 +19,11 @@ go
 
    Objetivo : Obtener datos de usuario nombre, unidad y apellidos por rut.
 
-   Creacion: AI 2023/05/11
-   Actualizacion: 
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
 */
 
-create procedure  Analisis2.sp_perssSecgen02
+create procedure Analisis2.sp_perssSecgen02
     @rut_person varchar(9) = null
 as
     if @rut_person is null
@@ -38,9 +41,3 @@ go
 
 grant execute on Analisis2.sp_perssSecgen02 to UsuaVrac
 go
-
-/*
-execute secgen_db.Analisis2.sp_perssSecgen02 @rut_person = '164850951'
-*/
-
-execute secgen_db.Analisis2.sp_perssSecgen02 @rut_person = '164850951'

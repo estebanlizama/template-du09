@@ -15,8 +15,7 @@ go
 /* Procedimiento : sg_redesSecgen01
 
    Entrada :
-   @nro_resolu          -> Parametro de entrada. (Obligatorio)
-
+   @nro_resolu          -> Parametro de entrada. (Opcional)
    Objetivo : select Detalle de resolución
 
    Creacion: ELA 2026/08/24

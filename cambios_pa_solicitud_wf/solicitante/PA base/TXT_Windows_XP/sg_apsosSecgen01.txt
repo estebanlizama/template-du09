@@ -15,8 +15,7 @@ go
 /* Procedimiento : sg_apsosSecgen01
 
    Entrada :
-   @nro_solici          -> Numero de solicitud. (Obligatorio)
-
+   @nro_solici          -> Numero de solicitud. (Opcional)
    Objetivo : Seleccionar comentario de solicitud
 
    Creacion: ELA 2026/08/24

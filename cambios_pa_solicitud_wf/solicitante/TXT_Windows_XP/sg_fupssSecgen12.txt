@@ -27,7 +27,7 @@ AS
 BEGIN
     IF @rut_funcionario IS NULL OR @rut_jefpro IS NULL
     BEGIN
-        SELECT 
+        SELECT
             @rut_funcionario AS rut_funcionario,
             @rut_jefpro AS rut_jefpro,
             'N' AS tiene_parentesco,
@@ -35,13 +35,13 @@ BEGIN
             NULL AS rut_parent,
             NULL AS nombre_parent,
             'N' AS requiere_constancia,
-            'RUTs de entrada invÃ¡lidos' AS mensaje
+            'RUTs de entrada inválidos' AS mensaje
         RETURN
     END
 
-    -- Intentar obtener la relaciÃ³n activa de parentesco
+    -- Intentar obtener la relación activa de parentesco
     IF EXISTS (
-        SELECT 1 
+        SELECT 1
         FROM sisper_db.dbo.sp_par2
         WHERE vigente = 'S'
           AND (
@@ -58,7 +58,7 @@ BEGIN
             p2.rut_parent,
             rtrim(p1.nombres) + ' ' + rtrim(p1.ap_paterno) + ' ' + rtrim(p1.ap_materno) AS nombre_parent,
             'S' AS requiere_constancia,
-            'Funcionario registra parentesco con jefe de proyecto. Requiere constancia/autorizaciÃ³n en etapa de aprobaciÃ³n.' AS mensaje
+            'Funcionario registra parentesco con jefe de proyecto. Requiere constancia/autorización en etapa de aprobación.' AS mensaje
         FROM sisper_db.dbo.sp_par2 p2
         LEFT JOIN sisper_db.dbo.sp_par1 p1 ON p1.rut_parent = p2.rut_parent
         WHERE p2.vigente = 'S'
@@ -69,7 +69,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        SELECT 
+        SELECT
             @rut_funcionario AS rut_funcionario,
             @rut_jefpro AS rut_jefpro,
             'N' AS tiene_parentesco,

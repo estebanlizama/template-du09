@@ -16,10 +16,11 @@ GO
    @cod_etapa           -> Parametro de entrada. (Obligatorio)
    @cod_flusol          -> Codigo de flujo de solicitud. (Opcional)
 
-   Objetivo : Resolver los responsables de cualquier etapa DU288 usando solo sg_eta1 y los maestros institucionales existentes, sin consultar bd_pri2 ni requerir nuevas tablas.
+   Objetivo : Resolver el responsable de una etapa DU288 y aplicar las reglas
+              institucionales de asignacion, omision y conflicto de interes.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: Sin registro
+   Actualizacion: ELA 2026/08/28
 */
 CREATE PROCEDURE Analisis2.sg_etasSecgen01
     @nro_solici int,
@@ -39,7 +40,6 @@ BEGIN
     DECLARE @fuente_resolucion varchar(20)
     DECLARE @cantidad int
     DECLARE @prioridad int
-    DECLARE @prioridad_anterior int
     DECLARE @cod_organi_actor int
     DECLARE @es_subrogante char(1)
     DECLARE @rut_titular char(9)
@@ -48,31 +48,60 @@ BEGIN
     DECLARE @estado_configuracion varchar(20)
     DECLARE @mensaje_configuracion varchar(255)
     DECLARE @conflicto_funcionario char(1)
+    DECLARE @cod_organi_conflicto int
+    DECLARE @cod_organi_escalado int
+    DECLARE @escalado char(1)
 
-    SELECT @cod_flusol1 = ISNULL(@cod_flusol, prse.cod_flusol)
-    FROM dbo.sg_prse prse
-    WHERE prse.nro_solici = @nro_solici
+    DECLARE @ruts_excluidos varchar(500)
+    DECLARE @ctx_flusol tinyint
+    DECLARE @ctx_unifin smallint
+    DECLARE @ctx_ccto smallint
+    DECLARE @ctx_rut_solici char(9)
+    DECLARE @ctx_etapa tinyint
+    DECLARE @des_etapa varchar(100)
 
-    SELECT
-        @cod_perfil = eta.cod_perfil,
-        @cod_organi = eta.cod_organi
-    FROM dbo.sg_eta1 eta
-    WHERE eta.cod_flusol = @cod_flusol1
-      AND eta.cod_etapa = @cod_etapa
-      AND ISNULL(eta.vigente, 'S') = 'S'
+    /* -----------------------------------------------------------------
+       Contexto de la solicitud.
 
-    SELECT @cod_unidad = ufin.cod_unidad
-    FROM dbo.sg_prse prse
-    INNER JOIN fin21_db..es_ccto ccto
-        ON ccto.cod_unifin = prse.cod_unifin
-       AND ccto.cod_ccto = prse.cod_ccto
-    INNER JOIN fin21_db..es_ufin ufin
-        ON ufin.cod_unifin = ccto.cod_unifin
-    WHERE prse.nro_solici = @nro_solici
-      AND ccto.vigente = '1'
+       sg_prsesSecgen20 entrega flujo, centro de costo, unidad y prefijo.
+       Se invoca con @solo_parametros = 'S' para que no emita su resultset y
+       responda solo por OUTPUT. ASE 12.5 no admite INSERT ... EXEC -- llego
+       en ASE 15 -- asi que OUTPUT es la unica via para encadenar.
+       ----------------------------------------------------------------- */
+    EXEC Analisis2.sg_prsesSecgen20
+        @nro_solici,
+        @ctx_flusol OUTPUT,
+        @ctx_unifin OUTPUT,
+        @ctx_ccto OUTPUT,
+        @cod_unidad OUTPUT,
+        @prefijo OUTPUT,
+        @ctx_rut_solici OUTPUT,
+        @ctx_etapa OUTPUT,
+        @estado_configuracion OUTPUT,
+        @mensaje_configuracion OUTPUT,
+        'S'
 
-    IF @cod_unidad IS NOT NULL
-        SELECT @prefijo = SUBSTRING(@cod_unidad, 1, 2)
+    SELECT @cod_flusol1 = ISNULL(@cod_flusol, @ctx_flusol)
+
+    /* -----------------------------------------------------------------
+       Politica de la etapa.
+
+       sg_eta1sSecgen03 solo lee configuracion (sg_eta1): perfil,
+       organizacion configurada, estrategia de resolucion y si la etapa
+       admite omitirse. Al no depender de nro_solici puede invocarse para
+       previsualizar el flujo antes de que la solicitud exista.
+       ----------------------------------------------------------------- */
+    EXEC Analisis2.sg_eta1sSecgen03
+        @cod_flusol1,
+        @cod_etapa,
+        @cod_perfil OUTPUT,
+        @cod_organi OUTPUT,
+        @des_etapa OUTPUT,
+        @estrategia OUTPUT,
+        @perm_omitir OUTPUT,
+        @estado_configuracion OUTPUT,
+        @mensaje_configuracion OUTPUT,
+        'S'
 
     IF @cod_flusol1 IS NULL OR @cod_perfil IS NULL
     BEGIN
@@ -94,22 +123,6 @@ BEGIN
             @cod_unidad AS cod_unidad_contexto
         RETURN
     END
-
-    /*
-       El tipo de responsable ya esta expresado por cod_perfil en sg_eta1.
-       Las etapas institucionales utilizan primero sg_eta1.cod_organi. Solo
-       cuando ese dato no existe se completa con organizaciones que ya estan
-       registradas en ufro_db..es_orga.
-    */
-    SELECT @estrategia = CASE @cod_perfil
-        WHEN 6 THEN 'SOLICITANTE'
-        WHEN 25 THEN 'JEFE_PROYECTO'
-        WHEN 26 THEN 'JEFE_DIRECTO'
-        ELSE 'ORGANIZACION_FIJA'
-    END
-
-    /* Solo Jefe Directo puede omitirse por repeticion de responsable. */
-    SELECT @perm_omitir = CASE WHEN @cod_perfil = 26 THEN 'S' ELSE 'N' END
 
     /*
        El Decano del flujo Facultad depende de la unidad financiera de la
@@ -168,8 +181,8 @@ BEGIN
                 WHEN '16130000' THEN 37  -- Director Inst. Estudios Indigenas (IEI)
                 WHEN '16200100' THEN 769 -- Directora BIOREN
                 WHEN '16200200' THEN 771 -- Director Nucleo Cs Sociales y Humanidades
-                ELSE 
-                    (SELECT MIN(orga.cod_organi) 
+                ELSE
+                    (SELECT MIN(orga.cod_organi)
                      FROM ufro_db.dbo.es_orga orga
                      WHERE orga.cod_unidad = @cod_unidad
                        AND orga.cod_tiporg = 1
@@ -196,9 +209,17 @@ BEGIN
 
     IF @estrategia = 'SOLICITANTE'
     BEGIN
-        SELECT @rut_responsable = soli.rut_solici
-        FROM dbo.sg_soli soli
-        WHERE soli.nro_solici = @nro_solici
+        /*
+           Esta rama NO filtra contra sg_fups, a proposito. El solicitante no
+           revisa: presenta, y su etapa es la via de devolucion a correccion.
+           Descartarlo por conflicto dejaria la solicitud sin nadie que pueda
+           corregirla.
+
+           Que el solicitante no sea funcionario se garantiza aguas arriba, al
+           incorporarlo: validateNormativeRequestStaff rechaza esa combinacion
+           con DU288_APPLICANT_IS_STAFF.
+        */
+        SELECT @rut_responsable = @ctx_rut_solici
 
         SELECT
             @cod_flusol1 AS cod_flusol,
@@ -221,9 +242,26 @@ BEGIN
 
     IF @estrategia = 'JEFE_PROYECTO'
     BEGIN
+        /*
+           El Jefe de Proyecto se excluye si es funcionario de la prestacion,
+           igual que en las etapas de organizacion. Antes se devolvia el RUT
+           sin filtrar y el bloqueo lo hacia el backend, que no distingue esta
+           causa de un dato faltante: la pantalla decia lo mismo si no habia
+           jefe de proyecto cargado que si el jefe era el propio prestador.
+        */
+        SELECT @conflicto_funcionario = 'N'
         SELECT @rut_responsable = prse.rut_jefpro
         FROM dbo.sg_prse prse
         WHERE prse.nro_solici = @nro_solici
+
+        IF @rut_responsable IS NOT NULL
+           AND EXISTS (SELECT 1 FROM dbo.sg_fups f
+                       WHERE f.nro_solici = @nro_solici
+                         AND f.rut = @rut_responsable)
+        BEGIN
+            SELECT @conflicto_funcionario = 'S'
+            SELECT @rut_responsable = NULL
+        END
 
         SELECT
             @cod_flusol1 AS cod_flusol,
@@ -237,7 +275,12 @@ BEGIN
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             CASE WHEN @rut_responsable IS NULL THEN 'NO_ENCONTRADO' ELSE 'ENCONTRADO' END AS estado_resolucion,
-            CASE WHEN @rut_responsable IS NULL THEN 'La solicitud no posee Jefe de Proyecto.' ELSE NULL END AS mensaje,
+            CASE
+                WHEN @conflicto_funcionario = 'S'
+                THEN 'El Jefe de Proyecto es el funcionario de la prestacion y no puede revisar su propia solicitud.'
+                WHEN @rut_responsable IS NULL
+                THEN 'La solicitud no posee Jefe de Proyecto.'
+                ELSE NULL END AS mensaje,
             @estrategia AS estrategia_resolucion,
             @perm_omitir AS permite_omision,
             @cod_unidad AS cod_unidad_contexto
@@ -304,6 +347,7 @@ BEGIN
     END
 
     SELECT @conflicto_funcionario = 'N'
+    SELECT @escalado = 'N'
     IF EXISTS (
         SELECT 1
         FROM sisper_db.dbo.sp_orco orco
@@ -314,188 +358,131 @@ BEGIN
     )
         SELECT @conflicto_funcionario = 'S'
 
-    /* Titular vigente de la organizacion. */
-    SELECT @cantidad = COUNT(DISTINCT orco.rut_person)
-    FROM sisper_db.dbo.sp_orco orco
-    WHERE orco.cod_organi = @cod_organi
-      AND orco.vigente = 'S'
-      AND UPPER(LTRIM(RTRIM(ISNULL(orco.ausente, 'N')))) <> 'S'
-      AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                      WHERE f.nro_solici = @nro_solici
-                        AND f.rut = orco.rut_person)
+    /*
+       Escalamiento por conflicto de interes.
 
-    IF ISNULL(@cantidad, 0) > 1
+       El titular de la organizacion es el funcionario de la prestacion. No
+       puede visar su propia solicitud, y buscar su reemplazo por AUFI
+       devolveria a un subordinado -- para un decanato, el Vicedecano.
+
+       Cuando existe una regla de escalamiento vigente, la etapa se resuelve
+       contra la organizacion revisora en lugar de la original. A partir de
+       ahi corre la cadena ORCO -> ORDE -> AUFI normal de esa organizacion.
+
+       El escalamiento no se encadena: si la organizacion escalada tampoco
+       resuelve, la etapa queda bloqueada. Nunca se autoaprueba ni se omite.
+
+       Sobre las columnas de salida: cod_organi_requerido sigue siendo la
+       organizacion contra la que se resolvio, y cod_organi_actor de donde
+       proviene la persona. Esa semantica es la que usa la subrogancia AUFI y
+       no se toca. La organizacion en conflicto se informa aparte, en
+       cod_organi_conflicto, para no perder ningun eslabon de la cadena
+       cuando ademas hay subrogancia: decanato -> VRAC -> subrogante del VRAC.
+    */
+    /*
+       Equivalencias de escalamiento.
+
+       Antes vivian en una tabla propia (secgen_db.dbo.sg_escl) que habia que
+       crear y cargar aparte. Son cuatro filas que no cambian: los cuatro
+       decanatos escalan al VRAC (organizacion 17). Se resuelven aca para no
+       agregar una tabla al esquema por un dato fijo.
+
+       Se listan explicitamente y no por patron de codigo: una facultad nueva
+       debe agregarse a mano y quedar visible en este CASE, no resolverse por
+       coincidencia de prefijo.
+
+       Aplica SOLO a esta etapa (la de Decano). La etapa de Jefe Directo
+       Funcionario -- sg_fupssSecgen16 -- no escala: ahi es correcto que la
+       visacion la haga un subordinado (el Vicedecano por AUFI). El superior
+       estricto del decano es el VRAC y eso se resuelve aca.
+
+       Tras escalar, corre la cadena ORCO -> ORDE -> AUFI normal del VRAC: si
+       no hay titular vigente, AUFI entrega su subrogante.
+
+       Si se agrega una facultad, agregarla a este CASE. Es el unico lugar
+       donde vive la regla.
+    */
+    IF @conflicto_funcionario = 'S'
+    BEGIN
+        SELECT @cod_organi_escalado = CASE @cod_organi
+            WHEN 82  THEN 17   /* Decano Facultad de Medicina                        -> VRAC */
+            WHEN 135 THEN 17   /* Decano Facultad de Ingenieria, Ciencias y Admin.   -> VRAC */
+            WHEN 204 THEN 17   /* Decano Facultad de Educacion y Humanidades         -> VRAC */
+            WHEN 248 THEN 17   /* Decano Facultad de Ciencias Agropecuarias          -> VRAC */
+            ELSE NULL
+        END
+
+        IF @cod_organi_escalado IS NOT NULL AND @cod_organi_escalado <> @cod_organi
+        BEGIN
+            SELECT @cod_organi_conflicto = @cod_organi
+            SELECT @cod_organi = @cod_organi_escalado
+            SELECT @escalado = 'S'
+
+            /* Se reevalua el conflicto contra la organizacion escalada: si el
+               funcionario tambien fuera su titular, no hay a quien recurrir. */
+            SELECT @conflicto_funcionario = 'N'
+            IF EXISTS (
+                SELECT 1
+                FROM sisper_db.dbo.sp_orco orco
+                INNER JOIN dbo.sg_fups f
+                  ON f.nro_solici = @nro_solici AND f.rut = orco.rut_person
+                WHERE orco.cod_organi = @cod_organi
+                  AND orco.vigente = 'S'
+            )
+                SELECT @conflicto_funcionario = 'S'
+        END
+    END
+
+    /* -----------------------------------------------------------------
+       Resolucion del responsable.
+
+       sp_orcosSecgen01 recorre la cadena ORCO -> ORDE -> AUFI contra
+       @cod_organi -- ya escalada si hubo conflicto -- y corta como AMBIGUO
+       cuando un nivel ofrece mas de un candidato distinto.
+
+       Los funcionarios de la prestacion se pasan como lista de exclusion en
+       lugar de que el procedimiento lea sg_fups: asi la resolucion de actor
+       no depende de que la solicitud este guardada.
+       ----------------------------------------------------------------- */
+    SELECT @ruts_excluidos = ''
+    SELECT @ruts_excluidos = @ruts_excluidos + RTRIM(f.rut) + ','
+    FROM dbo.sg_fups f
+    WHERE f.nro_solici = @nro_solici
+
+    EXEC Analisis2.sp_orcosSecgen01
+        @cod_organi,
+        @ruts_excluidos,
+        @rut_responsable OUTPUT,
+        @cod_organi_actor OUTPUT,
+        @fuente_resolucion OUTPUT,
+        @es_subrogante OUTPUT,
+        @prioridad OUTPUT,
+        @estado_configuracion OUTPUT,
+        @mensaje_configuracion OUTPUT,
+        'S'
+
+    SELECT @es_subrogante = ISNULL(@es_subrogante, 'N')
+
+    IF @estado_configuracion = 'AMBIGUO'
     BEGIN
         SELECT
             @cod_flusol1 AS cod_flusol, @cod_etapa AS cod_etapa,
             @cod_perfil AS cod_perfil, @cod_organi AS cod_organi,
             @cod_respon AS cod_respon, CONVERT(int, NULL) AS id_funprse,
             CONVERT(char(9), NULL) AS rut_responsable,
-            'ORCO' AS fuente_resolucion,
+            @fuente_resolucion AS fuente_resolucion,
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             'AMBIGUO' AS estado_resolucion,
-            'La organizacion posee mas de un titular vigente.' AS mensaje,
+            @mensaje_configuracion AS mensaje,
             @estrategia AS estrategia_resolucion,
             @perm_omitir AS permite_omision,
             @cod_unidad AS cod_unidad_contexto
         RETURN
     END
 
-    IF @cantidad = 1
-    BEGIN
-        SELECT @rut_responsable = MIN(orco.rut_person)
-        FROM sisper_db.dbo.sp_orco orco
-        WHERE orco.cod_organi = @cod_organi
-          AND orco.vigente = 'S'
-          AND UPPER(LTRIM(RTRIM(ISNULL(orco.ausente, 'N')))) <> 'S'
-          AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                          WHERE f.nro_solici = @nro_solici
-                            AND f.rut = orco.rut_person)
-        SELECT @fuente_resolucion = 'ORCO',
-               @cod_organi_actor = @cod_organi,
-               @es_subrogante = 'N'
-    END
-
-    /* Si no hay titular, utilizar delegado o subrogante vigente. */
     IF @rut_responsable IS NULL
     BEGIN
-        SELECT @cantidad = COUNT(DISTINCT orde.rut_person)
-        FROM sisper_db.dbo.sp_orde orde
-        WHERE orde.cod_organi = @cod_organi
-          AND orde.vigente = 'S'
-          AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                          WHERE f.nro_solici = @nro_solici
-                            AND f.rut = orde.rut_person)
-
-        IF ISNULL(@cantidad, 0) > 1
-        BEGIN
-            SELECT
-                @cod_flusol1 AS cod_flusol, @cod_etapa AS cod_etapa,
-                @cod_perfil AS cod_perfil, @cod_organi AS cod_organi,
-                @cod_respon AS cod_respon, CONVERT(int, NULL) AS id_funprse,
-                CONVERT(char(9), NULL) AS rut_responsable,
-                'ORDE' AS fuente_resolucion,
-                CONVERT(varchar(255), NULL) AS nombre_responsable,
-                CONVERT(varchar(100), NULL) AS cargo_responsable,
-                'AMBIGUO' AS estado_resolucion,
-                'La organizacion posee mas de un delegado o subrogante vigente.' AS mensaje,
-                @estrategia AS estrategia_resolucion,
-                @perm_omitir AS permite_omision,
-                @cod_unidad AS cod_unidad_contexto
-            RETURN
-        END
-
-        IF @cantidad = 1
-        BEGIN
-            SELECT @rut_responsable = MIN(orde.rut_person)
-            FROM sisper_db.dbo.sp_orde orde
-            WHERE orde.cod_organi = @cod_organi
-              AND orde.vigente = 'S'
-              AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                              WHERE f.nro_solici = @nro_solici
-                                AND f.rut = orde.rut_person)
-            SELECT @fuente_resolucion = 'ORDE',
-                   @cod_organi_actor = @cod_organi,
-                   @es_subrogante = 'N'
-        END
-    END
-
-    CREATE TABLE #candidatos_aufi (
-        rut_person char(9) NOT NULL,
-        cod_organi_actor int NOT NULL,
-        fuente varchar(20) NOT NULL
-    )
-
-    IF @rut_responsable IS NULL
-    BEGIN
-        SELECT @prioridad_anterior = -1, @prioridad = NULL
-        SELECT @prioridad = MIN(aufi.prioridad)
-        FROM sisper_db.dbo.sp_aufi aufi
-        WHERE aufi.cod_organi = @cod_organi
-
-        WHILE @prioridad IS NOT NULL AND @rut_responsable IS NULL
-        BEGIN
-            DELETE FROM #candidatos_aufi
-            INSERT INTO #candidatos_aufi
-            SELECT orco.rut_person, aufi.cod_organ2, 'AUFI_ORCO'
-            FROM sisper_db.dbo.sp_aufi aufi
-            INNER JOIN sisper_db.dbo.sp_orco orco
-              ON orco.cod_organi = aufi.cod_organ2
-             AND orco.vigente = 'S'
-             AND UPPER(LTRIM(RTRIM(ISNULL(orco.ausente, 'N')))) <> 'S'
-            WHERE aufi.cod_organi = @cod_organi
-              AND aufi.prioridad = @prioridad
-              AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                              WHERE f.nro_solici = @nro_solici
-                                AND f.rut = orco.rut_person)
-            UNION
-            SELECT orde.rut_person, aufi.cod_organ2, 'AUFI_ORDE'
-            FROM sisper_db.dbo.sp_aufi aufi
-            INNER JOIN sisper_db.dbo.sp_orde orde
-              ON orde.cod_organi = aufi.cod_organ2
-             AND orde.vigente = 'S'
-            WHERE aufi.cod_organi = @cod_organi
-              AND aufi.prioridad = @prioridad
-              AND NOT EXISTS (SELECT 1 FROM dbo.sg_fups f
-                              WHERE f.nro_solici = @nro_solici
-                                AND f.rut = orde.rut_person)
-
-            SELECT @cantidad = COUNT(DISTINCT rut_person)
-            FROM #candidatos_aufi
-
-            IF @cantidad > 1
-            BEGIN
-                DROP TABLE #candidatos_aufi
-                SELECT
-                    @cod_flusol1 AS cod_flusol, @cod_etapa AS cod_etapa,
-                    @cod_perfil AS cod_perfil, @cod_organi AS cod_organi,
-                    @cod_respon AS cod_respon, CONVERT(int, NULL) AS id_funprse,
-                    CONVERT(char(9), NULL) AS rut_responsable,
-                    'AUFI' AS fuente_resolucion,
-                    CONVERT(varchar(255), NULL) AS nombre_responsable,
-                    CONVERT(varchar(100), NULL) AS cargo_responsable,
-                    'AMBIGUO' AS estado_resolucion,
-                    'AUFI posee mas de un responsable disponible en la misma prioridad.' AS mensaje,
-                    @estrategia AS estrategia_resolucion,
-                    @perm_omitir AS permite_omision,
-                    @cod_unidad AS cod_unidad_contexto,
-                    @cod_organi AS cod_organi_requerido,
-                    CONVERT(int, NULL) AS cod_organi_actor,
-                    'S' AS es_subrogante,
-                    @prioridad AS prioridad_aufi,
-                    CONVERT(char(9), NULL) AS rut_titular,
-                    CONVERT(varchar(255), NULL) AS nombre_titular,
-                    CONVERT(varchar(100), NULL) AS cargo_titular
-                RETURN
-            END
-
-            IF @cantidad = 1
-            BEGIN
-                SELECT @rut_responsable = MIN(rut_person)
-                FROM #candidatos_aufi
-                SELECT @cod_organi_actor = MIN(cod_organi_actor)
-                FROM #candidatos_aufi
-                WHERE rut_person = @rut_responsable
-                SELECT @fuente_resolucion = CASE WHEN EXISTS (
-                    SELECT 1 FROM #candidatos_aufi
-                    WHERE rut_person = @rut_responsable AND fuente = 'AUFI_ORCO'
-                ) THEN 'AUFI_ORCO' ELSE 'AUFI_ORDE' END
-                SELECT @es_subrogante = 'S'
-                BREAK
-            END
-
-            SELECT @prioridad_anterior = @prioridad, @prioridad = NULL
-            SELECT @prioridad = MIN(aufi.prioridad)
-            FROM sisper_db.dbo.sp_aufi aufi
-            WHERE aufi.cod_organi = @cod_organi
-              AND aufi.prioridad > @prioridad_anterior
-        END
-    END
-
-    IF @rut_responsable IS NULL
-    BEGIN
-        DROP TABLE #candidatos_aufi
         SELECT
             @cod_flusol1 AS cod_flusol,
             @cod_etapa AS cod_etapa,
@@ -508,7 +495,10 @@ BEGIN
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             'NO_ENCONTRADO' AS estado_resolucion,
-            CASE WHEN @conflicto_funcionario = 'S'
+            CASE
+                 WHEN @escalado = 'S'
+                 THEN 'El titular del cargo es el funcionario de la prestacion. Se escalo a la jefatura definida, que tampoco tiene responsable vigente para revisar.'
+                 WHEN @conflicto_funcionario = 'S'
                  THEN 'El titular del cargo es el funcionario de la prestacion y no existe otro responsable vigente para revisar.'
                  ELSE 'No existe titular ni subrogante vigente para la organizacion.' END AS mensaje,
             @estrategia AS estrategia_resolucion,
@@ -516,7 +506,6 @@ BEGIN
             @cod_unidad AS cod_unidad_contexto
         RETURN
     END
-
     IF @es_subrogante = 'S'
     BEGIN
         SELECT @cargo_titular = RTRIM(des_organi)
@@ -541,7 +530,6 @@ BEGIN
             WHERE rut_person = @rut_titular
     END
 
-    DROP TABLE #candidatos_aufi
 
     SELECT
         @cod_flusol1 AS cod_flusol,
@@ -565,12 +553,16 @@ BEGIN
         org.cod_unidad AS cod_unidad_responsable,
         RTRIM(unid.des_unidad) AS departamento_responsable,
         'ENCONTRADO' AS estado_resolucion,
-        CONVERT(varchar(255), NULL) AS mensaje,
+        CASE WHEN @escalado = 'S'
+             THEN 'El titular del cargo es el funcionario de la prestacion. Revisa la jefatura definida para ese cargo.'
+             ELSE CONVERT(varchar(255), NULL) END AS mensaje,
         @estrategia AS estrategia_resolucion,
         @perm_omitir AS permite_omision,
         @cod_unidad AS cod_unidad_contexto,
         @cod_organi AS cod_organi_requerido,
         @cod_organi_actor AS cod_organi_actor,
+        @cod_organi_conflicto AS cod_organi_conflicto,
+        @escalado AS es_escalado,
         ISNULL(@es_subrogante, 'N') AS es_subrogante,
         CASE WHEN @es_subrogante = 'S' THEN @prioridad ELSE NULL END AS prioridad_aufi,
         CASE WHEN @es_subrogante = 'S' THEN @rut_titular ELSE NULL END AS rut_titular,
