@@ -92,11 +92,7 @@ BEGIN
         RETURN
     END
 
-    /*
-       El tipo de responsable ya esta expresado por cod_perfil en sg_eta1. Las
-       etapas institucionales usan primero sg_eta1.cod_organi; solo cuando ese
-       dato no existe se completa desde ufro_db..es_orga.
-    */
+    /* Determina la estrategia desde el perfil configurado para la etapa. */
     SELECT @estrategia = CASE @cod_perfil
         WHEN 6 THEN 'SOLICITANTE'
         WHEN 25 THEN 'JEFE_PROYECTO'
@@ -104,46 +100,9 @@ BEGIN
         ELSE 'ORGANIZACION_FIJA'
     END
 
-    /*
-       Omision por responsable repetido.
-
-       Una misma persona no debe visar dos veces la misma solicitud: si vuelve a
-       aparecer como responsable en una etapa posterior, la etapa temprana se
-       omite y la revision queda en la mas avanzada, que es la que tiene el
-       expediente completo.
-
-       Perfiles formales que NUNCA se omiten. Cada uno ejecuta un acto propio
-       -- firma, control de legalidad, decretacion o archivo -- que no queda
-       cubierto porque la persona revise en otra etapa:
-
-           6  Solicitante                     (presenta, no revisa)
-          10  Director de Finanzas            (control presupuestario)
-          12  Jefe de Decretacion
-          13  DGDP
-          14  Secretario General              (firma)
-          16  Director de Legalidad           (firma)
-          17  Contralor Universitario         (firma)
-          18  Jefe Archivo Universitario
-          23  VRAF                            (firma)
-
-       Director de Finanzas ejecuta el control de disponibilidad
-       presupuestaria del centro de costo, que no queda cubierto porque la
-       misma persona haya revisado antes con otro rol. Con esto el tronco
-       comun queda parejo: ninguna de sus ocho etapas se omite.
-
-       Cualquier otro perfil -- Jefe de Proyecto, Jefe de Departamento, Decano,
-       Directores de Instituto, DITT o Investigacion, encargados de finanzas --
-       si puede omitirse cuando la misma persona reaparece mas adelante.
-
-       El Jefe de Proyecto (25) es omitible a proposito: el mismo cargo puede
-       recaer en cualquiera de los roles posteriores del flujo. La politica
-       documentada en motor_configurable_flujos_responsables_du288.md lo listaba
-       como fijo; se excluye de esa lista por decision de negocio.
-
-       Este campo habilita la evaluacion, no la fuerza: el backend solo omite
-       cuando ADEMAS encuentra a la misma persona en una etapa posterior real
-       (ver getFutureApproversByStage y assignWorkflowApprovalsWithSkips).
-    */
+    /* Los perfiles formales ejecutan controles propios y no admiten omision.
+       Para los demas perfiles, la bandera solo habilita evaluar si una misma
+       persona reaparece como responsable en una etapa posterior. */
     SELECT @perm_omitir = CASE
         WHEN @cod_perfil IN (6, 10, 12, 13, 14, 16, 17, 18, 23) THEN 'N'
         ELSE 'S'

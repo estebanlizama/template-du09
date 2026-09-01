@@ -36,7 +36,8 @@ GO
    @tot_cuotas          -> Parametro de entrada. (Opcional)
    @cod_estfun          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Insertar funcionarios prestacion de servicios (sg_fups), compatible con DU288 y flujo legacy.
+   Objetivo : Registrar un funcionario asociado a una prestacion de servicios,
+              compatible con DU288 y el flujo legado.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

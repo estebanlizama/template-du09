@@ -36,7 +36,8 @@ GO
    @cod_estfun          -> Parametro de entrada. (Opcional)
    @rut_visado          -> Parametro de entrada. (Opcional)
 
-   Objetivo : Actualizar datos de un funcionario prestacion de servicios (sg_fups), compatible con DU288 y legacy.
+   Objetivo : Actualizar un funcionario asociado a una prestacion de servicios,
+              compatible con DU288 y el flujo legado.
 
    Creacion: ELA 2026/08/24
    Actualizacion: Sin registro

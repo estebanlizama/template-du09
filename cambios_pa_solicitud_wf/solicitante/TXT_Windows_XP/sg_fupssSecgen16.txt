@@ -87,21 +87,8 @@ BEGIN
     WHERE orga.cod_unidad = @cod_unidad AND orga.cod_tiporg = 1
       AND (orga.por_contra = 'S' OR orga.por_desig = 'S')
 
-    /*
-       La jefatura directa NO escala aunque el funcionario sea el titular de
-       su organizacion.
-
-       Cuando un decano presta el servicio, es_orga.cod_orgjef del decanato
-       apunta a Rectoria y el ascenso por prefijo no lo alcanza, asi que la
-       cadena cae en AUFI y devuelve al Vicedecano. Eso es correcto para esta
-       etapa: la visacion de jefatura directa la puede hacer un subordinado.
-
-       El superior real del decano es el VRAC, pero eso corresponde a la
-       ETAPA de Decano, no a esta. Ese escalamiento vive en sg_etasSecgen01
-       (estrategia ORGANIZACION_FIJA), donde ademas se aplica la subrogancia
-       del VRAC si no hay titular vigente.
-    */
-
+    /* La jefatura directa mantiene la cadena organizacional de la unidad y
+       puede ser resuelta por un subrogante cuando no hay titular vigente. */
 
     CREATE TABLE #visitados (cod_organi int NOT NULL)
     CREATE TABLE #candidatos (

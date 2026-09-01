@@ -60,14 +60,7 @@ BEGIN
     DECLARE @ctx_etapa tinyint
     DECLARE @des_etapa varchar(100)
 
-    /* -----------------------------------------------------------------
-       Contexto de la solicitud.
-
-       sg_prsesSecgen20 entrega flujo, centro de costo, unidad y prefijo.
-       Se invoca con @solo_parametros = 'S' para que no emita su resultset y
-       responda solo por OUTPUT. ASE 12.5 no admite INSERT ... EXEC -- llego
-       en ASE 15 -- asi que OUTPUT es la unica via para encadenar.
-       ----------------------------------------------------------------- */
+    /* Obtiene el contexto de la solicitud mediante parametros OUTPUT. */
     EXEC Analisis2.sg_prsesSecgen20
         @nro_solici,
         @ctx_flusol OUTPUT,
@@ -83,14 +76,7 @@ BEGIN
 
     SELECT @cod_flusol1 = ISNULL(@cod_flusol, @ctx_flusol)
 
-    /* -----------------------------------------------------------------
-       Politica de la etapa.
-
-       sg_eta1sSecgen03 solo lee configuracion (sg_eta1): perfil,
-       organizacion configurada, estrategia de resolucion y si la etapa
-       admite omitirse. Al no depender de nro_solici puede invocarse para
-       previsualizar el flujo antes de que la solicitud exista.
-       ----------------------------------------------------------------- */
+    /* Obtiene la politica y estrategia configuradas para la etapa. */
     EXEC Analisis2.sg_eta1sSecgen03
         @cod_flusol1,
         @cod_etapa,
@@ -124,11 +110,7 @@ BEGIN
         RETURN
     END
 
-    /*
-       El Decano del flujo Facultad depende de la unidad financiera de la
-       solicitud. Se resuelve desde es_orga y no desde un codigo institucional
-       fijo en sg_eta1 ni desde una tabla CASE mantenida manualmente.
-    */
+    /* Resuelve el Decano de Facultad desde la unidad de la solicitud. */
     IF @estrategia = 'ORGANIZACION_FIJA'
        AND @cod_flusol1 = 1 AND @cod_etapa = 50
     BEGIN
@@ -209,16 +191,7 @@ BEGIN
 
     IF @estrategia = 'SOLICITANTE'
     BEGIN
-        /*
-           Esta rama NO filtra contra sg_fups, a proposito. El solicitante no
-           revisa: presenta, y su etapa es la via de devolucion a correccion.
-           Descartarlo por conflicto dejaria la solicitud sin nadie que pueda
-           corregirla.
-
-           Que el solicitante no sea funcionario se garantiza aguas arriba, al
-           incorporarlo: validateNormativeRequestStaff rechaza esa combinacion
-           con DU288_APPLICANT_IS_STAFF.
-        */
+        /* El solicitante conserva su etapa para recibir y corregir devoluciones. */
         SELECT @rut_responsable = @ctx_rut_solici
 
         SELECT
@@ -242,13 +215,7 @@ BEGIN
 
     IF @estrategia = 'JEFE_PROYECTO'
     BEGIN
-        /*
-           El Jefe de Proyecto se excluye si es funcionario de la prestacion,
-           igual que en las etapas de organizacion. Antes se devolvia el RUT
-           sin filtrar y el bloqueo lo hacia el backend, que no distingue esta
-           causa de un dato faltante: la pantalla decia lo mismo si no habia
-           jefe de proyecto cargado que si el jefe era el propio prestador.
-        */
+        /* Excluye al Jefe de Proyecto cuando participa como prestador. */
         SELECT @conflicto_funcionario = 'N'
         SELECT @rut_responsable = prse.rut_jefpro
         FROM dbo.sg_prse prse
@@ -358,50 +325,9 @@ BEGIN
     )
         SELECT @conflicto_funcionario = 'S'
 
-    /*
-       Escalamiento por conflicto de interes.
-
-       El titular de la organizacion es el funcionario de la prestacion. No
-       puede visar su propia solicitud, y buscar su reemplazo por AUFI
-       devolveria a un subordinado -- para un decanato, el Vicedecano.
-
-       Cuando existe una regla de escalamiento vigente, la etapa se resuelve
-       contra la organizacion revisora en lugar de la original. A partir de
-       ahi corre la cadena ORCO -> ORDE -> AUFI normal de esa organizacion.
-
-       El escalamiento no se encadena: si la organizacion escalada tampoco
-       resuelve, la etapa queda bloqueada. Nunca se autoaprueba ni se omite.
-
-       Sobre las columnas de salida: cod_organi_requerido sigue siendo la
-       organizacion contra la que se resolvio, y cod_organi_actor de donde
-       proviene la persona. Esa semantica es la que usa la subrogancia AUFI y
-       no se toca. La organizacion en conflicto se informa aparte, en
-       cod_organi_conflicto, para no perder ningun eslabon de la cadena
-       cuando ademas hay subrogancia: decanato -> VRAC -> subrogante del VRAC.
-    */
-    /*
-       Equivalencias de escalamiento.
-
-       Antes vivian en una tabla propia (secgen_db.dbo.sg_escl) que habia que
-       crear y cargar aparte. Son cuatro filas que no cambian: los cuatro
-       decanatos escalan al VRAC (organizacion 17). Se resuelven aca para no
-       agregar una tabla al esquema por un dato fijo.
-
-       Se listan explicitamente y no por patron de codigo: una facultad nueva
-       debe agregarse a mano y quedar visible en este CASE, no resolverse por
-       coincidencia de prefijo.
-
-       Aplica SOLO a esta etapa (la de Decano). La etapa de Jefe Directo
-       Funcionario -- sg_fupssSecgen16 -- no escala: ahi es correcto que la
-       visacion la haga un subordinado (el Vicedecano por AUFI). El superior
-       estricto del decano es el VRAC y eso se resuelve aca.
-
-       Tras escalar, corre la cadena ORCO -> ORDE -> AUFI normal del VRAC: si
-       no hay titular vigente, AUFI entrega su subrogante.
-
-       Si se agrega una facultad, agregarla a este CASE. Es el unico lugar
-       donde vive la regla.
-    */
+    /* Ante conflicto de interes, los decanatos configurados escalan a VRAC.
+       La organizacion original se conserva para trazabilidad y el
+       escalamiento no se encadena si la organizacion revisora no resuelve. */
     IF @conflicto_funcionario = 'S'
     BEGIN
         SELECT @cod_organi_escalado = CASE @cod_organi
@@ -433,17 +359,8 @@ BEGIN
         END
     END
 
-    /* -----------------------------------------------------------------
-       Resolucion del responsable.
-
-       sp_orcosSecgen01 recorre la cadena ORCO -> ORDE -> AUFI contra
-       @cod_organi -- ya escalada si hubo conflicto -- y corta como AMBIGUO
-       cuando un nivel ofrece mas de un candidato distinto.
-
-       Los funcionarios de la prestacion se pasan como lista de exclusion en
-       lugar de que el procedimiento lea sg_fups: asi la resolucion de actor
-       no depende de que la solicitud este guardada.
-       ----------------------------------------------------------------- */
+    /* Resuelve el responsable contra la organizacion vigente y excluye a los
+       funcionarios que participan en la prestacion. */
     SELECT @ruts_excluidos = ''
     SELECT @ruts_excluidos = @ruts_excluidos + RTRIM(f.rut) + ','
     FROM dbo.sg_fups f
