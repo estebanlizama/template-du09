@@ -17,7 +17,7 @@ GO
    Objetivo : Lista exclusivamente las solicitudes activas creadas por el RUT JWT.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: Sin registro
+   Actualizacion: 
 */
 CREATE PROCEDURE Analisis2.sg_prsesSecgen08
     @rut_solici varchar(9) = NULL
@@ -36,6 +36,7 @@ BEGIN
         prse.cod_modprs,
         prse.cod_flusol,
         prse.cod_etapa,
+        prse.actividad,
         eta.des_etapa,
         prse.cc_global,
         prse.pry_global,
