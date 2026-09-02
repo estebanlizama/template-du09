@@ -2,6 +2,25 @@
 
 Paquete de ambientación limitado a la Prestación de Servicios DU288. Los datos se separaron por ámbito y cada script tiene una copia `.txt` ejecutable con contenido idéntico.
 
+## Catastro de estructura y uso
+
+La comparación entre el esquema anterior y el actualizado está en
+[Catastro de cambios y uso de tablas DU288](../catastro_cambios_y_uso_tablas_du288.md).
+Identifica las 67 tablas del esquema actualizado: 13 nuevas, 3 modificadas y 51 sin cambios.
+
+Para conservar el código revisado se requieren 9 tablas nuevas propias de DU288
+y 3 dependencias de consulta: `sg_fume`, `sg_ecuo` y `sg_fuc2`.
+El PA `sg_fupssSecgen17` las consulta desde el comparador de prestaciones anteriores,
+aunque la solicitud no genere cuotas ni pagos. Sus estructuras deben existir;
+no corresponde generar filas de pago con este paquete.
+`sg_fum2` queda fuera de las altas DU288 por no tener uso encontrado en el código revisado.
+
+Los seis scripts de esta carpeta cargan datos en 15 tablas SECGEN y 3 de Sistema.
+No sustituyen la revisión de estructura ni ambientan todos los controles existentes:
+también deben comprobarse `sg_parm` (correlativos) y `sg_prm1` (año de proceso).
+El catastro se basa en archivos locales; falta contrastarlo con los objetos instalados
+en certificación.
+
 ## Archivos y orden de ejecución
 
 | Orden | Ámbito | Archivo SQL | Tablas intervenidas |

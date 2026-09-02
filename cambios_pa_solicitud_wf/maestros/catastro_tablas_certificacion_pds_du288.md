@@ -1,5 +1,10 @@
 # Catastro de tablas para certificación PDS DU288
 
+Complemento revisado el 2026-09-02:
+[Catastro de cambios y uso de las 67 tablas](catastro_cambios_y_uso_tablas_du288.md).
+Incluye la comparación exacta con el esquema anterior y corrige la distinción entre
+no cargar datos de pagos y necesitar sus tablas para consultas existentes.
+
 ## 1. Objetivo y alcance
 
 Este documento identifica las tablas que participan en la implementación vigente de solicitudes PDS DU288, sus dependencias y el orden que debe respetarse al actualizar el ambiente de certificación.
@@ -23,7 +28,10 @@ La implementación vigente **no utiliza** las tablas propuestas `sg_wflu`, `sg_w
 sg_tfls -> sg_eta1 -> sg_eta2 -> sg_prse -> sg_apso
 ```
 
-Tampoco se consulta `bd_pri2`. Los permisos se resuelven con `sistema_db.dbo.bd_per1`, `bd_prvg` y `bd_pepr`.
+El motor de actores DU288 no consulta `bd_pri2`; sus permisos se resuelven con
+`sistema_db.dbo.bd_per1`, `bd_prvg` y `bd_pepr`. Otros consumidores legacy de
+SG-Solicitudes mantienen llamadas a PA que usan `bd_pri2`; no debe eliminarse
+del sistema completo a partir de esta exclusión.
 
 ## 2. Qué hacer según lo que necesite actualizar
 
@@ -148,14 +156,22 @@ sg_apre    los firmantes
 
 Los procedimientos calculan el siguiente ID desde `sg_parm`. Una carga manual que no actualice ese correlativo provoca claves duplicadas más adelante.
 
-**No pertenecen a este flujo.** No las toque aunque existan:
+**No se cargan como datos de solicitud DU288:**
 
 ```text
-sg_fume, sg_ecuo    solo pagos, no se usan al crear una solicitud DU288
-bd_pri2             reemplazada; el flujo vigente no la consulta
+sg_fume, sg_ecuo, sg_fuc2
+                    datos de pagos consultados por prestaciones anteriores
+sg_fum2             sin consumidor encontrado en el código DU288 revisado
+bd_pri2             fuera del motor de actores DU288; mantiene uso legacy
 sg_wflu, sg_wfet, sg_wfin, sg_wfei, sg_apsa, sg_apsf, sg_hiap
                     propuestas que nunca se implementaron
 ```
+
+Las estructuras de `sg_fume`, `sg_ecuo` y `sg_fuc2` sí son necesarias para
+`sg_fupssSecgen17`, llamado desde el formulario DU288. Sus `LEFT JOIN` admiten
+ausencia de filas, no ausencia de tablas. `sg_fume` también tiene consumidores
+de limpieza de funcionarios antiguos. La exclusión es de carga de pagos, no de
+dependencia física.
 
 **Lo único que sí se revisa a mano en `secgen_db`** son los catálogos y la configuración del flujo, y solo para confirmar que existan los códigos que va a usar: `sg_tsol`, `sg_esol`, `sg_tmod`, `sg_efun`, `sg_eapr`, `sg_tacc`, `sg_tpps`, `sg_ersl`, más `sg_tfls` → `sg_eta1` → `sg_eta2` en ese orden, `sg_toca` para topes y `sg_plre` → `sg_plde` para la plantilla. El detalle está en §5 y §11.
 
@@ -245,6 +261,11 @@ No se deben crear filas personales en `sg_uspe` ni perfiles duplicados solo para
 | Tabla | PK | Uso |
 |---|---|---|
 | `secgen_db.dbo.sg_parm` | `nom_tabla` | Conserva el último identificador utilizado por PA legacy. |
+| `secgen_db.dbo.sg_prm1` | Sin PK en el diagrama | Conserva el año de proceso. `sg_prm1sSecgen01` consulta `MAX(ano_proces)`; el workflow DU288 lo requiere para preparar la resolución. |
+
+`sg_prm1` no es un correlativo ni se carga en los scripts 01–06. Verificar el año
+existente antes de generar la resolución. El PA está disponible en
+`contexto_prestacion_servicios/sp-20260423T161643Z-3-001/sp/sg_prm1sSecgen01.sql`.
 
 Como mínimo deben existir filas coherentes para:
 
@@ -352,8 +373,10 @@ Cuando una solicitud vuelve a corrección después de generar resolución, se co
 
 | Tabla | Uso actual | Regla para certificación |
 |---|---|---|
-| `sg_fume` | Meses/cuotas del modelo anterior y futuro flujo de pagos. | **No crear filas al registrar o enviar una solicitud DU288.** Solo usar cuando el proceso de pago formalmente lo requiera. |
-| `sg_ecuo` | Catálogo de estados de cuota. | Solo es dependencia cuando existen filas en `sg_fume` o se habilita el flujo de pagos. |
+| `sg_fume` | Cuotas consultadas por `sg_fupssSecgen17` y limpieza legacy. | Mantener estructura. **No crear filas al registrar o enviar una solicitud DU288.** |
+| `sg_ecuo` | Estados de cuota consultados por `sg_fupssSecgen17` y PA de cuotas. | Mantener estructura incluso sin cuotas, porque el PA la referencia. No cargar estados de pago con 01–06. |
+| `sg_fuc2` | Compensación efectiva por cuota, consultada por `sg_fupssSecgen17`. | Mantener estructura para el comparador. No crear registros desde la solicitud; es distinta de `sg_fuco`. |
+| `sg_fum2` | Historial de cuotas definido en el diagrama, sin consumidor localizado en código/PA de solicitud. | Diferir su incorporación para DU288; confirmar su uso con el ámbito de pagos. |
 
 El backend mantiene métodos de lectura/borrado de `sg_fume` por compatibilidad, pero `updateInstallmentStatusesByRequest` está desactivado para DU288. Por lo tanto, `sg_fume` no debe utilizarse como requisito para agregar un funcionario ni para validar `MESES_NO_SELECCIONADOS`.
 
@@ -562,10 +585,11 @@ Si existen tareas `sg_apso` asociadas al funcionario, no corresponde una elimina
 
 ## 13. Objetos que no deben tratarse como tablas maestras PDS
 
-- `sg_fume` y `sg_ecuo`: solo pagos/compatibilidad.
+- `sg_fume`, `sg_ecuo` y `sg_fuc2`: pagos/compatibilidad; conservar estructura por las consultas vigentes, sin generar pagos desde la solicitud.
+- `sg_fum2`: fuera de las altas DU288 por no tener consumidor encontrado en el código revisado.
 - tablas temporales `#...` de PA financieros: no se despliegan manualmente.
 - tablas propuestas `sg_wflu`, `sg_wfet`, `sg_wfin`, `sg_wfei`, `sg_apsa`, `sg_apsf`, `sg_hiap`: no forman parte del runtime vigente.
-- `bd_pri2`: no debe consultarse ni cargarse para esta implementación.
+- `bd_pri2`: no debe cargarse para resolver actores DU288; conserva consumidores legacy del sistema.
 - filas transaccionales de `sg_soli`, `sg_prse`, `sg_fups`, `sg_apso`, `sg_hist`, `sg_rslc`, `sg_rede` y `sg_apre`: se generan por pruebas funcionales, no como carga maestra.
 
 ## 14. Riesgos detectados
@@ -578,3 +602,5 @@ Si existen tareas `sg_apso` asociadas al funcionario, no corresponde una elimina
 6. Los documentos firmados se guardan en una tabla MySQL anual. Al cambiar de año debe existir `MySecGen.sg_rslc_<año>` con la misma estructura y permisos.
 7. Los PA legacy usan `sg_parm`; una carga manual que no actualice el correlativo puede provocar claves duplicadas.
 8. La definición documental de algunas FK de `sg_eta2` es inconsistente; se debe validar el esquema real de certificación antes de aplicar DDL.
+9. El comparador de prestaciones anteriores usa `sg_fume`, `sg_ecuo` y `sg_fuc2`: omitir sus estructuras rompe esa consulta aunque no haya pagos.
+10. `sg_prm1` no está cubierta por 01–06 y es necesaria para obtener el año al preparar la resolución.

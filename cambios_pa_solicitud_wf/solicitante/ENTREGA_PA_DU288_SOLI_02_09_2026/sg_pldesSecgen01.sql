@@ -1,0 +1,53 @@
+use secgen_db
+go
+
+if exists (select 1
+             from sysobjects a, sysusers b
+            where a.uid = b.uid
+              and a.type = 'P'
+              and b.name = 'Analisis2'
+              and a.name = 'sg_pldesSecgen01')
+begin
+    drop procedure Analisis2.sg_pldesSecgen01
+end
+go
+
+/* Procedimiento : sg_pldesSecgen01
+
+   Entrada :
+   @id_planti           -> Parametro de entrada. (Opcional)
+   Objetivo : select Plantilla Detalle
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
+*/
+
+create procedure Analisis2.sg_pldesSecgen01
+    @id_planti smallint = None
+    as
+
+
+    if @id_planti is null
+    begin
+        select 'Falta campo Id Plantilla' msg
+        return
+    end
+
+
+        select
+        plde.id_pladet,
+        plde.id_planti,
+        plde.cod_tipsec,
+        plde.nombre,
+        plde.valor,
+        plde.editable,
+        plde.orden,
+        plde.f_creacion,
+        plde.f_ultmodif
+        from sg_plde as plde
+        where plde.id_planti = @id_planti
+        commit tran
+go
+
+grant execute on Analisis2.sg_pldesSecgen01 to UsuaVrac
+go
