@@ -13,13 +13,13 @@ GO
 
    Entrada :
    @id_funprse          -> Identificador de la funcion/prestacion. (Opcional)
-   @meses_csv           -> Parametro de entrada. (Opcional)
-   @cod_estcuo          -> Parametro de entrada. (Opcional)
+   @meses_csv           -> Lista de meses propuestos, formato ano:mes separados por punto y coma. (Opcional)
+   @cod_estcuo          -> Estado inicial de la cuota; usa 1 (Propuesta) si no se envia. (Opcional)
 
    Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: Sin registro
+   Actualizacion: ELA 2026/09/03 - cabecera ajustada a reglas_estandarizacion_pa.md
 */
 CREATE PROCEDURE Analisis2.sg_fumeuSecgen01
     @id_funprse int = NULL,
