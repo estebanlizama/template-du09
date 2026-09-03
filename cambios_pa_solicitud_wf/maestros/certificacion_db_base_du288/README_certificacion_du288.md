@@ -4,6 +4,9 @@ Paquete de ambientación limitado a la Prestación de Servicios DU288. Los datos
 
 ## Catastro de estructura y uso
 
+Resumen de tablas a crear/modificar, atributos y relaciones:
+[Tablas necesarias para DU288](../tablas_necesarias_crear_modificar_du288.md).
+
 La comparación entre el esquema anterior y el actualizado está en
 [Catastro de cambios y uso de tablas DU288](../catastro_cambios_y_uso_tablas_du288.md).
 Identifica las 67 tablas del esquema actualizado: 13 nuevas, 3 modificadas y 51 sin cambios.

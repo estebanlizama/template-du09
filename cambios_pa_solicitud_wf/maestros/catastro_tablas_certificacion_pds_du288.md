@@ -256,7 +256,7 @@ Rol estático  = perfil institucional + privilegio
 
 No se deben crear filas personales en `sg_uspe` ni perfiles duplicados solo para que un actor dinámico pueda aprobar una solicitud.
 
-### 4.6 Control de correlativos
+### 4.6 Control de correlativos y año de proceso
 
 | Tabla | PK | Uso |
 |---|---|---|
@@ -279,7 +279,7 @@ sg_rede
 sg_apre
 ```
 
-Para cada fila se debe cumplir:
+Para cada fila de `sg_parm` se debe cumplir:
 
 ```text
 sg_parm.ultimo_id >= max(PK actual de la tabla)
@@ -502,7 +502,7 @@ Verificado en `sg_cctosSecgen05.sql`: `es_ecct`, `es_tfin` y `es_ufin` entran po
 5. Sincronizar workflow: `sg_tfls`, luego `sg_eta1`, luego `sg_eta2`.
 6. Sincronizar reglas normativas `sg_toca`.
 7. Sincronizar plantilla `sg_plre` y después `sg_plde`.
-8. Verificar filas de control en `sg_parm` contra máximos reales.
+8. Verificar filas de control en `sg_parm` contra máximos reales y el año vigente en `sg_prm1`.
 9. Instalar PA Sybase ASE 12.5 y otorgar `GRANT EXECUTE` al usuario de aplicación.
    La resolución de responsables quedó separada en tres procedimientos; instalarlos **antes** de `sg_etasSecgen01`, que los orquesta:
    - `sg_prsesSecgen20` — contexto de la solicitud (flujo, centro de costo, unidad y solicitante). Es el único que necesita `nro_solici`.
