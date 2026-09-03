@@ -1,0 +1,297 @@
+TABLAS INVOLUCRADAS EN DU288
+
+1. TABLAS DE SOLICITUD Y WORKFLOW - secgen_db.dbo (9)
+=====================================================
+
+1.1. secgen_db.dbo.sg_tmod - Modalidades de prestación
+Campos del diseño:
+Campo       Tipo         Permite NULL
+----------  -----------  ------------
+cod_modprs  tinyint      No
+des_modprs  varchar(60)  No
+PK: (cod_modprs).
+Relaciones documentadas:
+  Referencia desde: sg_prse.cod_modprs -> sg_tmod.cod_modprs
+
+1.2. secgen_db.dbo.sg_efun - Estados del funcionario
+Campos del diseño:
+Campo       Tipo         Permite NULL
+----------  -----------  ------------
+cod_estfun  tinyint      No
+des_estfun  varchar(60)  No
+PK: (cod_estfun).
+Relaciones documentadas:
+  Referencia desde: sg_fups.cod_estfun -> sg_efun.cod_estfun
+
+1.3. secgen_db.dbo.sg_tfls - Flujos de solicitud
+Campos del diseño:
+Campo       Tipo         Permite NULL
+----------  -----------  ------------
+cod_flusol  tinyint      No
+des_flusol  varchar(60)  No
+abr_flusol  varchar(10)  No
+vigente     char(1)      No
+f_creacion  datetime     Sí
+f_ultmodif  datetime     Sí
+PK: (cod_flusol).
+Relaciones documentadas:
+  Referencia desde: sg_eta1.cod_flusol -> sg_tfls.cod_flusol
+
+1.4. secgen_db.dbo.sg_eta1 - Etapas del flujo
+Campos del diseño:
+Campo       Tipo          Permite NULL
+----------  ------------  ------------
+cod_flusol  tinyint       No
+cod_etapa   tinyint       No
+des_etapa   varchar(100)  No
+cod_sistem  char(2)       No
+cod_modulo  varchar(8)    No
+cod_perfil  smallint      No
+est_final   char(1)       Sí
+vigente     char(1)       Sí
+cod_organi  int           Sí
+PK: (cod_flusol, cod_etapa).
+Relaciones documentadas:
+  FK: sg_eta1.cod_flusol -> sg_tfls.cod_flusol
+  Lógica, entre bases: sg_eta1.(cod_sistem, cod_modulo, cod_perfil) -> sistema_db.bd_per1.(cod_sistem, cod_modulo, cod_perfil)
+  Lógica, entre bases: sg_eta1.cod_organi -> ufro_db.es_orga.cod_organi
+
+1.5. secgen_db.dbo.sg_eta2 - Transiciones entre etapas
+Campos del diseño:
+Campo       Tipo     Permite NULL
+----------  -------  ------------
+cod_flusol  tinyint  No
+cod_etapa1  tinyint  No
+cod_etapa2  tinyint  No
+id_tipacc   tinyint  No
+cod_estsol  tinyint  Sí
+PK: (cod_flusol, cod_etapa1, cod_etapa2).
+Relaciones documentadas:
+  FK compuesta: sg_eta2.(cod_flusol, cod_etapa1) -> sg_eta1.(cod_flusol, cod_etapa)
+  FK compuesta: sg_eta2.(cod_flusol, cod_etapa2) -> sg_eta1.(cod_flusol, cod_etapa)
+  FK: sg_eta2.id_tipacc -> sg_tacc.id_tipacc
+  FK: sg_eta2.cod_estsol -> sg_esol.cod_estsol
+
+1.6. secgen_db.dbo.sg_toca - Topes por cargo y unidad
+Campos del diseño:
+Campo       Tipo      Permite NULL
+----------  --------  ------------
+cod_cargo   smallint  No
+cod_unidad  char(8)   No
+f_inicio    datetime  No
+f_termino   datetime  Sí
+mto_tope    int       No
+vigente     char(1)   Sí
+PK: (cod_cargo, cod_unidad, f_inicio).
+Relaciones documentadas:
+  Lógica, entre bases: sg_toca.cod_cargo -> sisper_db.sp_carg.cod_cargo
+  Lógica, entre bases: sg_toca.cod_unidad -> ufro_db.es_unid.cod_unidad
+
+1.7. secgen_db.dbo.sg_fuho - Horario semanal de ejecución
+Campos del diseño:
+Campo       Tipo     Permite NULL
+----------  -------  ------------
+id_funprse  int      No
+cod_diasem  tinyint  No
+correlativ  tinyint  No
+hora_ini    time(3)  No
+hora_ter    time(3)  No
+PK: (id_funprse, cod_diasem, correlativ).
+Relaciones documentadas:
+  FK: sg_fuho.id_funprse -> sg_fups.id_funprse
+
+1.8. secgen_db.dbo.sg_fuco - Compensación registrada en la solicitud
+Campos del diseño:
+Campo       Tipo      Permite NULL
+----------  --------  ------------
+id_funprse  int       No
+fec_compro  datetime  No
+hora_ini    time(3)   No
+hora_ter    time(3)   No
+PK: (id_funprse, fec_compro).
+Relaciones documentadas:
+  FK: sg_fuco.id_funprse -> sg_fups.id_funprse
+fec_compro: fecha y hora de inicio del tramo de compensación.
+
+1.9. secgen_db.dbo.sg_his2 - Historial de estado del funcionario
+Campos del diseño:
+Campo       Tipo      Permite NULL
+----------  --------  ------------
+id_funprse  int       No
+f_visacion  datetime  No
+rut_visado  char(9)   No
+cod_estact  tinyint   No
+cod_estnue  tinyint   No
+PK: (id_funprse, f_visacion).
+Relaciones documentadas:
+  FK: sg_his2.id_funprse -> sg_fups.id_funprse
+
+2. TABLAS DE CONSULTA DE PRESTACIONES ANTERIORES - secgen_db.dbo (3)
+====================================================================
+
+2.1. secgen_db.dbo.sg_ecuo - Estados de cuota
+Campos del diseño:
+Campo       Tipo         Permite NULL
+----------  -----------  ------------
+cod_estcuo  tinyint      No
+des_estcuo  varchar(60)  No
+PK: (cod_estcuo).
+Relaciones documentadas:
+  Referencia desde: sg_fume.cod_estcuo -> sg_ecuo.cod_estcuo
+
+2.2. secgen_db.dbo.sg_fume - Cuotas y pagos
+Campos del diseño:
+Campo        Tipo      Permite NULL
+-----------  --------  ------------
+id_funprse   int       No
+nro_cuota    tinyint   No
+ano_prop     smallint  No
+mes_prop     tinyint   No
+cod_estcuo   tinyint   No
+ano_ejec     smallint  Sí
+mes_ejec     tinyint   Sí
+mto_apagar   int       Sí
+id_evidenc   int       Sí
+val_licmed   char(1)   Sí
+val_inabili  char(1)   Sí
+val_singoce  char(1)   Sí
+val_ciecc    char(1)   Sí
+fec_valida   datetime  Sí
+rut_autori   char(9)   Sí
+fec_autori   datetime  Sí
+fec_envrem   datetime  Sí
+fec_pago     datetime  Sí
+ano_pago     smallint  Sí
+mes_pago     tinyint   Sí
+PK: (id_funprse, nro_cuota).
+Relaciones documentadas:
+  FK: sg_fume.id_funprse -> sg_fups.id_funprse
+  FK: sg_fume.cod_estcuo -> sg_ecuo.cod_estcuo
+
+2.3. secgen_db.dbo.sg_fuc2 - Compensación efectiva por cuota
+Campos del diseño:
+Campo       Tipo      Permite NULL
+----------  --------  ------------
+id_funprse  int       No
+nro_cuota   tinyint   No
+fec_comrea  datetime  No
+hora_ini    time(3)   No
+hora_ter    time(3)   No
+PK: (id_funprse, nro_cuota, fec_comrea).
+Relaciones documentadas:
+  FK compuesta: sg_fuc2.(id_funprse, nro_cuota) -> sg_fume.(id_funprse, nro_cuota)
+
+3. TABLAS CON COLUMNAS ADICIONALES - secgen_db.dbo (3)
+======================================================
+
+3.1. secgen_db.dbo.sg_prse - Prestación de servicios
+Columnas adicionales al esquema existente:
+Campo       Tipo     Permite NULL
+----------  -------  ------------
+cod_modprs  tinyint  Sí
+cod_flusol  tinyint  Sí
+cod_etapa   tinyint  Sí
+PK existente: (nro_solici).
+Relaciones documentadas:
+  FK nueva: sg_prse.cod_modprs -> sg_tmod.cod_modprs
+  FK compuesta nueva: sg_prse.(cod_flusol, cod_etapa) -> sg_eta1.(cod_flusol, cod_etapa)
+
+3.2. secgen_db.dbo.sg_fups - Funcionario de la prestación
+Columnas adicionales al esquema existente:
+Campo       Tipo      Permite NULL
+----------  --------  ------------
+cod_estfun  tinyint   Sí
+dentro_jor  char(1)   Sí
+cod_contra  int       Sí
+mes_haber   tinyint   Sí
+ano_haber   smallint  Sí
+mto_haber   int       Sí
+mto_tope    int       Sí
+f_cal_tope  datetime  Sí
+tot_cuotas  tinyint   Sí
+PK existente: (id_funprse).
+Relaciones documentadas:
+  FK nueva: sg_fups.cod_estfun -> sg_efun.cod_estfun
+  Lógica, entre bases: sg_fups.(rut, cod_contra) -> sisper_db.sp_cont.(rut_person, cod_contra)
+tot_cuotas: campo de compatibilidad; valor NULL en DU288.
+
+3.3. secgen_db.dbo.sg_apso - Tareas de aprobación
+Columnas adicionales al esquema existente:
+Campo       Tipo     Permite NULL
+----------  -------  ------------
+cod_flusol  tinyint  Sí
+cod_etapa   tinyint  Sí
+rut_autori  char(9)  Sí
+id_funprse  int      Sí
+PK existente: (nro_aproba).
+Relaciones documentadas:
+  FK compuesta nueva: sg_apso.(cod_flusol, cod_etapa) -> sg_eta1.(cod_flusol, cod_etapa)
+  FK nueva: sg_apso.id_funprse -> sg_fups.id_funprse
+
+4. TABLAS BASE EXISTENTES
+========================
+
+secgen_db.dbo
+Tabla    Información
+-------  --------------------------------------
+sg_tsol  Tipo de solicitud.
+sg_esol  Estados de solicitud.
+sg_eapr  Estados de tareas y firmas.
+sg_tacc  Acciones del workflow e historial.
+sg_tpps  Tipo de prestación.
+sg_ersl  Estados de resolución.
+sg_plse  Secciones de resolución.
+sg_plre  Cabecera de plantilla.
+sg_plde  Detalles de plantilla.
+sg_soli  Cabecera de solicitud.
+sg_hist  Historial de solicitud y resolución.
+sg_rslc  Cabecera de resolución.
+sg_rede  Texto de resolución.
+sg_apre  Firmantes y decisiones.
+sg_parm  Correlativos.
+sg_prm1  Año de proceso.
+sg_perf  Perfiles de soporte para trazabilidad.
+
+sistema_db
+Tabla    Información
+-------  ----------------------------------------------------
+bd_per1  Perfiles.
+bd_prvg  Privilegios.
+bd_pepr  Asociaciones perfil-privilegio.
+bd_pri2  Asignaciones institucionales utilizadas por Archivo.
+
+5. TABLAS DE OTRAS BASES
+======================
+
+fin21_db: centro de costo
+Tablas: es_ccto, es_ufin, es_ecct, es_tfin, sf_ftfn, sf_deaf
+Información: Centro, responsable, financiamiento y proyecto.
+
+fin21_db: presupuesto
+Tablas: pt_ticp, pt_titl, pt_item, pt_sitm, pt_depr, sf_docf, sf_pfoc
+Información: Jerarquía presupuestaria y movimientos de saldo.
+
+sisper_db: persona y contrato
+Tablas: sp_pers, sp_cont, sp_carg, sp_sede, sp_jpfu, sp_nigr, sp_cali, sp_estm, sp_jorn, sp_vigc
+Información: Persona, contrato, cargo, planta y jornada.
+
+sisper_db: responsables
+Tablas: sp_orco, sp_orde, sp_aufi, sp_desg
+Información: Ocupantes de cargos, designaciones, autoridades y subrogancias.
+
+sisper_db: validaciones
+Tablas: sp_par1, sp_par2, sp_asng, sp_para, ss_habe, ss_hrem, wf_sol2, wf_tra1
+Información: Parentesco, asignaciones, remuneración y movimientos laborales.
+
+ufro_db
+Tablas: es_unid, es_orga
+Información: Unidades y jerarquía organizacional para flujo y jefaturas.
+
+archivo_db
+Tablas: ar_doc1, ar_doc6, ar_adm1, ar_parm, ar_prm2, ar_prm3, ar_edoc
+Información: Registro, estados, administración y numeración de documentos.
+
+MySQL MySecGen
+Tabla: sg_rslc_<año>
+Campos utilizados: ano_resolu, nro_resolu, correlativ, archivo.
+Información: archivos de resolución en la tabla anual configurada.
