@@ -45,6 +45,8 @@ La pantalla se documenta a partir de:
 
 La Pantalla 03 debe operar como una **vista de revisión institucional y decisión jerárquica**, manteniendo la misma lógica visual y funcional de la etapa anterior, pero incorporando la **trazabilidad de la visación ya realizada por el Jefe de Proyecto**.
 
+La visación de la Jefatura Directa es obligatoria tanto dentro como fuera de la jornada del funcionario. Los valores válidos de modalidad `S`, `D` y `N` deben conducir a esta etapa; la modalidad de jornada no constituye un motivo para omitirla. Las demás reglas generales del flujo, incluida la eventual omisión por responsable repetido cuando esté configurada, permanecen sin cambios.
+
 ## 3.1 Funciones que sí debe cumplir
 
 * Mostrar todos los datos relevantes de la solicitud generada en la Pantalla 01.

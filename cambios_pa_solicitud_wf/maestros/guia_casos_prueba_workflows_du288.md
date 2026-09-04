@@ -63,7 +63,7 @@ Las etapas 10 a 50 no fijan `cod_organi`: se resuelven por estrategia o por la u
 
 Todos los demás sí pueden omitirse: Jefe de Proyecto (25), Jefe Directo (26), Director o Encargado de Facultad (8), Decano (27), Directores de Instituto, DITT e Investigación.
 
-**Jefatura Directa condicionada por jornada.** La etapa 30 solo existe si `sg_fups.dentro_jor` es `S` o `D`. Con `N` (fuera de jornada) esa etapa no se ejecuta, y por lo tanto tampoco puede haber coincidencia con ella.
+**Jefatura Directa obligatoria para toda modalidad de jornada.** La etapa 30 existe cuando `sg_fups.dentro_jor` es `S`, `D` o `N`. La modalidad no es una causa de omisión; las coincidencias de responsable se evalúan con la política general del flujo.
 
 ---
 
@@ -174,18 +174,18 @@ Secuencia esperada:
 
 ```text
 20  Jefe de Proyecto         visa normalmente
-30  Jefe Directo Funcionario NO SE EJECUTA
+30  Jefe Directo Funcionario visa normalmente
 40 … 130                     recorrido normal
 ```
 
-**Qué observar:** el modal de envío no muestra aviso de continuidad — el recorrido inmediato no cambia. El aviso aparece cuando el Jefe de Proyecto valida y el destino pasa a ser la etapa 30, con motivo `OUTSIDE_WORKDAY`.
+**Qué observar:** después de la aprobación del Jefe de Proyecto se resuelve y asigna la Jefatura Directa vigente. No aparece ningún aviso de omisión asociado a la modalidad de jornada.
 
 #### 4.3.2 Fuera de jornada con Jefe de Proyecto = Jefe Directo
 
 * Jefe de Proyecto: `080837291`
 * Funcionario: `087962717`, con `dentro_jor = 'N'`
 
-**Qué observar:** no se omite la etapa 20. Al no existir la etapa 30 no hay coincidencia posible, y el Jefe de Proyecto visa normalmente.
+**Qué observar:** la etapa 30 existe también fuera de jornada. La política general de responsable repetido se mantiene: la misma persona revisa una sola vez en Jefatura Directa y, si la etapa 20 permite la omisión correspondiente, el flujo conserva la visación posterior en la etapa 30. El motivo de cualquier omisión debe ser actor repetido, nunca la modalidad de jornada.
 
 ---
 

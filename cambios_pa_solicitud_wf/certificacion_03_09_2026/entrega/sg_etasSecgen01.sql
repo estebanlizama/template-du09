@@ -268,14 +268,11 @@ BEGIN
             CONVERT(varchar(255), NULL) AS nombre_responsable,
             CONVERT(varchar(100), NULL) AS cargo_responsable,
             CASE
-                WHEN fups.dentro_jor = 'N' THEN 'OMITIR_FUERA_JORNADA'
-                WHEN fups.dentro_jor IN ('S', 'D') THEN 'RESOLVER_JEFATURA'
+                WHEN fups.dentro_jor IN ('S', 'D', 'N') THEN 'RESOLVER_JEFATURA'
                 ELSE 'JORNADA_NO_DEFINIDA'
             END AS estado_resolucion,
             CASE
-                WHEN fups.dentro_jor = 'N'
-                    THEN 'La jefatura directa no participa porque la prestacion se realizara fuera de la jornada laboral.'
-                WHEN fups.dentro_jor NOT IN ('S', 'D') OR fups.dentro_jor IS NULL
+                WHEN fups.dentro_jor NOT IN ('S', 'D', 'N') OR fups.dentro_jor IS NULL
                     THEN 'No fue posible determinar la condicion de jornada del funcionario.'
                 ELSE CONVERT(varchar(255), NULL)
             END AS mensaje,

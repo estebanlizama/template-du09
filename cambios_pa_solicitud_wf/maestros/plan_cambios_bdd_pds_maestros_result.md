@@ -983,23 +983,17 @@ request.provision.activity = request.staffList[0].reason
 ### 9.8 Regla de jornada y Jefatura Directa
 
 1. La solicitud DU288 siempre se envia primero al Jefe de Proyecto. La condicion de jornada no altera esta etapa.
-2. Despues de la aprobacion del Jefe de Proyecto:
-   - `dentro_jor IN ('S', 'D')`: se resuelve y asigna la Jefatura Directa vigente;
-   - `dentro_jor = 'N'`: la etapa Jefe Directo Funcionario no aplica y se omite.
-3. La omision por jornada no debe crear una tarea pendiente ni una aprobacion automatica atribuida al jefe directo.
-4. La omision debe quedar registrada en el historial con el motivo funcional y con el usuario cuya aprobacion produjo el avance.
-5. La previsualizacion debe informar:
-   - la etapa que no aplica;
-   - el motivo: prestacion fuera de jornada;
-   - la siguiente etapa efectiva y su responsable vigente.
-6. `sg_etasSecgen01` debe retornar `OMITIR_FUERA_JORNADA` para la estrategia `JEFE_DIRECTO` cuando `sg_fups.dentro_jor = 'N'`.
-7. Si la condicion de jornada es nula o distinta de `S`, `D` o `N`, backend debe bloquear el avance por dato inconsistente.
-8. Esta regla es distinta de la omision por actor repetido: fuera de jornada significa que la revision no aplica; actor repetido significa que la misma persona revisara posteriormente en otra etapa.
+2. Despues de la aprobacion del Jefe de Proyecto, `dentro_jor IN ('S', 'D', 'N')` siempre resuelve y asigna la Jefatura Directa vigente.
+3. La modalidad de jornada no debe producir omisiones, aprobaciones automaticas, avances de etapa ni registros de historial asociados a una omision del Jefe Directo.
+4. La previsualizacion no debe mostrar mensajes de omision por jornada y debe presentar al Jefe Directo como destino efectivo cuando corresponda.
+5. `sg_etasSecgen01` debe retornar `RESOLVER_JEFATURA` para la estrategia `JEFE_DIRECTO` con cualquiera de los valores validos `S`, `D` o `N`.
+6. Si la condicion de jornada es nula o distinta de `S`, `D` o `N`, backend debe bloquear el avance por dato inconsistente.
+7. La omision por actor repetido permanece sin cambios y se evalua de manera independiente: la misma persona puede revisar una sola vez en una etapa posterior cuando la politica de la etapa lo permite.
 
 | Condicion | Jefe de Proyecto | Jefe Directo | Resultado |
 | :--- | :--- | :--- | :--- |
 | Dentro de jornada (`S`/`D`) | Revisa | Revisa | Continuan ambas visaciones configuradas. |
-| Fuera de jornada (`N`) | Revisa | No aplica | Se registra la omision y se continua a la siguiente etapa organizacional. |
+| Fuera de jornada (`N`) | Revisa | Revisa | Continuan ambas visaciones configuradas. |
 | No informada/invalida | No se altera la revision ya realizada | No se resuelve | Se bloquea el avance hasta corregir el dato. |
 
 ### 9.9 Archivos principales afectados
@@ -1485,21 +1479,21 @@ resolucion se detallan en `flujo_decision_responsables_etapas_du288.md`.
    `DIRECT_HEAD_RESOLUTION_FAILED` por errores segun estrategia y etapa.
 6. Historial: una omision no debe presentarse como visacion automatica. Debe
    quedar como evento de omision con el actor que produjo el avance y el motivo
-   `FUERA_JORNADA`, `RESPONSABLE_REPETIDO` u otra causa explicitamente admitida.
+   `RESPONSABLE_REPETIDO` u otra causa explicitamente admitida.
 
 #### Condiciones de ascenso para Jefe Directo
 
 El ascenso a otro cargo se permite solo si se cumplen todas estas condiciones:
 
-1. La prestacion requiere Jefe Directo (`dentro_jor IN ('S', 'D')`).
+1. La prestacion requiere Jefe Directo (`dentro_jor IN ('S', 'D', 'N')`).
 2. Existe un cargo de jefatura inicial asociado a la unidad contractual.
 3. ORCO, ORDE y AUFI del nivel actual tienen cero ocupantes unicos, vigentes,
    presentes y distintos del funcionario evaluado.
 4. `cod_orgjef` no es nulo, no apunta al mismo cargo y no fue visitado antes.
 5. El cargo superior mantiene la misma raiz institucional de la unidad.
 
-Una fuente ambigua, una etapa institucional, un responsable repetido o una
-prestacion fuera de jornada nunca habilitan el ascenso jerarquico.
+Una fuente ambigua, una etapa institucional o un responsable repetido nunca
+habilitan el ascenso jerarquico.
 
 ### 11.9 Interaccion entre Jefe Directo, AUFI y omision posterior
 

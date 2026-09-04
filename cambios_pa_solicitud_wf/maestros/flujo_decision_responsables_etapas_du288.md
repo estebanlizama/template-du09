@@ -85,7 +85,7 @@ flowchart TD
 |---|---|---|---:|---:|---|
 | Solicitante, perfil 6 | `sg_soli.rut_solici` | Ninguna | No | No | Bloquear. |
 | Jefe de Proyecto, perfil 25 | `sg_prse.rut_jefpro` | Ninguna | No | No | Bloquear. |
-| Jefe Directo, perfil 26 | `sg_fups` + `sp_cont` + `es_orga` | ORCO, ORDE, AUFI y cargo superior de la misma raiz | Si | Si | Bloquear, salvo `NO_APLICA` por fuera de jornada. |
+| Jefe Directo, perfil 26 | `sg_fups` + `sp_cont` + `es_orga` | ORCO, ORDE, AUFI y cargo superior de la misma raiz | Si | Si | Bloquear. |
 | Autoridad institucional | `sg_eta1.cod_organi` | ORCO, ORDE y todas las prioridades AUFI directas | No | Si | Bloquear. |
 | Decretacion, perfil 12 | Cargo configurado en `sg_eta1` | Resolver institucional | No | Si | Bloquear. |
 | Secretario General, perfil 14 | Cargo configurado en `sg_eta1` | Resolver institucional | No | Si | Bloquear. |
@@ -105,9 +105,8 @@ flowchart TD
     C -- No --> Z[Usar el resolvedor del perfil destino]
     C -- Si --> D[Leer funcionario unico en sg_fups]
     D --> E{dentro_jor}
-    E -- N --> O[NO_APLICA: omitir Jefe Directo<br/>y continuar]
     E -- Nulo o invalido --> X1[BLOQUEAR: jornada no definida]
-    E -- S o D --> F[Validar cod_contra en sp_cont<br/>para el RUT del funcionario]
+    E -- S, D o N --> F[Validar cod_contra en sp_cont<br/>para el RUT del funcionario]
     F --> G{Contrato y unidad validos?}
     G -- No --> X2[BLOQUEAR]
     G -- Si --> H[Obtener cargo de jefatura inicial<br/>en es_orga para cod_unidad]
@@ -135,7 +134,7 @@ flowchart TD
 
 Se utiliza `es_orga.cod_orgjef` solamente cuando:
 
-1. la etapa Jefe Directo aplica (`dentro_jor IN ('S', 'D')`);
+1. la etapa Jefe Directo aplica (`dentro_jor IN ('S', 'D', 'N')`);
 2. existe un cargo inicial de jefatura asociado a la unidad contractual;
 3. ORCO, ORDE y todas las prioridades AUFI directas del nivel actual tienen cero
    candidatos disponibles;
@@ -143,8 +142,8 @@ Se utiliza `es_orga.cod_orgjef` solamente cuando:
 5. el superior no es el mismo cargo y no fue visitado;
 6. el superior conserva el prefijo institucional de la unidad contractual.
 
-No se sube por responsable repetido, ausencia de una autoridad institucional,
-ambiguedad ni prestacion fuera de jornada.
+No se sube por responsable repetido, ausencia de una autoridad institucional ni
+ambiguedad.
 
 ### Jefe Directo resuelto como subrogante
 
@@ -213,7 +212,6 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Resultado de la etapa] --> B{Motivo}
-    B -- Fuera de jornada<br/>solo Jefe Directo --> C[Omitir sin tarea]
     B -- Responsable efectivo repetido --> D{Etapa permite omision?}
     D -- Si --> C
     D -- No --> E[Crear tarea pendiente]
@@ -230,14 +228,15 @@ La politica conservadora aplicada permite omision por responsable repetido
 solamente para Jefe Directo, perfil `26`. Las autoridades formales, Solicitante
 y Jefe de Proyecto mantienen su tarea aunque el RUT efectivo se repita.
 
-La omision por fuera de jornada es independiente de esa lista y solo aplica a
-Jefe Directo.
+La modalidad de jornada (`S`, `D` o `N`) no permite omitir al Jefe Directo. En
+todos los casos validos se resuelve su responsable y se exige su visacion. La
+omision por responsable repetido conserva su politica independiente.
 
 ## 8. Datos que debe devolver cada resolucion
 
 | Campo | Uso |
 |---|---|
-| `estado_resolucion` | `ENCONTRADO`, `NO_APLICA`, `NO_ENCONTRADO`, `AMBIGUO` o `NO_CONFIGURADO`. |
+| `estado_resolucion` | `ENCONTRADO`, `NO_ENCONTRADO`, `AMBIGUO` o `NO_CONFIGURADO`. |
 | `rut_responsable` | Destinatario efectivo de `sg_apso`. |
 | `fuente_resolucion` | Solicitante, Jefe de Proyecto, ORCO, ORDE, AUFI_ORCO o AUFI_ORDE. |
 | `cod_organi_requerido` | Cargo exigido por la etapa. |
