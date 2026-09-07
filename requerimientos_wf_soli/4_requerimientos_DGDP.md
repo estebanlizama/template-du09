@@ -1135,7 +1135,6 @@ DGDP.
 - Cantidad de horas.
 - Total de horas registradas.
 - Relación con la jornada base.
-- Validación del límite máximo de 12 horas totales diarias.
 
 ### D. Historia de usuario preliminar
 
@@ -1144,7 +1143,6 @@ DGDP.
 ### E. Requerimientos funcionales preliminares
 
 - **RF-PP04-070:** El sistema debe mostrar la compensación horaria registrada por funcionario.
-- **RF-PP04-071:** El sistema debe mostrar el resultado de la validación del límite de 12 horas diarias.
 - **RF-PP04-072:** El sistema debe permitir usar un incumplimiento de compensación como causal de exclusión individual cuando corresponda.
 
 ---

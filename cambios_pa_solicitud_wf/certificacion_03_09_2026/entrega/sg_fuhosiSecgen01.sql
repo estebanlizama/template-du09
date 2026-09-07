@@ -22,7 +22,7 @@ GO
               servicios.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: Sin registro
+   Actualizacion: 2026/09/07 - Soporte de tramos que terminan al dia siguiente.
 */
 CREATE PROCEDURE Analisis2.sg_fuhosiSecgen01
     @id_funprse int,
@@ -35,6 +35,25 @@ BEGIN
     IF @id_funprse IS NULL OR @cod_diasem IS NULL OR @correlativ IS NULL OR @hora_ini IS NULL OR @hora_ter IS NULL
     BEGIN
         SELECT 'Parametros requeridos incompletos' AS msg
+        RETURN
+    END
+
+    IF @cod_diasem < 1 OR @cod_diasem > 5
+    BEGIN
+        SELECT 'Error: el dia de ejecucion debe estar entre lunes y viernes' AS msg
+        RETURN
+    END
+
+    IF convert(time, @hora_ini) = convert(time, @hora_ter)
+    BEGIN
+        SELECT 'Error: la hora de inicio y termino deben ser distintas' AS msg
+        RETURN
+    END
+
+    /* Si hora_ter es menor, el tramo termina al dia siguiente. */
+    IF @cod_diasem = 5 AND convert(time, @hora_ter) < convert(time, @hora_ini)
+    BEGIN
+        SELECT 'Error: el tramo iniciado el viernes no puede terminar el sabado' AS msg
         RETURN
     END
 

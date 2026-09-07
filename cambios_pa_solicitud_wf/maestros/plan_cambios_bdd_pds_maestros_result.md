@@ -215,7 +215,7 @@ Reglas:
 
 1. La compensacion se registra por funcionario (`id_funprse`) y fecha calendario (`anio`, `nro_mes`, `nro_dia`), no por `sg_fume.id_funmes`.
 2. Puede existir mas de un tramo de compensacion para una misma fecha; en ese caso se registran varias filas con el mismo `id_funprse`, `anio`, `nro_mes` y `nro_dia`.
-3. `hora_termino` debe ser mayor que `hora_inicio`.
+3. `hora_termino` debe ser distinta de `hora_inicio`; cuando sea menor, el tramo termina el día calendario siguiente.
 4. La duracion no se guarda como atributo persistente; se calcula desde `hora_inicio` y `hora_termino`.
 5. Los tramos de una misma fecha no deben solaparse para el mismo funcionario.
 6. Si la prestacion es dentro de jornada y requiere compensacion, debe existir al menos un tramo vigente asociado al funcionario.

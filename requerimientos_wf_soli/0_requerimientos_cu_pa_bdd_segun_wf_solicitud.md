@@ -927,7 +927,6 @@ Solicitante.
 * Administrativo dentro de jornada: compensa siempre.
 * Académico dentro de jornada sin SEA: compensa.
 * Académico dentro de jornada con SEA: no requiere compensar.
-* La suma de horas de jornada base y compensación no puede superar 12 horas de trabajo diario.
 
 ### E. Validaciones
 
@@ -936,7 +935,6 @@ Solicitante.
 | VAL-P01-COMP-01 | Compensación obligatoria cuando corresponda | Bloquea agregar funcionario si falta. |
 | VAL-P01-COMP-02 | Día seleccionado                            | Bloquea fila inválida.                |
 | VAL-P01-COMP-03 | Horas registradas                           | Bloquea fila incompleta.              |
-| VAL-P01-COMP-04 | Total diario no supera 12 horas             | Bloquea exceso.                       |
 
 ### F. Historia de usuario preliminar
 
@@ -947,7 +945,6 @@ Solicitante.
 * **RF-P01-057:** El sistema debe permitir agregar filas de compensación horaria.
 * **RF-P01-058:** El sistema debe permitir eliminar filas de compensación horaria.
 * **RF-P01-059:** El sistema debe exigir compensación cuando la regla normativa lo determine.
-* **RF-P01-060:** El sistema debe validar que no se superen 12 horas totales de trabajo diario.
 
 ---
 
@@ -1960,7 +1957,6 @@ Jefe de Proyecto.
 * Día de compensación.
 * Cantidad de horas por día.
 * Total semanal o total registrado, cuando se defina.
-* Resultado de la validación de límite máximo de 12 horas totales de trabajo diario.
 
 ### D. Reglas de negocio
 
@@ -1974,7 +1970,6 @@ Jefe de Proyecto.
 ### F. Requerimientos funcionales preliminares
 
 * **RF-P02-043:** El sistema debe mostrar la tabla de compensación horaria por funcionario cuando corresponda.
-* **RF-P02-044:** El sistema debe mostrar el resultado de la validación de límite diario de horas.
 
 ---
 
@@ -3133,7 +3128,6 @@ Jefatura Directa / Dirección de Departamento.
 * Día de compensación.
 * Cantidad de horas por día.
 * Total semanal o total registrado, cuando se defina.
-* Resultado de la validación de límite máximo de 12 horas diarias.
 
 ### D. Historia de usuario preliminar
 
@@ -3142,7 +3136,6 @@ Jefatura Directa / Dirección de Departamento.
 ### E. Requerimientos funcionales preliminares
 
 * **RF-P03-047:** El sistema debe mostrar la compensación horaria registrada cuando corresponda.
-* **RF-P03-048:** El sistema debe mostrar el resultado de la validación del límite diario de horas.
 
 ---
 
@@ -4553,7 +4546,6 @@ DGDP.
 - Cantidad de horas.
 - Total de horas registradas.
 - Relación con la jornada base.
-- Validación del límite máximo de 12 horas totales diarias.
 
 ### D. Historia de usuario preliminar
 
@@ -4562,7 +4554,6 @@ DGDP.
 ### E. Requerimientos funcionales preliminares
 
 - **RF-P04-061:** El sistema debe mostrar la compensación horaria registrada por funcionario.
-- **RF-P04-062:** El sistema debe mostrar el resultado de la validación del límite de 12 horas diarias.
 - **RF-P04-063:** El sistema debe permitir usar un incumplimiento de compensación como causal de exclusión individual cuando corresponda.
 
 ---

@@ -47,8 +47,11 @@ CREATE TABLE #tpps_du288 (
     des_tpps varchar(10) NOT NULL
 )
 
-INSERT INTO #tpps_du288 VALUES (1, 'Meses')
-INSERT INTO #tpps_du288 VALUES (2, 'Días')
+-- DU288: cod_tpps se usa como señal de tipo de monto -- 1 = pago fijo
+-- (mensual, parejo entre los meses de ejecucion), 2 = pago variable
+-- (diario, el monto real de cada mes se define recien al pago).
+INSERT INTO #tpps_du288 VALUES (1, 'Fijo')
+INSERT INTO #tpps_du288 VALUES (2, 'Variable')
 GO
 
 UPDATE secgen_db.dbo.sg_tpps

@@ -724,7 +724,6 @@ Jefe de Proyecto.
 * Día de compensación.
 * Cantidad de horas por día.
 * Total semanal o total registrado, cuando se defina.
-* Resultado de la validación de límite máximo de 12 horas totales de trabajo diario.
 
 ### D. Reglas de negocio
 
@@ -738,7 +737,6 @@ Jefe de Proyecto.
 ### F. Requerimientos funcionales preliminares
 
 * **RF-PP02-043:** El sistema debe mostrar la tabla de compensación horaria por funcionario cuando corresponda.
-* **RF-PP02-044:** El sistema debe mostrar el resultado de la validación de límite diario de horas.
 
 ---
 

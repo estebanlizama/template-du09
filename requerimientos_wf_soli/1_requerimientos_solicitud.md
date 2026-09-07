@@ -1026,9 +1026,10 @@ Solicitante.
 * Administrativo dentro de jornada: compensa siempre.
 * Académico dentro de jornada sin SEA: compensa.
 * Académico dentro de jornada con SEA: no requiere compensar.
-* La suma de jornada base y tramo de compensación no puede superar 12 horas de trabajo diario.
 * La compensación horaria debe registrarse por funcionario y conservar el detalle de mes, día, hora de inicio y hora de término.
 * La duración de la compensación debe derivarse del rango horario; no debe capturarse como cantidad manual de horas.
+* Si la hora de término es menor que la hora de inicio, el tramo termina el día calendario siguiente. Ambos días deben ser hábiles y estar dentro del período de ejecución.
+* En la vista semanal, el tramo nocturno debe distribuirse visualmente entre ambos días, asignando a cada columna las horas que le corresponden, sin duplicar el total ni convertirlo en dos registros independientes.
 
 ### E. Validaciones
 
@@ -1037,8 +1038,7 @@ Solicitante.
 | VAL-P01-COMP-01 | Compensación obligatoria cuando corresponda | Bloquea agregar funcionario si falta. |
 | VAL-P01-COMP-02 | Día de compensación seleccionado            | Bloquea fila inválida.                |
 | VAL-P01-COMP-03 | Rango horario registrado                    | Bloquea fila incompleta.              |
-| VAL-P01-COMP-04 | Total diario no supera 12 horas             | Bloquea exceso.                       |
-| VAL-P01-COMP-05 | Hora de término mayor que hora de inicio    | Bloquea rango inválido.               |
+| VAL-P01-COMP-05 | Horas de inicio y término válidas y distintas | Bloquea rango inválido; si término es menor, corresponde al día siguiente. |
 
 ### F. Historia de usuario preliminar
 
@@ -1049,7 +1049,6 @@ Solicitante.
 * **RF-P01-057:** El sistema debe permitir agregar filas de compensación horaria.
 * **RF-P01-058:** El sistema debe permitir eliminar filas de compensación horaria.
 * **RF-P01-059:** El sistema debe exigir compensación cuando la regla normativa lo determine.
-* **RF-P01-060:** El sistema debe validar que no se superen 12 horas totales de trabajo diario.
 * **RF-P01-060A:** El sistema debe conservar el detalle de compensación horaria asociado al funcionario de la PDS.
 * **RF-P01-060B:** El sistema debe registrar día del mes, hora de inicio y hora de término de cada compensación.
 * **RF-P01-060C:** El sistema debe calcular la duración desde el rango horario, sin exigir ingreso manual de cantidad de horas.

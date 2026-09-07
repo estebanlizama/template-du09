@@ -1713,7 +1713,6 @@
         }
 
         function addStaffToSummary() {
-            if (!validateTotalHours()) return;
 
             const nombre = document.getElementById('nombre_funcionario').value;
             const rut = document.getElementById('rut_funcionario').value;
@@ -2194,24 +2193,6 @@
                     }
                 }
             }
-        }
-
-        function validateTotalHours() {
-            // RF-P01-060: Max 12 hours daily (Base + Compensation)
-            const compRows = document.querySelectorAll('#tabla_compensacion tbody tr.compensacion-item-row');
-            let isValid = true;
-            compRows.forEach(row => {
-                const inputEl = row.querySelector('input');
-                if (inputEl) {
-                    const hrsComp = parseFloat(inputEl.value) || 0;
-                    const baseHrs = 8.8; // Simulación: 44h / 5 días
-                    if (baseHrs + hrsComp > 12) {
-                        alert(`Error: La suma de jornada base (${baseHrs}h) y compensación (${hrsComp}h) supera el límite de 12 horas diarias.`);
-                        isValid = false;
-                    }
-                }
-            });
-            return isValid;
         }
 
         let searchTarget = 'staff';

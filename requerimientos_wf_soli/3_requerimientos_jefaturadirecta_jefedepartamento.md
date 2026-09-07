@@ -802,7 +802,6 @@ Jefatura Directa / Dirección de Departamento.
 * Día de compensación.
 * Cantidad de horas por día.
 * Total semanal o total registrado, cuando se defina.
-* Resultado de la validación de límite máximo de 12 horas diarias.
 
 ### D. Historia de usuario preliminar
 
@@ -811,7 +810,6 @@ Jefatura Directa / Dirección de Departamento.
 ### E. Requerimientos funcionales preliminares
 
 * **RF-PP03-047:** El sistema debe mostrar la compensación horaria registrada cuando corresponda.
-* **RF-PP03-048:** El sistema debe mostrar el resultado de la validación del límite diario de horas.
 
 ---
 
