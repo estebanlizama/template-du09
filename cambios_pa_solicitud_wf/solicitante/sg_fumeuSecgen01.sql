@@ -16,18 +16,12 @@ GO
    @meses_csv           -> Lista de meses propuestos, formato ano:mes separados por punto y coma. (Opcional)
    @cod_estcuo          -> Estado inicial de la cuota; usa 1 (Propuesta) si no se envia. (Opcional)
 
-   Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
-
-   La sincronizacion es DIFERENCIAL: solo borra los meses que salen de la propuesta y solo
-   inserta los que entran, conservando intactos los que siguen. Antes borraba e insertaba todo
-   en cada guardado, lo que rompia con error de integridad referencial (FK_sg_fuc2_sg_fume) en
-   cuanto alguna cuota tenia compensaciones registradas en sg_fuc2, dejando la solicitud
-   imposible de guardar. Ademas conserva el nro_cuota de los meses que ya existian, en vez de
-   renumerarlos en cada guardado.
+   Objetivo : Sincronizar de forma diferencial los meses de ejecucion de un funcionario: borra
+   solo los que salen de la propuesta, inserta solo los que entran y conserva el nro_cuota de
+   los que siguen.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: ELA 2026/09/07 - sincronizacion diferencial; conserva nro_cuota y no borra
-                  meses con compensaciones o historial asociado
+   Actualizacion: ELA 2026/09/07 - sincronizacion diferencial
 */
 CREATE PROCEDURE Analisis2.sg_fumeuSecgen01
     @id_funprse int = NULL,
@@ -35,6 +29,8 @@ CREATE PROCEDURE Analisis2.sg_fumeuSecgen01
     @cod_estcuo int = 1
 AS
 BEGIN
+    SET NOCOUNT ON
+
     IF @id_funprse IS NULL
     BEGIN
         SELECT 'Error: Falta ID del funcionario' AS msg
@@ -64,7 +60,6 @@ BEGIN
         RETURN
     END
 
-    -- Validar que si ya existen cuotas persistidas, solo se permita modificar si están en estado editable: 1 (Propuesta) o 3 (Observada)
     IF EXISTS (
         SELECT 1
         FROM secgen_db.dbo.sg_fume
@@ -81,7 +76,6 @@ BEGIN
         nro_mes tinyint NOT NULL
     )
 
-    -- Validar todo el CSV antes de modificar los meses persistidos.
     IF @meses_csv IS NOT NULL AND ltrim(rtrim(@meses_csv)) <> ''
     BEGIN
         DECLARE @pos int
@@ -157,9 +151,6 @@ BEGIN
         END
     END
 
-    -- Propuesta completa de meses, ordenada cronologicamente. La identity ya
-    -- no se usa como nro_cuota final (eso lo resuelve la parte diferencial
-    -- mas abajo, conservando los numeros existentes), solo mantiene el orden.
     CREATE TABLE #meses (
         orden numeric(4,0) identity,
         anio smallint NOT NULL,
@@ -171,20 +162,12 @@ BEGIN
     FROM #meses_raw
     ORDER BY anio, nro_mes
 
-    -- Meses que ENTRAN (estan en la propuesta nueva y no existian todavia).
-    -- La tabla se crea aca, fuera de la transaccion: Sybase ASE no permite
-    -- CREATE TABLE dentro de una transaccion multi-statement. Se llena mas
-    -- abajo, ya dentro del TRAN, que si admite INSERT.
     CREATE TABLE #meses_nuevos (
         correlativ numeric(4,0) identity,
         anio smallint NOT NULL,
         nro_mes tinyint NOT NULL
     )
 
-    -- Cuotas que SALEN: las que hoy existen y ya no estan en la propuesta.
-    -- Se materializan en vez de resolverlas con una subconsulta correlacionada
-    -- dentro del DELETE, que en Sybase obliga a referenciar la tabla destino
-    -- por su nombre calificado completo y es facil de romper al editar.
     CREATE TABLE #cuotas_salen (
         nro_cuota tinyint NOT NULL
     )
@@ -211,25 +194,11 @@ BEGIN
         RETURN
     END
 
-    -- Un mes que sale de la propuesta pero que ya tiene compensaciones
-    -- registradas (sg_fuc2) o historial de cuota (sg_fum2) no se puede
-    -- eliminar: son antecedentes de trabajo ya realizado. Se avisa con un
-    -- mensaje entendible en vez de dejar que reviente la FK.
     IF EXISTS (
         SELECT 1
-        FROM #cuotas_salen s
-        WHERE EXISTS (
-                  SELECT 1
-                  FROM secgen_db.dbo.sg_fuc2 c
-                  WHERE c.id_funprse = @id_funprse
-                    AND c.nro_cuota = s.nro_cuota
-              )
-           OR EXISTS (
-                  SELECT 1
-                  FROM secgen_db.dbo.sg_fum2 h
-                  WHERE h.id_funprse = @id_funprse
-                    AND h.nro_cuota = s.nro_cuota
-              )
+        FROM secgen_db.dbo.sg_fuc2 c
+        WHERE c.id_funprse = @id_funprse
+          AND c.nro_cuota IN (SELECT nro_cuota FROM #cuotas_salen)
     )
     BEGIN
         SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene compensaciones registradas' AS msg
@@ -237,9 +206,18 @@ BEGIN
         RETURN
     END
 
-    -- Solo se borran los meses que efectivamente salen de la propuesta. Los
-    -- que siguen no se tocan, asi conservan su nro_cuota y no arrastran a
-    -- sus dependientes.
+    IF EXISTS (
+        SELECT 1
+        FROM secgen_db.dbo.sg_fum2 h
+        WHERE h.id_funprse = @id_funprse
+          AND h.nro_cuota IN (SELECT nro_cuota FROM #cuotas_salen)
+    )
+    BEGIN
+        SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene historial de cuota' AS msg
+        IF @@transtate = 2 ROLLBACK TRAN
+        RETURN
+    END
+
     DELETE FROM secgen_db.dbo.sg_fume
     WHERE id_funprse = @id_funprse
       AND nro_cuota IN (SELECT nro_cuota FROM #cuotas_salen)
@@ -270,8 +248,6 @@ BEGIN
         RETURN
     END
 
-    -- Los meses nuevos continuan la numeracion existente, para no reutilizar
-    -- un nro_cuota que ya estuvo en uso en este funcionario.
     SELECT @max_cuota = isnull(max(nro_cuota), 0)
     FROM secgen_db.dbo.sg_fume
     WHERE id_funprse = @id_funprse

@@ -32,6 +32,9 @@ Todo Procedimiento Almacenado debe comenzar con un bloque de comentarios estrict
 ## 2. Limpieza de Código Residual
 
 - **Cero 'EXECUTE' Comentados:** No deben existir bloques de prueba tipo `/* EXECUTE ... */` o `EXEC secgen_db...` comentados al final del archivo. Las pruebas deben ejecutarse en la consola SQL y no quedar registradas en el código fuente del procedimiento base.
+- **Cero Comentarios Explicativos en el Cuerpo:** **No** se agregan comentarios `--` dentro del cuerpo del PA para explicar qué hace una sentencia, por qué se eligió una construcción o qué error se estaba corrigiendo. El código debe leerse solo. Todo lo que necesite explicación va en el `Objetivo` de la cabecera si describe *qué hace* el PA, o en el README del paquete de certificación correspondiente si describe *por qué cambió*.
+  - *Incorrecto:* `-- Sin NOCOUNT el puente JDBC devuelve 010P4 al procesar los conteos`
+  - *Correcto:* la sentencia sola; el motivo se documenta en el README de la entrega.
 
 ## 3. Seguridad de Datos (OWASP) y Manejo de Errores
 

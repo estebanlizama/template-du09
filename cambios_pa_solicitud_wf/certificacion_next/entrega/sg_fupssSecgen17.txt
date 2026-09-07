@@ -163,16 +163,6 @@ BEGIN
         ON fuco.id_funprse = fu.id_funprse
     WHERE fu.rut = @rut_person
       AND (@nro_solici_excluir IS NULL OR fu.nro_solici <> @nro_solici_excluir)
-      -- Solo se excluye Rechazada (4): esa solicitud ya no compromete nada y
-      -- debe liberar el mes y el cupo de cuotas del funcionario.
-      -- "Enviada a firma" (7) estaba excluida y NO corresponde: es un estado
-      -- activo, practicamente aprobado, al que solo le falta la firma. Al
-      -- ocultarla, una PDS a punto de quedar firmada era invisible para las
-      -- validaciones de tope mensual, mes bloqueado por centro de costo y
-      -- cupo de cuotas, permitiendo crear una segunda solicitud que choca
-      -- con ella. El borrador (5) no necesita excluirse aca: desde ahora no
-      -- escribe sg_fume (ver syncNormativeRequestStaffMonths), asi que no
-      -- aparece en este historial.
       AND soli.cod_estsol NOT IN (4)
     ORDER BY soli.f_solicit DESC, fu.id_funprse, fume.nro_cuota, fuc2.fec_comrea
 END

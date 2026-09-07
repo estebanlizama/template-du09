@@ -53,6 +53,26 @@ final. Es lo que pide S0-013 Q-B10 (*"si debe quedar registrado"*) y lo que
 evita romper las FK. El orden cronológico real se deriva de
 `ano_prop`/`mes_prop`.
 
+**Detalles de implementación** (no van comentados en el PA, por la regla de
+`reglas_estandarizacion_pa.md` §2):
+
+- Lleva `SET NOCOUNT ON`. Sin él, el puente JDBC devolvía
+  `010P4: se ha recibido e ignorado un parámetro de salida` al procesar los
+  conteos de filas de cada sentencia. La versión diferencial ejecuta bastantes
+  más sentencias que la anterior. Mismo criterio que `sg_fupsiSecgen01` y
+  `sg_fupsdSecgen01`, los otros PA de escritura con lógica multi-sentencia.
+- Las cuotas que salen se materializan en `#cuotas_salen` y el `DELETE` filtra
+  con `IN (SELECT ...)`. Una versión previa usaba columnas sin calificar dentro
+  de un `NOT EXISTS` en el `DELETE`, asumiendo que resolverían contra la tabla
+  destino; en ASE 12.5 resuelven contra el `FROM` de la subconsulta y fallaba
+  con `Invalid column name 'mes_prop'`.
+- Los tres `CREATE TABLE` van antes del `BEGIN TRAN`: ASE 12.5 no permite
+  `CREATE TABLE` dentro de una transacción multi-statement.
+- Todas las construcciones usadas tienen precedente funcionando en este
+  repositorio: `SET NOCOUNT ON` (3 PA), tabla temporal con `identity` (el
+  `#meses` original), `NOT EXISTS` (15 PA), `IN (SELECT ...)` (18 PA),
+  asignación con agregado (`sg_eta2sSecgen01`), `isnull` (30 PA).
+
 ### `entrega/sg_fupssSecgen17.sql` — quién reserva capacidad
 
 Este PA arma el historial de PDS previas del funcionario, que alimenta las
