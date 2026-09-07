@@ -18,13 +18,6 @@ GO
 
    Objetivo : Sincronizar de forma transaccional los meses de ejecucion aprobados de un funcionario.
 
-   La sincronizacion es DIFERENCIAL: solo borra los meses que salen de la propuesta y solo
-   inserta los que entran, conservando intactos los que siguen. Antes borraba e insertaba todo
-   en cada guardado, lo que rompia con error de integridad referencial (FK_sg_fuc2_sg_fume) en
-   cuanto alguna cuota tenia compensaciones registradas en sg_fuc2, dejando la solicitud
-   imposible de guardar. Ademas conserva el nro_cuota de los meses que ya existian, en vez de
-   renumerarlos en cada guardado.
-
    Creacion: ELA 2026/08/24
    Actualizacion: ELA 2026/09/07 - sincronizacion diferencial; conserva nro_cuota y no borra
                   meses con compensaciones o historial asociado
