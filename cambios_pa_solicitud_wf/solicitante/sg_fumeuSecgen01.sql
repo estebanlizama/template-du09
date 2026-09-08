@@ -198,7 +198,7 @@ BEGIN
           AND c.nro_cuota IN (SELECT nro_cuota FROM #cuotas_salen)
     )
     BEGIN
-        SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene compensaciones registradas' AS msg
+        SELECT 'Error: No se puede quitar un mes de ejecucion con compensacion ya realizada en el proceso de pago' AS msg
         RETURN
     END
 
@@ -209,7 +209,7 @@ BEGIN
           AND h.nro_cuota IN (SELECT nro_cuota FROM #cuotas_salen)
     )
     BEGIN
-        SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene historial de cuota' AS msg
+        SELECT 'Error: No se puede quitar un mes de ejecucion con historial de cuota del proceso de pago' AS msg
         RETURN
     END
 
