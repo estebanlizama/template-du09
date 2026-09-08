@@ -56,11 +56,20 @@ evita romper las FK. El orden cronológico real se deriva de
 **Detalles de implementación** (no van comentados en el PA, por la regla de
 `reglas_estandarizacion_pa.md` §2):
 
-- Lleva `SET NOCOUNT ON`. Sin él, el puente JDBC devolvía
-  `010P4: se ha recibido e ignorado un parámetro de salida` al procesar los
-  conteos de filas de cada sentencia. La versión diferencial ejecuta bastantes
-  más sentencias que la anterior. Mismo criterio que `sg_fupsiSecgen01` y
-  `sg_fupsdSecgen01`, los otros PA de escritura con lógica multi-sentencia.
+- Lleva `SET NOCOUNT ON`, mismo criterio que `sg_fupsiSecgen01` y
+  `sg_fupsdSecgen01`.
+- Los dos guards que detectan compensaciones/historial (`sg_fuc2`/`sg_fum2`)
+  corren **antes** de `BEGIN TRAN`, no dentro. Se probó primero dentro de la
+  transacción (con `ROLLBACK TRAN` condicional antes del `RETURN`) y el puente
+  Java (`ExecSQLCallable.java`, driver jConnect `jconn3.jar`) fallaba con
+  `010P4: se ha recibido e ignorado un parámetro de salida` al procesar esa
+  respuesta -- confirmado con DBeaver: el mismo `EXECUTE` devuelve el mensaje
+  de negocio correctamente fuera de la aplicación, así que el PA estaba bien y
+  el problema era el puente ante un `SELECT` seguido de `ROLLBACK TRAN` con la
+  transacción abierta. Los guards que ya existían antes de esta sesión (falta
+  de parámetro, etc.) nunca tuvieron este problema porque siempre retornan
+  antes de abrir transacción alguna -- se aplicó el mismo criterio a los
+  nuevos.
 - Las cuotas que salen se materializan en `#cuotas_salen` y el `DELETE` filtra
   con `IN (SELECT ...)`. Una versión previa usaba columnas sin calificar dentro
   de un `NOT EXISTS` en el `DELETE`, asumiendo que resolverían contra la tabla
@@ -72,6 +81,16 @@ evita romper las FK. El orden cronológico real se deriva de
   repositorio: `SET NOCOUNT ON` (3 PA), tabla temporal con `identity` (el
   `#meses` original), `NOT EXISTS` (15 PA), `IN (SELECT ...)` (18 PA),
   asignación con agregado (`sg_eta2sSecgen01`), `isnull` (30 PA).
+
+**Riesgo pendiente, sin resolver:** el PA aún tiene tres bloques heredados de
+la versión anterior (`Error al limpiar meses de ejecucion anteriores`, `Error
+al determinar los meses de ejecucion nuevos`, `Error al insertar meses de
+ejecucion`) con el mismo patrón `SELECT` + `ROLLBACK TRAN` condicional dentro
+de la transacción -- el mismo que causó el 010P4. No se tocaron porque nunca
+se reprodujo una falla real de `DELETE`/`INSERT` para confirmar si el puente
+también falla ahí, y quitar el `ROLLBACK` sin poder probarlo dejaría una
+transacción abierta sin cerrar ante un error real de esas sentencias. Si
+alguna vez se dispara uno de esos tres mensajes, revisar si también da 010P4.
 
 ### `entrega/sg_fupssSecgen17.sql` — quién reserva capacidad
 

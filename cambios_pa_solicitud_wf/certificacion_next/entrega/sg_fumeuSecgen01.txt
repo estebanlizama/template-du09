@@ -174,8 +174,6 @@ BEGIN
 
     DECLARE @max_cuota int
 
-    BEGIN TRAN
-
     INSERT INTO #cuotas_salen (nro_cuota)
     SELECT f.nro_cuota
     FROM secgen_db.dbo.sg_fume f
@@ -190,7 +188,6 @@ BEGIN
     IF @@error <> 0
     BEGIN
         SELECT 'Error al determinar los meses de ejecucion que se retiran' AS msg
-        IF @@transtate = 2 ROLLBACK TRAN
         RETURN
     END
 
@@ -202,7 +199,6 @@ BEGIN
     )
     BEGIN
         SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene compensaciones registradas' AS msg
-        IF @@transtate = 2 ROLLBACK TRAN
         RETURN
     END
 
@@ -214,9 +210,10 @@ BEGIN
     )
     BEGIN
         SELECT 'Error: No se puede quitar un mes de ejecucion que ya tiene historial de cuota' AS msg
-        IF @@transtate = 2 ROLLBACK TRAN
         RETURN
     END
+
+    BEGIN TRAN
 
     DELETE FROM secgen_db.dbo.sg_fume
     WHERE id_funprse = @id_funprse
