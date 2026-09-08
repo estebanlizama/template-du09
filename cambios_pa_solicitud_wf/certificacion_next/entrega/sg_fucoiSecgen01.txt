@@ -170,3 +170,4 @@ GO
 
 GRANT EXECUTE ON Analisis2.sg_fucoiSecgen01 TO UsuaVrac
 GO
+

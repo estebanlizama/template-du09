@@ -13,18 +13,54 @@ certificacion_next/
 
 ## Orden de ejecución
 
-1. `entrega/sg_fumeuSecgen01.sql`
-2. `entrega/sg_fupssSecgen17.sql`
-3. `datos_base/01_catalogo_tpps_fijo_variable.sql`
+1. `entrega/es_cfersSecgen01.sql`
+2. `entrega/sg_fucoiSecgen01.sql`
+3. `entrega/sg_fumeuSecgen01.sql`
+4. `entrega/sg_fupssSecgen17.sql`
+5. `datos_base/01_catalogo_tpps_fijo_variable.sql`
 
-Sin dependencias entre ellos: pueden ejecutarse en cualquier orden. No
-requieren cambios de estructura (ni `CREATE TABLE` ni `ALTER TABLE`).
+Instalar `es_cfersSecgen01` antes de liberar el backend/frontend que consulta
+el calendario. `es_cfersSecgen01` y `sg_fucoiSecgen01` dependen de la tabla
+existente `ufro_db.dbo.es_cfer`. Los demás PA no tienen una dependencia de
+ejecución entre sí. No se requieren cambios de estructura.
 
 `sg_fupssSecgen17` acompaña un cambio de backend (los borradores dejan de
 escribir `sg_fume`). Ver «Quién reserva capacidad» más abajo: ambos cambios se
 complementan y conviene liberarlos juntos.
 
 ## Contenido
+
+### `entrega/es_cfersSecgen01.sql` — calendario institucional DU288
+
+Recibe un rango inclusivo y retorna, en una sola consulta, `f_feriado`,
+`cod_tipfer` y `des_tipfer` para los tipos vigentes del requerimiento:
+
+- `1`: feriado nacional; bloquea ejecución y compensación.
+- `2`: feriado universitario; se muestra como información.
+- `3`: suspensión de actividades lectivas; se muestra como información.
+
+La descripción se resuelve dentro del PA mediante el catálogo fijo aprobado
+para los códigos `1`, `2` y `3`. No se consulta `es_tipfer`, porque esa tabla no
+existe o no está publicada bajo `ufro_db.dbo` en el ambiente objetivo. La
+cuenta/propietario que instale y ejecute los PA solo debe poder leer
+`ufro_db.dbo.es_cfer`. Este permiso no pudo validarse desde el ambiente local;
+debe confirmarlo DBA durante la instalación.
+
+El backend consume este PA mediante un endpoint autenticado y calcula las
+ocurrencias reales del horario semanal FUHO. En un feriado nacional las horas
+programadas se muestran como no ejecutadas y no forman parte del total efectivo
+esperado. Si el PA aún no existe, el backend solo admite el respaldo estático
+para el pequeño rango que este cubre (`2025-12-30` a `2026-01-02`); fuera de
+ese rango falla de forma segura para no afirmar que un año incompleto no tiene
+feriados.
+
+### `entrega/sg_fucoiSecgen01.sql` — defensa de feriado nacional
+
+Agrega una validación autoritativa antes del `INSERT`: rechaza un tramo de
+compensación si su segmento inicial, o el segmento posterior a medianoche con
+duración real, cae en una fecha de `es_cfer` tipo `1`. Los tipos `2` y `3` no
+bloquean. Esta defensa complementa la prevalidación del calendario en Vue y la
+validación LoopBack; no depende de que el cliente envíe correctamente la fecha.
 
 ### `entrega/sg_fumeuSecgen01.sql` — sincronización diferencial de meses
 
@@ -167,6 +203,17 @@ sin cobertura automatizada posible. Antes de producción:
 El caso 4 es el único que ejercita el guard, y requiere fabricar el dato: en un
 ambiente limpio no se alcanza. El caso 3 es el que importa para el flujo real —
 las compensaciones del solicitante viven en `sg_fuco` y no bloquean nada.
+
+El calendario institucional y la defensa FUCO también requieren smoke test en
+Sybase, porque no existe conexión local con `ufro_db`:
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 5 | Consultar un rango con tipos 1, 2 y 3 | Retorna fecha, código y descripción ordenados |
+| 6 | FUHO recurrente sobre fecha tipo 1 | La aplicación muestra la ocurrencia como no ejecutada y descuenta sus horas |
+| 7 | Insertar FUCO en fecha tipo 1 | Mensaje de negocio y ninguna fila insertada |
+| 8 | Insertar FUCO en fecha tipo 2 o 3 | Permitido si cumple las demás reglas |
+| 9 | Tramo FUCO nocturno cuyo segundo segmento toca tipo 1 | Rechazado; si termina exactamente a las 00:00 no crea un segmento vacío |
 
 ## No incluido — pendiente de decisión funcional
 
