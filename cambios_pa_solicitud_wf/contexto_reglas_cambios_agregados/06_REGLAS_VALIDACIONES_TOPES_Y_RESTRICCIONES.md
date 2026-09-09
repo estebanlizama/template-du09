@@ -18,10 +18,12 @@ flowchart LR
 
 | Tipo de Validación | Frontend (UI/UX) | Backend (Service/Controller) | Base de Datos (Stored Procedures) |
 | :--- | :---: | :---: | :---: |
-| **Tope 56 horas semanales** | Feedback visual en tiempo real | Validación de integridad DTO | Autoridad final con rollback |
-| **Traslapes horarios (mismo PDS)** | Bloqueo en editor semanal | Rechazo HTTP 400 Bad Request | Rechazo en `sg_fuhoiSecgen01` |
-| **Traslapes multi-PDS (mismo RUT)** | Advertencia tras consulta API | Verificación cruzada de vigencia | Validación cruzada en BD |
+| **Tope 56 horas semanales** | Feedback visual en tiempo real | Validación normativa autoritativa | El PA actual de inserción FUHO no repite este guard |
+| **Traslapes horarios (mismo PDS)** | Bloqueo en editor semanal | Rechazo HTTP 400 Bad Request | El PA actual de inserción FUHO no repite este guard |
+| **Traslapes multi-PDS (mismo RUT)** | Advertencia/bloqueo tras consulta API | Verificación cruzada de vigencia | Datos históricos se consultan en BD; el veredicto se arma en backend |
 | **Feriados Nacionales (Compensación)** | Días deshabilitados en rojo | Rechazo en endpoint compensación | Rechazo estricto en `sg_fucoiSecgen01` |
+| **Feriados Nacionales (Ejecución)** | Fecha y horas excluidas visibles en el día FUHO afectado | Recalcula horas efectivas desde calendario autoritativo | `es_cfersSecgen01` entrega la fecha/tipo |
+| **Disponibilidad del calendario** | Sin fuente confirmada no habilita fechas ni guardado | Falla cerrada ante PA ausente sin fallback completo u otro error | PA por rango; respaldo no sustituye cobertura desconocida |
 | **Consistencia de Cuotas y Total** | Recálculo dinámico en formulario | Validación matemática de suma | Validación en `sg_fumeuSecgen01` |
 | **Integridad de Cuotas Pagadas** | Deshabilitación de edición de mes | Control de flujo de estados | `ON DELETE RESTRICT` safeguard |
 | **Vigencia del Contrato (`f_inicio <= f_termino`)** | DatePicker restringido | Validación de rango temporal | Rechazo en guards iniciales |
@@ -35,13 +37,13 @@ flowchart LR
 * **Cálculo:** Se suman todas las horas semanales recurrentes (`sg_fuho`) del PDS actual más todas las horas de otras prestaciones y contratos vigentes en el mismo rango de fechas.
 * **Comportamiento:**
   - **Frontend:** La barra de métricas (`StaffExecutionScheduleSummary.vue`) cambia a color rojo (`bg-danger`) y muestra el mensaje *"Tope máximo alcanzado"*.
-  - **Backend / BD:** `sg_fuhoiSecgen01` aborta la transacción y retorna el mensaje:  
-    `"El prestador excede el limite maximo de 56 horas semanales permitidas"`.
+  - **Backend:** `validateStaffWorkload` rechaza el payload antes de sincronizar FUHO.
+  - **Brecha conocida de defensa:** `sg_fuhosiSecgen01` valida forma, día y cruce nocturno, pero no recalcula por sí solo el tope de 56 horas.
 
 ### 2.2. Restricciones de Bloque Horario Diario
-* **Duración Mínima:** 30 minutos por bloque.
-* **Límite Horario:** Ningún bloque puede iniciar antes de las `07:00` ni extenderse después de las `23:59`.
-* **Coherencia Temporal:** `hora_termino` debe ser estrictamente mayor que `hora_inicio`.
+* **Duración:** Inicio y término iguales son inválidos.
+* **Cruce nocturno:** Un término menor al inicio continúa al día siguiente; no se admite viernes a sábado.
+* **Días habilitados:** Solo lunes a viernes.
 
 ### 2.3. Control de Traslapes Horarios
 1. **Traslape Intra-Solicitud:** Dos bloques del mismo prestador para el mismo día de la semana no pueden solaparse.
@@ -58,7 +60,26 @@ flowchart LR
 
 ### 3.2. Feriados Nacionales vs Compensaciones
 * **Regla de Oro:** Está **estrictamente prohibido** asignar horas de compensación (`sg_fuco`) en días declarados como Feriados Nacionales o Feriados Legales Irrenunciables (`es_cfer.cod_tipfer = 1`).
-* **Feriados Universitarios y Recesos (`cod_tipfer` 2 y 3):** Se permite la asignación si la naturaleza del servicio lo amerita (ej: eventos especiales, labores de soporte continuo), pero el sistema emite una notificación de advertencia.
+* **Ejecución programada:** Si un FUHO recurrente cae en `cod_tipfer = 1`, esas horas no forman parte de las horas efectivas esperadas ni del total que debe compensarse. La interfaz muestra fecha exacta y duración excluida.
+* **Feriados Universitarios y Suspensiones (`cod_tipfer` 2 y 3):** Se permite ejecución y compensación. Su etiqueta es informativa y no modifica el cálculo.
+* **Cruce de medianoche:** Se validan todos los segmentos por fecha. Un tramo que comienza el día anterior también se rechaza si su segundo segmento cae en un feriado nacional.
+* **Defensa en profundidad:** El día se bloquea en frontend, se vuelve a validar en backend y `sg_fucoiSecgen01` conserva el rechazo final al insertar.
+
+### 3.3. Cambios de FUHO o Período con Compensaciones Existentes (ADR-013, `APLICADO`)
+
+| Invariante | Regla aplicada |
+| :--- | :--- |
+| Conservación | No mover, copiar, recortar ni borrar compensaciones automáticamente. |
+| Recálculo | Recalcular horas requeridas desde FUHO + período + feriados nacionales; luego comparar contra las compensadas. |
+| Diferencia | Tanto faltante como exceso bloquean la validación cuando la compensación es obligatoria. |
+| Fecha inválida | Mantener la fila visible como «requiere ajuste» y bloquear el guardado. |
+| Corrección | El usuario elimina explícitamente el tramo, ajusta su horario o restablece un período que lo habilite. |
+| Estado de edición | Cerrar la fecha seleccionada al cambiar FUHO, período o fuente de calendario. |
+| Sin FUHO | Si tampoco hay compensaciones, mostrar estado vacío. Si hay compensaciones, mostrarlas como excedidas/inválidas para permitir su retiro. |
+
+La implementación anterior purgaba algunas filas justo antes de «Guardar
+cambios». Ese comportamiento queda **deprecado**: ocultaba la discrepancia al
+validador y podía producir pérdida de datos sin una decisión explícita.
 
 ---
 
@@ -105,9 +126,11 @@ stateDiagram-v2
 
 | Escenario de Rechazo | Capa de Detección | Mensaje Semántico al Usuario |
 | :--- | :--- | :--- |
-| Exceso de 56 horas semanales | SP `sg_fuhoiSecgen01` | *"El prestador excede el límite máximo de 56 horas semanales permitidas."* |
-| Solapamiento de bloques en mismo día | SP `sg_fuhoiSecgen01` | *"El horario ingresado se superpone con otro bloque existente para este día."* |
-| Compensación en Feriado Nacional | SP `sg_fucoiSecgen01` | *"La fecha seleccionada coincide con un feriado nacional no ejecutable."* |
+| Exceso de 56 horas semanales | Backend `validateStaffWorkload` | *"El prestador excede el límite máximo de 56 horas semanales permitidas."* |
+| Solapamiento de bloques en mismo día | Frontend / Backend | *"El horario ingresado se superpone con otro bloque existente para este día."* |
+| Compensación en Feriado Nacional | SP `sg_fucoiSecgen01` | *"La fecha seleccionada corresponde a un feriado nacional y no admite compensación."* |
+| Calendario no disponible | Backend / Frontend | *"No fue posible consultar los feriados del período. No es posible validar el horario ni la compensación hasta resolverlo."* |
+| Compensación fuera del nuevo período | Frontend / Backend | *"Compensaciones que requieren ajuste / Fecha no habilitada."* |
 | Intento de borrar cuota con pagos | SP `sg_fumeuSecgen01` | *"No es posible modificar las cuotas porque existen registros de pago asociados."* |
 | Discrepancia en suma de cuotas fijas | Backend Service | *"La suma de las cuotas no coincide con el monto total de la prestación."* |
 | Fecha de término menor a inicio | Frontend / Backend | *"La fecha de término debe ser posterior a la fecha de inicio del servicio."* |
@@ -192,19 +215,43 @@ pero **no `cod_tpps`**; el modelo de respuesta tampoco lo mapea. Además
 Exponer `cod_tpps` en ese PA y en el modelo de respuesta es **requisito de
 cualquiera de las tres opciones** y no altera resultados por sí solo.
 
-### 8.3. Decisión pendiente
+### 8.3. Decisión adoptada: opción B
 
-Cómo debe aportar una PDS **Variable** al tope mensual concurrente:
+Se evaluaron tres reglas para la contribución de una PDS **Variable** al tope
+mensual concurrente:
 
 | Opción | Regla | Consecuencia |
 | :---: | :--- | :--- |
-| **A** | Como hoy: `total ÷ meses` | Deja pasar combinaciones que en un mes real pueden exceder |
-| **B** | `total ÷ tot_cuotas` | Coherente con T-01/T-06 («el tope se valida por cuota»). Viable desde ADR-008. Con cuotas = meses equivale a A |
-| **C** | Peor caso: `min(total, tope)` | Máximamente prudente; casi cualquier PDS concurrente a una Variable dispararía la alerta |
+| A | `total ÷ meses` | Deja pasar combinaciones que en un mes real pueden exceder |
+| **B** ✅ | `total ÷ tot_cuotas` | Coherente con T-01/T-06 («el tope se valida por cuota»). Viable desde ADR-008 |
+| C | Peor caso: `min(total, tope)` | Máximamente prudente; casi cualquier PDS concurrente a una Variable dispararía la alerta |
 
-**Recomendación: B.** No se aplica ninguna sin ratificación: es cálculo de pagos,
-y §9 de las reglas deja abiertos los puntos vecinos (**Q-C13/Q-C14** qué fecha
-determina el tope, **Q-C07** saldo intra-mes entre cuotas).
+**Implementación** (`monthlyContributionOf`, único punto de cálculo, usado por
+esta solicitud, por cada PDS previa y por `capNoteForRelated`):
+
+* **Variable con `tot_cuotas`** → `mto_total ÷ min(tot_cuotas, meses)`.
+  El `min` es una salvaguarda: dividir por más cuotas que meses daría una
+  contribución **menor** que el propio promedio, que es justo el error a evitar.
+  Las cuotas declarables ya vienen acotadas a los meses, así que el clamp solo
+  actúa ante un dato corrupto.
+* **Variable sin `tot_cuotas`** → cae al promedio (opción A). Es el caso de toda
+  PDS anterior a ADR-008, que las guardaba como `NULL`.
+* **Fijo** → `mto_total ÷ meses`, sin cambios. El reparto parejo está
+  comprometido (§5), así que el promedio *es* el monto real del mes.
+
+**El insumo es `mto_total`, nunca `sg_fups.monto_mes`.** Esa columna cambió de
+significado con ADR-011: leerla aquí dividiría dos veces en las filas nuevas. El
+control se calcula solo desde campos autoritativos — `mto_total`, `tot_cuotas` y
+el período — que es también lo que hace irrelevante la ambigüedad histórica de
+`monto_mes`.
+
+Cubierto por cinco pruebas de regresión en `textSimilarityUtil.test.cjs`
+(prefijo `ADR-010`), incluidas la del clamp y la que verifica que no se divida
+dos veces.
+
+> Los puntos vecinos siguen abiertos en §9 de las reglas de pago: **Q-C13/Q-C14**
+> (qué fecha determina el tope) y **Q-C07** (saldo intra-mes entre cuotas). Esta
+> decisión no los prejuzga.
 
 ### 8.4. Corrección pendiente sobre §4 de este documento
 
@@ -213,3 +260,81 @@ que no existe** en el esquema; la columna real es `sg_fume.mto_apagar`, hoy
 siempre `NULL`. La sección 4.2 vuelve a apoyarse en un «valor hora pactado» que
 tampoco existe en el modelo de datos (misma observación que §6.5 del documento
 01). Se deja marcado en vez de reescribirlo aquí.
+
+## 9. Factibilidad del reparto en cuotas (ADR-012, regla T-07)
+
+La validación de monto autorizado —tanto en frontend
+(`getPaymentMonthsValidation`) como en backend (`validateStaffAuthorizedAmount`)—
+usaba una sola fórmula para ambos tipos de monto:
+
+```
+ceil(mto_total ÷ mto_tope) ≤ tot_cuotas
+```
+
+Eso responde *«¿puedo partir el total en N pedazos que quepan bajo el tope?»*
+**asumiendo que el monto se corta donde sea**. En **Fijo** no se corta donde sea:
+cada mes lleva `mto_total ÷ meses` y una cuota agrupa **meses enteros** (C-03).
+
+### 9.1. El caso que se aprobaba y no se podía pagar
+
+| Dato | Valor |
+| :--- | :--- |
+| `mto_total` | $300.000 |
+| Ejecución | 3 meses |
+| `mto_tope` | $150.000 |
+| `tot_cuotas` | 2 |
+| Tipo | Fijo |
+
+`ceil(300.000 ÷ 150.000) = 2 ≤ 2` → **aprobada**. Pero cada mes lleva $100.000 y
+toda agrupación de 3 meses en 2 cuotas deja una cuota de 2 meses = **$200.000**,
+por sobre el tope. No existe partición válida.
+
+### 9.2. Regla aplicada
+
+* **Fijo** — se mide la **cuota más cargada**, que lleva `ceil(meses ÷ cuotas)`
+  meses:
+
+  ```
+  meses por cuota   = floor(mto_tope ÷ (mto_total ÷ meses))
+  cuotas necesarias = ceil(meses ÷ meses por cuota)
+  ```
+
+  Si `meses por cuota < 1`, un mes suelto ya excede el tope y **ninguna cantidad
+  de cuotas lo arregla** (bandera `exceedsWithAnyInstallmentCount`): hay que
+  bajar el monto o extender la ejecución. Ese caso también pasaba antes — una PDS
+  de 1 mes por $500.000 con tope $300.000 daba `ceil(500 ÷ 300) = 2 ≤ 2`.
+
+* **Variable** — sin cambios. El monto de cada mes se define al pagar y se
+  reparte libremente, así que `ceil(total ÷ tope) ≤ cuotas` es la condición justa.
+
+* **ANID** — exento, sin cambios.
+
+### 9.3. Efecto en el techo mostrado
+
+`getTopBrutoLabel` mostraba `tope × cuotas` para ambos tipos. En Fijo el techo
+real sale de la misma desigualdad:
+
+```
+bruto máximo (fijo) = mto_tope × meses ÷ ceil(meses ÷ cuotas)
+```
+
+Con 3 meses y 2 cuotas es `tope × 1,5`, no `tope × 2`. Mostrar `tope × 2`
+invitaba a pedir un monto que después no se podía pagar.
+
+### 9.4. Sentido del cambio
+
+La regla nueva **nunca es más permisiva**: solo cierra casos que antes pasaban y
+no debían. Difiere de la anterior únicamente cuando los meses no se reparten
+parejo entre las cuotas.
+
+| total | meses | tope | cuotas | Antes | Ahora (Fijo) |
+| ---: | ---: | ---: | ---: | :---: | :---: |
+| 300.000 | 3 | 150.000 | 2 | pasaba | **bloquea** |
+| 500.000 | 5 | 150.000 | 4 | pasaba | **bloquea** |
+| 500.000 | 1 | 300.000 | 2 | pasaba | **bloquea** |
+| 600.000 | 4 | 300.000 | 2 | pasaba | pasa |
+| 300.000 | 2 | 150.000 | 2 | pasaba | pasa |
+
+Cubierto por ocho pruebas en `paymentMonthsValidation.test.cjs`, incluidas las
+tres filas que cambian de veredicto, el caso Variable equivalente (que debe
+seguir pasando) y la exención ANID.

@@ -176,9 +176,7 @@ BEGIN
     -- Determinar el estado del funcionario (por defecto 1 para DU288 si es NULL)
     IF @cod_modprs = 2
     BEGIN
-        -- Compatibilidad con la BDD vigente: periodos y monto_mes son NOT NULL.
-        -- DU288 no los utiliza para crear cuotas; la fuente oficial es @mto_total.
-        -- tot_cuotas si se persiste: son las cuotas declaradas por el solicitante.
+        -- periodos y monto_mes son NOT NULL; la fuente oficial del monto es @mto_total.
         IF @periodos IS NULL
             SELECT @periodos = 1
         SELECT @meses_ejec = datediff(month, @f_inicio, @f_termino) + 1

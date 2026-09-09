@@ -200,6 +200,51 @@ valor por defecto que usa el formulario.
 problema era de lectura y se corrigió en el frontend, que no restauraba ninguno
 de los dos campos al reabrir un funcionario guardado.
 
+#### `monto_mes` pasa a contener el monto mensual real
+
+Antes, en DU288, `monto_mes` quedaba igual a `mto_total`: el PA lo defaulteaba a
+`@mto_total` y el cliente enviaba el total. La columna se llama «monto mes», se
+muestra en el comparador de prestaciones anteriores bajo la etiqueta **«Monto
+mensual»** y se usa para contrastar contra un tope mensual — pero contenía un
+total. El código lo compensaba dividiendo por los meses en dos lugares, con el
+defecto documentado en comentario.
+
+Ahora ambos PA **recalculan siempre** el valor en la rama DU288:
+
+```sql
+SELECT @meses_ejec = datediff(month, @f_inicio, @f_termino) + 1
+SELECT @monto_mes  = @mto_total / @meses_ejec
+```
+
+Decisiones detrás de esto:
+
+- **Se recalcula, no se defaultea.** Un `IF @monto_mes IS NULL` no habría servido:
+  el cliente sí manda un valor (el total), así que el PA lo habría persistido
+  igual. Al recalcular sin condición, el dato queda al día ante cualquier cambio
+  de fechas o de monto, y ningún cliente puede corromperlo.
+- **El de actualización usa las fechas persistidas cuando no llegan.** Allí
+  `@f_inicio`/`@f_termino` son opcionales (el guard es
+  `IS NOT NULL AND … >`), así que el cálculo cae a `isnull(@f_inicio, f_inicio)`
+  leyendo la fila existente.
+- **Sin rama por tipo.** En Fijo el valor es el monto comprometido; en Variable,
+  el promedio estimado. Quién es cuál lo dice `cod_tpps`, igual que `mto_total`
+  necesita `cod_moneda`.
+- **No hay caso sin datos.** Ambos PA ya exigen `@mto_total` y, en el de alta,
+  `@f_inicio`/`@f_termino` con orden validado, antes de llegar a la rama. El
+  divisor es siempre ≥ 1: no hace falta un respaldo de `0` ni una estimación
+  alternativa. `@mto_total` es `decimal(19,2)`, así que no hay truncamiento
+  entero.
+
+> **Regla:** `monto_mes` **no es autoritativo por sí solo; se lee junto a
+> `cod_tpps`.** El monto autorizado sigue siendo `mto_total`, y la validación de
+> tope sigue siendo `ceil(mto_total ÷ mto_tope) <= tot_cuotas` — que **no** mira
+> `monto_mes`. Es deliberado: un `monto_mes` incorrecto no puede abrir un agujero
+> en el control del tope.
+
+`periodos` se mantiene en `1`. El producto `periodos × monto_mes` **no** es el
+total en DU288 y ningún consumidor lo usa: la resolución toma `s.total`,
+`ResolutionDetail` corta con `if (isDu288) return 0`, y el PDF omite el campo.
+
 ### `datos_base/01_catalogo_tpps_fijo_variable.sql` — descripción de `sg_tpps`
 
 Cosmético, sin impacto funcional. DU288 usa `cod_tpps` como señal de tipo de
@@ -232,6 +277,10 @@ Para `sg_fupsiSecgen01` / `sg_fupsuSecgen01`, el ida y vuelta completo:
 | 2 | Reabrir el funcionario para editar | Muestra «Variable» y 2 cuotas, no los valores por defecto |
 | 3 | Guardar sin informar cuotas | `tot_cuotas = 1`, nunca `NULL` |
 | 4 | Solicitud no DU288 | `tot_cuotas` sigue llegando como `NULL` desde el backend; sin cambio de comportamiento |
+| 5 | Guardar $900.000 con ejecución oct–dic (3 meses) | `monto_mes = 300000`, `mto_total = 900000` |
+| 6 | Editar solo las fechas a oct–nov (2 meses) | `monto_mes` pasa a `450000` **solo**; el cliente no lo envía |
+| 7 | Ejecución de 1 mes | `monto_mes = mto_total`; ambas semánticas coinciden |
+| 8 | Solicitud no DU288 | `monto_mes` sigue siendo el que envía el cliente; el recálculo no aplica |
 
 `sg_fume.mto_apagar` debe permanecer `NULL` en todos los casos: la resolución no
 distribuye el monto por mes, eso lo define el pago. Verificado que ningún PA,

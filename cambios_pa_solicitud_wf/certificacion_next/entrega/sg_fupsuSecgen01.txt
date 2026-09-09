@@ -75,6 +75,7 @@ BEGIN
     DECLARE @rows_updated int
     DECLARE @err int
     DECLARE @current_estfun tinyint
+    DECLARE @meses_ejec int
 
     SELECT @cod_modprs = isnull(prse.cod_modprs, 1),
            @nro_solici = fu.nro_solici,
@@ -193,13 +194,19 @@ BEGIN
 
     IF @cod_modprs = 2
     BEGIN
-        -- Compatibilidad con la BDD vigente: periodos y monto_mes son NOT NULL.
-        -- DU288 no los utiliza para crear cuotas; la fuente oficial es @mto_total.
-        -- tot_cuotas si se persiste: son las cuotas declaradas por el solicitante.
+        -- periodos y monto_mes son NOT NULL; la fuente oficial del monto es @mto_total.
         IF @periodos IS NULL
             SELECT @periodos = 1
-        IF @monto_mes IS NULL
-            SELECT @monto_mes = @mto_total
+        SELECT @meses_ejec = datediff(
+                month,
+                isnull(@f_inicio, f_inicio),
+                isnull(@f_termino, f_termino)
+            ) + 1
+        FROM secgen_db.dbo.sg_fups
+        WHERE id_funprse = @id_funprse
+        IF @meses_ejec IS NULL OR @meses_ejec < 1
+            SELECT @meses_ejec = 1
+        SELECT @monto_mes = @mto_total / @meses_ejec
         IF @tot_cuotas IS NULL
             SELECT @tot_cuotas = 1
 

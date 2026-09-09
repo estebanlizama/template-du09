@@ -18,14 +18,15 @@ flowchart TD
     D -- No --> ERR2[BLOQUEO: Incompatibilidad de Cargo]
     D -- Sí --> E[Evaluación de Parentesco / Nepotismo]
     E --> F[Evaluación de Deuda / Rendiciones Pendientes]
-    F --> G[Definición de Jornada de Ejecución]
+    F --> G[Definición de Jornada de Ejecución FUHO]
+    G --> CAL[Calendario institucional confirmado]
     
-    G --> H{¿Ejecuta Dentro de Jornada Institucional?}
+    CAL --> H{¿Ejecuta Dentro de Jornada Institucional?}
     H -- Sí --> I[EXIGE COMPENSACIÓN HORARIA OBLIGATORIA]
     H -- No --> J[No requiere compensación]
     
     I --> K[Validación de Compensación FUCO]
-    K --> K1{¿Horas compensadas == Horas ejecutadas?}
+    K --> K1{¿Horas compensadas == Horas efectivas esperadas?}
     K --> K2{¿Compensación fuera de jornada ordinaria?}
     K --> K3{¿Sin feriados nacionales cod_tipfer=1?}
     K --> K4{¿Carga total <= 56 hrs/semana?}
@@ -80,17 +81,42 @@ graph TD
     B -- No --> D[Fuera de Jornada: Sin Compensación]
     
     C --> E[Exigencias de Compensación Válida]
-    E --> E1[1. Suma de horas compensadas EXACTA a las horas dentro de jornada]
-    E --> E2[2. Compensaciones deben ubicarse FUERA de 08:30-17:18 o en fin de semana]
+    E --> E1[1. Suma compensada EXACTA a horas efectivas esperadas]
+    E --> E2[2. Día hábil y horario FUERA de 08:30-17:18]
     E --> E3[3. Fecha de compensación NO puede ser Feriado Nacional cod_tipfer=1]
     E --> E4[4. Carga semanal contrato + PDS + compensación <= 56h]
 ```
 
 ### Criterios de "Compensación Válida" (`getCompensationWorkloadEvaluation`):
-1. **Balance de Horas (Cero Diferencia):** $\text{Horas Esperadas} = \text{Horas Compensadas}$. Si existe déficit o exceso, se marca error `totalMismatchErrors`.
-2. **No Superposición con Jornada Habitual:** Las horas comprometidas a compensar deben realizarse en horarios donde el funcionario no deba cumplir su jornada contractual regular (`outsideWorkdayErrors`).
+1. **Balance de Horas (Cero Diferencia):** $\text{Horas Efectivas Esperadas} = \text{Horas Compensadas}$. Las horas efectivas derivan del FUHO dentro del período y excluyen solamente sus ocurrencias en feriados nacionales. Si existe déficit o exceso, se marca error `totalMismatchErrors`.
+2. **Día y horario habilitados:** La compensación debe ubicarse de lunes a viernes, dentro del período, y en horarios donde el funcionario no deba cumplir su jornada contractual regular (`outsideWorkdayErrors`). Un cruce de medianoche valida también el día siguiente.
 3. **No Feriado Nacional:** La fecha de compensación se valida contra `es_cfer`. Si `cod_tipfer = 1`, se bloquea (`institutionalDateErrors`).
 4. **Respeto al Límite de 56 Horas:** En ninguna semana ISO el total acumulado puede superar las 56 horas cronológicas (`weeklyErrors`).
+
+### 3.1. Dependencias Reactivas y Propiedad del Dato (ADR-013, `APLICADO`)
+
+```mermaid
+flowchart LR
+    FUHO[sg_fuho vigente] --> CALC[Horas efectivas esperadas]
+    PER[Período de ejecución] --> CALC
+    CAL[Calendario confirmado] --> CALC
+    CALC --> BAL[Balance de compensación]
+    FUCO[sg_fuco declarado] --> BAL
+    BAL --> RES{Completo / Faltante / Exceso / Inválido}
+```
+
+* `sg_fuho`, período y calendario son **entradas del cálculo**; no son dueños de
+  las filas `sg_fuco`.
+* Cambiar una entrada invalida y vuelve a calcular `BAL`, pero no muta `FUCO`.
+* Una fila `sg_fuco` solo cambia mediante una acción explícita del usuario o la
+  sincronización autorizada al guardar.
+* Si una fecha deja de estar habilitada, la fila permanece trazable en edición y
+  lectura; el guardado se bloquea hasta corregirla.
+* La interfaz cierra cualquier fecha seleccionada al cambiar las dependencias,
+  evitando conservar un formulario con límites obsoletos.
+* El backend obtiene nuevamente el calendario antes de validar la carga del
+  funcionario. La interfaz no puede convertir un calendario pendiente en una
+  validación exitosa.
 
 ---
 
