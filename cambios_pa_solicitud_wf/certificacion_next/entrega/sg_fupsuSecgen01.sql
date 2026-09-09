@@ -75,7 +75,6 @@ BEGIN
     DECLARE @rows_updated int
     DECLARE @err int
     DECLARE @current_estfun tinyint
-    DECLARE @meses_ejec int
 
     SELECT @cod_modprs = isnull(prse.cod_modprs, 1),
            @nro_solici = fu.nro_solici,

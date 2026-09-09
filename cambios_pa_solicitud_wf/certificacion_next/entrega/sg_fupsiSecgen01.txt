@@ -72,7 +72,6 @@ BEGIN
 
     -- La modalidad persistida en sg_prse es la fuente de verdad.
     DECLARE @resolved_modprs tinyint
-    DECLARE @meses_ejec int
     SELECT @resolved_modprs = cod_modprs
     FROM secgen_db.dbo.sg_prse
     WHERE nro_solici = @nro_solici
@@ -181,10 +180,8 @@ BEGIN
         -- tot_cuotas si se persiste: son las cuotas declaradas por el solicitante.
         IF @periodos IS NULL
             SELECT @periodos = 1
-        SELECT @meses_ejec = datediff(month, @f_inicio, @f_termino) + 1
-        IF @meses_ejec IS NULL OR @meses_ejec < 1
-            SELECT @meses_ejec = 1
-        SELECT @monto_mes = @mto_total / @meses_ejec
+        IF @monto_mes IS NULL
+            SELECT @monto_mes = @mto_total
         IF @tot_cuotas IS NULL
             SELECT @tot_cuotas = 1
 

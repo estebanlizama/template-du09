@@ -49,6 +49,7 @@ BEGIN
         fu.mto_total,
         fu.monto_mes,
         fu.tot_cuotas,
+        fu.cod_tpps,
         fu.periodos,
         fu.cod_sitm,
         fu.itm_global,

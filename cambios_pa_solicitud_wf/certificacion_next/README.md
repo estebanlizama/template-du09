@@ -17,7 +17,9 @@ certificacion_next/
 2. `entrega/sg_fucoiSecgen01.sql`
 3. `entrega/sg_fumeuSecgen01.sql`
 4. `entrega/sg_fupssSecgen17.sql`
-5. `datos_base/01_catalogo_tpps_fijo_variable.sql`
+5. `entrega/sg_fupsiSecgen01.sql`
+6. `entrega/sg_fupsuSecgen01.sql`
+7. `datos_base/01_catalogo_tpps_fijo_variable.sql`
 
 Instalar `es_cfersSecgen01` antes de liberar el backend/frontend que consulta
 el calendario. `es_cfersSecgen01` y `sg_fucoiSecgen01` dependen de la tabla
@@ -180,6 +182,24 @@ Resultado:
 - **Enviada / en revisión / aprobada / firmada** → escribe y reserva
 - **Rechazada** → filtrada, libera
 
+### `entrega/sg_fupsiSecgen01.sql` y `entrega/sg_fupsuSecgen01.sql` — persistir `tot_cuotas`
+
+**Corrige un dato que se perdía en silencio.** Ambos PA recibían `@tot_cuotas`
+y lo descartaban antes de escribir: el de alta con `SELECT @tot_cuotas = NULL`,
+y el de actualización además con `tot_cuotas = NULL` fijo dentro del `UPDATE`.
+El solicitante elegía «Cuotas esperadas», el frontend y el backend lo enviaban
+correctamente, y el valor moría en el PA.
+
+Ese `NULL` venía de cuando DU288 no usaba el campo. Hoy `sg_fups.tot_cuotas`
+guarda las **cuotas declaradas por el solicitante**, que fijan el techo del
+bruto (tope × cuotas, S0-013 Q-C01/Q-C02). Ahora se persiste, con `1` por
+defecto si no llega — mismo criterio que `periodos` en esos mismos PA y mismo
+valor por defecto que usa el formulario.
+
+`cod_tpps` (1 = Fijo, 2 = Variable) **ya se persistía bien** en ambos PA; su
+problema era de lectura y se corrigió en el frontend, que no restauraba ninguno
+de los dos campos al reabrir un funcionario guardado.
+
 ### `datos_base/01_catalogo_tpps_fijo_variable.sql` — descripción de `sg_tpps`
 
 Cosmético, sin impacto funcional. DU288 usa `cod_tpps` como señal de tipo de
@@ -204,6 +224,19 @@ El caso 4 es el único que ejercita el guard, y requiere fabricar el dato: en un
 ambiente limpio no se alcanza. El caso 3 es el que importa para el flujo real —
 las compensaciones del solicitante viven en `sg_fuco` y no bloquean nada.
 
+Para `sg_fupsiSecgen01` / `sg_fupsuSecgen01`, el ida y vuelta completo:
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Guardar borrador con «Variable» y 2 cuotas | `sg_fups.cod_tpps = 2` y `tot_cuotas = 2` |
+| 2 | Reabrir el funcionario para editar | Muestra «Variable» y 2 cuotas, no los valores por defecto |
+| 3 | Guardar sin informar cuotas | `tot_cuotas = 1`, nunca `NULL` |
+| 4 | Solicitud no DU288 | `tot_cuotas` sigue llegando como `NULL` desde el backend; sin cambio de comportamiento |
+
+`sg_fume.mto_apagar` debe permanecer `NULL` en todos los casos: la resolución no
+distribuye el monto por mes, eso lo define el pago. Verificado que ningún PA,
+backend ni frontend lo escribe — solo se lee en `sg_fupssSecgen17`.
+
 El calendario institucional y la defensa FUCO también requieren smoke test en
 Sybase, porque no existe conexión local con `ufro_db`:
 
@@ -219,7 +252,6 @@ Sybase, porque no existe conexión local con `ufro_db`:
 
 | Cambio | Estado |
 |---|---|
-| Persistir `tot_cuotas` (quitar `SELECT @tot_cuotas = NULL` de `sg_fupsiSecgen01` y `sg_fupsuSecgen01`) | Esperando confirmación. Mientras no se haga, el campo "Cuotas esperadas" valida el techo en pantalla pero no queda guardado. |
 | Escribir `mto_apagar` por mes en `sg_fume` | Bloqueado por S0-013 **Q-B13** (qué par de columnas representa el mes de ejecución). Ver `reglas_pagos/01_reglas_montos_por_tipo_de_flujo.md`: la recomendación es no persistirlo en la resolución. |
 | Qué hacer con `sg_fum2` al quitar una cuota | Pregunta abierta para el diseño del flujo de pago. `sg_fum2` es historial de cambios, pero su FK a `sg_fume` es `ON DELETE RESTRICT`: si el pago escribe historial de una cuota que sigue en estado 1 o 3 (editable), esa cuota **ya no se podría quitar nunca**, y una tabla de auditoría pasaría a funcionar como candado. Las salidas son que el borrado de la cuota arrastre su historial, o que esa FK no sea `RESTRICT`. Hoy no se manifiesta porque ningún proceso escribe `sg_fum2`; el guard queda como red hasta que exista pagos. |
 
