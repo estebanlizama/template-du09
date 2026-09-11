@@ -92,6 +92,12 @@ END
 El calendario solo es confiable cuando el frontend recibe una fuente explícita
 (`database` o `fallback`) y no existe una carga o error pendiente.
 
+El rango consultado corresponde al período individual de actividad del
+funcionario cuando ambas fechas son válidas. Mientras ese período esté
+incompleto, se utiliza temporalmente el período general de la solicitud. Cada
+cambio de rango dispara una consulta forzada; las peticiones simultáneas del
+mismo rango se consolidan para evitar duplicados.
+
 | Estado | Comportamiento |
 | :--- | :--- |
 | Cargando | Se informa una sola vez antes de FUHO/compensación y las fechas no se habilitan. |

@@ -162,7 +162,8 @@ El código ya lo reconoce y lo compensa dividiendo por los meses de ejecución, 
 dos lugares (`monthlyCapAggregateCheck` y `capNoteForRelated`), donde está
 documentado como *«defecto de origen»*.
 
-**Decisión: no se corrige por ahora.** Tres restricciones lo impiden:
+**Decisión original: no se corrige por ahora** (superada, ver nota abajo). Tres
+restricciones lo impedían:
 
 1. `monto_mes` es `NOT NULL` — no puede quedar `NULL` para Variable.
 2. El invariante `periodos × monto_mes = mto_total` se cumple hoy por accidente
@@ -182,7 +183,29 @@ manejando las filas viejas.
 El lugar correcto para el monto por cuota es `sg_fume.mto_apagar`, bloqueado por
 **Q-B13**.
 
-## 8. Las validaciones no distinguen Fijo de Variable (ADR-010, `PROPUESTO`)
+> **Superada por ADR-011 (2026-09-09, `APLICADO`).** La decisión de arriba
+> resultó no sostenerse: ambos PA (`sg_fupsiSecgen01`, `sg_fupsuSecgen01`)
+> **sí** fueron corregidos para recalcular `monto_mes = mto_total ÷ meses_ejec`
+> siempre, ignorando lo que envíe el cliente (verificado en el SQL,
+> `sg_fupsiSecgen01.sql` línea ~185). Las tres restricciones técnicas
+> (`NOT NULL`, el invariante `periodos × monto_mes`, el redondeo) se resolvieron
+> aceptando que el invariante ya no se cumple exactamente para Variable — no
+> era el bloqueo que parecía. El punto que **sigue vigente** es la ambigüedad
+> histórica: toda fila guardada **antes** de este cambio sigue teniendo el
+> total en `monto_mes`, así que el código de validación (`monthlyContributionOf`)
+> nunca lee `monto_mes` como fuente — siempre `mto_total`, con `monto_mes`
+> solo como respaldo de último recurso para filas antiguas o incompletas.
+
+## 8. Las validaciones no distinguen Fijo de Variable (ADR-010, `APLICADO`)
+
+> Corrección (2026-09-09): esta sección quedó redactada como propuesta antes de
+> implementarse. La opción B de §8.3 ya está aplicada en **ambos** lados —
+> `monthlyContributionOf` en `textSimilarityUtil.js` (frontend, existía primero)
+> y su espejo homónimo en `service-provision-request-procedures.repository.ts`
+> (backend, `validateStaffAuthorizedAmount`, agregado al reconciliar este
+> documento) — con las cinco pruebas de regresión de frontend más tres nuevas
+> de backend, todas en verde. Coincide con el estado `APLICADO` que ya tenía
+> la fila de ADR-010 en el README.
 
 Verificado por búsqueda de `cod_tpps` en `utils/` y en el backend: aparece
 **únicamente** en `getFixedMonthAmount` (que es display) y en el mapeo de
@@ -334,6 +357,43 @@ parejo entre las cuotas.
 | 500.000 | 1 | 300.000 | 2 | pasaba | **bloquea** |
 | 600.000 | 4 | 300.000 | 2 | pasaba | pasa |
 | 300.000 | 2 | 150.000 | 2 | pasaba | pasa |
+
+## 10. Retiro de "disponible" del mensaje de tope mensual (ADR-014, `APLICADO`)
+
+En la tabla de incidencias del formulario del solicitante, cuando una PDS
+previa concurrente aportaba tanto a la Regla 3 (tope mensual) como a la Regla
+11 (mismo centro de costo + mismo mes, `cost_center_month_locked`), los dos
+mensajes se contradecían al leerse juntos:
+
+* **Tope mensual**: *"Tope mensual: $256.250, comprometido: $111.111,
+  disponible: $145.139."* — sugiere que todavía queda margen en dinero.
+* **Mes ya comprometido (mismo CC)**: *"El mes de Septiembre 2026 ya está
+  comprometido por la solicitud N° 205 en este mismo centro de costo. No se
+  puede volver a solicitar para el mismo funcionario y centro de costo en ese
+  período."* — dice que no queda ningún margen.
+
+La cifra "disponible" (`cap - concurrentTotal`) asume un fondo mensual que se
+va gastando y mantiene un saldo estable entre una cuota y la siguiente. Eso
+dejó de reflejar cómo se valida el tope desde ADR-010 opción B: **por cuota**,
+no como un saldo continuo. Lo que realmente limita una cuota nueva del mismo
+funcionario y centro de costo es el **cupo de cuotas** (Regla 11 /
+`getMaxDeclarableInstallments`, mensaje "Cupo de cuotas reducido a N"), no un
+monto en pesos que sobre en el mes.
+
+**Cambio aplicado**: se retira "disponible" de ambas variantes del mensaje de
+tope mensual (la del agregado de Regla 3 y la del aporte de una sola PDS de
+Regla 7, que ya no lo mostraba) — quedan unificadas en una sola función,
+`monthlyCapContribution` (`utils/services-provision/normative/messages.js`):
+*"Tope mensual: {cap}, comprometido: {comprometido}."* Usada por `formatCapMeta`
+(Regla 3) y `capNoteForRelated` (Regla 7) en `PdsDu288RequestForm.vue`. La
+función `monthlyCapAggregateCheck` sigue calculando `availableAmount`
+internamente (se usa en otras pantallas, ej. la nota agregada de DGDP arriba
+de la tabla de cuotas en `Du288StaffPreviousProvisionsModal.vue`, que no
+queda pareada con el mensaje de Regla 11 de la misma forma) — solo se retiró
+de este mensaje puntual, donde generaba la contradicción.
+
+Cubierto por `test:pds-rules` (sin regresiones; los mensajes no tienen prueba
+dedicada de texto exacto, se verifican por lectura).
 
 Cubierto por ocho pruebas en `paymentMonthsValidation.test.cjs`, incluidas las
 tres filas que cambian de veredicto, el caso Variable equivalente (que debe
