@@ -482,6 +482,110 @@ inmediato, requieren decisión):
   (vía `monthlyCapAggregateCheck`). Ahora usa el mismo cálculo en ambos
   lugares.
 
+### 7.10. Badge de evaluación consistente con la tabla; tipo de pago expuesto (ADR-023, `APLICADO`)
+
+**Caso real detectado por el usuario**: el badge superior "Evaluación:
+Sin coincidencias relevantes" se mostraba junto a una tabla cuya fila
+«Cuotas de pago registradas» decía, en rojo, «Sin cuotas de pago
+disponibles (3/2)» — el cupo anual (numeral 6) ya excedido. Contradicción
+real: el badge decía que no había nada relevante mientras la tabla, dos
+filas más abajo, mostraba algo que sí lo era.
+
+**Causa:** el cupo de meses (`monthDistributionCheck`) nunca formó parte del
+catálogo de `evaluatePdsConflictSeverity` (a propósito — Regla 4 fue
+retirada del veredicto automático del solicitante), así que
+`conflictRulesByRequestId`/`reviewTier` no tenían forma de saberlo.
+
+**Corrección:**
+
+* `reviewTier` ahora también sube a `advisable` («Revisión sugerida») cuando
+  la PDS previa contribuye al cupo anual ya excedido
+  (`contributesToExceededCupo`), aunque no dispare ninguna regla del
+  catálogo — sin esto, el badge de arriba podía seguir diciendo «Sin
+  coincidencias relevantes» con la tabla ya en rojo debajo.
+* La fila «Cuotas de pago registradas» pasa de rojo a **naranja**
+  (`warning`) cuando el cupo se excede: a diferencia de la Regla 11 (mes
+  bloqueado) o la Regla 3 (tope \$), el numeral 6 no es un rechazo
+  automático — el propio decreto permite que DGDP autorice una
+  distribución mayor de forma excepcional. Rojo sugería un bloqueo que no
+  existe (§5.4/§7.6 del estándar visual: rojo se reserva para lo que sí
+  rechaza).
+* El badge superior deja de anteponer la frase fija «Evaluación: » al
+  estado variable (§8.1 del estándar visual, ya vigente para otros badges
+  del módulo) — además de la inconsistencia, esa frase fija hacía que el
+  badge, de una sola línea sin salto interno, se saliera del modal con
+  estados largos como «Sin coincidencias relevantes». Mismo texto
+  (`reviewLabel`, sin prefijo) que ya usan las filas de la lista de abajo;
+  el prefijo queda como tooltip.
+* Se agrega la fila «Tipo de pago» (Fijo/Variable) a la tabla de
+  comparación — puramente informativa, sin badge de coincidencia (el tipo
+  de pago no es una señal de duplicidad), pero necesaria para leer
+  correctamente la fila «Monto mensual» justo debajo (en Fijo es un
+  reparto parejo real; en Variable es un techo declarado, el monto real de
+  cada mes se define al pagar).
+* **Los badges de la columna «Estado de coincidencia» ahora envuelven su
+  texto** (`white-space: normal`, ancho máximo 260px) en vez de forzar una
+  sola línea sin cortes — un badge como el de «Cuotas de pago registradas»
+  («Sin cuotas de pago disponibles (3/2) (1 pagado, 2 pendientes) —
+  registradas en N° 205, N° 206») empujaba el ancho de la columna, la
+  tabla y el modal entero. Crece en alto, no en ancho; los badges cortos
+  («Pagada», «Coincide») no cambian visualmente.
+* **Tercer color en «Estado de coincidencia»: naranja ya no es la única
+  señal.** El usuario notó que el mismo naranja (`warning`) se usaba para
+  «Estado» (solicitud en revisión/devuelta), «Evaluación» (revisión
+  sugerida) y «Estado de coincidencia» (p. ej. «Centro de costo:
+  Coincide») a la vez — visualmente indistinguibles aunque signifiquen
+  cosas distintas. Se fija una taxonomía de 3 colores para esta columna,
+  consistente con el resto de la vista (naranja sigue significando "requiere
+  el juicio de DGDP" en todos lados, sin tocar su significado ya establecido
+  en `requestStatusVariant`/`reviewTier`/pago):
+  - 🔴 `danger` = bloquea automáticamente al solicitante (horario,
+    compensación, mes bloqueado, tope mensual, horas semanales).
+  - 🟠 `warning` = requiere juicio/revisión de DGDP, no bloquea por sí solo
+    (cupo anual excedido).
+  - 🔵 `info` (nuevo aquí) = dato de clasificación, coincide pero no es en
+    sí mismo una señal evaluada (Centro de costo) — la señal que sí amerita
+    revisión (mismo centro de costo **y** mismo mes) ya tiene su propia
+    fila en rojo, «Mes comprometido» (Regla 11); repetir el naranja en
+    «Centro de costo» solo duplicaba esa alerta con otro nombre.
+  «Estado» (estado de la solicitud, `requestStatusVariant`) y «Evaluación»
+  no se tocan — conservan naranja para «en revisión»/«devuelta a
+  corrección»/«revisión sugerida», que ya era un uso razonable y separado
+  de esta columna; el problema no era el color en sí, sino que «Centro de
+  costo» lo duplicaba sin necesidad.
+
+**Ronda 2 (mismo día): se acota el naranja también en «Estado» y «Pago»,
+sin tocar ningún color usado fuera de este modal.** `requestStatusVariant`
+y `paymentVariant` son funciones locales de este archivo (verificado — cero
+consumidores en el resto del sistema), así que cambiar su paleta no afecta
+cómo se ven "en revisión" o "en gestión de pago" en ninguna otra vista:
+
+* `requestStatusVariant`: códigos `2`/`6` (en revisión / devuelta a
+  corrección) pasan de `warning` a **`primary`** (azul institucional). Es
+  el estado de *trámite* de la solicitud — distinto de si DGDP necesita
+  juzgar algo sobre *esta comparación puntual*, que es lo que ya significa
+  naranja en «Evaluación» y en «Estado de coincidencia».
+* `paymentVariant`: `PAGO_PARCIAL`/`EN_PAGO` pasan de `warning` a
+  **`primary`** — el estado de pago de una cuota no es, por sí solo, la
+  señal que amerita revisión (esa la sigue cubriendo «Evaluación» vía
+  `hasPaymentRisk`, que conserva naranja/rojo).
+* `installmentVariant` (pestaña «Cuotas y pagos», por cuota) **no se
+  toca**: aunque hoy solo lo consume este modal, es una función exportada
+  de un util compartido (`du288PreviousProvisionsFormatting.js`) con su
+  propia prueba (`installmentVariant({isInPayment:true}) === 'warning'`) —
+  se prefiere no divergir de un contrato ya probado y potencialmente
+  reutilizable.
+* `reviewVariant` (badge «Evaluación») **no se toca**: es la señal
+  ejecutiva principal («¿necesito revisar esto?») y debe seguir siendo la
+  más fuerte de la vista — el naranja ahí es el ancla de significado del
+  resto de los cambios, no algo a diluir.
+
+Resultado: dentro de este modal, naranja pasa a significar una sola cosa —
+"requiere el juicio de DGDP sobre esta comparación" (Evaluación, Estado de
+coincidencia) — mientras que "trámite en curso" (Estado de la solicitud,
+Pago en gestión) usa azul institucional (`primary`), sin invocar ningún
+color fuera de la paleta ya definida en `pds-du288.css`.
+
 ---
 
 ## 8. Ciclo de Vida Completo de un Funcionario en una Solicitud
