@@ -19,7 +19,9 @@ certificacion_next/
 4. `entrega/sg_fupssSecgen17.sql`
 5. `entrega/sg_fupsiSecgen01.sql`
 6. `entrega/sg_fupsuSecgen01.sql`
-7. `datos_base/01_catalogo_tpps_fijo_variable.sql`
+7. `entrega/sg_solidSecgen01.sql`
+8. `entrega/sg_fuhosiSecgen01.sql`
+9. `datos_base/01_catalogo_tpps_fijo_variable.sql`
 
 Instalar `es_cfersSecgen01` antes de liberar el backend/frontend que consulta
 el calendario. `es_cfersSecgen01` y `sg_fucoiSecgen01` dependen de la tabla
@@ -245,6 +247,120 @@ Decisiones detrás de esto:
 total en DU288 y ningún consumidor lo usa: la resolución toma `s.total`,
 `ResolutionDetail` corta con `if (isDu288) return 0`, y el PDF omite el campo.
 
+### `entrega/sg_solidSecgen01.sql` — eliminar una solicitud en borrador
+
+**PA nuevo.** Permite al solicitante eliminar su propia solicitud PDS mientras
+está en borrador y **nunca fue enviada a visación**. Hoy no existe ninguna vía
+para descartar un borrador: el único mutador de estado es `sg_soliuSecgen02` y
+`sg_esol` no tiene un estado «eliminada».
+
+Es borrado físico. Se eligió sobre el borrado lógico porque este último exige un
+`cod_estsol` nuevo en `sg_esol` y filtrarlo en todos los PA de listado, y porque
+un borrador que nunca salió del ámbito del solicitante no tiene trazabilidad que
+preservar hacia terceros. **La contrapartida es que se pierden las filas de
+`sg_hist` del borrador (acciones 29 y 15).** Debe confirmarse como aceptable
+antes de instalar.
+
+Orden de borrado, de hoja a raíz — todas las FK de `secgen_db` son
+`ON DELETE RESTRICT` y ASE 12.5 no soporta `ON DELETE CASCADE` declarativo:
+
+```text
+sg_fuco -> sg_fuho -> sg_his2 -> sg_fups -> sg_hist -> sg_prse -> sg_soli
+```
+
+El árbol y el orden se tomaron de `limpia_datos_pds_desarrollo.sql`, que ya
+resolvió el subárbol PDS completo. Este PA es el subconjunto correspondiente a
+una solicitud sin resolución ni flujo.
+
+#### `cod_estsol = 5` no acredita que la solicitud nunca se envió
+
+Es el punto de diseño del PA. La solicitud **se crea en estado 5 también cuando
+se envía**: el servicio fuerza `DRAFT`, persiste, sincroniza meses fuera de la
+transacción — obligado, porque `sg_fumeuSecgen01` crea tablas temporales y ASE
+no admite `CREATE TABLE` dentro de una transacción multi-statement — y recién
+una segunda transacción aplica el workflow y el estado definitivo. Si esa
+segunda transacción falla, **queda una solicitud en estado 5 con filas de
+`sg_fume` ya escritas**. El estado 6 (devuelta a corrección) tampoco sirve como
+frontera: esa sí pasó por visación.
+
+Por eso el PA exige evidencia acumulada e independiente, y cualquiera que falle
+aborta sin tocar datos:
+
+| # | Guarda | Código de rechazo |
+|---|---|---|
+| 1 | `cod_tipsol = 1` | `REQUEST_NOT_PDS` |
+| 2 | `rut_solici = @rut_usua` | `REQUEST_NOT_OWNED` |
+| 3 | `cod_estsol = 5` | `REQUEST_NOT_DRAFT` |
+| 4 | `ano_resolu` y `nro_resolu` nulos | `REQUEST_HAS_RESOLUTION` |
+| 5 | `sg_prse.cod_flusol` y `cod_etapa` nulos | `REQUEST_IN_WORKFLOW` |
+| 6 | Sin filas en `sg_apso` | `REQUEST_ALREADY_SUBMITTED` |
+| 7 | `sg_hist` solo con acciones 29 y 15 | `REQUEST_HAS_SUBMISSION_HISTORY` |
+| 8 | Sin filas en `sg_fume` | `REQUEST_HAS_INSTALLMENTS` |
+| 9 | Sin filas en `sg_apcc`, `sg_cicc`, `sg_drec`, `sg_inpc`, `sg_baco` | `REQUEST_HAS_EXTERNAL_DATA` |
+
+La guarda 5 es válida porque `sg_prseiSecgen01` y `sg_prseuSecgen01` no reciben
+`cod_flusol` ni `cod_etapa`: solo las escribe el avance de workflow. La guarda 8
+es la que atrapa exactamente la ventana rota descrita arriba. La 9 evita que una
+inconsistencia de datos se manifieste como un error de FK sin diagnóstico.
+
+Las guardas 3, 6 y 8 se reevalúan dentro de la transacción con `HOLDLOCK` sobre
+`sg_soli`, porque el titular puede enviar la solicitud desde otra sesión entre
+la validación y el borrado.
+
+`sg_his2` sí se borra, a diferencia de `sg_apso` y `sg_fume`. Guarda el cambio
+de `cod_estfun` que historiza `sg_fupsuSecgen01`, y ese cambio también ocurre al
+editar un borrador, así que su presencia no prueba visación; su FK a `sg_fups`
+es `RESTRICT` y bloquearía el borrado si quedara.
+
+El PA no usa tablas temporales. Cada `DELETE` filtra por `@nro_solici` o por una
+subconsulta no correlacionada sobre `sg_fups`, que nunca es la tabla destino de
+ese mismo `DELETE` — ASE 12.5 rechaza esa forma con error 107.
+
+Salida: contrato `status` / `code` / `msg`, el mismo de `sg_fupsdSecgen01`, más
+`nro_solici` y `funcionarios_eliminados`.
+
+`sg_parm.ultimo_id` **no** se retrocede: los PA calculan el próximo id desde
+`sg_parm`, así que el borrado deja huecos en la numeración pero nunca reutiliza
+un `nro_solici`. Es intencional.
+
+Sin dependencia de orden con el resto del paquete. Requiere que `sg_his2` exista
+en el ambiente; se instala con el paquete base DU288.
+
+**No requiere carga en el catálogo de permisos.** Se decidió no crear un
+privilegio propio: ningún endpoint PDS exige un slug en backend salvo
+`provision-request-approve`, y la autorización real del borrado es titularidad
+(`sg_prsesSecgen18`) más las guardas del PA. El botón del frontend reutiliza la
+misma condición que el de editar (`canEditPdsRequest`, que exige
+`provision-request-create` y ser el titular), restringida al estado 5. La
+consecuencia asumida es que quien puede editar un borrador puede eliminarlo.
+
+### `entrega/sg_fuhosiSecgen01.sql` — ejecución en sábado y domingo
+
+Implementa **ADR-024**. Dos cambios, ambos de validación; no toca la estructura
+ni los datos.
+
+1. `cod_diasem` pasa de aceptar 1–5 a aceptar **1–7**. `sg_fuho.cod_diasem` ya
+   es `tinyint` sin `CHECK`, así que no hay cambio de esquema ni migración: por
+   construcción no existen filas con 6 o 7.
+2. Se retira el rechazo del tramo iniciado el viernes que continúa el sábado.
+   Se admite **cualquier** cruce de medianoche, incluido domingo→lunes.
+
+La tabla guarda solo el día de inicio; cuando `hora_ter < hora_ini` el tramo
+continúa al día siguiente y el segundo segmento lo derivan backend y frontend al
+proyectar por fecha. Para un tramo iniciado el domingo ese segundo segmento se
+computa como día 1 (lunes): el día 8 se envuelve dentro de la semana.
+
+La ampliación es **solo de ejecución**. La compensación (`sg_fuco`,
+`sg_fucoiSecgen01`) no cambia y sigue admitiendo solo días hábiles: «compensación
+no aplica en fin de semana» significa que no se registran filas con fecha de
+sábado o domingo, no que las horas de fin de semana queden fuera del balance.
+Esas horas sí suman a la ejecución esperada y se compensan en día hábil.
+
+Sin dependencia de orden con el resto del paquete. **Requiere liberarse junto al
+backend y frontend correspondientes**: hoy ambos filtran los días 6 y 7, y el
+backend además los descarta al leer, de modo que instalar solo el PA no habilita
+nada visible. Ver [03 §6](../contexto_reglas_cambios_agregados/03_DECISIONES_HORARIO_EJECUCION_Y_COMPENSACIONES.md).
+
 ### `datos_base/01_catalogo_tpps_fijo_variable.sql` — descripción de `sg_tpps`
 
 Cosmético, sin impacto funcional. DU288 usa `cod_tpps` como señal de tipo de
@@ -297,11 +413,36 @@ Sybase, porque no existe conexión local con `ufro_db`:
 | 8 | Insertar FUCO en fecha tipo 2 o 3 | Permitido si cumple las demás reglas |
 | 9 | Tramo FUCO nocturno cuyo segundo segmento toca tipo 1 | Rechazado; si termina exactamente a las 00:00 no crea un segmento vacío |
 
+`sg_solidSecgen01` tampoco tiene cobertura automatizada posible. Es el PA más
+destructivo del paquete: cada caso negativo debe verificarse **contando filas
+antes y después**, porque un rechazo que igual borró algo es el peor resultado.
+
+| # | Caso | Resultado esperado |
+|---|---|---|
+| 1 | Borrador propio con funcionarios, horario y compensaciones | `status = 1`; `sg_soli`, `sg_prse`, `sg_fups`, `sg_fuho`, `sg_fuco`, `sg_his2` y `sg_hist` sin filas de esa solicitud |
+| 2 | Borrador de otro solicitante | `REQUEST_NOT_OWNED`; cero filas borradas |
+| 3 | Solicitud en estado 6 (devuelta a corrección) | `REQUEST_NOT_DRAFT`; cero filas borradas |
+| 4 | Solicitud enviada, en estado 1 o 2 | `REQUEST_NOT_DRAFT` |
+| 5 | Estado 5 con filas en `sg_apso` (fabricado) | `REQUEST_ALREADY_SUBMITTED`; cero filas borradas |
+| 6 | Estado 5 con filas en `sg_fume` (reproduce el envío a medio terminar) | `REQUEST_HAS_INSTALLMENTS`; cero filas borradas |
+| 7 | Estado 5 con `sg_hist` con acción 1 o 28 (fabricado) | `REQUEST_HAS_SUBMISSION_HISTORY` |
+| 8 | Estado 5 con `cod_flusol`/`cod_etapa` poblados (fabricado) | `REQUEST_IN_WORKFLOW` |
+| 9 | `nro_solici` inexistente | `REQUEST_NOT_FOUND` |
+| 10 | Solicitud que no es PDS (`cod_tipsol <> 1`) | `REQUEST_NOT_PDS`; la solicitud queda intacta |
+| 11 | Parámetros nulos | `INVALID_PARAMS` |
+| 12 | Envío concurrente: enviar la solicitud mientras el PA corre | O borra o rechaza; nunca deja la solicitud a medio borrar |
+| 13 | Borrador legacy (`cod_modprs = 1`, sin filas en `sg_hist`) | `status = 1`; las guardas 7 y 8 pasan de forma trivial |
+
+Los casos 5 a 8 exigen fabricar el dato: en un ambiente sano no se alcanzan por
+la aplicación. Van en el material de pruebas, nunca en `entrega/`.
+
 ## No incluido — pendiente de decisión funcional
 
 | Cambio | Estado |
 |---|---|
 | Escribir `mto_apagar` por mes en `sg_fume` | Bloqueado por S0-013 **Q-B13** (qué par de columnas representa el mes de ejecución). Ver `reglas_pagos/01_reglas_montos_por_tipo_de_flujo.md`: la recomendación es no persistirlo en la resolución. |
+| Borrado físico vs. estado «descartada» para el borrador | `sg_solidSecgen01` implementa borrado físico. Pierde las filas `sg_hist` del borrador. No hay acuerdo funcional registrado sobre eliminación de borradores: el acta del 2026-05-05 solo dice que correcciones y rechazos no requieren eliminar la solicitud original, que es otro caso. Confirmar antes de instalar. |
+| Quién puede eliminar un borrador | El PA exige `sg_soli.rut_solici = @rut_usua`: solo el titular. Si DGDP debe poder hacerlo, requiere un parámetro adicional y una regla de perfil, no un cambio del orden de borrado. |
 | Qué hacer con `sg_fum2` al quitar una cuota | Pregunta abierta para el diseño del flujo de pago. `sg_fum2` es historial de cambios, pero su FK a `sg_fume` es `ON DELETE RESTRICT`: si el pago escribe historial de una cuota que sigue en estado 1 o 3 (editable), esa cuota **ya no se podría quitar nunca**, y una tabla de auditoría pasaría a funcionar como candado. Las salidas son que el borrado de la cuota arrastre su historial, o que esa FK no sea `RESTRICT`. Hoy no se manifiesta porque ningún proceso escribe `sg_fum2`; el guard queda como red hasta que exista pagos. |
 
 ## Advertencia sobre datos existentes
