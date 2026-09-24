@@ -1,46 +1,136 @@
 # Reglas de Estandarización para Procedimientos Almacenados (PA)
 
-Este documento detalla las reglas de codificación, formato y seguridad que deben seguir todos los Procedimientos Almacenados (PA) del sistema, específicamente enfocadas en la limpieza del código y la seguridad de la información.
+Este documento detalla las reglas de codificación, formato, arquitectura y seguridad que deben seguir todos los Procedimientos Almacenados (PA) del sistema, alineadas con los manuales institucionales de la DINFO (DINFO-CSG-DEF-00003 / DINFO-CSG-DEF-00004) y los estándares del proyecto SG-Solicitudes / DU288.
 
-## 1. Bloque de Comentarios Superior (Cabecera)
+---
 
-Todo Procedimiento Almacenado debe comenzar con un bloque de comentarios estrictamente formateado.
+## 1. Estructura Canónica de 5 Bloques
+
+Todo script de Procedimiento Almacenado debe seguir estrictamente la secuencia de 5 bloques:
+
+```sql
+use secgen_db
+go
+
+if exists (select 1 from sysobjects a, sysusers b
+              where a.uid  = b.uid
+                and a.type = 'P'
+                and b.name = 'Analisis2'
+                and a.name = 'sg_soliuSecgen01')
+   drop procedure Analisis2.sg_soliuSecgen01
+
+go
+
+/* Procedimiento : sg_soliuSecgen01
+
+   Entrada :
+   @nro_solici          -> Numero de solicitud. (Opcional)
+   @cod_estsol          -> Codigo de estado de solicitud. (Opcional)
+   @rut_solici          -> RUT del solicitante. (Opcional)
+
+   Objetivo : Actualizar estado de la solicitud
+
+   Creacion: ELA 2026/08/24
+   Actualizacion: Sin registro
+*/
+create procedure Analisis2.sg_soliuSecgen01
+    @nro_solici int = null,
+    @cod_estsol tinyint = null,
+    @rut_solici char(9) = null
+as
+
+if @nro_solici is null
+begin
+    select 'Falta campo Numero Solicitud' as msg
+    return
+end
+
+begin tran
+
+update sg_soli
+   set cod_estsol = @cod_estsol
+ where nro_solici = @nro_solici
+   and rut_solici = @rut_solici
+
+if @@transtate = 2 or @@transtate = 3
+begin
+    select 'Error al actualizar informacion de solicitud. Se aborta el procedimiento' as msg
+    if @@transtate = 2
+        rollback tran
+    return
+end
+
+commit tran
+go
+
+grant execute on Analisis2.sg_soliuSecgen01 to UsuaVrac
+go
+```
+
+---
+
+## 2. Reglas de Formato y Sintaxis SQL
+
+### 2.1. Uso Exclusivo de Minúsculas en SQL y Tipos
+* **Palabras Clave en Minúsculas:** Todas las sentencias y cláusulas SQL deben escribirse en minúsculas (`select`, `from`, `where`, `insert into`, `update`, `delete`, `declare`, `set`, `as`, `and`, `or`, `not`, `if`, `exists`, `begin`, `end`, `return`, `create procedure`, `drop procedure`, `grant execute on`, `order by`, `group by`, `having`, `left join`, `inner join`, `begin tran`, `commit tran`, `rollback tran`, etc.).
+* **Tipos de Datos en Minúsculas:** `int`, `smallint`, `tinyint`, `varchar(...)`, `char(...)`, `datetime`, `numeric(...)`, `decimal(...)`, `float`, `money`, `bit`, `text`.
+* **Funciones del Sistema en Minúsculas:** `getdate()`, `charindex(...)`, `substring(...)`, `convert(...)`, `count(...)`, `sum(...)`, `max(...)`, `min(...)`, `object_id(...)`, `isnull(...)`, `rtrim(...)`, `ltrim(...)`.
+* **Tablas Temporales:** En minúsculas (ej. `create table #meses (...)`, `drop table #meses`).
+* **Literales de Texto:** Los textos entre comillas simples conservan su formato original (ej. `'OK'`, `'S'`, `'N'`, `'Falta campo...'`).
+
+### 2.2. Saltos de Línea y Espaciado de Cabecera
+* **Cierre de Comentario `*/` y `create procedure`:** No debe haber líneas en blanco entre el cierre `*/` y el inicio de `create procedure Analisis2.<nombre_pa>`.
+* **Identación de Parámetros:** 4 espacios por parámetro, declarando cada parámetro en su propia línea.
+* **Ubicación de `as`:** La palabra `as` va en su propia línea después del último parámetro, seguida de una línea en blanco antes de comenzar la lógica.
+* **Prohibición de Líneas Colapsadas:** Queda prohibido agrupar en una sola línea la cabecera, parámetros y primeras sentencias.
+
+---
+
+## 3. Bloque de Comentarios Superior (Cabecera)
 
 **Estructura Obligatoria:**
 ```sql
 /* Procedimiento : [nombre_del_pa]
 
    Entrada :
-   @[parametro_1]       -> [Descripción sin tildes ni caracteres especiales]. (Obligatorio/Opcional)
-   @[parametro_2]       -> [Descripción sin tildes ni caracteres especiales]. (Obligatorio/Opcional)
+   @[parametro_1]       -> [Descripcion sin tildes ni caracteres especiales]. (Obligatorio/Opcional)
+   @[parametro_2]       -> [Descripcion sin tildes ni caracteres especiales]. (Obligatorio/Opcional)
 
-   Objetivo : [Descripción de 1 o 2 líneas sobre lo que hace el PA]
+   Objetivo : [Descripcion de 1 o 2 lineas sobre lo que hace el PA]
 
    Creacion: [Iniciales] [YYYY/MM/DD]
-   Actualizacion: [Iniciales] [YYYY/MM/DD] (o "Sin registro")
+   Actualizacion: Sin registro
 */
 ```
 
 ### Reglas Específicas de la Cabecera:
-- **Sin Caracteres Especiales:** Para evitar problemas de codificación (`latin1` vs `UTF-8`) entre el motor de Sybase y los distintos editores de texto en Windows, **está estrictamente prohibido usar tildes o la letra "ñ"** en las descripciones de los parámetros. 
-  - *Correcto:* `Numero`, `Parametro`, `Ano`, `Codigo`, `Prestacion`.
-  - *Incorrecto:* `Número`, `Parámetro`, `Año`, `Código`, `Prestación`.
-- **Sección de Entrada Dinámica:** Si un PA no recibe parámetros, la sección `Entrada :` debe eliminarse por completo. No debe dejarse la etiqueta vacía ni decir "Sin parámetros".
-- **Limpieza del Objetivo:** El campo `Objetivo` debe ser un resumen limpio. **NO** se deben dejar manuales de uso, descripciones de parámetros duplicados ni notas de desarrollador colgando dentro de este bloque. Solo se permite mantener un sub-bloque `TODO :` si hay funcionalidad pendiente explícita.
-- **Sincronización:** Todos los parámetros listados en la cabecera deben existir exactamente igual en la declaración `CREATE PROCEDURE`, indicando claramente con `(Opcional)` si poseen `= NULL` o `(Obligatorio)` si no lo poseen.
+* **Sin Caracteres Especiales (ASCII 7-bit):** Para evitar problemas de codificación (`latin1` vs `UTF-8`) con el cliente Sybase y Windows XP/Server, **está estrictamente prohibido usar tildes o la letra "ñ"** en las descripciones.
+  * *Correcto:* `Numero`, `Parametro`, `Ano`, `Codigo`, `Prestacion`.
+  * *Incorrecto:* `Número`, `Parámetro`, `Año`, `Código`, `Prestación`.
+* **Línea Base Inicial:** Para la entrega inicial del repositorio, el campo de actualización debe registrarse como `Actualizacion: Sin registro`.
+* **Sección de Entrada Dinámica:** Si un PA no recibe parámetros, la sección `Entrada :` se omite.
+* **Limpieza del Objetivo:** Debe ser conciso (1 a 2 líneas). No duplicar documentación de parámetros ni manuales dentro del objetivo.
 
-## 2. Limpieza de Código Residual
+---
 
-- **Cero 'EXECUTE' Comentados:** No deben existir bloques de prueba tipo `/* EXECUTE ... */` o `EXEC secgen_db...` comentados al final del archivo. Las pruebas deben ejecutarse en la consola SQL y no quedar registradas en el código fuente del procedimiento base.
-- **Cero Comentarios Explicativos en el Cuerpo:** **No** se agregan comentarios `--` dentro del cuerpo del PA para explicar qué hace una sentencia, por qué se eligió una construcción o qué error se estaba corrigiendo. El código debe leerse solo. Todo lo que necesite explicación va en el `Objetivo` de la cabecera si describe *qué hace* el PA, o en el README del paquete de certificación correspondiente si describe *por qué cambió*.
-  - *Incorrecto:* `-- Sin NOCOUNT el puente JDBC devuelve 010P4 al procesar los conteos`
-  - *Correcto:* la sentencia sola; el motivo se documenta en el README de la entrega.
+## 4. Codificación de Archivos y Saltos de Línea
 
-## 3. Seguridad de Datos (OWASP) y Manejo de Errores
+* **Extensión:** `.txt`
+* **Codificación:** ASCII puro de 7 bits (0 bytes $> 127$).
+* **Fin de Línea (EOL):** Windows CRLF (`\r\n`).
 
-Los Procedimientos Almacenados interactúan directamente con el Frontend a través de la capa de servicios. Por motivos de seguridad:
+---
 
-- **Ocultamiento de Infraestructura:** Queda **estrictamente prohibido** devolver nombres de tablas, columnas internas, nombres de bases de datos o detalles de arquitectura en los mensajes de retorno (`msg` o `mensaje`) enviados por el PA.
-  - *Incorrecto:* `SELECT 'El flujo no existe en la tabla sg_tfls' AS mensaje`
-  - *Correcto:* `SELECT 'El flujo no existe o no está configurado' AS mensaje`
-- **Mensajes Orientados al Usuario:** Los mensajes de error de validaciones de negocio deben estar redactados pensando en que podrían ser expuestos al usuario final o al log de auditoría sin exponer la estructura de la BDD.
+## 5. Limpieza de Código Residual
+
+* **Cero 'EXECUTE' Comentados:** No deben existir bloques de prueba comentados (`/* execute ... */`) al final del archivo.
+* **Cero Comentarios Informales en el Cuerpo:** No incluir notas de desarrollo (`ADR-xxx`, `DU288`, `backend`, `TODO`). El código SQL debe ser auto-explicativo.
+
+---
+
+## 6. Seguridad de Datos (OWASP) y Manejo de Errores
+
+* **Ocultamiento de Infraestructura:** Queda prohibido devolver nombres de tablas o detalles internos en los mensajes (`msg` o `mensaje`) enviados al frontend.
+  * *Incorrecto:* `select 'El flujo no existe en la tabla sg_tfls' as msg`
+  * *Correcto:* `select 'El flujo no existe o no se encuentra configurado' as msg`
+* **Contrato de Retorno:** Todo PA de mutación (`insert`/`update`/`delete`) o validación debe mantener consistencia con los contratos esperados por la capa de servicios backend (`select 1 as status, 'OK' as msg` o mensajes descriptivos de error).
