@@ -89,7 +89,7 @@ BEGIN
 
     IF @id_funprse IS NULL
     BEGIN
-        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Id Funcionarios prestación de servicios' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo Id Funcionarios prestaci3n de servicios' AS msg
         RETURN
     END
 
@@ -159,10 +159,9 @@ BEGIN
         RETURN
     END
 
-    -- Validar fechas de inicio y término
     IF @f_inicio IS NOT NULL AND @f_termino IS NOT NULL AND @f_inicio > @f_termino
     BEGIN
-        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
+        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de trmino' AS msg
         RETURN
     END
 
@@ -182,10 +181,9 @@ BEGIN
 
     IF @cod_modprs = 2 AND @cod_estfun IS NOT NULL
     BEGIN
-        -- Validar que el estado exista en sg_efun
         IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
         BEGIN
-            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el catálogo de estados' AS msg
+            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el catlogo de estados' AS msg
             IF @@transtate <> 0
                 ROLLBACK TRAN
             RETURN
@@ -194,7 +192,6 @@ BEGIN
 
     IF @cod_modprs = 2
     BEGIN
-        -- periodos y monto_mes son NOT NULL; la fuente oficial del monto es @mto_total.
         IF @periodos IS NULL
             SELECT @periodos = 1
         SELECT @meses_ejec = datediff(
@@ -210,7 +207,6 @@ BEGIN
         IF @tot_cuotas IS NULL
             SELECT @tot_cuotas = 1
 
-        -- Flujo DU288: actualiza todos los campos nuevos
         UPDATE sg_fups
         SET
             rut = @rut,
@@ -247,7 +243,6 @@ BEGIN
             RETURN
         END
 
-        -- Historizar el cambio de estado si corresponde
         IF @cod_estfun IS NOT NULL AND (isnull(@current_estfun, 0) <> @cod_estfun)
         BEGIN
             INSERT INTO sg_his2 (
@@ -273,8 +268,7 @@ BEGIN
             END
         END
 
-
-        UPDATE secgen_db.dbo.sg_prse
+UPDATE secgen_db.dbo.sg_prse
         SET actividad = @motivo
         WHERE nro_solici = @nro_solici
 
@@ -288,8 +282,6 @@ BEGIN
     END
     ELSE
     BEGIN
-        -- Flujo Legacy: actualiza unicamente los campos historicos.
-        -- Las columnas DU288 quedan fuera del SET.
         UPDATE sg_fups
         SET
             rut = @rut,
@@ -320,7 +312,7 @@ BEGIN
 
     IF @rows_updated = 0
     BEGIN
-        SELECT 0 AS status, 'STAFF_NOT_UPDATED' AS code, 'No se actualizó ningún registro o no hubo cambios' AS msg
+        SELECT 0 AS status, 'STAFF_NOT_UPDATED' AS code, 'No se actualiz3 ningon registro o no hubo cambios' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN
@@ -328,7 +320,7 @@ BEGIN
 
     IF @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 0 AS status, 'STAFF_UPDATE_ERROR' AS code, 'Error al actualizar información de validación de proceso. Se aborta el procedimiento' AS msg
+        SELECT 0 AS status, 'STAFF_UPDATE_ERROR' AS code, 'Error al actualizar informaci3n de validaci3n de proceso. Se aborta el procedimiento' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN

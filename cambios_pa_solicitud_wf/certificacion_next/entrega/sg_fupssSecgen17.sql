@@ -75,8 +75,7 @@ BEGIN
         rslc.num_resolu AS num_resolu_ext,
         rslc.id_docum,
 
-        /* Cuota y estado financiero. LEFT JOIN conserva PDS sin cuotas. */
-        fume.nro_cuota,
+fume.nro_cuota,
         fume.ano_prop,
         fume.mes_prop,
         fume.cod_estcuo,
@@ -97,13 +96,11 @@ BEGIN
         fume.ano_pago,
         fume.mes_pago,
 
-        /* Compensacion efectiva vinculada a la cuota pagada/en pago. */
-        fuc2.fec_comrea,
+fuc2.fec_comrea,
         fuc2.hora_ini AS hora_ini_comrea,
         fuc2.hora_ter AS hora_ter_comrea,
 
-        /* Resumen de lo originalmente registrado para la PDS. */
-        isnull(fuho.cant_horarios, 0) AS cant_horarios,
+isnull(fuho.cant_horarios, 0) AS cant_horarios,
         fuho.hora_ini_min AS hora_ejec_ini,
         fuho.hora_ter_max AS hora_ejec_ter,
         isnull(fuco.cant_compensa, 0) AS cant_compensa_plan,

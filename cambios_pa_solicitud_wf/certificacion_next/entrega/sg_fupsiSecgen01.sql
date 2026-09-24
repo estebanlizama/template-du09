@@ -70,7 +70,6 @@ AS
 BEGIN
     SET NOCOUNT ON
 
-    -- La modalidad persistida en sg_prse es la fuente de verdad.
     DECLARE @resolved_modprs tinyint
     DECLARE @meses_ejec int
     SELECT @resolved_modprs = cod_modprs
@@ -162,21 +161,18 @@ BEGIN
 
     IF @f_termino IS NULL
     BEGIN
-        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de término' AS msg
+        SELECT 0 AS status, 'INVALID_STAFF' AS code, 'Falta campo fecha de trmino' AS msg
         RETURN
     END
 
-    -- Validar fechas de inicio y término
     IF @f_inicio > @f_termino
     BEGIN
-        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de término' AS msg
+        SELECT 0 AS status, 'INVALID_PERIOD' AS code, 'La fecha de inicio no puede ser posterior a la fecha de trmino' AS msg
         RETURN
     END
 
-    -- Determinar el estado del funcionario (por defecto 1 para DU288 si es NULL)
     IF @cod_modprs = 2
     BEGIN
-        -- periodos y monto_mes son NOT NULL; la fuente oficial del monto es @mto_total.
         IF @periodos IS NULL
             SELECT @periodos = 1
         SELECT @meses_ejec = datediff(month, @f_inicio, @f_termino) + 1
@@ -189,17 +185,15 @@ BEGIN
         IF @cod_estfun IS NULL
             SELECT @cod_estfun = 1
 
-        -- Validar que el estado exista en sg_efun
         IF NOT EXISTS (SELECT 1 FROM secgen_db.dbo.sg_efun WHERE cod_estfun = @cod_estfun)
         BEGIN
-            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el catálogo de estados' AS msg
+            SELECT 0 AS status, 'INVALID_STAFF_STATUS' AS code, 'El estado especificado no existe en el catlogo de estados' AS msg
             RETURN
         END
 
     END
     ELSE
     BEGIN
-        -- Para legacy, no debe guardarse estado
         SELECT @cod_estfun = NULL
     END
 
@@ -207,7 +201,6 @@ BEGIN
 
     BEGIN TRAN
 
-    -- Serializa la comprobacion y asignacion sin consumir el correlativo al rechazar.
     SELECT @id_funprse = max(ultimo_id)
     FROM secgen_db..sg_parm HOLDLOCK
     WHERE nom_tabla LIKE 'sg_fups'
@@ -239,10 +232,8 @@ BEGIN
         RETURN
     END
 
-    -- Bifurcación según la modalidad
     IF @cod_modprs = 2
     BEGIN
-        -- Flujo DU288: incluye todos los campos nuevos
         INSERT INTO sg_fups (
             id_funprse,
             nro_solici,
@@ -295,7 +286,6 @@ BEGIN
     END
     ELSE
     BEGIN
-        -- Flujo Legacy: mantiene estructura original de inserción
         INSERT INTO sg_fups (
             id_funprse,
             nro_solici,
@@ -331,7 +321,7 @@ BEGIN
 
     IF @@error <> 0 OR @@transtate = 2 OR @@transtate = 3
     BEGIN
-        SELECT 0 AS status, 'STAFF_INSERT_ERROR' AS code, 'Error al actualizar información de validación de proceso. Se aborta el procedimiento' AS msg
+        SELECT 0 AS status, 'STAFF_INSERT_ERROR' AS code, 'Error al actualizar informaci3n de validaci3n de proceso. Se aborta el procedimiento' AS msg
         IF @@transtate <> 0
             ROLLBACK TRAN
         RETURN

@@ -67,7 +67,7 @@ BEGIN
           AND cod_estcuo NOT IN (1, 3)
     )
     BEGIN
-        SELECT 'Error: No se pueden modificar las cuotas porque están en proceso de visación o pago' AS msg
+        SELECT 'Error: No se pueden modificar las cuotas porque estn en proceso de visaci3n o pago' AS msg
         RETURN
     END
 

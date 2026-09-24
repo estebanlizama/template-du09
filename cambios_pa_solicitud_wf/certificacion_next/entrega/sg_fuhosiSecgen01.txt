@@ -22,10 +22,7 @@ GO
               servicios.
 
    Creacion: ELA 2026/08/24
-   Actualizacion: 2026/09/07 - Soporte de tramos que terminan al dia siguiente.
-                  2026/09/21 - ADR-024: se habilitan sabado (6) y domingo (7)
-                  como dias de ejecucion y se permite cualquier cruce de
-                  medianoche, incluido domingo a lunes.
+   Actualizacion: ELA 2026/09/21 - Habilita sabado y domingo y soporte de tramos que cruzan medianoche
 */
 CREATE PROCEDURE Analisis2.sg_fuhosiSecgen01
     @id_funprse int,
@@ -52,11 +49,6 @@ BEGIN
         SELECT 'Error: la hora de inicio y termino deben ser distintas' AS msg
         RETURN
     END
-
-    /* Si hora_ter es menor, el tramo termina al dia siguiente. ADR-024 admite
-       cualquier cruce de medianoche; el tramo iniciado el domingo continua el
-       lunes. sg_fuho guarda solo el dia de inicio, asi que el segundo segmento
-       lo derivan backend y frontend al proyectar por fecha. */
 
     INSERT INTO secgen_db.dbo.sg_fuho (
         id_funprse,

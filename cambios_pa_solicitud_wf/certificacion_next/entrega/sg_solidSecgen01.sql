@@ -64,8 +64,7 @@ BEGIN
         RETURN
     END
 
-    /* 1. Tipo de solicitud */
-    IF @cod_tipsol <> 1
+IF @cod_tipsol <> 1
     BEGIN
         SELECT 0 AS status, 'REQUEST_NOT_PDS' AS code,
                'La solicitud no es una prestacion de servicios' AS msg,
@@ -73,8 +72,7 @@ BEGIN
         RETURN
     END
 
-    /* 2. Titularidad */
-    IF @rut_titular <> @rut_usua
+IF @rut_titular <> @rut_usua
     BEGIN
         SELECT 0 AS status, 'REQUEST_NOT_OWNED' AS code,
                'La solicitud no pertenece al usuario' AS msg,
@@ -82,8 +80,7 @@ BEGIN
         RETURN
     END
 
-    /* 3. Estado borrador */
-    IF @cod_estsol <> 5
+IF @cod_estsol <> 5
     BEGIN
         SELECT 0 AS status, 'REQUEST_NOT_DRAFT' AS code,
                'Solo se puede eliminar una solicitud en estado borrador' AS msg,
@@ -91,8 +88,7 @@ BEGIN
         RETURN
     END
 
-    /* 4. Sin resolucion asociada */
-    IF @ano_resolu IS NOT NULL OR @nro_resolu IS NOT NULL
+IF @ano_resolu IS NOT NULL OR @nro_resolu IS NOT NULL
     BEGIN
         SELECT 0 AS status, 'REQUEST_HAS_RESOLUTION' AS code,
                'La solicitud tiene una resolucion asociada y no puede eliminarse' AS msg,
@@ -100,8 +96,7 @@ BEGIN
         RETURN
     END
 
-    /* 5. Sin flujo ni etapa vigente */
-    SELECT @cod_flusol = prse.cod_flusol,
+SELECT @cod_flusol = prse.cod_flusol,
            @cod_etapa  = prse.cod_etapa
     FROM secgen_db.dbo.sg_prse prse
     WHERE prse.nro_solici = @nro_solici
@@ -114,8 +109,7 @@ BEGIN
         RETURN
     END
 
-    /* 6. Sin tareas de visacion */
-    IF EXISTS (
+IF EXISTS (
         SELECT 1 FROM secgen_db.dbo.sg_apso
         WHERE nro_solici = @nro_solici
     )
@@ -126,8 +120,7 @@ BEGIN
         RETURN
     END
 
-    /* 7. Historial limitado a las acciones propias del borrador */
-    IF EXISTS (
+IF EXISTS (
         SELECT 1 FROM secgen_db.dbo.sg_hist
         WHERE nro_solici = @nro_solici
           AND isnull(id_tipacc, 0) NOT IN (29, 15)
@@ -139,8 +132,7 @@ BEGIN
         RETURN
     END
 
-    /* 8. Sin cuotas reservadas */
-    IF EXISTS (
+IF EXISTS (
         SELECT 1 FROM secgen_db.dbo.sg_fume
         WHERE id_funprse IN (
             SELECT id_funprse FROM secgen_db.dbo.sg_fups
@@ -154,8 +146,7 @@ BEGIN
         RETURN
     END
 
-    /* 9. Sin datos de otros modulos asociados a la solicitud */
-    IF EXISTS (SELECT 1 FROM secgen_db.dbo.sg_apcc WHERE nro_solici = @nro_solici)
+IF EXISTS (SELECT 1 FROM secgen_db.dbo.sg_apcc WHERE nro_solici = @nro_solici)
     OR EXISTS (SELECT 1 FROM secgen_db.dbo.sg_cicc WHERE nro_solici = @nro_solici)
     OR EXISTS (SELECT 1 FROM secgen_db.dbo.sg_drec WHERE nro_solici = @nro_solici)
     OR EXISTS (SELECT 1 FROM secgen_db.dbo.sg_inpc WHERE nro_solici = @nro_solici)
@@ -169,8 +160,7 @@ BEGIN
 
     BEGIN TRAN
 
-    /* Reverificacion bajo bloqueo ante un envio concurrente */
-    SELECT @cod_estsol = soli.cod_estsol
+SELECT @cod_estsol = soli.cod_estsol
     FROM secgen_db.dbo.sg_soli soli HOLDLOCK
     WHERE soli.nro_solici = @nro_solici
 
@@ -214,9 +204,7 @@ BEGIN
     FROM secgen_db.dbo.sg_fups
     WHERE nro_solici = @nro_solici
 
-    /* --- Borrado de hoja a raiz --- */
-
-    SELECT @paso = 'sg_fuco'
+SELECT @paso = 'sg_fuco'
     DELETE FROM secgen_db.dbo.sg_fuco
     WHERE id_funprse IN (
         SELECT id_funprse FROM secgen_db.dbo.sg_fups

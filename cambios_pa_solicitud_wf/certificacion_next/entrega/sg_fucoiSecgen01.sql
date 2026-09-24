@@ -72,11 +72,7 @@ BEGIN
         RETURN
     END
 
-    /*
-       fec_compro conserva la fecha y hora real de inicio. Si hora_ter es
-       menor que hora_ini, el termino corresponde al dia siguiente.
-    */
-    SELECT @fecha_base = dateadd(
+SELECT @fecha_base = dateadd(
         day,
         datediff(day, convert(datetime, '19000101'), @fec_compro),
         convert(datetime, '19000101')
@@ -120,8 +116,7 @@ BEGIN
         RETURN
     END
 
-    /* Rechazar duplicados y traslapes, incluso entre fechas consecutivas. */
-    IF EXISTS (
+IF EXISTS (
         SELECT 1
         FROM secgen_db.dbo.sg_fuco fc
         WHERE fc.id_funprse = @id_funprse
