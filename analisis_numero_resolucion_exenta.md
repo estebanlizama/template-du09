@@ -449,3 +449,442 @@ necesita PA nuevo—, no mueve ningún control y deja el documento donde el rest
 del sistema lo espera. La B solo se justifica si el Archivo Universitario queda
 definitivamente fuera del alcance de este flujo, y conviene dejar esa decisión
 por escrito antes de tocar las tres compuertas.
+
+---
+
+## 12. Implementación acordada: número digitado, sin registrar en `ar_doc1`
+
+Decisión tomada: la emisión y el registro del número son **externos a este
+sistema**. Acá solo se **ingresa el número ya generado** y se **asocia antes de
+aprobar**. `ar_doc1iSecgen10` deja de usarse en PDS; `sg_rslc` queda como la
+única tabla donde el sistema guarda la resolución y su número externo.
+
+**Estado: aplicado el 23-10-2026.** Backend compila, 206 pruebas pasan; frontend
+13 pruebas / 14 archivos, eslint sin hallazgos nuevos en lo tocado.
+
+### Reglas que se siguieron
+
+1. **Nada se elimina.** Cada línea que deja de aplicar se comenta dejando el
+   original a la vista, para volver atrás sin reconstruir nada.
+2. **Solo código de PDS.** Ningún archivo compartido con los otros cinco flujos
+   que emiten resoluciones exentas. En particular `resolution.repository.ts`,
+   `resolution-approval.repository.ts`, `ar_doc1iSecgen10` y
+   `generateResolutionNumber` quedan **intactos**.
+3. **Ningún PA nuevo ni modificado.** `sg_rslcuSecgen01` ya acepta `@num_resolu`;
+   la única consulta agregada es un `select` de lectura, con el mismo criterio
+   que los `select` directos que ya existían en el archivo de queries.
+4. **Nada de alcance extra.** No se tocó el flujo de pagos, ni la creación de
+   cuotas, ni la cadena de firmas más allá de la condición del número.
+
+### 12.1 El modelo que queda
+
+| Campo | Qué es | Después del cambio |
+| :--- | :--- | :--- |
+| `sg_rslc.nro_resolu` | Correlativo interno de la resolución (ej. 205) | Igual: sigue saliendo de `sg_parm` |
+| `sg_rslc.num_resolu` | **El número externo digitado** | Lo escribe el guardado de decretación |
+| `sg_rslc.id_docum` | FK al documento en `ar_doc1` | **Queda nulo.** El documento se gestiona fuera |
+
+### 12.2 Un hallazgo que juega a favor
+
+`sg_rslcuSecgen01` exige `@num_resolu` no nulo: si llega nulo devuelve
+*"Falta campo numero de resolucion"* como `msg` y **no escribe nada**. Y hoy el
+guardado de decretación manda `num_resolu = NULL` mientras no exista folio
+(`updateResolutionData` relee el valor guardado, que es nulo).
+
+O sea que **hoy, guardar CSGD y fecha antes de que exista el folio no persiste
+nada**: falla en silencio. Con el input, ese mismo guardado pasa a ser el que
+persiste las tres cosas. El camino que necesitamos ya existe y ya apunta a la
+columna correcta.
+
+> Inferido del PA que está en el repositorio. La copia versionada **no tiene**
+> `@id_docum` aunque la query del backend lo manda, así que el desplegado es otra
+> versión: conviene confirmar contra el servidor antes de dar esto por cierto.
+
+### 12.3 Frontend — el input en decretación
+
+`pages/services-provision/_id/resolution-format-normative.vue`
+
+Estado inicial, agregar el campo:
+
+```js
+      resolutionUpdateData: {
+        sdgCode: '',
+        resolutionDate: '',
+        resolutionExternalNumber: null,
+        resolutionNumber: Number(this.$route.params.resId),
+        resolutionYear: 0,
+      },
+```
+
+Template, tira **"Cierre de edición"**, como tercer campo antes del botón de
+guardar:
+
+```html
+            <div class="pds-ui-field-medium">
+              <input-root
+                v-model="resolutionUpdateData.resolutionExternalNumber"
+                type="number"
+                :label="$pdsText.resolution.fields.externalResolution"
+                :placeholder="$pdsText.resolution.placeholders.externalResolution"
+                name="resolución exenta"
+                rules="required|numeric|min_value:1"
+              />
+            </div>
+```
+
+Y en la carga (`formDetail`), restaurar lo guardado igual que los otros dos:
+
+```js
+      this.resolutionUpdateData.resolutionExternalNumber = formDetail[0]?.resolutionExternalNumber ?? null
+```
+
+La validación de `openViewFile` ya exige CSGD y fecha; se le suma el número:
+
+```js
+      // if (!this.resolutionUpdateData?.sdgCode || !this.resolutionUpdateData?.resolutionDate) {
+      if (
+        !this.resolutionUpdateData?.sdgCode ||
+        !this.resolutionUpdateData?.resolutionDate ||
+        !(Number(this.resolutionUpdateData?.resolutionExternalNumber) > 0)
+      ) {
+```
+
+### 12.4 Frontend — no llamar a la emisión automática
+
+`components/services-provision/resolution-format/ChangeStateResolutionModal.vue`,
+`handleApproveOrSignRequest`. La guarda se mantiene, solo cambia de dónde lee el
+número:
+
+```js
+      if (this.modalType === 'approve') {
+        /* El numero externo se gestiona fuera del sistema: llega digitado desde
+           decretacion y ya quedo en sg_rslc. La emision automatica no aplica. */
+        // const externalResolution = await this.createResolutionNumber({
+        //   ...this.payload,
+        //   resolutionNumber: resId,
+        //   resolutionYear: Number(this.payload?.resolutionYear) || new Date().getFullYear(),
+        //   requestsIds: [reqId],
+        //   resolutionMessage: this.payload?.resolutionMessage || `Resolución de prestación de servicios - Solicitud N° ${reqId}`,
+        //   dni: this.$auth?.user?.dni,
+        // })
+        // if (Number(externalResolution?.resolutionExternalNumber || 0) <= 0) {
+        if (Number(this.payload?.resolutionExternalNumber || 0) <= 0) {
+          throw new Error(
+            this.$pdsText.resolution.messages.externalResolutionNumberUnavailable
+          )
+        }
+
+        await this.generateFinalResolutionDocument(reqId, resId)
+      }
+```
+
+El `mapActions` de `createResolutionNumber` **se deja**: no molesta y evita tocar
+el bloque de acciones.
+
+### 12.5 Backend — dejar que el guardado acepte el número
+
+`src/repositories/service-provision-request-approval.repository.ts`,
+`updateResolutionData`. Hoy relee el guardado y lo reescribe igual. Se le agrega
+el número del request **conservando el comportamiento anterior como respaldo**:
+
+```ts
+    const payload = new ResolutionEditRequest({
+      resolutionNumber: request.resolutionNumber,
+      /* El numero externo llega digitado desde decretacion. Si no viene, se
+         conserva el que ya estaba, que era el comportamiento anterior. */
+      resolutionExternalNumber:
+        Number(request.resolutionExternalNumber) > 0
+          ? Number(request.resolutionExternalNumber)
+          : (resolutionData[0]?.resolutionExternalNumber ?? null),
+      sdgCode: request.sdgCode,
+      resolutionDate: request.resolutionDate,
+      requestsIds: request.requestsIds,
+      resolutionYear: request.resolutionYear,
+    });
+```
+
+Conviene además rechazar un número ya usado por **otra** resolución del mismo
+año, porque la unicidad ya no la da `ar_doc1`. Ver 12.9.
+
+### 12.6 Backend — la compuerta de aprobación, **solo en PDS**
+
+Acá había que tener cuidado. `officialAssigned` se calcula en
+`resolution.repository.ts`, que es **compartido**: lo consumen los otros flujos.
+Tocarlo ahí relajaría la compuerta para todos.
+
+No hace falta. La compuerta de PDS **ya está aislada**:
+`service-provision-request-approval.repository.ts` tiene su propia copia de
+`signResolution` —hecha precisamente para no modificar la de
+`resolution-approval.repository.ts`, que también usa cost-center-close— y calcula
+su propio `officialAssigned` con la lectura directa a `sg_rslc`:
+
+```ts
+        const link = await this.getResolutionLinkDirect(Number(nro_resolu), false, false);
+        // const officialAssigned = link.externalNumber > 0 && link.documentId > 0;
+        const officialAssigned = link.externalNumber > 0;
+```
+
+**`resolution.repository.ts` no se toca.** Los otros cinco flujos quedan
+exactamente como estaban.
+
+### 12.7 Backend — la compuerta del PDF
+
+`src/controllers/resolution.controller.ts`, en `signatures-document-base` (y en
+su gemelo `-prev-view`, que tiene el mismo bloque):
+
+```ts
+    // const { documentId: externalDocumentId } =
+    //   await this.serviceProvisionRequestApprovalRepository.getResolutionLinkDirect(
+    //     Number(internalResId), true, true,
+    //   );
+
+    // if (externalResolutionNumber <= 0 || externalDocumentId <= 0) {
+    if (externalResolutionNumber <= 0) {
+      throw new HttpErrors.Conflict(
+        'La resolución todavía no tiene un número externo oficial asignado.',
+      );
+    }
+```
+
+La lectura directa se comenta junto con la condición: si se deja declarada sin
+usar, eslint la marca.
+
+### 12.8 Backend — la protección contra rechazo posterior
+
+`src/controllers/service-provision/service-provision-request-approval.controller.ts`,
+`officialAssignedDirect`. Un cambio de palabra: el mismo `getResolutionLinkDirect`
+ya devuelve `externalNumber`.
+
+```ts
+    const officialAssignedDirect =
+      Number.isFinite(existingResolutionNumber) && existingResolutionNumber > 0
+        ? (await this.serviceProvisionRequestApprovalRepository.getResolutionLinkDirect(
+            existingResolutionNumber,
+            true,
+            true,
+          // )).documentId > 0
+          )).externalNumber > 0
+        : false;
+```
+
+Sin esto, la regla *"una vez decretada, los roles posteriores solo pueden devolver
+a corrección"* queda apagada y el rechazo volvería a ser posible.
+
+### 12.9 Lo único realmente nuevo: la unicidad
+
+La validación de número repetido vivía en `ar_doc1`. Al no escribir ahí, hay que
+ponerla en `sg_rslc`. Lo más simple, sin PA nuevo: una consulta en el guardado de
+decretación que busque otra resolución del mismo año con ese `num_resolu`, y un
+error claro si existe.
+
+Es la única pieza que no se resuelve comentando: sin ella, dos resoluciones
+pueden quedar con el mismo número exento y nada lo detecta.
+
+### 12.10 Lo que queda intacto y sin uso
+
+| Qué | Por qué no se borra |
+| :--- | :--- |
+| `ar_doc1iSecgen10` y `generateResolutionNumber` | Los usan los otros cinco flujos (saldos, apertura y cierre de centro de costo, incentivos, bases de concurso) |
+| El endpoint `create-number-resolution` de PDS y `createNumberResolutionExclusive` | Quedan publicados y sin llamador desde el frontend. Volver atrás es descomentar |
+| Los tres rescates (candado, reutilización, folios huérfanos) | Siguen sirviendo para las resoluciones que ya tienen folio emitido por el camino viejo |
+| `ar_doc1sSecgen01` / `ar_doc1sSecgen02` | Son de lectura y los usa el Archivo Universitario |
+
+### 12.11 Lo que se pierde, para que esté dicho
+
+- **El documento del Archivo Universitario**: sin `id_docum` no hay llave bajo la
+  cual guardarlo ni recuperarlo desde `MyArchivo`. El PDF que genera el sistema
+  **no** se afecta: se guarda por el número interno.
+- **`ar_doc6`**: no queda registro en el archivo de quién asignó el número.
+- **El correlativo compartido** (`ar_prm2`/`ar_prm3`) no se entera de los números
+  usados por PDS. Si la gestión externa es la misma oficina que emite para los
+  otros flujos, el problema no existe; si no, hay que confirmarlo.
+
+### 12.12 Pruebas
+
+| # | Caso | Esperado |
+| :-- | :--- | :--- |
+| 1 | Guardar decretación con CSGD, fecha y número | Las tres columnas quedan en `sg_rslc` (hoy no guarda nada sin folio) |
+| 2 | Reabrir la pantalla | El número se muestra, no vuelve vacío |
+| 3 | Enviar a firma sin número | Bloqueado en el frontend, sin llamada al backend |
+| 4 | Enviar a firma con número | Genera el PDF con el número en el título y avanza al firmante |
+| 5 | Aprobar como firmante | Pasa la compuerta sin `id_docum` |
+| 6 | Número repetido en el mismo año | Rechazado con mensaje claro (12.9) |
+| 7 | Rechazar como rol posterior a decretación | Sigue bloqueado: solo devolver a corrección |
+| 8 | Resolución vieja, con folio ya emitido | Sigue funcionando: el número se lee de `sg_rslc` igual |
+
+---
+
+## 13. Las validaciones que reemplazan al PA
+
+El PA validaba seis cosas. Al dejar de llamarlo, cada una tenía que encontrar
+otro lugar o quedar explícitamente descartada.
+
+| Lo que validaba `ar_doc1iSecgen10` | Dónde quedó |
+| :--- | :--- |
+| Parámetros obligatorios | **Front**: `rules="required|integer|min_value:1"`, validado por el `ValidationObserver` que ya corre al guardar y al enviar a firma. **Back**: formato y rango |
+| El año del documento coincide con su fecha | **Back**: la fecha de decretación debe caer en el año de la resolución |
+| Número no repetido | **Back**: `assertExternalNumberIsFree` sobre `sg_rslc`, por año |
+| RUT administrador de documentos vigente (`ar_adm1`) | **Perdido.** Decisión pendiente, ver 13.3 |
+| `cod_tipdoc = 3` y `cod_emisor = 1` | No aplica: ya no se registra documento |
+| Existen parámetros de correlativo | No aplica: ya no se consume correlativo |
+| Integridad transaccional (4 tablas) | No aplica: queda una sola escritura, en `sg_rslc` |
+
+### 13.1 Backend — lo aplicado
+
+Todo en `service-provision-request-approval.repository.ts → updateResolutionData`,
+en este orden:
+
+1. **Resolución inmutable** → 422. Ya existía.
+2. **Formato y rango**: un valor presente pero inválido se **rechaza**, no se
+   ignora. Entero, mayor que cero, hasta `2147483647` (el `int` de Sybase). Sin
+   esto el guardado "funcionaba" conservando el número anterior y nadie se
+   enteraba de que el digitado se perdió.
+3. **Congelado solo con documento firmado** (corregido el 23-10-2026): si ya hay
+   un documento **firmado** cargado y el número cambia, se rechaza.
+
+   La primera versión congelaba con el documento **base** generado, y estaba
+   mal: una resolución **devuelta a corrección** vuelve a decretación con el
+   base ya creado, y así no se podía corregir el número —que es justamente para
+   lo que la devolvieron—. El mensaje incluso decía "devuelva la resolución a
+   corrección", cosa que ya se había hecho.
+
+   El base no necesita congelar nada porque **se regenera en cada envío a
+   firma** a partir de `sg_rslc`, y esa regeneración además borra la firma
+   anterior: la corrección se propaga sola. Lo que no se puede rehacer desde
+   acá es un documento ya firmado, que lleva el número anterior.
+
+   **Ventana conocida:** entre que se cambia el número y se vuelve a enviar a
+   firma, el documento base almacenado sigue teniendo el número viejo y se
+   puede descargar. Se corrige solo al enviar a firma.
+4. **Coherencia año/fecha**: si la fecha de decretación cae en otro año que la
+   resolución, se rechaza. Importa porque la unicidad se verifica **por año**:
+   con el año mal, el número se compara contra el período equivocado. Solo se
+   compara cuando se puede extraer un año de cuatro dígitos, porque la fecha
+   llega en más de un formato según la pantalla y un formato no reconocido no
+   debe hacer fallar un guardado válido.
+5. **Unicidad** por `(num_resolu, ano_resolu)` en `sg_rslc`, excluyendo la propia
+   resolución.
+
+Y las tres compuertas del número que ya estaban, ahora sin `id_docum`: generar el
+documento, aprobar como firmante, y la protección contra rechazo posterior.
+
+Cubierto por `src/__tests__/unit/service-provision-external-resolution-number.unit.ts`
+(9 casos). Total del backend: 215 pruebas.
+
+### 13.2 Frontend — lo aplicado
+
+- `required|integer|min_value:1` más `type="number"` y `min="1"`. El
+  `ValidationObserver` ya se valida en el guardado (`triggerSaveConfirmation`) y
+  en el envío a firma (`submitResolutionForm('approve')`), así que el mismo campo
+  cubre los dos sin código nuevo.
+- La guarda antes de enviar a firma lee el número del payload y corta con un
+  mensaje que ahora dice lo que corresponde: *"Debe ingresar el N° de resolución
+  exenta en el formato antes de enviar a firma."*
+- **La confirmación muestra el número.** El modal ya tenía el bloque de resumen
+  pero las pantallas de formato no le pasaban `:resolution-summary`, así que no
+  se veía. Con numeración digitada el error de tipeo es el riesgo principal y ese
+  es el último momento para verlo.
+- Las dos pantallas de decretación (`resolution-format-normative.vue` y
+  `resolution-format.vue`) recibieron lo mismo: ambas están vivas para DU288.
+
+### 13.3 Decisiones pendientes
+
+**a) Autorización.** El PA exigía ser administrador de documentos vigente en
+`ar_adm1`. Hoy `PATCH /requests/service-provision/update-resolution-data` tiene
+solo `@authenticate('jwt')`: ningún privilegio ni rol. Antes eso cambiaba la
+sigla y la fecha; ahora cambia **el número oficial de la resolución**. Si
+corresponde restringirlo, el patrón es el de los otros endpoints PDS: un
+privilegio verificado en el backend, no solo el `getRolePermission` del
+frontend, que es presentación.
+
+**b) Unicidad contra el Archivo Universitario.** La unicidad que se validó es
+dentro de `sg_rslc`. Si el número exento es un correlativo único de toda la
+Universidad, un número digitado en PDS podría chocar con uno emitido
+automáticamente por otro de los cinco flujos, y eso no se detecta.
+
+Se puede consultar `ar_doc1` en modo lectura (`ar_doc1sSecgen01` ya existe), pero
+el resultado es **ambiguo**: encontrar el número puede significar que Secretaría
+General ya lo registró —que es lo esperado— o que pertenece a otro documento. No
+se puede distinguir con certeza, así que serviría para **avisar**, no para
+bloquear. No se implementó: hace falta definir primero si la numeración externa y
+la automática comparten el mismo universo.
+
+**c) ¿Se puede corregir el número antes de generar el documento?** Hoy sí, y
+después queda congelado (13.1 punto 3). Si debiera congelarse antes —por ejemplo
+al enviar a firma— es un cambio de una línea en la misma validación.
+
+---
+
+## 14. El paso de Finanzas a Decretación
+
+### 14.1 Qué se guarda en ese traspaso
+
+Cuando **Finanzas** (`FinanceDirector`) aprueba, el avance a Decretación crea la
+resolución, en `service-provision-request-approval.controller.ts`:
+
+```ts
+if (currentRoleName === FinanceDirector) {
+  const resolutionRequest = new Resolution({
+    requestId: request.requestNumber,
+    resolutionYear: mysqlTableYear,
+    templateId,
+    documentId: undefined,        // id_docum nace NULO
+    codEstres: ServiceProvisionResolutionStatusCode.CREATED,
+  });
+  const createdResolution = await this.resolutionRepository.createResolution(...);
+  if (!createdResolution?.resolutionNumber) throw 409 'No fue posible crear la resolución. La solicitud no avanzará de etapa.'
+}
+```
+
+Eso escribe tres cosas, ninguna documental:
+
+| Tabla | Qué queda | PA |
+| :--- | :--- | :--- |
+| `sg_rslc` | la resolución: `nro_resolu` desde `sg_parm`, plantilla, estado CREADA, **`id_docum` nulo** y `num_resolu` nulo | `sg_rslciSecgen01` |
+| `sg_rede` | las secciones de texto editables que copia la plantilla | `sg_redeiSecgen01` |
+| `sg_soli` | el vínculo solicitud ↔ resolución (`nro_resolu`, `ano_resolu`) | `sg_soliuSecgen03` |
+
+**No se genera ningún documento en ese paso**: ni PDF, ni fila en `ar_doc1`. El
+PDF aparece recién al enviar a firma, y `ar_doc1` ya no se escribe.
+
+### 14.2 ¿Afecta al cambio? No — al contrario
+
+`id_docum` **ya nacía nulo** en ese traspaso (`documentId: undefined`
+explícito). El cambio no altera nada de ese paso; lo que hace es volver
+coherente el resto del flujo con algo que ya era así: `id_docum` nace nulo y
+ahora simplemente se queda nulo.
+
+### 14.3 Pero las etapas **posteriores** sí dependían de `id_docum`
+
+Revisando este traspaso aparecieron **cinco guardas más** que exigían
+`id_docum > 0` y que el cambio habría roto o apagado en silencio. Todas
+corregidas con el mismo criterio —exigir el número externo en vez del
+documento— y todas en rutas `/requests/service-provision/...`:
+
+| # | Dónde | Qué pasaba sin corregir |
+| :-- | :--- | :--- |
+| 1 | `service-provision-workflow.service.ts`, `officialAssignedDirect` → `validateSecretaryStageSignedDocuments` | **Toda aprobación en Secretario General o posterior quedaba bloqueada**: *"Debe generar el documento oficial antes de continuar con las firmas."* |
+| 2 | el mismo valor → `validateReturnConstraints` | La regla *"la devolución posterior a Decretación debe tener como destino Decretación"* **dejaba de aplicarse en silencio** |
+| 3 | `PATCH /requests/service-provision/resolution/archive` | **Archivar era imposible**: *"No se puede archivar una resolucion sin documento oficial generado."* Y sin archivar (`cod_estsol = 11`) **no empiezan los pagos** |
+| 4 | `POST /requests/service-provision/resolution/signatures-document` | Cargar el documento firmado quedaba bloqueado |
+| 5 | el `GET` de estado documental | Devolvía `officialAssigned: false` al frontend, que apaga acciones por ese dato |
+
+La 1 y la 3 eran bloqueos duros de todo el flujo; la 2 era peor por ser
+silenciosa.
+
+### 14.4 Lo que **no** se tocó, a propósito
+
+| Dónde sigue exigiéndose `id_docum` | Por qué está bien |
+| :--- | :--- |
+| `resolution.repository.ts`, `officialAssigned` | Es compartido. Lo consume `resolution-approval.repository.ts` (cost-center-close), que **sí** sigue emitiendo folio y tiene `id_docum` real |
+| `findOfficialDocumentByCorrelative` y `findOrphanedDocumentsByMessage` | Son los rescates para resoluciones que ya tienen folio del camino anterior |
+
+### 14.5 Pruebas que agrega esta revisión
+
+| # | Caso | Esperado |
+| :-- | :--- | :--- |
+| 9 | Finanzas aprueba y pasa a Decretación | Se crea `sg_rslc` con número interno, `sg_rede` con el texto, y el vínculo en `sg_soli`. Sin número externo todavía |
+| 10 | Firmar en Secretario General | Pasa, con el número digitado y el documento base generado |
+| 11 | Devolver a corrección desde una etapa posterior a Decretación | El destino sigue forzado a Decretación |
+| 12 | Cargar el documento firmado | Permitido con número digitado y base generada |
+| 13 | Archivar la resolución | Permitido; habilita el flujo de pagos (`cod_estsol = 11`) |
