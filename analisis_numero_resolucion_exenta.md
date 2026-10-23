@@ -335,3 +335,117 @@ ellos antes que con el código.
    decretación y validar la unicidad dos veces**: al guardar y al firmar.
 5. **¿Se puede corregir un número ya guardado,** y hasta qué estado? Hoy
    `updateResolutionData` lo preserva a propósito.
+
+---
+
+## 10. Mapa simple de tablas y PA
+
+### `secgen_db` — la resolución y la solicitud
+
+| Tabla | Qué guarda | Quién escribe | Quién lee |
+| :--- | :--- | :--- | :--- |
+| `sg_rslc` | La resolución: `nro_resolu` (interno), **`num_resolu` (el externo)**, `id_docum`, `codigo_sdg`, `f_resolucio` | `sg_rslciSecgen01` (alta), `sg_rslcuSecgen01` (número + CSGD + fecha), `sg_rslcuSecgen03` (estado), `sg_rslcuSecgen04` (marca ingresada) | `sg_rslcsSecgen01` |
+| `sg_parm` | El contador del `nro_resolu` interno | `sg_rslciSecgen01` | — |
+| `sg_soli` | La solicitud. Guarda `nro_resolu` + `ano_resolu`, el **interno** | `sg_soliuSecgen03` | varios |
+| `sg_rede` | El texto y detalle de la resolución | `sg_redeiSecgen01` | `sg_redesSecgen01` |
+| `sg_apre` | Los firmantes y sus decisiones | `sg_apreiSecgen01`, `sg_apreuSecgen01` | `sg_apresSecgen01/02/03` |
+
+### `archivo_db` — el Archivo Universitario
+
+| Tabla | Qué guarda | Quién escribe | Quién lee |
+| :--- | :--- | :--- | :--- |
+| `ar_doc1` | El documento: `id_docum`, **`nro_docum` (el número exento)**, `ano`, `cod_tipdoc`, `cod_emisor`, `tab_mysql` | `ar_doc1iSecgen10` | `ar_doc1sSecgen01` (por número), `ar_doc1sSecgen02` (por id) |
+| `ar_doc6` | Historial de estados del documento y RUT de quien lo registró | `ar_doc1iSecgen10` | — |
+| `ar_parm` | Contador global de `id_docum` | `ar_doc1iSecgen10` | — |
+| `ar_prm2` / `ar_prm3` | Contador del número exento (tipo+año / tipo+año+emisor) | `ar_doc1iSecgen10` | — |
+| `ar_adm1` | Quiénes son administradores de documentos | — | `ar_doc1iSecgen10`, que lo valida |
+| `ar_edoc` | Catálogo de estados de documento | — | `ar_doc1sSecgen01` |
+
+### MySQL — los archivos
+
+| Almacén | Qué guarda | Clave |
+| :--- | :--- | :--- |
+| `MyArchivo.<tab_mysql>` | El documento del Archivo Universitario | `id_docum` |
+| MySQL secgen, tabla por año | **El PDF que genera el sistema** | `(ano_resolu, nro_resolu interno, correlativ)` |
+
+### El número externo vive en **dos** lugares
+
+| Lugar | Para qué |
+| :--- | :--- |
+| `archivo_db..ar_doc1.nro_docum` | El registro institucional. Da la unicidad y la llave (`id_docum`) del documento |
+| `secgen_db..sg_rslc.num_resolu` | La copia que usa el sistema para mostrar, buscar y titular el PDF |
+
+---
+
+## 11. Si el número lo emiten **externamente**: qué cambia
+
+Premisa: Secretaría General registra el documento en el Archivo Universitario
+**fuera** de este sistema, y decretación solo digita el número que le
+entregaron. Entonces este sistema **no inserta en `ar_doc1`**.
+
+La diferencia está en si la fila de `ar_doc1` existe o no.
+
+### Variante A — La fila existe, la creó Archivo (**recomendada**)
+
+No insertamos: **buscamos y enlazamos**. El paso de emisión cambia de *insertar*
+a *consultar*:
+
+| | Antes | Ahora |
+| :--- | :--- | :--- |
+| PA | `ar_doc1iSecgen10` (emite) | `ar_doc1sSecgen01` (busca por tipo+emisor+año+número) |
+| Qué obtiene | `id_docum` + `nro_docum` nuevos | el `id_docum` de la fila que ya existe |
+| Escribe en `archivo_db` | `ar_doc1`, `ar_doc6`, `ar_parm`, `ar_prm2/3` | **nada** |
+
+**Lo mejor: ya está implementado.** El método
+`findOfficialDocumentByCorrelative(años, número)` existe en
+`service-provision-request-approval.repository.ts` y hace exactamente esto —
+hoy se usa como rescate cuando `sg_rslc` perdió el `id_docum`. Solo hay que
+llamarlo como camino principal.
+
+Lo que hay que cambiar:
+
+1. **Backend, `createNumberResolutionExclusive`**: en vez de `createResolutionNumber`
+   (el PA que emite), llamar a `findOfficialDocumentByCorrelative` con el número
+   digitado. Si devuelve `id_docum`, el resto del paso sigue igual.
+2. **Un error nuevo y claro** cuando el número no está en `ar_doc1`: *"El número
+   de resolución exenta no está registrado en el Archivo Universitario. Verifique
+   el número o espere a que Secretaría General lo registre."* Va a ser el error
+   más frecuente de la pantalla y hoy no existe.
+3. **`updateResolutionData`**: dejar que acepte el número digitado mientras la
+   resolución no tenga `id_docum` ni sea inmutable. Hoy lo preserva siempre.
+4. **Frontend**: el input en la tira "Cierre de edición" de
+   `resolution-format-normative.vue`, junto a CSGD y fecha de decretación, y
+   bloquear el envío a firma si el número falta.
+5. **No se necesita ningún PA nuevo.** La idea de un PA de inserción con número
+   dado queda descartada: no hay nada que insertar.
+
+Lo que **no** cambia: el candado por resolución, los rescates, la escritura de
+`sg_rslc` y `sg_soli`, las tres compuertas del número, la generación del PDF y el
+Archivo Universitario. Todo sigue funcionando porque `id_docum` sigue llegando.
+
+**La pregunta operativa:** ¿decretación digita el número **después** de que
+Archivo lo registró? Si lo digita antes, la búsqueda no lo encuentra y el envío a
+firma se bloquea hasta que el registro exista. El flujo actual ya acomoda las dos
+cosas: el número se guarda en decretación y se resuelve el `id_docum` recién al
+enviar a firma.
+
+### Variante B — No hay fila de `ar_doc1` en ninguna parte
+
+Solo se guarda `num_resolu` y `id_docum` queda nulo. Hay que cambiar **tres
+compuertas**:
+
+| # | Dónde | Qué exige hoy | Qué tendría que exigir |
+| :-- | :--- | :--- | :--- |
+| 1 | `resolution-approval.repository.ts:434` | `officialAssigned` = `num_resolu > 0 && id_docum > 0`, con el mensaje *"Debe generar el documento oficial antes de aprobar"* | solo `num_resolu > 0` |
+| 2 | `resolution.controller.ts`, `signatures-document-base` | `externalResolutionNumber > 0 && externalDocumentId > 0` | solo el número |
+| 3 | `service-provision-request-approval.controller.ts:474` | `hasGeneratedResolution` por `documentId > 0`, que impide el rechazo posterior | por `num_resolu > 0` |
+
+Y se pierde, sin reemplazo dentro del sistema: el documento del Archivo
+Universitario (no hay `id_docum` bajo el cual guardarlo ni recuperarlo), la
+unicidad del número y el registro de `ar_doc6`.
+
+**Recomendación: la A.** Cuesta menos —reutiliza un método que ya existe y no
+necesita PA nuevo—, no mueve ningún control y deja el documento donde el resto
+del sistema lo espera. La B solo se justifica si el Archivo Universitario queda
+definitivamente fuera del alcance de este flujo, y conviene dejar esa decisión
+por escrito antes de tocar las tres compuertas.
